@@ -24,11 +24,17 @@ function CdaV2CallCDAService()
             else
             {
                 var responseLine = result.message;
-                var objResp = CdaV2ReadResponse(responseLine);
-                var respMessage = CdaV2CreateRespMessage(objResp, responseLine);
-                CdaCommShowResp(respMessage);
+                var communicationResult = CdaCommGetCommStatus(responseLine);
+                if (communicationResult == 0)// No errors
+                {
+                    var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
+
+                    var objResp = CdaV2ReadResponse(transactionLine);
+
+                    var respMessage = CdaV2CreateRespMessage(objResp, transactionLine);
+                    CdaCommShowResp(respMessage);
+                }
             }
-            
         });
 }
 
@@ -231,20 +237,13 @@ function CdaV2PopulateClaimObj() {
     obj.f01 = CdaV2FormatField($("#cdan1_payabl").val(), 'N', 1); //Payee Code
     obj.f02 = CdaV2FormatField($('#cdan1_date_accident').val(), 'N', 8); //Accident Date
     obj.f03 = CdaV2FormatField($('#cdan1_no_confrmtn_plan').val(), 'AN', 14); //Predetermination Number
-    obj.f15 = CdaV2FormatField($('#cdan1_placmnt').val(), 'A', 1); //Initial Placement Upper
-    obj.f04 = CdaV2FormatField($('#cdan1_placmnt_date').val(), 'N', 8); //Date of Initial Placement Upper
+    obj.f15 = CdaV2FormatField($('#cdan1_placmnt').val(), 'A', 1); //Initial Placement 
+    obj.f04 = CdaV2FormatField($('#cdan1_placmnt_date').val(), 'N', 8); //Date of Initial Placement 
     obj.f05 = CdaV2FormatField($('#q1_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes 
     obj.f06 = CdaV2FormatField(CdaV2GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
 
 
-    obj.f07=[]; 
-    obj.f08=[]; 
-    obj.f09=[]; 
-    obj.f10=[]; 
-    obj.f11=[]; 
-    obj.f12=[]; 
-    obj.f13=[]; 
-    obj.f14=[];
+    obj.f07=[]; obj.f08=[]; obj.f09=[]; obj.f10=[]; obj.f11=[]; obj.f12=[]; obj.f13=[]; obj.f14=[];
     for (var i = 0; i < arrGrilleDeFacturation.length; i++) {
         var lineCount = 0;
         if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP') {
@@ -256,7 +255,7 @@ function CdaV2PopulateClaimObj() {
             obj.f11[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Surface, 'A', 5); //Tooth Surface
             obj.f12[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
             obj.f13[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
-            obj.f14[i] = '0000';
+            obj.f14[i] = '0000';// In visionR it's always '0000'
             
         }
     }
@@ -402,7 +401,7 @@ function CdaV2ReadResponse(pResponse) {
     var res = {};
     var transCode = '';
     if (pResponse) {
-        transCode = pResponse.substring(20, 22);
+        transCode = pResponse.toString().substring(20, 22);
 
         switch (transCode) {
             case '10':
@@ -428,6 +427,7 @@ function CdaV2ReadResponse(pResponse) {
 
 function CdaV2ParseEligibilityResp(pResponse) {
     var res = {};
+    pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -454,6 +454,7 @@ function CdaV2ParseEligibilityResp(pResponse) {
 
 function CdaV2ParseClaimAcknResp(pResponse) {
     var res = {};
+    pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -469,7 +470,7 @@ function CdaV2ParseClaimAcknResp(pResponse) {
     res.g06 = parseInt(pResponse.substring(60, 62));//Number of Error Codes
     res.g07 = pResponse.substring(62, 137);//Disposition Message
     res.g02 = pResponse.substring(137,138);//Employer Certified Flag
-    res.g04 = (parseFloat(pResponse.substring(138, 145)) / 100).toFixed(2);//Total Amount of Service
+    res.g04 = (parseFloat(pResponse.substring(138, 145))/100).toFixed(2);//Total Amount of Service
     res.g27 = pResponse.substring(145, 146);//Language of the Insured
 
     var lastPos = 146;
@@ -488,6 +489,7 @@ function CdaV2ParseClaimAcknResp(pResponse) {
 
 function CdaV2ParseEOBResp(pResponse) {
     var res = {};
+    pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -500,7 +502,7 @@ function CdaV2ParseEOBResp(pResponse) {
 
     res.g01 = pResponse.substring(45, 59); //Transaction Reference Number
     res.g03 = parseInt(pResponse.substring(59, 67));//Expected Payment Date
-    res.g04 = (parseFloat(pResponse.substring(67, 74)) / 100).toFixed(2);//Total Amount of Service
+    res.g04 = (parseFloat(pResponse.substring(67, 74))/100).toFixed(2);//Total Amount of Service
     res.g27 = pResponse.substring(74, 75);//Language of the Insured
     res.g09 = pResponse.substring(75, 76);//E-Mail Flag
     res.f06 = parseInt(pResponse.substring(76, 77));//Number of Procedures Performed
@@ -512,6 +514,7 @@ function CdaV2ParseEOBResp(pResponse) {
 
 
     var lastPos = 103;
+    res.f07 = []; res.g12 = []; res.g13 = []; res.g14 = []; res.g15 = []; res.g16 = []; res.g17 = []; res.g18 = []; res.g19 = []; res.g20 = []; res.g21 = []; res.g22 = []; res.g23 = []; res.g24 = []; res.g25 = []; res.g26 = [];
     for (var i = 0; i < res.f06; i++) {
         res.f07[i] = parseInt(pResponse.substring(lastPos, lastPos + 1));
         lastPos += 1;
@@ -559,6 +562,7 @@ function CdaV2ParseEOBResp(pResponse) {
 
 function CdaV2ParseClaimReversResp(pResponse) {
     var res = {};
+    pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -585,6 +589,7 @@ function CdaV2ParseClaimReversResp(pResponse) {
 
 function CdaV2ParsePredetAcknResp(pResponse) {
     var res = {};
+    pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -843,17 +848,17 @@ function CdaV2GetResponseListForEOB(pResp)
     var gNoConfirm = (pResp.g30) ? pResp.g30 : '';
     objResponseList = 'No de confirmation: ' + gNoConfirm + '\n';
 
-    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04) / 100;
+    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04);
     ResponseList += 'Montant réclamé: ' + montantReclame.toFixed(2) + '\n';
 
-    var montantDuDeductibleNonAlloue = (isNaN(parseFloat(pResp.g29))) ? 0 : parseFloat(pResp.g29) / 100;
+    var montantDuDeductibleNonAlloue = (isNaN(parseFloat(pResp.g29))) ? 0 : parseFloat(pResp.g29);
     ResponseList += 'Montant du déductible non alloué: ' + montantDuDeductibleNonAlloue.toFixed(2) + '\n';
 
-    var montantTotalRembourse = (isNaN(parseFloat(pResp.g28))) ? 0 : parseFloat(pResp.g28) / 100;
+    var montantTotalRembourse = (isNaN(parseFloat(pResp.g28))) ? 0 : parseFloat(pResp.g28);
     ResponseList += 'Montant total remboursé: ' + montantTotalRembourse.toFixed(2) + '\n';
 
     var dateDePaiement = CdaCommConvertDate(pResp.g03);
-    ResponseList += 'Date de paiement : ' + dateDePaiement;
+    ResponseList += 'Date de paiement : ' + dateDePaiement + '\n';
 
     var g11 = parseInt(pResp.g11);
     g11 = (isNaN(g11)) ? 0 : g11;
@@ -910,7 +915,7 @@ function CdaV2GetResponseListForClaimAck(pResp)
     var gTransref = (pResp.g01) ? pResp.g01 : '';
     ResponseList += 'No de Référence: ' + gTransref + '\n';
 
-    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04) / 100;
+    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04);
     ResponseList += 'Montant réclamé : ' + montantReclame.toFixed(2) + '\n';
 
 
@@ -952,7 +957,7 @@ function CdaV2GetResponseListForPredeterm(pResp) {
 
     ResponseList.add('No de Référence: ' + pResp.g01) + '\n';
 
-    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04) / 100;
+    var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04);
     ResponseList += 'Montant réclamé : ' + montantReclame.toFixed(2) + '\n';
 
     var g06 = parseInt(pResp.g06);

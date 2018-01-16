@@ -38,7 +38,7 @@ function CdaCommShowResp(pRespMessage)
 function CdaCommConvertDate(pStr)
 {
     var formatedDate;
-    if (pStr == '00000000' || isNaN(pStr)) {
+    if (pStr == 0 || isNaN(pStr)) {
         formatedDate = new Date().toISOString().slice(0, 10);
     }
     else {
@@ -52,9 +52,9 @@ function CdaCommConvertDate(pStr)
 }
 
 //Convert DateFrom YYYYMMDD to yyyy-mm-dd. Return '-1' if conversion impossible.
-function CdaCommConvertDate(pStr) {
+function CdaCommConvertDate2(pStr) {
     var formatedDate;
-    if (pStr == '00000000' || isNaN(pStr)) {
+    if (pStr == 0 || isNaN(pStr)) {
         formatedDate =-1;
     }
     else {
@@ -366,6 +366,7 @@ function CdaCommCreateRandomNumber(min, max)
     return random;
 }
 
+//Returns result. if result != 0 (means there are some errors)display allert message.
 function CdaCommGetCommStatus(pResponseLine)
 {
     var CommErrormess = '';
@@ -403,20 +404,13 @@ function CdaCommGetCommStatus(pResponseLine)
         case 1054: CommErrormess = ('Erreur de lecture à partir du port de communication...'); break;
     }
 
-
-//if result = 0 then
-//begin
-//ResponseLine := copy(ResponseLine, pos(',', ResponseLine) + 1, length(ResponseLine));
-//ResponseLine := copy(ResponseLine, pos(',', ResponseLine) + 1, length(ResponseLine));
-//end else
-//begin
-//responselist.add('Erreur de communication ' + inttostr(result));
-//responselist.add(CommErrormess);
-//CommErrormess := 'Erreur de communication ' + inttostr(result) + #13#10 +
-//   CommErrormess;
-//if (result <> 1003) and (result <> 1022) and (result <> 1023) then
-//CommErrormess := CommErrormess;
-//messagedlg(CommErrormess, mtWarning, [mbok], 0);
-//end;
+    if (result != 0)
+    {
+        var errorMess = 'Erreur de communication ' + inttostr(result) +'\n'+ CommErrormess;
+        alert('errorMess');
+    }
+    return result;
 
 }
+
+

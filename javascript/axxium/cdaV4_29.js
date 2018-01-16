@@ -380,6 +380,7 @@ function CdaV4PopulateClaimObj()
     obj.f06 = CDAV4FormatField(CdaV4GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
     obj.f22 = CDAV4FormatField(objDataFromUI.f22, 'N', 2); //Extracted Teeth Count
 
+
     //If E20 = 1 then the following Secondary Carrier fields would appear (E19 to E07)
     if (obj.e20 == 1)
     {
@@ -411,8 +412,8 @@ function CdaV4PopulateClaimObj()
     obj.f03 = CDAV4FormatField($("#cdan2_no_confrmtn_plan").val(), 'AN', 14); //Predetermination Number
     obj.f15 = CDAV4FormatField($("#cdan_placmnt_maxl").val(), 'A', 1); //Initial Placement Upper
     obj.f04 = CDAV4FormatField($("#cdan_date_plcmnt_maxl").val(), 'N', 8); //Date of Initial Placement Upper
-    obj.f18 = CDAV4FormatField(objDataFromDB.f18, 'A', 1); //Initial Placement Lower
-    obj.f19 = CDAV4FormatField(objDataFromDB.f19, 'N', 8); //Date of Initial Placement Lower
+    obj.f18 = CDAV4FormatField("#cdan_placmnt_mand", 'A', 1); //Initial Placement Lower
+    obj.f19 = CDAV4FormatField("#cdan_date_plcmnt_mand", 'N', 8); //Date of Initial Placement Lower
     obj.f05 = CDAV4FormatField($('#q2_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes 
     obj.f20 = CDAV4FormatField(objDataFromDB.f20, 'N', 1); //Maxillary Prosthesis Material
     obj.f21 = CDAV4FormatField(objDataFromDB.f21, 'N', 1); //Mandibular Prosthesis Material

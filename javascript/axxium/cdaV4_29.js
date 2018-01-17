@@ -8,29 +8,33 @@ function CdaV4SendRequestToCdaNet() {
 }
 
 function CdaV4CallCDAService() {
-    var strRequest = CdaV4CreateRequestString();
-    // TODO: call WebService and send strRequest as a parameter.
+    var strRequest = CdaV2CreateRequestString();
+    var randomNum = CdaCommCreateRandomNumber(0, 999);
 
     var inputXMl = {
-        "request" : strRequest, //request to send
-        "info" : { 'NoSeq' : '', 'Description' : '', 'NoDossier': '', 'Prenom' : '', 'Nom':'', 'Ass': '', 'Couver' : '', 'Date': '', 'NoRef': ''} // JSON data
+        "request": strRequest, //request to send
+        //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
+        "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
 
-    $.post("allScriptsv1.py", {tx: "sendInsurance", clinicId: 'AGP18011', patientId: '234577', nodossier: 'ABC444' , nofact: '1', lun : '000', json: JSON.stringify(inputXMl)}, 
-        function(result){
-            var xml = result.message;
-            $("#message").append(xml);
+    $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
+        function (result) {
+            if (result.outcome === 'error')
+                alert(result.message);
+            else {
+                var responseLine = result.message;
+                var communicationResult = CdaCommGetCommStatus(responseLine);
+                if (communicationResult == 0)// No errors
+                {
+                    var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
+
+                    var objResp = CdaV4ReadResponse(transactionLine);
+
+                    var respMessage = CdaV4CreateRespMessage(objResp, transactionLine);
+                    CdaCommShowResp(respMessage);
+                }
+            }
         });
-
-
-
-
-
-    var responseLine = 'xxxxxxxxxxxxxxxxxxxx21xxxxxx';
-    var objResp = CdaV4ReadResponse(responseLine);
-    var respMessage = CdaV4CreateRespMessage(objResp, responseLine);
-    CdaCommShowResp(respMessage);
-    //CdaCommShowResp(objResp);
 
 }
 
@@ -320,6 +324,7 @@ function CdaV4PopulateClaimObj()
     var transactionType = "Claim";
     var objDataFromDB = globCdaDataFromDB;
     var objDataFromUI = CdaV4GetDataFromUI();
+    var procLineNumber = CdaV4GGetNumProcedures(); //Number of insurance lines.
     
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
@@ -377,8 +382,8 @@ function CdaV4PopulateClaimObj()
     obj.e20 = CDAV4FormatField(objDataFromDB.e20, 'N', 1); //Secondary Record Count
 
     //F Procedure Information
-    obj.f06 = CDAV4FormatField(CdaV4GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
-    obj.f22 = CDAV4FormatField(objDataFromUI.f22, 'N', 2); //Extracted Teeth Count
+    obj.f06 = CDAV4FormatField(procLineNumber, 'N', 1); //Number of Procedures Performed 
+    obj.f22 = CDAV4FormatField(objDataFromDB.f22, 'N', 2); //Extracted Teeth Count// TODO: if it comes from DB?
 
 
     //If E20 = 1 then the following Secondary Carrier fields would appear (E19 to E07)
@@ -426,9 +431,11 @@ function CdaV4PopulateClaimObj()
 
     for (var i = 0; i<arrGrilleDeFacturation.length; i++)
     {
+        
+        if (CdaCommIsRamqCode(arrGrilleDeFacturation[i].Type) || (CdaV4IsLabProc(arrGrilleDeFacturation[i].Code || arrGrilleDeFacturation[i].Code.trim() != '') && arrGrilleDeFacturation[i].Code != '99111'))
+            continue;
         var lineCount = 1;
-        if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP')
-        {
+       
             obj.f07[i] = CDAV4FormatField(lineCount, 'N', 1); //Procedure Line Number
             obj.f08[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Code, 'AN', 5); //Procedure Code
             obj.f09[i] = CDAV4FormatField(CDAV4GetCurrentDate(), 'N', 8); //Date of Service
@@ -436,15 +443,48 @@ function CdaV4PopulateClaimObj()
             obj.f11[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Surface, 'A', 5); //Tooth Surface
 
             obj.f12[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
-            obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1  //TODO:???????????????????????????????????????
+            obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1. Initilite it with spaces.
             obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
-            obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 //TODO:
-            obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 //TODO:
-            obj.f16[i] = CDAV4FormatField('', 'A', 5); //Procedure Type Codes
+
+            var honoraire = 0.00;
+            if (lineCount + 1 <= procLineNumber) //if there is at least one linde after
+            {
+                if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code))
+                {
+                    obj.f34 = CDAV4FormatField(arrGrilleDeFacturation[i + 1].Code, 'AN', 5); //new -Lab Proc code 1
+
+                    
+                    if (arrGrilleDeFacturation[i + 1].Code.trim() == '99111')
+                    {
+                        honoraire = parseFloat(arrGrilleDeFacturation[i + 1].Honoraires) + parseFloat(arrGrilleDeFacturation[i+1].Frais);
+                    }
+                    else
+                    {
+                        honoraire = parseFloat(arrGrilleDeFacturation[i + 1].Honoraires) ;
+                    }
+                    obj.f13[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 1
+                }
+            }
+
+            if (lineCount + 2 <= procLineNumber)
+            {
+                honoraire = 0.00;
+                if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && !CdaCommIsRamqCode(arrGrilleDeFacturation[i + 2].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 2].Code))
+                {
+                    obj.f35[i] = CDAV4FormatField(arrGrilleDeFacturation[i + 2].Code, 'AN', 5); //Lab Procedure Code # 2 
+                    if (arrGrilleDeFacturation[i + 2].Code == '99111') {
+                        honoraire = parseFloat(arrGrilleDeFacturation[i + 2].Honoraires) + parseFloat(arrGrilleDeFacturation[i + 2].Frais);
+                    }
+                    else {
+                        honoraire = parseFloat(arrGrilleDeFacturation[i + 2].Honoraires);
+                    }
+                    obj.f36[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 2 
+                }
+            }
+            obj.f16[i] = CDAV4FormatField('X', 'A', 5); //Procedure Type Codes
             obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
 
             lineCount++;
-        }
     }
     if(obj.c18 ==1)
         obj.c19 = CDAV4FormatField(objDataFromDB.c19, 'AN', 30); //Plan Record
@@ -856,6 +896,7 @@ function PopulateSumReconcilationObj() {
 
 function CdaV4ReadResponse(pResponse)
 {
+    pResponse = pResponse.toString();
     var res = {};
     var transCode = '';
     if(pResponse)
@@ -2475,6 +2516,14 @@ function CdaV4GetResponseListForEligibility(pResp) {
 
         }
         return transName;
+    }
+
+    function CdaV4IsLabProc(pProcCode)
+    {
+        var result = false;
+        if (pProcCode == '99111' || pProcCode == '99333')
+            result = true;
+        return result;
     }
 
 

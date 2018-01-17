@@ -2958,15 +2958,15 @@
                   <div class="seven wide column">
                      <div class="ui form segment">
                         <div class="ui horizontal divider"> <strong>Assurance</strong></div>
-                        <p1>Réclamation électronique pour Dr Pierre Laberge. Êtes-vous sur de vouloir transmettre la requête?</p1>
+                        <p1>Réclamation électronique pour <span id="assurProfName"></span>. Êtes-vous sur de vouloir transmettre la requête?</p1>
                         <div class="eight fields">
                            <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_1"  id="asur_1_oui" ><label>Oui</label></div>
-                           <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_1"  id="asur_1_non"><label>Non</label></div>
+                           <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_1"  id="asur_1_non" checked="checked"><label>Non</label></div>
                         </div>
                         <p1>Le patient est-il courvert par une deuxième assurance ? </p1>
                         <div class="eight fields">
-                           <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_2" id="asur_2_oui"><label>Oui</label></div>
-                           <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_2" id="asur_2_non"><label>Non</label></div>
+                           <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_2" id="asur_2_oui" disabled><label>Oui</label></div>
+                           <div class="inline field"><input type="radio" class="paiemnt_question disabled" name="asur_2" id="asur_2_non" checked="checked" disabled><label>Non</label></div>
                         </div>
                         <!-- <div class="field">
                            <label>Insurance Version Select</label>
@@ -2976,16 +2976,16 @@
 
                         <div class="inline field">
                            
-                           <input type="radio" name="insr_ver_select" id="insr_cdan_version_1"  >
-                           <label>Version 1</label>
+                           <input type="radio" name="insr_ver_select" id="insr_cdan_version_1" disabled>
+                           <label>Version 2</label>
                         </div>
                         <div class="inline field">
-                           <input type="radio" name="insr_ver_select" id="insr_cdan_version_4" >
+                           <input type="radio" name="insr_ver_select" id="insr_cdan_version_4" disabled >
                            <label>Version 4</label>
                            
                         </div>
                       </div>
-                        <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();">Transférer à l'assurance</button>
+                        <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
                      </div>
                      <div class="ui form segment">
                         <div class="ui horizontal divider"> <strong>RENSEIGNEMENTS COMPLÉMENTAIRES RÉGIE</strong></div>
@@ -3728,7 +3728,7 @@
                      </div>
                      <div class="field">
                         <label>Requerant:</label>
-                        <input type="text" name="" placeholder="DR Pierre Laberge" id="cdan1_req">
+                        <input type="text" name="" id="cdan1_req">
                      </div>
                      <div class="field">
                         <label>Payable &agrave;:</label>
@@ -3823,7 +3823,7 @@
                      </div>
                      <div class="field">
                         <label>Requerant</label>
-                        <input type="text" name="" placeholder="DR Pierre Laberge" id="cdan2_req">
+                        <input type="text" name="" id="cdan2_req">
                      </div>
                      <div class="field">
                         <label>Payable à</label>
@@ -3969,7 +3969,7 @@
         </div>  
         <div class="three fields">
           <button class="ui axxium right floated button">Imprimer</button>
-          <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()">Transférer assurance 2</button>
+          <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()" disabled>Transférer assurance 2</button>
           <button class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</button>
         </div>
         

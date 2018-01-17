@@ -6,7 +6,14 @@ var globBillNumber; //The number of "global" bill.
 
 $(document).ready(function () {
     globVisionRData = RamqGetVisionRData();
-    
+
+    //Show prof name on Payment -> Assurances
+    document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
+    //Show prof name on CDANET Modal - 1 -> Requérant
+    document.getElementById("cdan1_req").value = globVisionRData.ProfName;
+    //Show prof name on CDANET Modal - 2 -> Requérant
+    document.getElementById("cdan2_req").value = globVisionRData.ProfName;
+
 });
 function SoumissionDemandesPaiement()
 {
@@ -1533,6 +1540,7 @@ function RamqGetVisionRData()
     //res.NoCpteAdmin = '';
     res.TypIdProf = '1';//const 1 : Numéro dispensateur RAMQ
     res.IdProf = '299801';// 
+    res.ProfName = 'Dr Pierre Laberge';//
     res.TypIdLieuPhys = '1';//1 : Lieu physique, reconnu et codifié à la Régie (établissement SSS, Cabinet, etc.)
     res.IdLieuPhys = '99999';//?
     res.TypSituConsi = '1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
@@ -1540,7 +1548,7 @@ function RamqGetVisionRData()
     res.IdPers = '';//NAM
     res.NamExpDate = '2018-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
-    res.InsTypeList = ['DES', 'AGA'];
+    res.InsTypeList = ['DES', 'AGA']; //DES - v2, SUN v4
     res.TypProf = 'Dentiste'; //TODO: For test only Dentiste , Chirurgiens , Denturologiste
     //res.TypProf = dent_Type;
 
@@ -1944,8 +1952,23 @@ function RamqUpdateGlobalBill()
         function (result) {
             if (result.outcome == 'updateFacture error')
                 alert(result.message);
-            else
-                getAllTrData(); //Open Payment form
+            else {
+                var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                if (cdaVersion == '2')
+                {
+                    $('#insr_cdan_version_1').prop('checked', true);
+                    getAllTrData(); //Open Payment form
+                }
+                else if (cdaVersion == '4') {
+                    $('#insr_cdan_version_4').prop('checked', true);
+                    getAllTrData(); //Open Payment form
+                }
+                else {
+                    alert("Cda version is not correct!");
+                }
+                
+            }
+                
         });
 }
 

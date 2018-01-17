@@ -2,15 +2,29 @@ var globCdaNetAPIuri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/
 var globCdanetTranscode = '1'; //'Claim';
 var globCdaDataFromDB;
 var globCdaProviderSequence; //populate this variable when transaction is selected in the transaction grid.
+var globCdaRespObj;
 
 function CdaCommSendToSecondIns()
 { }
 
-function CdaCommOpenCASPopup()
-{ }
+function CdaCommOpenCASPopup() {
+    var montantReclame = (isNaN(parseFloat(globCdaRespObj.g04))) ? 0 : parseFloat(globCdaRespObj.g04);
+    var montantTotalRembourse = (isNaN(parseFloat(globCdaRespObj.g28))) ? 0 : parseFloat(globCdaRespObj.g28);
+    var montantCas = (montantReclame - montantTotalRembourse);
+
+    $('#to_cas_montant_de_facture').val(montantReclame.toFixed(2));
+    $('#to_cas_remboursement').val(montantTotalRembourse.toFixed(2));
+    $('#to_cas_enter_montant').val(montantCas.toFixed(2));
+
+    modToCAS();//Open Cash modal
+}
 
 function CdaCommSendToCAS()
-{ }
+{
+    var montantTotalRembourse = (isNaN(parseFloat(globCdaRespObj.g28))) ? 0 : parseFloat(globCdaRespObj.g28);
+    $('#ass_total').val(montantTotalRembourse.toFixed(2));
+    getAllTrData(); //Open Payment form
+}
 
 function CdaCommShowResp(pRespMessage)
 {
@@ -413,4 +427,37 @@ function CdaCommGetCommStatus(pResponseLine)
 
 }
 
+// Returns Cda version(2 or 4) for givent company code
+function CdaCommGetVersion(pCode)
+{
+    var version = '';
+    $.ajax({
+        type: 'GET',
+        url: "json/insurances/insurances.json",
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            insuranceData = data;
+
+            for (var i = 0; i < data.length; i++)
+            {
+                if (data[i].code == pCode)
+                {
+                    version = data[i].cdaVersion;
+                    break;
+                }
+            }
+        }
+    });
+    return version;
+}
+
+function CdaCommIsRamqCode(pCode)
+{
+    pCode = pCode.trim();
+    var result = false;
+    if (pCode == 'AMQ' || pCode == 'BES' || pCode == 'HOP')
+        result = true;
+    return result;
+}
 

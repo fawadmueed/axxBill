@@ -29,9 +29,9 @@ function CdaV2CallCDAService()
                 {
                     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
 
-                    var objResp = CdaV2ReadResponse(transactionLine);
+                    globCdaRespObj = CdaV2ReadResponse(transactionLine);
 
-                    var respMessage = CdaV2CreateRespMessage(objResp, transactionLine);
+                    var respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
                     CdaCommShowResp(respMessage);
                 }
             }

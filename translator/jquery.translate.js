@@ -2003,7 +2003,7 @@
     },
   "VISA" : { 
     en:"VISA "
-    ,fr:"Domicile"
+    ,fr:"VISA"
     },
   "AMEX" : { 
     en:"AMEX "

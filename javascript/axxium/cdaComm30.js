@@ -22,7 +22,9 @@ function CdaCommOpenCASPopup() {
 function CdaCommSendToCAS()
 {
     var montantTotalRembourse = (isNaN(parseFloat(globCdaRespObj.g28))) ? 0 : parseFloat(globCdaRespObj.g28);
+    var montantCash = (isNaN(parseFloat($('#to_cas_enter_montant').val())) ? 0 : parseFloat($('#to_cas_enter_montant').val()));
     $('#ass_total').val(montantTotalRembourse.toFixed(2));
+    $('#pers_total').val(montantCash.toFixed(2));
     getAllTrData(); //Open Payment form
 }
 

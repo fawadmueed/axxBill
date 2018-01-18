@@ -50,7 +50,7 @@
    <script src="javascript/axxium/cdaV2_29.js"></script>
    <script src="javascript/axxium/cdaV4_29.js"></script>
    <script src="javascript/axxium/cdaComm30.js"></script>
-
+   <script src="javascript/axxium/payment1.js"></script>
    <script src="javascript/axxium/printing1.js"></script>
 
    <!-- <script type="text/javascript"> var translator = $('body').translate({lang:"", t:dict});  </script> -->
@@ -1380,6 +1380,19 @@
                   <!-- ================ -->
                   <div class="ui form segment" style="" id="cdan_transac">
                      <h4 class="ui horizontal divider header">Historique des transactions</h4>
+                      <div class="inline ten fields">
+                          <div class="four wide field">
+                              <label>Année</label>
+                              <input type="date" id="ins_fact_ane_start"/>
+                          </div>
+                          <div class="four wide field">
+                              <label>-</label>
+                              <input type="date" id="ins_fact_ane_end"/>
+                          </div>
+                          <div class="ui axxium tiny button" onclick="CdaCommGetTransList()">Chercher</div>
+
+
+                      </div>
                      <table class="ui striped axxium compact table segment" id="cdan_table">
                         <thead>
                            <tr>
@@ -1392,12 +1405,11 @@
                               <th>Couver</th>
                               <th>Date</th>
                               <th>No. de réf</th>
+                              <th>Status</th>
                            </tr>
                         </thead>
                         <tbody id="cdan_tableBody">
-                           <tr>
-                              <td></td>
-                           </tr>
+
                         </tbody>
                      </table>
                      <div class="ui form segment">
@@ -1421,7 +1433,7 @@
                         <div class="row">
                            <button class="ui axxium tiny right floated button">Retransmission réclamation</button>
                            <button class="ui axxium tiny right floated button">Interroger réclamation en suspens</button>
-                           <button class="ui axxium tiny right floated button">Annuler réclamation</button>
+                           <button class="ui axxium tiny right floated button" onclick="CdaCommCanselClaim()">Annuler réclamation</button>
                            <button class="ui axxium tiny right floated button">Imprimer</button>
                         </div>
                      </div>
@@ -2956,7 +2968,7 @@
             <div class="ui axxium form segment">
                <div class="ui three column grid">
                   <div class="seven wide column">
-                     <div class="ui form segment">
+                     <div class="ui form segment" id="divPaymentInsurance">
                         <div class="ui horizontal divider"> <strong>Assurance</strong></div>
                         <p1>Réclamation électronique pour <span id="assurProfName"></span>. Êtes-vous sur de vouloir transmettre la requête?</p1>
                         <div class="eight fields">
@@ -2987,7 +2999,7 @@
                       </div>
                         <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
                      </div>
-                     <div class="ui form segment">
+                     <div class="ui form segment" id="divPaymentRamq">
                         <div class="ui horizontal divider"> <strong>RENSEIGNEMENTS COMPLÉMENTAIRES RÉGIE</strong></div>
                         <div class="inline fields">
                            <label>Carte d'assurance-maladie</label>
@@ -3170,19 +3182,20 @@
                                  <label>Numéro de AMQ Spécial</label>
                                  <input type="text" name="" id="txtRamqSpecialNams">
                               </div>
+                               <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiement();">Transférer à la Règie</button>
                            </div>
                         </div>
                      </div>
-                     <div class="ui grid">
+                     <!--<div class="ui grid">
                         <div class="row">
                            <div class="column">
                               <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiement();">Transférer à la Règie</button>
                            </div>
                         </div>
-                     </div>
+                     </div>-->
                   </div>
                   <div class="six wide column">
-                     <div class="ui form segment">
+                     <div class="ui form segment" id="divPaymentPayment">
                         <div class="ui horizontal divider"> <strong>PAIEMENT</strong></div>
                         <div class="ui axxium form">
                            <div class="ui two column grid">

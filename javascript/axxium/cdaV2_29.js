@@ -10,14 +10,14 @@ function CdaV2CallCDAService()
 {
     var strRequest = CdaV2CreateRequestString();
     var randomNum = CdaCommCreateRandomNumber(0, 999);
-
+    //var transCode = globCdaDataFromDB.a04;//TODO: send to server
     var inputXMl = {
         "request": strRequest, //request to send
         //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
         "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
 
-    $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
+    $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl)},
         function (result) {
             if (result.outcome === 'error')
                 alert(result.message);

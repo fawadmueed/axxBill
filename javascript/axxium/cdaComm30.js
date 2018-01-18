@@ -3,6 +3,33 @@ var globCdanetTranscode = '1'; //'Claim';
 var globCdaDataFromDB;
 var globCdaProviderSequence; //populate this variable when transaction is selected in the transaction grid.
 var globCdaRespObj;
+var globCdaTransHistListData =[];
+var globCdaTransHistTable;
+var globCdaTransHistSelectedData;
+
+$(document).ready(function () {
+    //Transaction history table
+    globCdaTransHistTable = $('#cdan_table').DataTable({
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        //dom: 'Bfrtip',
+        searching: false
+    });
+
+    $('#cdan_table tbody').on('click', 'tr', function () {
+        globCdaTransHistSelectedData = globCdaTransHistTable.row(this).data();
+    });
+});
 
 function CdaCommSendToSecondIns()
 { }
@@ -34,18 +61,6 @@ function CdaCommShowResp(pRespMessage)
     var div = document.getElementById('cdanet_response_div');
 
     div.innerHTML = '<p>' + message + '</p>'
-    //while (div.firstChild) {
-    //    div.removeChild(div.firstChild);
-    //}
-
-    
-
-    //var para = document.createElement("p");
-    //para.document.write(message);
-    ////var node = document.createTextNode(message);
-    //para.appendChild(node);
-    //div.appendChild(para);
-
     //Show modal
     modResponseCDANET();
 }
@@ -463,3 +478,94 @@ function CdaCommIsRamqCode(pCode)
     return result;
 }
 
+//===================================== Historique des transaction =====================================
+function CdaCommGetTransList(){
+    CdaCommClearHistoryTable();
+    CdaCommGetHistoryTransDataFromServer();
+}
+
+function CdaCommGetHistoryTransDataFromServer() {
+    var dateFrom = $("#ins_fact_ane_start").val();
+    var dateTo = $("#ins_fact_ane_end").val();
+    $.post("allScriptsv1.py", { tx: "getPatientFactures", clinicId: globClinicId, patientId: globPatientId, dFrom: dateFrom, dTo: dateTo, section: 'ins'},
+            function (result) {
+                if (result.message !== undefined)
+                    alert(result.message);
+                else {
+                    if (result.factures.length > 0) {
+                        globCdaTransHistListData = CdaCommGetDataForTransHistTable(result.factures);
+                        CdaCommUpdateTransHistTable();
+                    }
+                }
+            });
+}
+
+function CdaCommClearHistoryTable() {
+    $('#cdan_table tbody').empty();
+}
+
+function CdaCommGetDataForTransHistTable(pTransactions) {
+    var arrData = [];
+    for (var i = 0; i < pTransactions.length; i++) {
+        var objOutputData = {};
+        var objResponse = {};
+        var description = '';
+        var strResponse = '';
+        var versionNumber = '';
+        var objInputData = pTransactions[i];
+        strResponse = objInputData.resp.split(',').slice(3).toString(); // extract string after 3th comma;
+        
+        versionNumber = strResponse.substring(18, 20);
+        
+        if (versionNumber == '02')
+        {
+            objResponse = CdaV2ReadResponse(strResponse);
+            description = CdaV2GetTransactionName((objResponse.a04).toString().trim());
+        }
+        else if (versionNumber == '04')
+        {
+            objResponse = CdaV4ReadResponse(strResponse);
+            description = CdaV4GetTransactionName((objResponse.a04).toString().trim());
+        }
+        objOutputData.NoSeq = (objResponse.a02).toString().trim();
+        objOutputData.Description = description;
+        objOutputData.NoDossier = objInputData.nodossier;
+        objOutputData.Prenom = objInputData.info.Prenom;
+        objOutputData.Nom = objInputData.info.Nom;
+        objOutputData.Assur = objInputData.info.Ass;
+        objOutputData.Couver = '';
+        objOutputData.Date = objInputData.datetransaction;
+        objOutputData.NoRef = (objResponse.g01).toString().trim();
+        objOutputData.Status = objInputData.status;
+
+        arrData.push(objOutputData);
+    }
+    return arrData;
+}
+
+function CdaCommUpdateTransHistTable() {
+    var arrData = [];
+    for (var i = 0; i < globCdaTransHistListData.length; i++)
+    {
+        var arr = [];
+
+        arr.push(globCdaTransHistListData[i].NoSeq);
+        arr.push(globCdaTransHistListData[i].Description);
+        arr.push(globCdaTransHistListData[i].NoDossier);
+        arr.push(globCdaTransHistListData[i].Prenom);
+        arr.push(globCdaTransHistListData[i].Nom);
+        arr.push(globCdaTransHistListData[i].Assur);
+        arr.push(globCdaTransHistListData[i].Couver);
+        arr.push(globCdaTransHistListData[i].Date);
+        arr.push(globCdaTransHistListData[i].NoRef);
+        arr.push(globCdaTransHistListData[i].Status);
+        arrData.push(arr);
+    }
+    
+    
+
+
+    globCdaTransHistTable.clear().draw();
+    globCdaTransHistTable.rows.add(arrData); // Add new data
+    globCdaTransHistTable.columns.adjust().draw();
+}

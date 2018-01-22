@@ -26,21 +26,27 @@
 
 */
 
-var globServerUrl = 'http://144.217.219.194/axxium/';
-var globRamqApiPath = "http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/";
-var globRamqObjCredentials;
-var globClinicId = "";
-var globPatientId = "";
-var globNoDossier = "";
-var globDentist = "";
 
-//Page load
-$(function () {
+
+////Page load
+//$(function () {
+//    //Get parameters from url and put it in global variable
+//    globClinicId = GetParamFromUrl("clinicId");
+//    globPatientId = GetParamFromUrl("patientId");
+//    globNoDossier = GetParamFromUrl("dossierNo");
+//    globDentist = GetParamFromUrl("dentist");
+//});
+
+$(document).ready(function () {
     //Get parameters from url and put it in global variable
-    globClinicId = GetParamFromUrl("clinicId");
-    globPatientId = GetParamFromUrl("patientId");
-    globNoDossier = GetParamFromUrl("dossierNo");
-    globDentist = GetParamFromUrl("dentist");
+    globClinicId = RamqGetParamFromUrl("clinicId");
+    globPatientId = RamqGetParamFromUrl("patientId");
+    globNoDossier = RamqGetParamFromUrl("dossierNo");
+    globDentist = RamqGetParamFromUrl("dentist");
+
+    RamqGetVisionRData();
+
+
 });
 
 function RamqCheckCredentials()
@@ -136,18 +142,5 @@ function RamqDayDiff(date1, date2)
 }
 
 
-//returns param value for the given param name.
-function GetParamFromUrl(name) {
-    //TODO: uncomment for production.
-    // var url = location.href;
-    //var url = window.location.href;
-    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=000192&dentist=MM";// For test only.
 
-    if (!url) url = location.href;
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regexS = "[\\?&]" + name + "=([^&#]*)";
-    var regex = new RegExp(regexS);
-    var results = regex.exec(url);
-    return results === null ? null : results[1];
-}
 

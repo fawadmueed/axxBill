@@ -681,7 +681,8 @@ console.log('In type surf case 3 ');
                   if(!($('#optRegiIndFactAssosDrNo').is(':checked')))
                   {
                     // If ramq_no field equal 1 , Bypass both Validation AMQ and Expiry
-                    var ramq_field=$('#ramq_no').val();
+                      //var ramq_field=$('#ramq_no').val();
+                      var ramq_field = 1;// Bypass validation
                     if(ramq_field==1)
                       {
                         return true;  

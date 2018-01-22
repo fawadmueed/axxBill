@@ -7,6 +7,14 @@ var globBillNumber; //The number of "global" bill.
 $(document).ready(function () {
     globVisionRData = RamqGetVisionRData();
 
+    //Show info in dossier patiant
+    $("#Efirst").val(globVisionRData.PrePers);
+    $("#Elast").val(globVisionRData.NomPers);
+    $("#ramq_no").val(globVisionRData.IdPers);
+    $("#ramq_exp").val(globVisionRData.NamExpDate);
+    $("Ebirth").val(globVisionRData.DatNaissPers);
+
+
     //Show prof name on Payment -> Assurances
     document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
     //Show prof name on CDANET Modal - 1 -> Requérant
@@ -1545,17 +1553,17 @@ function RamqGetVisionRData()
     res.IdLieuPhys = '99999';//?
     res.TypSituConsi = '1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = '';//NAM
-    res.NamExpDate = '2018-01-01';
+    res.IdPers = 'DROJ75512816';//NAM
+    res.NamExpDate = '2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
-    res.InsTypeList = ['DES', 'AGA']; //DES - v2, SUN v4
+    res.InsTypeList = ['SUN', 'AGA']; //DES - v2, SUN v4
     res.TypProf = 'Dentiste'; //TODO: For test only Dentiste , Chirurgiens , Denturologiste
     //res.TypProf = dent_Type;
 
     //Patient without NAM
-    res.NomPers='Smith';
-    res.PrePers = 'Alex';
-    res.DatNaissPers ='2001-01-01';
+    res.NomPers='DROBOV';
+    res.PrePers = 'JULIA';
+    res.DatNaissPers ='1975-01-28';
     res.CodSexPers = 1;            
     res.NoOrdreNaissPers =1;      //1 pour le premier bébé, 2 pour le deuxième bébé.       
     res.Nas ='123456789123'; 

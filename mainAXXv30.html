@@ -51,6 +51,7 @@
    <script src="javascript/axxium/cdaV4_29.js"></script>
    <script src="javascript/axxium/cdaComm30.js"></script>
    <script src="javascript/axxium/payment1.js"></script>
+
    <script src="javascript/axxium/printing1.js"></script>
 
    <!-- <script type="text/javascript"> var translator = $('body').translate({lang:"", t:dict});  </script> -->
@@ -1393,7 +1394,7 @@
 
 
                       </div>
-                     <table class="ui striped axxium compact table segment" id="cdan_table">
+                     <table class="ui striped axxium compact table segment" id="cdan_table" width="100%">
                         <thead>
                            <tr>
                               <th>No séq</th>
@@ -1433,7 +1434,7 @@
                         <div class="row">
                            <button class="ui axxium tiny right floated button">Retransmission réclamation</button>
                            <button class="ui axxium tiny right floated button">Interroger réclamation en suspens</button>
-                           <button class="ui axxium tiny right floated button" onclick="CdaCommCanselClaim()">Annuler réclamation</button>
+                           <button class="ui axxium tiny right floated button" onclick="CdaCommOpenClaimReversPopup()">Annuler réclamation</button>
                            <button class="ui axxium tiny right floated button">Imprimer</button>
                         </div>
                      </div>
@@ -3988,6 +3989,45 @@
         
       </div>
    </div>
+
+    <div class="ui small modalCdaClaimReversConfirm modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>CDANET
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div>
+                    <p>Voulez-vous vraiment annuler cette transaction?</p>
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button" onclick="CdaCommSendClaimReversRequest()">Oui</button>
+                <button class="ui axxium right floated button" onclick="$('.modalCdaClaimReversConfirm').modal('hide');">Non</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui small modalMessage modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i><span id="modalMessageHeader"></span>
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div>
+                    <p id="modalMessageText"></p>
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button" onclick="$('.modalMessage').modal('hide');">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
    <div class="ui small modalToCAS modal">
       <i class="close icon"></i>
       <div class="content ">
@@ -6200,6 +6240,19 @@
       function modResponseCDANET()
       {
         $('.modalResponseCDANET').modal('show');
+      }
+
+      function modCdaClaimReversConfirm()
+      {
+          $('.modalCdaClaimReversConfirm').modal('show');
+      }
+
+      function modMessage(pHeader, pMessage)
+      {
+          $('#modalMessageHeader').html(pHeader);
+          $('#modalMessageText').html(pMessage);
+
+          $('.modalMessage').modal('show');
       }
 
       function modToCAS()

@@ -8,8 +8,8 @@ function CdaV4SendRequestToCdaNet() {
 }
 
 function CdaV4CallCDAService() {
-    var strRequest = CdaV2CreateRequestString();
-    var randomNum = CdaCommCreateRandomNumber(0, 999);
+    var strRequest = CdaV4CreateRequestString();
+    var randomNum = CdaCommCreateRandomNumber(1, 999);
 
     var inputXMl = {
         "request": strRequest, //request to send
@@ -325,6 +325,7 @@ function CdaV4PopulateClaimObj()
     var objDataFromDB = globCdaDataFromDB;
     var objDataFromUI = CdaV4GetDataFromUI();
     var procLineNumber = CdaV4GGetNumProcedures(); //Number of insurance lines.
+    obj.f23 = []; obj.f24 = []; obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f34 = [];
     
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
@@ -387,7 +388,7 @@ function CdaV4PopulateClaimObj()
 
 
     //If E20 = 1 then the following Secondary Carrier fields would appear (E19 to E07)
-    if (obj.e20 == 1)
+    if (obj.e20 == '1')
     {
         obj.e19 = CDAV4FormatField(objDataFromDB.e19, 'N', 6); //Secondary Carrier Transaction Counter
         obj.e01 = CDAV4FormatField(objDataFromDB.e01, 'N', 6); //Secondary Carrier Id Number
@@ -417,18 +418,20 @@ function CdaV4PopulateClaimObj()
     obj.f03 = CDAV4FormatField($("#cdan2_no_confrmtn_plan").val(), 'AN', 14); //Predetermination Number
     obj.f15 = CDAV4FormatField($("#cdan_placmnt_maxl").val(), 'A', 1); //Initial Placement Upper
     obj.f04 = CDAV4FormatField($("#cdan_date_plcmnt_maxl").val(), 'N', 8); //Date of Initial Placement Upper
-    obj.f18 = CDAV4FormatField("#cdan_placmnt_mand", 'A', 1); //Initial Placement Lower
-    obj.f19 = CDAV4FormatField("#cdan_date_plcmnt_mand", 'N', 8); //Date of Initial Placement Lower
+    obj.f18 = CDAV4FormatField($("#cdan_placmnt_mand").val(), 'A', 1); //Initial Placement Lower
+    obj.f19 = CDAV4FormatField($("#cdan_date_plcmnt_mand").val(), 'N', 8); //Date of Initial Placement Lower
     obj.f05 = CDAV4FormatField($('#q2_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes 
     obj.f20 = CDAV4FormatField(objDataFromDB.f20, 'N', 1); //Maxillary Prosthesis Material
     obj.f21 = CDAV4FormatField(objDataFromDB.f21, 'N', 1); //Mandibular Prosthesis Material
 
-    for (var i = 0; i < obj.f22; i++)
+    
+    for (var i = 0; i < parseInt(obj.f22); i++)
     {
         obj.f23[i] = CDAV4FormatField(objDataFromDB.f23[i], 'N', 2); //Extracted Tooth Number
         obj.f24[i] = CDAV4FormatField(objDataFromDB.f24[i], 'N', 8); //Extraction Date
     }
 
+    
     for (var i = 0; i<arrGrilleDeFacturation.length; i++)
     {
         
@@ -481,12 +484,13 @@ function CdaV4PopulateClaimObj()
                     obj.f36[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 2 
                 }
             }
+            obj.f16 = []; obj.f17 = [];
             obj.f16[i] = CDAV4FormatField('X', 'A', 5); //Procedure Type Codes
             obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
 
             lineCount++;
     }
-    if(obj.c18 ==1)
+    if(obj.c18 =='1')
         obj.c19 = CDAV4FormatField(objDataFromDB.c19, 'AN', 30); //Plan Record
 
     return obj;
@@ -560,7 +564,7 @@ function CdaV4PopulateCOBClaimObj(pEob)
     obj.g39 = CDAV4FormatField(objDataFromDB.g39, 'N', 4);//Embedded Transaction Length
 
     //If E20 = 1 then the following Secondary Carrier fields would appear (E19 to E07)
-    if (obj.e20 == 1)
+    if (obj.e20 == '1')
     {
         obj.e19 = CDAV4FormatField(objDataFromDB.e19, 'N', 6); //Secondary Carrier Transaction Counter
         obj.e01 = CDAV4FormatField(objDataFromDB.e01, 'N', 6); //Secondary Carrier Id Number
@@ -597,7 +601,7 @@ function CdaV4PopulateCOBClaimObj(pEob)
     obj.f21 = CDAV4FormatField(objDataFromDB.f21, 'N', 1); //Mandibular Prosthesis Material
 
 
-    for (var i = 0; i < obj.f22; i++) {
+    for (var i = 0; i < parseInt(obj.f22); i++) {
         obj.f23[i] = CDAV4FormatField(objDataFromDB.f23[i], 'N', 2); //Extracted Tooth Number
         obj.f24[i] = CDAV4FormatField(objDataFromDB.f24[i], 'N', 8); //Extraction Date
     }
@@ -623,7 +627,7 @@ function CdaV4PopulateCOBClaimObj(pEob)
         }
     }
 
-    if(obj.c18==1)
+    if(obj.c18=='1')
         obj.c19 = CDAV4FormatField(objDataFromDB.c19, 'AN', 30); //Plan Record
     obj.eob = pEob;
     return obj;
@@ -2156,126 +2160,12 @@ function CdaV4GetResponseListForEligibility(pResp) {
         return y + m + day;
     }
 
-    function CdaV4Topage850(pString) {
-        var code;
-        var arrString;
-        if (pString) {
-            arrString = pString.split('');
-            for (var i = 0; i < arrString.length; i++) {
-                code = arrString[i].charCodeAt(0);
-                switch (arrString[i]) {
-                    case 'É': code = 144; break;
-                    case 'È': code = 212; break;
-                    case 'Ê': code = 210; break;
-                    case 'À': code = 183; break;
-                    case 'Â': code = 182; break;
-                    case 'Ï': code = 216; break;
-                    case 'Î': code = 215; break;
-                    case 'Ô': code = 226; break;
-                    case 'Ö': code = 153; break;
-                    case 'Û': code = 234; break;
-                    case 'Ü': code = 154; break;
-                    case 'Ç': code = 128; break;
-                    case 'é': code = 130; break;
-                    case 'è': code = 138; break;
-                    case 'ê': code = 136; break;
-                    case 'à': code = 133; break;
-                    case 'â': code = 131; break;
-                    case 'ï': code = 139; break;
-                    case 'î': code = 140; break;
-                    case 'ô': code = 147; break;
-                    case 'ö': code = 148; break;
-                    case 'û': code = 150; break;
-                    case 'ü': code = 129; break;
-                    case 'ç': code = 135; break;
-                }
-                arrString[i] = String.fromCharCode(code);
-            }
-        }
-        return arrString.join("");
-    }
-
-    function CdaV4Frompage850(pString) {
-        var code;
-        var arrString;
-        if (pString) {
-            arrString = pString.split('');
-            for (var i = 0; i < arrString.length; i++) {
-                code = arrString[i].charCodeAt(0);
-                switch (code) {
-                    case 144: arrString[i] = 'É'; break;
-                    case 212: arrString[i] = 'È'; break;
-                    case 210: arrString[i] = 'Ê'; break;
-                    case 211: arrString[i] = 'Ë'; break;
-                    case 183: arrString[i] = 'À'; break;
-                    case 182: arrString[i] = 'Â'; break;
-                    case 181: arrString[i] = 'Á'; break;
-                    case 142: arrString[i] = 'Ä'; break;
-                    case 143: arrString[i] = 'Å'; break;
-                    case 146: arrString[i] = 'Æ'; break;
-                    case 216: arrString[i] = 'Ï'; break;
-                    case 215: arrString[i] = 'Î'; break;
-                    case 222: arrString[i] = 'Ì'; break;
-                    case 214: arrString[i] = 'Í'; break;
-
-                    case 226: arrString[i] = 'Ô'; break;
-                    case 153: arrString[i] = 'Ö'; break;
-                    case 224: arrString[i] = 'Ó'; break;
-                    case 227: arrString[i] = 'Ò'; break;
-                    case 229: arrString[i] = 'Õ'; break;
-
-                    case 235: arrString[i] = 'Ù'; break;
-                    case 233: arrString[i] = 'Ú'; break;
-                    case 234: arrString[i] = 'Û'; break;
-                    case 154: arrString[i] = 'Ü'; break;
-
-                    case 128: arrString[i] = 'Ç'; break;
-                    case 237: arrString[i] = 'Ý'; break;
-
-                    case 130: arrString[i] = 'é'; break;
-                    case 138: arrString[i] = 'è'; break;
-                    case 136: arrString[i] = 'ê'; break;
-                    case 137: arrString[i] = 'ë'; break;
-
-                    case 133: arrString[i] = 'à'; break;
-                    case 131: arrString[i] = 'â'; break;
-                    case 160: arrString[i] = 'á'; break;
-                    case 198: arrString[i] = 'ã'; break;
-                    case 132: arrString[i] = 'ä'; break;
-                    case 134: arrString[i] = 'å'; break;
-                    case 145: arrString[i] = 'æ'; break;
-
-                    case 139: arrString[i] = 'ï'; break;
-                    case 140: arrString[i] = 'î'; break;
-                    case 141: arrString[i] = 'ì'; break;
-                    case 161: arrString[i] = 'í'; break;
-
-                    case 147: arrString[i] = 'ô'; break;
-                    case 148: arrString[i] = 'ö'; break;
-                    case 149: arrString[i] = 'ò'; break;
-                    case 228: arrString[i] = 'õ'; break;
-                    case 162: arrString[i] = 'ó'; break;
-
-                    case 208: arrString[i] = 'ð'; break;
-
-                    case 150: arrString[i] = 'û'; break;
-                    case 129: arrString[i] = 'ü'; break;
-                    case 151: arrString[i] = 'ù'; break;
-                    case 163: arrString[i] = 'ú'; break;
-
-                    case 152: arrString[i] = 'ÿ'; break;
-                    case 236: arrString[i] = 'ý'; break;
-
-                    case 135: arrString[i] = 'ç'; break;
-                }
-            }
-        }
-        return arrString.join("");
-    }
 
     function CDAV4FormatField(pValue, pFormatType, pRequiredLength) {
         //convert input value to string.
-        var v = String(pValue);
+        var v = (pValue) ? String(pValue) : '';
+        v = v.trim();
+
 
         var res = '';
 
@@ -2287,8 +2177,8 @@ function CdaV4GetResponseListForEligibility(pResp) {
             */
             case 'N':
                 {
-                    if (!v)
-                        v = '0';
+                    //if (!v)
+                    //    v = '0';
                     v = v.replace(/-/g, '');// Replase '-' from date.
 
                     if (!Number.isInteger(Number(v))) {
@@ -2299,10 +2189,8 @@ function CdaV4GetResponseListForEligibility(pResp) {
                         if (len < pRequiredLength) {
                             var asciiZero = String.fromCharCode(48);
                             //Fill with zeros.
-                            var i = 0;
-                            while (i < pRequiredLength) {
+                            while (v.length < pRequiredLength) {
                                 v = asciiZero + v;
-                                i++;
                             }
                             res = v;
                         }
@@ -2329,7 +2217,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     if (!v)
                         v = '';
                     //Convert to page850
-                    v = CdaV4Topage850(v);
+                    v = CdaCommTopage850(v);
                     v = v.trim(); //remove spaces
 
                     //Check if all characters are alphabetical
@@ -2337,8 +2225,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                         var len = v.length;
                         if (len < pRequiredLength) {
                             //Fill with spaces on the right.
-                            var i = 0;
-                            while (i < pRequiredLength) {
+                            while (v.length < pRequiredLength) {
                                 v += ' ';
                             }
                             res = v;
@@ -2364,14 +2251,13 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     if (!v)
                         v = '';
                     //Convert to page850
-                    v = CdaV4Topage850(v);
+                    v = CdaCommTopage850(v);
                     v = v.trim(); //remove spaces.
 
                     var len = v.length;
                     if (len < pRequiredLength) {
                         //Fill with spaces on the right.
-                        var i = 0;
-                        while (i < pRequiredLength) {
+                        while (v.length < pRequiredLength) {
                             v += ' ';
                         }
                         res = v;
@@ -2527,3 +2413,121 @@ function CdaV4GetResponseListForEligibility(pResp) {
     }
 
 
+
+
+    //function CdaV4Topage850(pString) {
+    //    var code;
+    //    var arrString;
+    //    if (pString) {
+    //        arrString = pString.split('');
+    //        for (var i = 0; i < arrString.length; i++) {
+    //            code = arrString[i].charCodeAt(0);
+    //            switch (arrString[i]) {
+    //                case 'É': code = 144; break;
+    //                case 'È': code = 212; break;
+    //                case 'Ê': code = 210; break;
+    //                case 'À': code = 183; break;
+    //                case 'Â': code = 182; break;
+    //                case 'Ï': code = 216; break;
+    //                case 'Î': code = 215; break;
+    //                case 'Ô': code = 226; break;
+    //                case 'Ö': code = 153; break;
+    //                case 'Û': code = 234; break;
+    //                case 'Ü': code = 154; break;
+    //                case 'Ç': code = 128; break;
+    //                case 'é': code = 130; break;
+    //                case 'è': code = 138; break;
+    //                case 'ê': code = 136; break;
+    //                case 'à': code = 133; break;
+    //                case 'â': code = 131; break;
+    //                case 'ï': code = 139; break;
+    //                case 'î': code = 140; break;
+    //                case 'ô': code = 147; break;
+    //                case 'ö': code = 148; break;
+    //                case 'û': code = 150; break;
+    //                case 'ü': code = 129; break;
+    //                case 'ç': code = 135; break;
+    //            }
+    //            arrString[i] = String.fromCharCode(code);
+    //        }
+    //    }
+    //    return arrString.join("");
+    //}
+
+    //function CdaV4Frompage850(pString) {
+    //    var code;
+    //    var arrString;
+    //    if (pString) {
+    //        arrString = pString.split('');
+    //        for (var i = 0; i < arrString.length; i++) {
+    //            code = arrString[i].charCodeAt(0);
+    //            switch (code) {
+    //                case 144: arrString[i] = 'É'; break;
+    //                case 212: arrString[i] = 'È'; break;
+    //                case 210: arrString[i] = 'Ê'; break;
+    //                case 211: arrString[i] = 'Ë'; break;
+    //                case 183: arrString[i] = 'À'; break;
+    //                case 182: arrString[i] = 'Â'; break;
+    //                case 181: arrString[i] = 'Á'; break;
+    //                case 142: arrString[i] = 'Ä'; break;
+    //                case 143: arrString[i] = 'Å'; break;
+    //                case 146: arrString[i] = 'Æ'; break;
+    //                case 216: arrString[i] = 'Ï'; break;
+    //                case 215: arrString[i] = 'Î'; break;
+    //                case 222: arrString[i] = 'Ì'; break;
+    //                case 214: arrString[i] = 'Í'; break;
+
+    //                case 226: arrString[i] = 'Ô'; break;
+    //                case 153: arrString[i] = 'Ö'; break;
+    //                case 224: arrString[i] = 'Ó'; break;
+    //                case 227: arrString[i] = 'Ò'; break;
+    //                case 229: arrString[i] = 'Õ'; break;
+
+    //                case 235: arrString[i] = 'Ù'; break;
+    //                case 233: arrString[i] = 'Ú'; break;
+    //                case 234: arrString[i] = 'Û'; break;
+    //                case 154: arrString[i] = 'Ü'; break;
+
+    //                case 128: arrString[i] = 'Ç'; break;
+    //                case 237: arrString[i] = 'Ý'; break;
+
+    //                case 130: arrString[i] = 'é'; break;
+    //                case 138: arrString[i] = 'è'; break;
+    //                case 136: arrString[i] = 'ê'; break;
+    //                case 137: arrString[i] = 'ë'; break;
+
+    //                case 133: arrString[i] = 'à'; break;
+    //                case 131: arrString[i] = 'â'; break;
+    //                case 160: arrString[i] = 'á'; break;
+    //                case 198: arrString[i] = 'ã'; break;
+    //                case 132: arrString[i] = 'ä'; break;
+    //                case 134: arrString[i] = 'å'; break;
+    //                case 145: arrString[i] = 'æ'; break;
+
+    //                case 139: arrString[i] = 'ï'; break;
+    //                case 140: arrString[i] = 'î'; break;
+    //                case 141: arrString[i] = 'ì'; break;
+    //                case 161: arrString[i] = 'í'; break;
+
+    //                case 147: arrString[i] = 'ô'; break;
+    //                case 148: arrString[i] = 'ö'; break;
+    //                case 149: arrString[i] = 'ò'; break;
+    //                case 228: arrString[i] = 'õ'; break;
+    //                case 162: arrString[i] = 'ó'; break;
+
+    //                case 208: arrString[i] = 'ð'; break;
+
+    //                case 150: arrString[i] = 'û'; break;
+    //                case 129: arrString[i] = 'ü'; break;
+    //                case 151: arrString[i] = 'ù'; break;
+    //                case 163: arrString[i] = 'ú'; break;
+
+    //                case 152: arrString[i] = 'ÿ'; break;
+    //                case 236: arrString[i] = 'ý'; break;
+
+    //                case 135: arrString[i] = 'ç'; break;
+    //            }
+    //        }
+    //    }
+    //    return arrString.join("");
+    //}

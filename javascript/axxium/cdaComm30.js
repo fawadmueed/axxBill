@@ -1,7 +1,7 @@
 var globCdaNetAPIuri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/';
 var globCdanetTranscode = '1'; //'Claim';
 var globCdaDataFromDB;
-var globCdaProviderSequence; //populate this variable when transaction is selected in the transaction grid.
+//var globCdaProviderSequence; //populate this variable when transaction is selected in the transaction grid.
 var globCdaRespObj;
 var globCdaTransHistListData =[];
 var globCdaTransHistTable;
@@ -20,13 +20,24 @@ $(document).ready(function () {
             null,
             null,
             null,
-            null
+            null,
+            { "visible": false }
         ],
         //dom: 'Bfrtip',
         searching: false
     });
 
     $('#cdan_table tbody').on('click', 'tr', function () {
+        globCdaTransHistTable.$('tr.active').removeClass('active');
+        $(this).addClass('active');
+
+        //if ($(this).hasClass('active')) {
+        //    $(this).removeClass('active');
+        //}
+        //else {
+        //    globCdaTransHistTable.$('tr.active').removeClass('active');
+        //    $(this).addClass('active');
+        //}
         globCdaTransHistSelectedData = globCdaTransHistTable.row(this).data();
     });
 });
@@ -100,7 +111,7 @@ function CdaCommConvertDate2(pStr) {
 
 function CdaCommTopage850(pString) {
     var code;
-    var arrString;
+    var arrString =[];
     if (pString) {
         arrString = pString.split('');
         for (var i = 0; i < arrString.length; i++) {
@@ -537,6 +548,7 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         objOutputData.Date = objInputData.datetransaction;
         objOutputData.NoRef = (objResponse.g01).toString().trim();
         objOutputData.Status = objInputData.status;
+        objOutputData.VersionNumber = versionNumber;
 
         arrData.push(objOutputData);
     }
@@ -558,14 +570,73 @@ function CdaCommUpdateTransHistTable() {
         arr.push(globCdaTransHistListData[i].Couver);
         arr.push(globCdaTransHistListData[i].Date);
         arr.push(globCdaTransHistListData[i].NoRef);
-        arr.push(globCdaTransHistListData[i].Status);
+        arr.push(CdaCommGetStatus(globCdaTransHistListData[i].Status));
+        arr.push(globCdaTransHistListData[i].VersionNumber);
         arrData.push(arr);
     }
-    
-    
-
 
     globCdaTransHistTable.clear().draw();
     globCdaTransHistTable.rows.add(arrData); // Add new data
     globCdaTransHistTable.columns.adjust().draw();
+}
+
+function CdaCommGetStatus(pStatusNumber)
+{
+    var strStatus = '';
+    switch (pStatusNumber.toString())
+    {
+        case '0': strStatus = 'En suspens'; break;
+        case '1': strStatus = 'Traité'; break;
+        case '2': strStatus = 'Refusé'; break;
+        case '3': strStatus = 'Annulé'; break;
+    }
+    return strStatus;
+}
+
+function CdaCommOpenClaimReversPopup()
+{
+    if (globCdaTransHistSelectedData)
+    {
+        if (CdaCommIsClaimReversPossible()) {
+            modCdaClaimReversConfirm();
+        }
+        else {
+            modMessage('CDANET', 'Il est impossible d\'annuler la transaction. Le délai de 24 heure est dépassé.');
+        }
+        
+    }
+}
+
+function CdaCommSendClaimReversRequest()
+{
+    globCdanetTranscode = '2';
+    if (globCdaTransHistSelectedData[10] == '02')
+    {
+        CdaV2SendRequestToCdaNet();
+    }
+    else if (globCdaTransHistSelectedData[10] == '04')
+    {
+        CdaV4SendRequestToCdaNet();
+    }
+}
+
+//Returns false if Claim date more than 24 hours from now. Otherwise true;
+function CdaCommIsClaimReversPossible()
+{
+    var res = false;
+    var claimDate = globCdaTransHistSelectedData[7];
+    try {
+        var difHours = 0;
+        var billDate = new Date(claimDate);
+        var billTimeMSec = billDate.getTime();
+        var currentTimeMSec = new Date().getTime();
+        difHours = (currentTimeMSec - billTimeMSec) / (1000 * 60 * 60);
+        if (difHours < 24) {
+            res = true;
+        }
+    }
+    catch (e) {
+        res = false;
+    }
+    return res;
 }

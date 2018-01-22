@@ -9,7 +9,7 @@ function CdaV2SendRequestToCdaNet() {
 function CdaV2CallCDAService()
 {
     var strRequest = CdaV2CreateRequestString();
-    var randomNum = CdaCommCreateRandomNumber(0, 999);
+    var randomNum = CdaCommCreateRandomNumber(1, 999);
     //var transCode = globCdaDataFromDB.a04;//TODO: send to server
     var inputXMl = {
         "request": strRequest, //request to send
@@ -54,7 +54,7 @@ function CdaV2CreateRequestString() {
                 strRequest = CdaV2CreateClaimRequest();
             }
             break;
-        case "ClaimReversal":
+        case '2'://"ClaimReversal":
             {
                 strRequest = CdaV2CreateClaimReversalRequest();
             }
@@ -269,7 +269,7 @@ function CdaV2PopulateClaimReversalObj() {
 
     //A Transaction Header
     obj.a01 = CdaV2FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
-    obj.a02 = CdaV2FormatField(objDataFromDB.a02, 'N', 6); //Office Sequence Number
+    obj.a02 = CdaV2FormatField(globCdaTransHistSelectedData[0], 'N', 6); //Office Sequence Number
     obj.a03 = CdaV2FormatField(objDataFromDB.a03, 'N', 2); //Format Version Number
     obj.a04 = CdaV2FormatField(objDataFromDB.a04, 'N', 2); //Transaction Code
     obj.a05 = CdaV2FormatField(objDataFromDB.a05, 'N', 6); //Carrier Identification Number
@@ -291,7 +291,7 @@ function CdaV2PopulateClaimReversalObj() {
     obj.d03 = CdaV2FormatField(objDataFromDB.d03, 'A', 15); //Subscriber's First Name
     obj.d04 = CdaV2FormatField(objDataFromDB.d04, 'A', 1); //Subscriber's Middle Initial
 
-    //obj.g01 = CdaV2FormatField(pG01, 'AN', 14); //Transaction Reference Number of Orig Claim
+    obj.g01 = CdaV2FormatField(globCdaTransHistSelectedData[8], 'AN', 14); //Transaction Reference Number of Orig Claim
 
     return obj;
 }
@@ -766,6 +766,7 @@ function CdaV2GetDataFromDB() {
             success: function (result) {
                 switch (globCdanetTranscode) {
                     case '1'://Claim
+                    case '2'://Claim reversial
                         {
                             globCdaDataFromDB = result;
                             CdaV2CallCDAService();

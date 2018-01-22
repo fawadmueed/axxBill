@@ -1,28 +1,19 @@
+var globRamqAPIuri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/';
 var globVisionRData;
 var globRamqOperationType; //value: New, Update. Uses to define which form "More" should be used.
 var globBillNumber; //The number of "global" bill.
+var globServerUrl = 'http://144.217.219.194/axxium/';
+var globRamqApiPath = "http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/";
+var globRamqObjCredentials;
+var globClinicId = "";
+var globPatientId = "";
+var globNoDossier = "";
+var globDentist = "";
+
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
 //TODO:rename SoumissionDemandesPaiement to RamqSoumissionDemandesPaiement;
 
-$(document).ready(function () {
-    globVisionRData = RamqGetVisionRData();
 
-    //Show info in dossier patiant
-    $("#Efirst").val(globVisionRData.PrePers);
-    $("#Elast").val(globVisionRData.NomPers);
-    $("#ramq_no").val(globVisionRData.IdPers);
-    $("#ramq_exp").val(globVisionRData.NamExpDate);
-    $("Ebirth").val(globVisionRData.DatNaissPers);
-
-
-    //Show prof name on Payment -> Assurances
-    document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
-    //Show prof name on CDANET Modal - 1 -> Requérant
-    document.getElementById("cdan1_req").value = globVisionRData.ProfName;
-    //Show prof name on CDANET Modal - 2 -> Requérant
-    document.getElementById("cdan2_req").value = globVisionRData.ProfName;
-
-});
 function SoumissionDemandesPaiement()
 {
     RamqBillClearFormFactures();
@@ -600,8 +591,8 @@ function RamqGetListe_ligne_fact_serv_denta_chirg(pArrpGridData, pArrFormMoreDat
             pObjFormMoreData = GetObjFormMoreData(pObjGridData.row_id, pArrFormMoreData, ptypProf);
 
             var dateServ;
-            if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact) {
-                dateServ = pObjFormMoreData.dat_serv_elm_fact;
+            if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0] != '') {
+                dateServ = pObjFormMoreData.dat_serv_elm_fact[0];
             }
             else {
                 dateServ = RamqGetCurrentDate();
@@ -717,7 +708,7 @@ function RamqGetListe_ligne_fact_serv_denta_dentu(pArrGridData, pArrFormMoreData
             pObjFormMoreData = GetObjFormMoreData(pObjGridData.row_id, pArrFormMoreData, ptypProf);
 
             var dateServ;
-            if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact) {
+            if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0]!='') {
                 dateServ = pObjFormMoreData.dat_serv_elm_fact;
             }
             else {
@@ -1400,7 +1391,7 @@ function RamqSoumissionDemandesPaiementGetData()
         globVisionRData.IdProf = $('#pamnt_no_prof').val();
         globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
         //
-        globVisionRData.IdPers = $('#ramq_no').val();
+        //globVisionRData.IdPers = $('#ramq_no').val();
         globVisionRData.TypProf = dent_Type;
     }
     else if (dent_Type == 'Chirurgiens')
@@ -1415,7 +1406,7 @@ function RamqSoumissionDemandesPaiementGetData()
 
         globVisionRData.IdProf = $('#pamnt_no_prof').val();
         globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
-        globVisionRData.IdPers = $('#ramq_no').val();
+        //globVisionRData.IdPers = $('#ramq_no').val();
         globVisionRData.TypProf = dent_Type;
     }
     else if (dent_Type == 'Denturologiste') {
@@ -1429,7 +1420,7 @@ function RamqSoumissionDemandesPaiementGetData()
         
         globVisionRData.IdProf = $('#pamnt_no_prof').val();
         globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
-        globVisionRData.IdPers = $('#ramq_no').val();
+        //globVisionRData.IdPers = $('#ramq_no').val();
         globVisionRData.TypProf = dent_Type;
     }
 
@@ -1537,38 +1528,62 @@ function RamqGetConstAppData()
 
 function RamqGetVisionRData()
 {
-    //TODO: call service to get this parameters
+    $.ajax(
+              {
+                  url: globRamqAPIuri + "PostRamqParameterRequired",
+                  type: "POST",
+                  contentType: "application/json",
+                  data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist}),
+                  success: function (result) {
+                      //alert(result.Result);
+                      globVisionRData = RamqPopulateVisionRDataObj(result);
+                      
+                      $('#pamnt_no_prof').val(globVisionRData.IdProf);
 
+                      //Show prof name on Payment -> Assurances
+                      document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
+                      //Show prof name on CDANET Modal - 1 -> Requérant
+                      document.getElementById("cdan1_req").value = globVisionRData.ProfName;
+                      //Show prof name on CDANET Modal - 2 -> Requérant
+                      document.getElementById("cdan2_req").value = globVisionRData.ProfName;
+
+                  },
+                  error: function (xhr, ajaxOptions, thrownError) {
+                      //debugger;
+                      alert(xhr.statusText);
+                  }
+              });
+}
+
+function RamqPopulateVisionRDataObj(pData) {
     var res = {};
     res.DemdrTypIdIntvn = '1';//const
-    res.DemdrIdIntvn = '299801';//? looks like Idprof
+    res.DemdrIdIntvn = pData.DemdrIdIntvn;//'299801';//? looks like Idprof
     res.ExpedTypIdIntvn = '3';//const
-    res.ExpedIdIntvn = '18011';//?
-    //res.TypModaPaimt = '';//1 : Compte personnel du professionnel 2 : Compte administratif
-    //res.NoCpteAdmin = '';
+    res.ExpedIdIntvn = pData.ExpedIdIntvn;//'18011';//?
     res.TypIdProf = '1';//const 1 : Numéro dispensateur RAMQ
-    res.IdProf = '299801';// 
-    res.ProfName = 'Dr Pierre Laberge';//
-    res.TypIdLieuPhys = '1';//1 : Lieu physique, reconnu et codifié à la Régie (établissement SSS, Cabinet, etc.)
-    res.IdLieuPhys = '99999';//?
-    res.TypSituConsi = '1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
+    res.IdProf = pData.IdProf;//'299801';//
+    res.ProfName = pData.ProfName;//'Dr Pierre Laberge';//
+    //res.TypIdLieuPhys = '1';//1 : Lieu physique, reconnu et codifié à la Régie (établissement SSS, Cabinet, etc.)
+    //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?
+    res.TypSituConsi = pData.TypSituConsi;//'1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = 'DROJ75512816';//NAM
-    res.NamExpDate = '2019-01-01';
+    res.IdPers = pData.IdPers;//'DROJ75512816';//NAM
+    res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
-    res.InsTypeList = ['SUN', 'AGA']; //DES - v2, SUN v4
-    res.TypProf = 'Dentiste'; //TODO: For test only Dentiste , Chirurgiens , Denturologiste
+    res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
+    res.TypProf = pData.TypProf;//'Dentiste'; //TODO: For test only Dentiste , Chirurgiens , Denturologiste
     //res.TypProf = dent_Type;
 
     //Patient without NAM
-    res.NomPers='DROBOV';
-    res.PrePers = 'JULIA';
-    res.DatNaissPers ='1975-01-28';
-    res.CodSexPers = 1;            
-    res.NoOrdreNaissPers =1;      //1 pour le premier bébé, 2 pour le deuxième bébé.       
-    res.Nas ='123456789123'; 
-    res.AdrPersPatnt='333 Place de la Belle-rive, Laval, QC, H7X3R5';
-    res.RepdnIdPers = 'DISL14082217';
+    res.NomPers = pData.NomPers;//'DROBOV';
+    res.PrePers = pData.PrePers;//'JULIA';
+    res.DatNaissPers = pData.DatNaissPers;//'1975-01-28';
+    res.CodSexPers = pData.CodSexPers;//1;
+    res.NoOrdreNaissPers = pData.NoOrdreNaissPers//1;      //1 pour le premier bébé, 2 pour le deuxième bébé.       
+    res.Nas = pData.Nas;//'123456789123';
+    res.AdrPersPatnt = pData.AdrPersPatnt;//'333 Place de la Belle-rive, Laval, QC, H7X3R5';
+    res.RepdnIdPers = pData.RepdnIdPers;//'DISL14082217';
 
     //$('#pamnt_no_prof').val(res.IdProf);
 
@@ -2013,6 +2028,21 @@ function RamqGetCasDataFromGrille() {
         }
     }
     return arrRes;
+}
+
+//returns param value for the given param name.
+function RamqGetParamFromUrl(name) {
+    //TODO: uncomment for production.
+    // var url = location.href;
+    //var url = window.location.href;
+    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=000192&dentist=AR";// For test only.
+
+    if (!url) url = location.href;
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    return results === null ? null : results[1];
 }
 
 

@@ -13,6 +13,10 @@ var globDentist = "";
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
 //TODO:rename SoumissionDemandesPaiement to RamqSoumissionDemandesPaiement;
 
+$(document).ready(function () {
+    RamqGetVisionRData();
+});
+
 
 function SoumissionDemandesPaiement()
 {
@@ -2031,20 +2035,7 @@ function RamqGetCasDataFromGrille() {
     return arrRes;
 }
 
-//returns param value for the given param name.
-function RamqGetParamFromUrl(name) {
-    //TODO: uncomment for production.
-    // var url = location.href;
-    //var url = window.location.href;
-    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=000192&dentist=AR";// For test only.
 
-    if (!url) url = location.href;
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regexS = "[\\?&]" + name + "=([^&#]*)";
-    var regex = new RegExp(regexS);
-    var results = regex.exec(url);
-    return results === null ? null : results[1];
-}
 
 
 //function RamqGetBillNumberFromServer()

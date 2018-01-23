@@ -497,13 +497,16 @@ if tx == "updateFacture":
 
         #update file
         if dataJson["amq"] is not None:
-            data["amq"] = {'req': dataJson["amq"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
+            if len(dataJson["amq"]) > 0:
+                data["amq"] = {'req': dataJson["amq"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
         
         if dataJson["ins"] is not None:
-            data["ins"] = {'req': dataJson["ins"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
+            if len(dataJson["ins"]) > 0:
+                data["ins"] = {'req': dataJson["ins"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
 
         if dataJson["cas"] is not None:
-            data["cas"] = {'req': dataJson["cas"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
+            if len(dataJson["cas"]) > 0:
+                data["cas"] = {'req': dataJson["cas"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
 
         logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
         logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
@@ -515,6 +518,7 @@ if tx == "updateFacture":
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
 
 if tx == "createFacture":
     try:
@@ -657,8 +661,9 @@ if tx == "getPatientFactures":
                             tmp_fact = {}
                             tmp_fact["facture"] = filename.split('/')[4].split('_')[1].split('.')[0]
                             tmp_fact["nodossier"] = filename.split('/')[4].split('_')[0]
-                            tmp_fact["info"] = data["ins"]["req"]
-                            tmp_fact["xml"] = '' if data["ins"]["resp"] is None else data["ins"]["resp"].replace("\"", "\\\"")
+                            tmp_fact["info"] = data["ins"]["info"]
+                            tmp_fact["req"] = data["ins"]["req"]
+                            tmp_fact["resp"] = '' if data["ins"]["resp"] is None else data["ins"]["resp"]
                             tmp_fact["datetransaction"] = data["ins"]["date"]
                             tmp_fact["datecreation"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(mdate))
                             tmp_fact["status"] = data["ins"]["status"]
@@ -1172,6 +1177,62 @@ if (tx == "ChangePassword"):
                     logFile.write(json.dumps(dataJSON))
                     logFile.close()
                     print '{ "outcome" : "success", "message" : "" }'          
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+        
+
+if (tx == "sendInsurance"):   
+    try:
+        #read parameters from request
+        clinicId = form['clinicId'].value
+        patientId = form['patientId'].value
+        nodossier = form['nodossier'].value
+        nofactext = form['nofact'].value
+        lun = form['lun'].value
+        dataJson = json.loads(form['json'].value)
+        strreq = dataJson["request"]
+        datainputs = dataJson["info"] 
+
+        #read the bill
+        json_data = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'r')
+        data = json.load(json_data)
+        json_data.close()
+
+        if data["amq"] is not None :
+            if data["amq"]["resp"] is not None:
+                data["amq"]["resp"] = data["amq"]["resp"].replace("\"", "\\\"")
+
+        #send the request to WebApi that calls RAMQ server
+        dataJSON = { 'Input': strreq, 'LUN': lun}
+        headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
+
+        if r.status_code != 200:
+            print '{ "outcome" : "error", "message" : "Something was wrong" }'
+        else:
+            resp = r.json()
+            txtresp = resp["resp"]             
+            transCode = strreq[20:22]
+            #Is it a reversal ?
+            if(transCode == '02'): 
+                statut = 3
+            else:
+                statut = 1
+
+            #verify if transaction was a success 
+            if(txtresp.split(',')[1] != '0'):
+                statut = 2
+
+            #add the new insurnace     
+            data["ins"] = {'req': data["ins"]["req"], 'resp' : txtresp, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'status' : statut, 'nofact' : nofactext, 'transaction': strreq, 'info' : datainputs}
+            logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
+            logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
+            logFile.close()
+
+            message = {'outcome' : 'success', 'message': txtresp }
+            print json.dumps(message)
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

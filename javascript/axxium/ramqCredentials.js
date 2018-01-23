@@ -145,7 +145,7 @@ function RamqGetParamFromUrl(name) {
     //TODO: uncomment for production.
     // var url = location.href;
     //var url = window.location.href;
-    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=000192&dentist=AR";// For test only.
+    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=114625&dentist=AR";// For test only.
 
     if (!url) url = location.href;
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");

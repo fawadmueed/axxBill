@@ -9,6 +9,7 @@ var globClinicId = "";
 var globPatientId = "";
 var globNoDossier = "";
 var globDentist = "";
+var globIsBillCreated = false; //This flag is used to create new bill when user click "Generer la facture" button.
 
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
 //TODO:rename SoumissionDemandesPaiement to RamqSoumissionDemandesPaiement;
@@ -381,7 +382,7 @@ function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
                 xml +=
                 '<liste_pers_objet_fact>' +
                     '<pers_patnt_avec_idt>' +
-                        '<typ_situ_consi>' + pObjDataFromVisionR.TypSituConsi + '</typ_situ_consi>' + //Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
+                        '<typ_situ_consi>1</typ_situ_consi>' + //Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
                         '<typ_id_pers>1</typ_id_pers>' + //1 : NAM RAMQ
                         '<id_pers>' + pObjDataFromVisionR.IdPers + '</id_pers>' + //NAM
                         RamqGetInfoMdcalPers(pObjAdditionalData) +
@@ -1327,7 +1328,7 @@ function displayResponseAnnulation(_response)
 {
     var errormsg = '';
     if (_response.GlobalStaRecev == '1')
-        alert("The Bill canceled successfully.");//TODO: change message
+        alert("La facture a été annulé avec succès.");
     else if (_response.GlobalStaRecev == '2')
     {
         if (_response.GlobalArrListeMsgExplRecev)
@@ -1381,52 +1382,52 @@ function RamqSoumissionDemandesPaiementGetData()
     //$('#num_lieu_genr_fact').val('99999');
     //$('#lieu_codifie').prop('checked', true);
 
-    if (dent_Type == 'Dentiste')
-    {
-        if ($('#optRegiePaimentComptePers').is(':checked')) {
-            $('#pamnt_no_prof').val('299801');
+    //if (dent_Type == 'Dentiste')
+    //{
+    //    if ($('#optRegiePaimentComptePers').is(':checked')) {
+    //        $('#pamnt_no_prof').val('299801');
 
-        }
-        else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
-            $('#pamnt_no_prof').val('299797');
-            $('#txtRegiPaimentNoCompteAdmin').val('54337');
-        }
+    //    }
+    //    else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
+    //        $('#pamnt_no_prof').val('299797');
+    //        $('#txtRegiPaimentNoCompteAdmin').val('54337');
+    //    }
 
-        globVisionRData.IdProf = $('#pamnt_no_prof').val();
-        globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
-        //
-        //globVisionRData.IdPers = $('#ramq_no').val();
-        globVisionRData.TypProf = dent_Type;
-    }
-    else if (dent_Type == 'Chirurgiens')
-    {
-        if ($('#optRegiePaimentComptePers').is(':checked')) {
-            $('#pamnt_no_prof').val('299741');
-        }
-        else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
-            $('#pamnt_no_prof').val('298793');
-            $('#txtRegiPaimentNoCompteAdmin').val('54348');
-        }
+    //    globVisionRData.IdProf = $('#pamnt_no_prof').val();
+    //    globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
+    //    //
+    //    //globVisionRData.IdPers = $('#ramq_no').val();
+    //    globVisionRData.TypProf = dent_Type;
+    //}
+    //else if (dent_Type == 'Chirurgiens')
+    //{
+    //    if ($('#optRegiePaimentComptePers').is(':checked')) {
+    //        $('#pamnt_no_prof').val('299741');
+    //    }
+    //    else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
+    //        $('#pamnt_no_prof').val('298793');
+    //        $('#txtRegiPaimentNoCompteAdmin').val('54348');
+    //    }
 
-        globVisionRData.IdProf = $('#pamnt_no_prof').val();
-        globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
-        //globVisionRData.IdPers = $('#ramq_no').val();
-        globVisionRData.TypProf = dent_Type;
-    }
-    else if (dent_Type == 'Denturologiste') {
-        if ($('#optRegiePaimentComptePers').is(':checked')) {
-            $('#pamnt_no_prof').val('741788');
-        }
-        else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
-            $('#pamnt_no_prof').val('741789');
-            $('#txtRegiPaimentNoCompteAdmin').val('54355');
-        }
+    //    globVisionRData.IdProf = $('#pamnt_no_prof').val();
+    //    globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
+    //    //globVisionRData.IdPers = $('#ramq_no').val();
+    //    globVisionRData.TypProf = dent_Type;
+    //}
+    //else if (dent_Type == 'Denturologiste') {
+    //    if ($('#optRegiePaimentComptePers').is(':checked')) {
+    //        $('#pamnt_no_prof').val('741788');
+    //    }
+    //    else if ($('#optRegiePaimentCompteAdmin').is(':checked')) {
+    //        $('#pamnt_no_prof').val('741789');
+    //        $('#txtRegiPaimentNoCompteAdmin').val('54355');
+    //    }
         
-        globVisionRData.IdProf = $('#pamnt_no_prof').val();
-        globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
-        //globVisionRData.IdPers = $('#ramq_no').val();
-        globVisionRData.TypProf = dent_Type;
-    }
+    //    globVisionRData.IdProf = $('#pamnt_no_prof').val();
+    //    globVisionRData.DemdrIdIntvn = globVisionRData.IdProf;
+    //    //globVisionRData.IdPers = $('#ramq_no').val();
+    //    globVisionRData.TypProf = dent_Type;
+    //}
 
     var objVisionRData = globVisionRData;
     //var objBillData = RamqGetBillData();
@@ -1921,7 +1922,7 @@ function RamqCreateNewGlobalBill()
                 else
                 {
                     globBillNumber = result.nofact;
-                    alert("Bill " + globBillNumber+ " is created")
+                    alert("Facture #" + globBillNumber + " a été créée.")
                     //TODO: Display UI
                 }
             });
@@ -1929,7 +1930,11 @@ function RamqCreateNewGlobalBill()
 
 function RamqUpdateGlobalBill()
 {
-    
+    //Create new bill if wasn't created.
+    if (!globIsBillCreated) {
+        RamqCreateNewGlobalBill();
+        globIsBillCreated = true;
+    }
     //RAMQ
     var arrRamqData = [];
     arrRamqData[0] = [];
@@ -1953,20 +1958,21 @@ function RamqUpdateGlobalBill()
             if (result.outcome == 'updateFacture error')
                 alert(result.message);
             else {
-                var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
-                if (cdaVersion == '2')
-                {
-                    $('#insr_cdan_version_1').prop('checked', true);
-                    getAllTrData(); //Open Payment form
-                }
-                else if (cdaVersion == '4') {
-                    $('#insr_cdan_version_4').prop('checked', true);
-                    getAllTrData(); //Open Payment form
-                }
-                else {
-                    alert("Cda version is not correct!");
-                }
-                
+                ////We don't need cda version for now
+                //var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                //if (cdaVersion == '2')
+                //{
+                //    $('#insr_cdan_version_1').prop('checked', true);
+                //    getAllTrData(); //Open Payment form
+                //}
+                //else if (cdaVersion == '4') {
+                //    $('#insr_cdan_version_4').prop('checked', true);
+                //    getAllTrData(); //Open Payment form
+                //}
+                //else {
+                //    alert("Cda version is not correct!");
+                //}
+                getAllTrData(); //Open Payment form
             }
                 
         });
@@ -2010,145 +2016,3 @@ function RamqGetCasDataFromGrille() {
 
 
 
-//function RamqGetBillNumberFromServer()
-//{
-//    var billNumber = new Date().getTime();
-//    //$.post("allScriptsv1.py", {tx: "getNoFacture", clinicId: globClinicId}, 
-//    //function(result){
-//    //    if(result.outcome == 'error')
-//    //        return billNumber;
-//    //    else
-//    //        return result.nofact;
-//    //});
-//    return billNumber;
-//}
-
-//function getSoumissionDemandesModificationXML()
-//{
-//    var xml = '<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>' +
-//   '<dem_modif xmlns=\\"urn:ramq-gouv-qc-ca:RFP\\">' +
-//    '<no_dem_ext>' + $('#no_dem_ext').val() + '</no_dem_ext>' +
-//     '<logcl_fact>' +
-//       '<no_devpr_logcl>' + $('#no_devpr_logcl').val() + '</no_devpr_logcl>' +
-//       '<nom_devpr_logcl>' + $('#nom_devpr_logcl').val() + '</nom_devpr_logcl>' +
-//       '<nom_logcl_fact>' + $('#nom_logcl_fact').val() + '</nom_logcl_fact>' +
-//          '<no_versi_logcl_fact>' + $('#no_versi_logcl_fact').val() + '</no_versi_logcl_fact>' +
-//             '<no_versi_xml_dem>' + $('#no_versi_xml_dem').val() + '</no_versi_xml_dem>' +
-//           '</logcl_fact>' +
-//           '<demdr>' +
-//             '<typ_id_intvn>' + $('#demdr_typ_id_intvn').val() + '</typ_id_intvn>' +
-//             '<id_intvn>' + $('#demdr_id_intvn').val() + '</id_intvn>' +
-//           '</demdr>' +
-//           '<exped_difrn_demdr>' +
-//             '<typ_id_intvn>' + $('#exped_typ_id_intvn').val() + '</typ_id_intvn>' +
-//             '<id_intvn>' + $('#exped_id_intvn').val() + '</id_intvn>' +
-//           '</exped_difrn_demdr>' +
-//           '<id_fact_ramq>' +
-//             '<no_fact_ramq>' + $('#no_fact_ramq').val() + '</no_fact_ramq>' +
-//             '<jeton_comm>' + $('#jeton_comm').val() + '</jeton_comm>' +
-//           '</id_fact_ramq>' +
-//           '<fact_a_modif>' +
-//           '<fact_serv_denta_chirg_denti_1_1_0>' +
-//               '<no_fact_ext>' + $('#no_fact_ext').val() + '</no_fact_ext>' +
-//               '<prof>' +
-//                 '<typ_id_prof>' + $('#typ_id_prof').val() + '</typ_id_prof>' +
-//                 '<id_prof>' + $('#id_prof').val() + '</id_prof>' +
-//               '</prof>' +
-//               '<lieu_consi>' +
-//                 '<lieu_phys>' +
-//                   '<typ_id_lieu_phys>' + $('#typ_id_lieu_phys').val() + '</typ_id_lieu_phys>' +
-//                   '<id_lieu_phys>' + $('#id_lieu_phys').val() + '</id_lieu_phys>' +
-//                 '</lieu_phys>' +
-//               '</lieu_consi>' +
-//               '<liste_pers_objet_fact>' +
-//                 '<pers_patnt_avec_idt>' +
-//                   '<typ_situ_consi>' + $('#typ_situ_consi').val() + '</typ_situ_consi>' +
-//                   '<typ_id_pers>' + $('#typ_id_pers').val() + '</typ_id_pers>' +
-//                   '<id_pers>' + $('#id_pers').val() + '</id_pers>' +
-//                   '<info_mdcal_pers>' +
-//                     '<liste_diagn_mdcal>' +
-//                       '<diagn_mdcal>' +
-//                         '<no_seq_sys_cla>' + $('#no_seq_sys_cla').val() + '</no_seq_sys_cla>' +
-//                         '<cod_diagn_mdcal>' + $('#cod_diagn_mdcal').val() + '</cod_diagn_mdcal>' +
-//                       '</diagn_mdcal>' +
-//                     '</liste_diagn_mdcal>' +
-//                     '<evene_pers_objet_fact>' +
-//                       '<typ_evene_pers>' + $('#typ_evene_pers').val() + '</typ_evene_pers>' +
-//                       '<dat_evene_pers>' + $('#dat_evene_pers').val() + '</dat_evene_pers>' +
-//                     '</evene_pers_objet_fact>' +
-//                     '<per_sej_pers_lieu>' +
-//                       '<dat_entre_pers_lieu>' + $('#dat_entre_pers_lieu').val() + '</dat_entre_pers_lieu>' +
-//                       '<dat_sorti_pers_lieu>' + $('#dat_sorti_pers_lieu').val() + '</dat_sorti_pers_lieu>' +
-//                     '</per_sej_pers_lieu>' +
-//                   '</info_mdcal_pers>' +
-//                 '</pers_patnt_avec_idt>' +
-//               '</liste_pers_objet_fact>' +
-//               '<ind_fact_assoc_dr>true</ind_fact_assoc_dr>' +
-//               '<liste_ligne_fact_serv_denta_chirg_denti>' +
-//                 '<ligne_fact_serv_denta_chirg_denti>' +
-//                   '<no_ligne_fact>' + $('#no_ligne_fact').val() + '</no_ligne_fact>' +
-//                   '<typ_id_elm_fact>' + $('#typ_id_elm_fact').val() + '</typ_id_elm_fact>' +
-//                   '<id_elm_fact>' + $('#id_elm_fact').val() + '</id_elm_fact>' +
-//                   '<dat_serv_elm_fact>' + $('#dat_serv_elm_fact').val() + '</dat_serv_elm_fact>' +
-//                   '<cod_role>1</cod_role>' +
-//                   '<dhd_elm_fact>' + $('#dhd_elm_fact').val() + '</dhd_elm_fact>' +
-//                           '<dat_autor_proth_acryl>' + $('#dat_autor_proth_acryl').val() + '</dat_autor_proth_acryl>' +
-//                          '<info_serv_denta>' +
-//                             '<no_dent>1</no_dent>' +
-//                             '<liste_surf_dent_trait>' +
-//                               '<surf_dent>' +
-//                                 '<cod_surf_dent>' + $('#cod_surf_dent').val() + '</cod_surf_dent>' +
-//                               '</surf_dent>' +
-//                             '</liste_surf_dent_trait>' +
-//                             '<site_trait_denta>' +
-//                               '<typ_id_site_trait_denta>' + $('#typ_id_site_trait_denta').val() + '</typ_id_site_trait_denta>' +
-//                               '<id_site_trait_denta>' + $('#id_site_trait_denta_modified').val() + '</id_site_trait_denta>' + //Modified
-//                             '</site_trait_denta>' +
-//                          '</info_serv_denta>' +
-//                           '<refre_autre_prof>' +
-//                             '<typ_refre_autre_prof>' + $('#typ_refre_autre_prof').val() + '</typ_refre_autre_prof>' +
-//                             '<info_prof_refre>' +
-//                               '<prof_refre_connu>' +
-//                                 '<typ_id_prof>' + $('#typ_id_prof').val() + '</typ_id_prof>' +
-//                                 '<id_prof>' + $('#id_prof').val() + '</id_prof>' +
-//                               '</prof_refre_connu>' +
-//                             '</info_prof_refre>' +
-//                           '</refre_autre_prof>' +
-//                           '<mnt_prcu_patnt>' + $('#mnt_prcu_patnt').val() + '</mnt_prcu_patnt>' +
-//                         '</ligne_fact_serv_denta_chirg_denti>' +
-//                       '</liste_ligne_fact_serv_denta_chirg_denti>' +
-//                     '</fact_serv_denta_chirg_denti_1_1_0>' +
-//           '</fact_a_modif>' +
-//         '</dem_modif>';
-//    return xml;
-//}
-
-//function getSoumissionDemandesAnnulationXML()
-//{
-//    var xml = '<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>'+
-//                '<dem_annu xmlns=\\"urn:ramq-gouv-qc-ca:RFP\\" >'+
-//	                '<no_dem_ext>'+ $('#no_dem_ext').val() +'</no_dem_ext>'+
-//	                '<logcl_fact>'+
-//		                '<no_devpr_logcl>' + $('#no_devpr_logcl').val() + '</no_devpr_logcl>' +
-//		                '<nom_devpr_logcl>' + $('#nom_devpr_logcl').val() + '</nom_devpr_logcl>' +
-//		                '<nom_logcl_fact>' + $('#nom_logcl_fact').val() + '</nom_logcl_fact>' +
-//		                '<no_versi_logcl_fact>' + $('#no_versi_logcl_fact').val() + '</no_versi_logcl_fact>' +
-//		                '<no_versi_xml_dem>' + $('#no_versi_xml_dem').val() + '</no_versi_xml_dem>' +
-//	                '</logcl_fact>'+
-//	                '<demdr>'+
-//		                '<typ_id_intvn>' + $('#demdr_typ_id_intvn').val() + '</typ_id_intvn>' +
-//		                '<id_intvn>' + $('#demdr_id_intvn').val() + '</id_intvn>' +
-//	                '</demdr>'+
-//	                '<exped_difrn_demdr>'+
-//		                '<typ_id_intvn>' + $('#exped_typ_id_intvn').val() + '</typ_id_intvn>' +
-//		                '<id_intvn>' + $('#exped_id_intvn').val() + '</id_intvn>' +
-//	                '</exped_difrn_demdr>'+
-//	                '<liste_fact_a_annu>'+
-//		                '<id_fact_ramq>'+
-//			                '<no_fact_ramq>' + $('#no_fact_ramq').val() + '</no_fact_ramq>' +
-//			                '<jeton_comm>' + $('#jeton_comm').val() + '</jeton_comm>' +
-//		                '</id_fact_ramq>'+
-//	                '</liste_fact_a_annu>'+
-//                '</dem_annu>';
-//    return xml;
-//}

@@ -1,5 +1,6 @@
 var arrGrilleDeFacturation=[];
-var arrGrilleDeFacturation_forms=[];
+var arrGrilleDeFacturation_forms = [];
+
 
 $(document).ready(function(){
 
@@ -140,7 +141,7 @@ function newRecordFact(){
               tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i])
               .bind('keypress', function (e)
               {
-                if(e.which == 13) {
+                  if (e.which == 13) {
                   newRecordFact();
                   //Rob Function : call this when change the current row
                  var code_s=$(this).siblings("td[data-target='Code']").text();

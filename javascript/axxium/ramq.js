@@ -13,9 +13,9 @@ var globDentist = "";
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
 //TODO:rename SoumissionDemandesPaiement to RamqSoumissionDemandesPaiement;
 
-$(document).ready(function () {
-    RamqGetVisionRData();
-});
+//$(document).ready(function () {
+    
+//});
 
 
 function SoumissionDemandesPaiement()
@@ -1530,35 +1530,7 @@ function RamqGetConstAppData()
     return res;
 }
 
-function RamqGetVisionRData()
-{
-    $.ajax(
-              {
-                  url: globRamqAPIuri + "PostRamqParameterRequired",
-                  type: "POST",
-                  contentType: "application/json",
-                  data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist}),
-                  success: function (result) {
-                      //alert(result.Result);
-                      globVisionRData = RamqPopulateVisionRDataObj(result);
-                      newRecordFact(); //facture_table.js
 
-                      $('#pamnt_no_prof').val(globVisionRData.IdProf);
-
-                      //Show prof name on Payment -> Assurances
-                      document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
-                      //Show prof name on CDANET Modal - 1 -> Requérant
-                      document.getElementById("cdan1_req").value = globVisionRData.ProfName;
-                      //Show prof name on CDANET Modal - 2 -> Requérant
-                      document.getElementById("cdan2_req").value = globVisionRData.ProfName;
-
-                  },
-                  error: function (xhr, ajaxOptions, thrownError) {
-                      //debugger;
-                      alert(xhr.statusText);
-                  }
-              });
-}
 
 function RamqPopulateVisionRDataObj(pData) {
     var res = {};

@@ -3,7 +3,7 @@ var arrGrilleDeFacturation_forms=[];
 
 $(document).ready(function(){
 
-  newRecordFact();
+    //newRecordFact(); AK this function is called after getting data from Ramq (RamqGetVisionRData() ramq.js)
 
   $(document.body).on("keypress","#factTableBody tr td[data-target='codeRole']", function(e) {
 

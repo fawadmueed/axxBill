@@ -1537,7 +1537,8 @@ function RamqGetVisionRData()
                   success: function (result) {
                       //alert(result.Result);
                       globVisionRData = RamqPopulateVisionRDataObj(result);
-                      
+                      newRecordFact(); //facture_table.js
+
                       $('#pamnt_no_prof').val(globVisionRData.IdProf);
 
                       //Show prof name on Payment -> Assurances

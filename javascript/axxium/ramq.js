@@ -1550,8 +1550,10 @@ function RamqPopulateVisionRDataObj(pData) {
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
-    res.TypProf = pData.TypProf;//'Dentiste'; //TODO: For test only Dentiste , Chirurgiens , Denturologiste
-    //res.TypProf = dent_Type;
+    res.TypProf = pData.TypProf;//'Dentiste'; 
+
+    //populate global variable to avoid appearing modal select prof type.
+    dent_Type = res.TypProf;
 
     //Patient without NAM
     res.NomPers = pData.NomPers;//'DROBOV';
@@ -1599,7 +1601,7 @@ function RamqGetAdditionalData()//Data from Payment form "Renseignements complem
     res.IdLieuPhys = $('#num_lieu_genr_fact').val();
     res.NoSectActiv = $('#secteur_active').val();
 
-    res.CodePostal = $('#cod_postal_facture').val();
+    res.CodePostal = ($('#cod_postal_facture').val()).replace(/\s/g, '');
     res.CodeLocalite = $('#cod_local_facture').val();
     res.NoBur = $('#no_bur_facture').val();
 
@@ -2011,6 +2013,28 @@ function RamqGetCasDataFromGrille() {
         }
     }
     return arrRes;
+}
+
+function RamqPostalCodeValid(pPostCode)
+{
+    var pc = pPostCode.trim();
+    var ca = new RegExp(/([ABCEGHJKLMNPRSTVXY]\d)([ABCEGHJKLMNPRSTVWXYZ]\d){2}/i);
+
+    if (ca.test(pc.replace(/\W+/g, ''))) {
+        return pc;
+    }
+    return null;
+}
+
+function RamqValidation()
+{
+    var res = false;
+    var errorMsg = '';
+
+    RamqPostalCodeValid($('#cod_postal_facture').val());
+
+
+    return res;
 }
 
 

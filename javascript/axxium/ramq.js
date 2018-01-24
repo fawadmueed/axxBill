@@ -10,6 +10,8 @@ var globPatientId = "";
 var globNoDossier = "";
 var globDentist = "";
 var globIsBillCreated = false; //This flag is used to create new bill when user click "Generer la facture" button.
+var globRamqTotal = 0.00;
+var globLang = 'fr';
 
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
 //TODO:rename SoumissionDemandesPaiement to RamqSoumissionDemandesPaiement;
@@ -599,9 +601,9 @@ function RamqGetListe_ligne_fact_serv_denta_chirg(pArrpGridData, pArrFormMoreDat
             if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0] != '') {
                 dateServ = pObjFormMoreData.dat_serv_elm_fact[0];
             }
-            else {
-                dateServ = RamqGetCurrentDate();
-            }
+            //else {
+            //    //dateServ = RamqGetCurrentDate();
+            //}
 
             var codeRole;
             if (pObjGridData && pObjGridData.codeRole) {
@@ -714,11 +716,11 @@ function RamqGetListe_ligne_fact_serv_denta_dentu(pArrGridData, pArrFormMoreData
 
             var dateServ;
             if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0]!='') {
-                dateServ = pObjFormMoreData.dat_serv_elm_fact;
+                dateServ = pObjFormMoreData.dat_serv_elm_fact[0];
             }
-            else {
-                dateServ = RamqGetCurrentDate();
-            }
+            //else {
+            //    dateServ = RamqGetCurrentDate();
+            //}
 
             var codeRole;
             if (pObjGridData && pObjGridData.codeRole) {
@@ -1207,6 +1209,7 @@ function displayResponsePaiment(_response)
     var globalStaRecev = _response.GlobalStaRecev;
     if (globalStaRecev == "2") //Error message.
     {
+        globRamqTotal = -1; //Uses as a flag to send data to VisionR
         var GlobalArrListeMsgExplRecev = _response.GlobalArrListeMsgExplRecev;
         if (GlobalArrListeMsgExplRecev != null) {
             for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
@@ -1270,6 +1273,7 @@ function displayResponsePaiment(_response)
 
                     msg += '<p>Montant preliminaire total: ' + sumMntPrel + '$</p>';
                     $('#amq_total').val(sumMntPrel);
+                    globRamqTotal = sumMntPrel;
                 }
             }
         }
@@ -1288,8 +1292,29 @@ function displayResponsePaiment(_response)
 function displayResponseModification(_response)
 {
     var errormsg = '';
-    if (_response.GlobalStaRecev == '1')
-        alert("The Bill Updated successfully.");//TODO: change message
+    if (_response.GlobalStaRecev == '1'){
+        var sumMntPrel = 0;
+        var arrListeLigneFactRecev = _response.arrListeLigneFactRecev;
+        if (arrListeLigneFactRecev != null) {
+            for (var n = 0; n < arrListeLigneFactRecev.length; n++) {
+                var arrLigneFactRecev = arrListeLigneFactRecev[n].ListeLigneFactRecev;
+                if (arrLigneFactRecev != null) {
+                    for (var p = 0; p < arrLigneFactRecev.length; p++) {
+                        var ligneFactRecev = arrLigneFactRecev[p];
+                        sumMntPrel += Number(ligneFactRecev.MntPrel);
+                        //msg += '<p>' + 'Ligne ' + ligneFactRecev.NoLigneFact + ': ' + removeCDATA(ligneFactRecev.FormuExpl) + '</p>';
+                    }
+
+                    //msg += '<p>Montant preliminaire total: ' + sumMntPrel + '$</p>';
+                    $('#novl_montant_regie_fact').val(sumMntPrel);
+                    globRamqTotal = sumMntPrel;
+                }
+            }
+        }
+        var msg = 'La facture a été modifiée avec succès. Montant preliminaire total: ' + globRamqTotal + '$';
+        displayRamqAnswer("RAMQ", msg);
+
+    }
     else if (_response.GlobalStaRecev == '2') {
         if (_response.GlobalArrListeMsgExplRecev) {
             for (var i = 0; i < _response.GlobalArrListeMsgExplRecev.length; i++) {
@@ -1302,25 +1327,10 @@ function displayResponseModification(_response)
                 errormsg += _response.GlobalArrListeMsgExplRecev2[i].code +': '+_response.GlobalArrListeMsgExplRecev2[i].text + '\n';
             }
         }
-        alert(errormsg);
+        globRamqTotal = -1;
+        displayRamqAnswer("RAMQ", msg);
     }
-    var sumMntPrel = 0;
-    var arrListeLigneFactRecev = _response.arrListeLigneFactRecev;
-    if (arrListeLigneFactRecev != null) {
-        for (var n = 0; n < arrListeLigneFactRecev.length; n++) {
-            var arrLigneFactRecev = arrListeLigneFactRecev[n].ListeLigneFactRecev;
-            if (arrLigneFactRecev != null) {
-                for (var p = 0; p < arrLigneFactRecev.length; p++) {
-                    var ligneFactRecev = arrLigneFactRecev[p];
-                    sumMntPrel += Number(ligneFactRecev.MntPrel);
-                    //msg += '<p>' + 'Ligne ' + ligneFactRecev.NoLigneFact + ': ' + removeCDATA(ligneFactRecev.FormuExpl) + '</p>';
-                }
 
-                //msg += '<p>Montant preliminaire total: ' + sumMntPrel + '$</p>';
-                $('#novl_montant_regie_fact').val(sumMntPrel);
-            }
-        }
-    }
 
 }
     
@@ -1328,7 +1338,10 @@ function displayResponseAnnulation(_response)
 {
     var errormsg = '';
     if (_response.GlobalStaRecev == '1')
-        alert("La facture a été annulé avec succès.");
+    {
+        globRamqTotal = 0.00;
+        displayRamqAnswer("RAMQ", "La facture a été annulé avec succès.");
+    }
     else if (_response.GlobalStaRecev == '2')
     {
         if (_response.GlobalArrListeMsgExplRecev)
@@ -1344,7 +1357,8 @@ function displayResponseAnnulation(_response)
                 errormsg += _response.GlobalArrListeMsgExplRecev2[i].code + ': ' + _response.GlobalArrListeMsgExplRecev2[i].text + '\n';
             }
         }
-        alert(errormsg); 
+        globRamqTotal = -1;
+        displayRamqAnswer("RAMQ", errormsg);
     }
         
 }
@@ -2028,6 +2042,7 @@ function RamqPostalCodeValid(pPostCode)
 
 function RamqValidation()
 {
+    //TODO:
     var res = false;
     var errorMsg = '';
 
@@ -2037,6 +2052,23 @@ function RamqValidation()
     return res;
 }
 
+
+//Send data back to VisionR
+function RamqCreateXmlForVisionR(pPaymentType, pServiceDate, pInsurTotal, pPatientTotal, pBillTotal)
+{
+    var res = '';
+    res = '<fact_info>'+
+            '<no_traitement>' + globBillNumber + '</no_traitement>' + //Bill Number
+            '<no_dossier>' + globNoDossier + '</no_dossier>' +
+            '<type_paiment>'+ pPaymentType +'</type_paiment>'+//Type de paiment. Value: 1-Cheque, 2-MC, 3-VISA, 4-AMEX, 5-Financement
+            '<dat_serv>'+pServiceDate+'</dat_serv>'+// Date
+            '<total_amq>' + globRamqTotal + '</total_amq>' +// Montant couvert par RAMQ
+            '<total_assur>'+ pInsurTotal +'</total_assur>'+// Montant couvert par assurances
+            '<total_patient>'+pPatientTotal+'</total_patient>'+ //Montant couvert par patient
+            '<total_fact>'+pBillTotal+'</total_fact>'+//<!--Total-->
+           '</fact_info>';
+    return res;
+}
 
 
 

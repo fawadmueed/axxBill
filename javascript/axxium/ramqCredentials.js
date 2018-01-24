@@ -43,6 +43,18 @@ $(document).ready(function () {
     globPatientId = RamqGetParamFromUrl("patientId");
     globNoDossier = RamqGetParamFromUrl("dossierNo");
     globDentist = RamqGetParamFromUrl("dentist");
+    globLang = RamqGetParamFromUrl('lng');
+
+    //Change language
+    if (globLang === 'en') {
+        changeLang('en');
+    }
+    else {
+        globLang = 'fr'; //French by default
+        changeLang('fr');
+    }
+
+    
 
     RamqGetVisionRData();
 });

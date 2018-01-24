@@ -587,10 +587,12 @@
       {
       //alert(xmlhttp2.responseText.length);
       qParams = JSON.parse(xmlhttp2.responseText);
-      if (qParams["logo"])
-      {
-        document.getElementById("topLogo").setAttribute("src", "images/"+qParams["logo"]);
-      }
+
+      // TODO topLogo doesn't exist anymore. Do we remove this or we bring logo back?
+      // if (qParams["logo"])
+      // {
+      //   document.getElementById("topLogo").setAttribute("src", "images/"+qParams["logo"]);
+      // }
     }
   }
 

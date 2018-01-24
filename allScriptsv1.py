@@ -568,7 +568,9 @@ if tx == "getPatientLogs":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+                d = date.today()
+                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+                datefrom = d
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -622,7 +624,9 @@ if tx == "getPatientFactures":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = getdate()
+                d = date.today()
+                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+                datefrom = d
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -766,7 +770,9 @@ if tx == "getAcceptedBills": #ACCEPTED
         try:
             datefrom = getdate(form['dFrom'].value)
         except:
-            datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+            d = date.today()
+            d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+            datefrom = d
 
         try:
             dateto = getdate(form['dTo'].value)  

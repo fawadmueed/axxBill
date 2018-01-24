@@ -568,7 +568,9 @@ if tx == "getPatientLogs":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+                d = date.today()
+                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+                datefrom = d
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -622,7 +624,9 @@ if tx == "getPatientFactures":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = getdate()
+                d = date.today()
+                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+                datefrom = d
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -766,7 +770,9 @@ if tx == "getAcceptedBills": #ACCEPTED
         try:
             datefrom = getdate(form['dFrom'].value)
         except:
-            datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+            d = date.today()
+            d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
+            datefrom = d
 
         try:
             dateto = getdate(form['dTo'].value)  
@@ -1233,6 +1239,31 @@ if (tx == "sendInsurance"):
 
             message = {'outcome' : 'success', 'message': txtresp }
             print json.dumps(message)
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+
+
+if (tx == "SendXmlToVisionR"):   
+    try:
+        #read parameters from request
+        nodossier = form['nodossier'].value
+        nofactext = form['nofact'].value
+        dataJson = json.loads(form['json'].value)
+        dataxml = dataJson["data"] 
+        
+        #verify if log folder exists if not, create it
+        #for now, we write the string xml, but, we must send it by using socket
+        if not os.path.isdir('monitoring'):
+            os.makedirs('monitoring')
+
+        f = open('monitoring/%s_%s.xml'%(nodossier, nofactext), 'wb')
+        f.write(dataxml)
+        f.close()
+
+        message = {'outcome' : 'success' }
+        print json.dumps(message)
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

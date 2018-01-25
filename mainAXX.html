@@ -19,16 +19,12 @@
     <script src="javascript/dist/semantic.min.js"></script>
     <script src="javascript/axxium/patients.js"></script>
     <script src="javascript/axxium/antecedents.js"></script>
-    <script src="javascript/axxium/questionnaire.js"></script>
     <script src="javascript/axxium/examens.js"></script>
-    <script src="javascript/axxium/plans.js"></script>
-    <script src="javascript/axxium/ententes.js"></script>
+    <script src="javascript/axxium/odonto.js"></script> 
+    <script src="javascript/axxium/questionnaire.js"></script>
     <script src="javascript/axxium/traitements.js"></script>
     <script src="javascript/axxium/ordonnances.js"></script>
     <script src="javascript/axxium/documents.js"></script>
-    <script src="javascript/axxium/odonto.js"></script>
-    <script src="javascript/axxium/paro.js"></script>
-    <script src="javascript/axxium/labos.js"></script>
     <script src="javascript/axxium/modals-facturation.js"></script>
     <script src="javascript/axxium/factTable_validation.js"></script>
     <script src="javascript/axxium/code_validation.js"></script>
@@ -55,7 +51,6 @@
 
     <script src="javascript/axxium/printing.js"></script>
 
-    <!-- <script type="text/javascript"> var translator = $('body').translate({lang:"", t:dict});  </script> -->
     <!-- Alexey JS FILE -->
     <style type="text/css">
         *[contenteditable] {
@@ -171,273 +166,62 @@
 </head>
 
 <body id="example">
-    <div class="example">
-        <div class="ui borderless large menu">
-            <a class="item"></a>
-            <a class=""></a>
-            <div class="right menu">
-                <a class="item" id="patName"></a>
-            </div>
-        </div>
-        <h4 class="ui center aligned header" id="patNameSub"></h4>
-    </div>
-    <div id="loadingText" class="ui active inverted dimmer">
-        <div class="ui text loader">Chargement initial des données...</div>
-    </div>
-    <!-- tabs1 -->
-    <div class="container">
-        <div id="context1">
-            <div class="ui top attached tabular menu active">
-                <div class="item" data-tab="patient"><i class="user circular orange icon trn" data-trn-key=""></i>Patient</div>
-                <div class="item active" data-tab="facturation" id="facturation" onclick="checkDentType();"><i class="dollar circular  blue icon trn" data-trn-key=""></i>Facturation</div>
-                <div class="item" id="" data-tab="plans"><i class="list circular blue icon trn" data-trn-key=""></i>Plan RDV</div>
-                <div class="item" data-tab=""><i class="edit icon trn" data-trn-key=""></i>Paiements</div>
-                <div class="item " id="" data-tab="antecedents"><i class="heartbeat circular red icon trn" data-trn-key=""></i>Historique</div>
-                <div class="item" data-tab=""><i class="edit circular icon trn" data-trn-key=""></i>Financier</div>
-                <div class="item" data-tab="" onclick="modAlertNew()"><i class="first aid red circular icon trn" data-trn-key=""></i>Alerte</div>
-                <div class="item" data-tab="" onclick="modLabo()"><i class="lab blue circular icon trn" data-trn-key=""></i>Laboratoire</div>
-                <div class="item" data-tab=""><i class="edit circular icon trn" data-trn-key=""></i>Prescription</div>
-                <div class="item " id="" data-tab="documents"><i class="file image outline circular yellow icon trn" data-trn-key=""></i>Documents</div>
-                <div class="item" data-tab=""><i class="edit circular icon trn" data-trn-key=""></i>Hist Med</div>
-                <div class="item" data-tab=""><i class="edit circular icon trn" data-trn-key=""></i>Ex dentaire</div>
-                <div class="item" data-tab="" onclick="modSuivi()"><i class="radio yellow circular icon trn" data-trn-key=""></i>Suivi Médical</div>
+  <!-- HEADER -->
+  <div class="example">
+      <div class="ui borderless large menu">
+          <a class="item"></a>
+          <a class=""></a>
+          <div class="right menu">
+              <a class="item" id="patName"></a>
+          </div>
+      </div>
+      <h4 class="ui center aligned header" id="patNameSub"></h4>
+  </div>
+  <!-- HEADER END -->
 
-                <div class="item " id="disb2" data-tab="examens"><i class="doctor circular purple icon trn" data-trn-key=""></i>Exam</div>
-                <div class="item" id="disb2" data-tab="odontos"><i class="crosshairs circular orange icon trn" data-trn-key=""></i>Odon</div>
-                <div class="item" id="disb4" data-tab="traitements"><i class="treatment circular yellow icon trn" data-trn-key=""></i>Traits</div>
-                <div class="item" id="disb5" data-tab="ordonnances"><i class="lab circular green icon trn" data-trn-key=""></i>Rx</div>
-                <div class="item" id="disb6" data-tab="paros"><i class="crosshairs circular red icon trn" data-trn-key=""></i>Paro</div>
-                <div class="item" id="disb7" data-tab="ententes"><i class="thumbs circular up blue icon trn" data-trn-key=""></i>Entente</div>
-                <div class="item" id="disb8" data-tab="codes"><i class="plus circular red icon trn" data-trn-key=""></i>Code Edit Prix</div>
-            </div>
+  <!-- Main loading indicator -->
+  <div id="loadingText" class="ui active inverted dimmer">
+      <div class="ui text loader">Chargement initial des données...</div>
+  </div>
+  <!-- Main loading indicator END-->
+
+  <!-- tabs1 -->
+  <div class="container">
+      <div id="context1">
+          <div class="ui top attached tabular menu active">
+              <div class="item active" data-tab="facturation" id="facturation" onclick="checkDentType();"><i class="dollar circular  blue icon trn" data-trn-key=""></i>Facturation</div>
+          </div>
+      </div>
+      <script>
+          $(".ui").on("click", function() {
+              $(".teal item").removeClass("active");
+              $(this).addClass("active");
+          });
+      </script>
+      <br />
+      <div class="ui content" id="updateAvail">
+          <!-- 2nd Tab Contents Vary here by 1st Tabs -->
+          <!-- Buttons -->
+      </div>
+  </div>
+
+  <div class="ui bottom attached tab " data-tab="patient">
+    <div id="context2">
+        <div class="ui pointing secondary menu">
+            <a class="item trn" data-tab="Facturation">Facturation</a>
         </div>
-        <script>
-            $(".ui").on("click", function() {
-                $(".teal item").removeClass("active");
-                $(this).addClass("active");
-            });
-        </script>
-        <br>
-        <div class="ui content" id="updateAvail">
-            <!-- 2nd Tab Contents Vary here by 1st Tabs -->
-            <!-- Buttons -->
+        <div class="ui tab segment" data-tab="Facturation">
+            <div class="ui axxium tiny button" onclick="">Facture</div>
         </div>
     </div>
-    </div>
-    <div class="ui bottom attached tab " data-tab="patient">
-        <div id="context2">
-            <div class="ui pointing secondary menu">
-                <a class="item trn" data-tab="Dossier">Dossier Patient</a>
-                <a class="item trn" data-tab="Facturation">Facturation</a>
-                <a class="item trn" data-tab="traitement">Plan de traitement</a>
-                <a class="item trn" data-tab="Paiements" class="trn">Paiements</a>
-                <a class="item trn" data-tab="Historique" class="trn">Historique</a>
-                <a class="item trn" data-tab="Financier" class="trn">Financier</a>
-                <a class="item trn" data-tab="Rappel" class="trn">Rappel</a>
-                <a class="item trn" data-tab="Alertes" class="trn" onclick="modAlertNew();">Alertes</a>
-            </div>
-            <div class="ui tab segment" data-tab="Dossier">
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creer un dossier</div>
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creation rapide</div>
-                <div class="ui axxium tiny button" onclick=";">Modifier</div>
-                <div class="ui axxium tiny button" onclick="modResponsable();" style="margin:5px">Responsable</div>
-                <div class="ui axxium tiny button" onclick="modFamille();">Famille</div>
-                <div class="ui axxium tiny button" onclick="modReference();">Reference</div>
-                <div class="ui axxium tiny button" onclick="dosConsul();">Dossier consultes</div>
-                <div class="ui axxium tiny button" onclick="modEnregistrer();">Enregistrer</div>
-                <div class="ui axxium tiny button" onclick="modImpression();">Impression</div>
-                <div class="ui axxium tiny button" onclick="modAlert();">Alerte médicale</div>
-                <div class="ui axxium tiny button" onclick="modSuivi();">Suivi médical</div>
-                <div class="ui axxium tiny button" onclick="modLabo();">Laboratoires</div>
-            </div>
-            <div class="ui tab segment" data-tab="Facturation">
-                <div class="ui axxium tiny button" onclick="">Facture</div>
-                <div class="ui axxium tiny button" onclick="">Rappel de facture</div>
-                <div class="ui axxium tiny button" onclick="">Facturation anticipee</div>
-                <div class="ui axxium tiny button">cdanET</div>
-                <!--      <div id="context3">
-              <div class="ui secondary menu">
-                <a class=" item active" data-tab="facturation">
-                <div class="ui axxium tiny button" >Facturation</div></a>
-                <a class="item" data-tab="fifth">Fifth</a>
-                <a class="item" data-tab="sixth">Sixth</a>
-              </div>
-              <div class="ui tab segment" data-tab="facturation">
-                Fact Data
-              </div>
-              <div class="ui active tab segment" data-tab="fifth">
-                5
-              </div>
-              <div class="ui tab segment" data-tab="sixth">
-                6
-              </div>
-              </div>  -->
-            </div>
-            <div class="ui tab segment" data-tab="traitement">
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creer un dossier</div>
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creation rapide</div>
-                <div class="ui axxium tiny button" onclick=";">Modifier</div>
-                <div class="ui axxium tiny button" onclick="modResponsable();" style="margin:5px">Responsable</div>
-                <div class="ui axxium tiny button" onclick="modFamille();">Famille</div>
-                <div class="ui axxium tiny button" onclick="modReference();">Reference</div>
-                <div class="ui axxium tiny button" onclick="dosConsul();">Dossier consultes</div>
-                <div class="ui axxium tiny button" onclick="modEnregistrer();">Enregistrer</div>
-                <div class="ui axxium tiny button" onclick="modImpression();">Impression</div>
-                <div class="ui axxium tiny button" onclick="modAlert();">Alerte médicale</div>
-                <div class="ui axxium tiny button" onclick="modSuivi();">Suivi médical</div>
-                <div class="ui axxium tiny button" onclick="modLabo();">Laboratoires</div>
-            </div>
-            <div class="ui tab segment" data-tab="Paiements">
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creer un dossier</div>
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creation rapide</div>
-                <div class="ui axxium tiny button" onclick=";">Modifier</div>
-                <div class="ui axxium tiny button" onclick="modResponsable();" style="margin:5px">Responsable</div>
-                <div class="ui axxium tiny button" onclick="modFamille();">Famille</div>
-                <div class="ui axxium tiny button" onclick="modReference();">Reference</div>
-                <div class="ui axxium tiny button" onclick="dosConsul();">Dossier consultes</div>
-                <div class="ui axxium tiny button" onclick="modEnregistrer();">Enregistrer</div>
-                <div class="ui axxium tiny button" onclick="modImpression();">Impression</div>
-                <div class="ui axxium tiny button" onclick="modAlert();">Alerte médicale</div>
-                <div class="ui axxium tiny button" onclick="modSuivi();">Suivi médical</div>
-                <div class="ui axxium tiny button" onclick="modLabo();">Laboratoires</div>
-            </div>
-            <div class="ui tab segment" data-tab="Historique">
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creer un dossier</div>
-                <div class="ui axxium tiny button" onclick="modCreateDos();">Creation rapide</div>
-                <div class="ui axxium tiny button" onclick=";">Modifier</div>
-                <div class="ui axxium tiny button" onclick="modResponsable();" style="margin:5px">Responsable</div>
-                <div class="ui axxium tiny button" onclick="modFamille();">Famille</div>
-                <div class="ui axxium tiny button" onclick="modReference();">Reference</div>
-                <div class="ui axxium tiny button" onclick="dosConsul();">Dossier consultes</div>
-                <div class="ui axxium tiny button" onclick="modEnregistrer();">Enregistrer</div>
-                <div class="ui axxium tiny button" onclick="modImpression();">Impression</div>
-                <div class="ui axxium tiny button" onclick="modAlert();">Alerte médicale</div>
-                <div class="ui axxium tiny button" onclick="modSuivi();">Suivi médical</div>
-                <div class="ui axxium tiny button" onclick="modLabo();">Laboratoires</div>
-            </div>
-            <div class="ui tab segment" data-tab="Alertes">
-            </div>
-        </div>
         <div class="ui two column grid">
             <div class="row">
                 <div class="seven wide column">
                     <div class=" ui axxium segment">
                         <div class="ui grid">
                             <div class="two column row">
-                                <!-- <div class="seven wide column">
-                          <img id="patPhoto" class="ui fluid rounded image patPhoto" src="json/images/square-image.png">
-                          <div class="field">
-                            <div class="file-input-wrapper">
-                                <button class="ui axxium tiny button" style="margin-top:3px"> <i class="photo icon"></i>Changer la photo</button>
-                                <input type="file" name="file" id="photoCapture" capture="camera" accept="image/*" onchange="uploadPhoto()"/>
-                            </div>
-                            <style type="text/css">
-                                .file-input-wrapper {
-                                width: 200px;
-                                height: 40px;
-                                overflow: hidden;
-                                position: relative;
-                                }
-                                .file-input-wrapper > input[type="file"] {
-                                font-size: 200px;
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                opacity: 0;
-                                }
-                                .file-input-wrapper > .btn-file-input {
-                                display: inline-block;
-                                width: 200px;
-                                height: 40px;
-                                }
-                            </style>
-                          </div>
-                          </div> -->
-                                <div class="seven wide column">
-                                    <div class="ui card">
-                                        <div class="image dimmable">
-                                            <div class="ui dimmer">
-                                                <div class="content">
-                                                    <div class="center">
-                                                        <div class="tiny ui inverted  button file-input-wrapper">
-                                                            <!-- Changer la photo -->
-                                                            <input type="file" name="file" id="photoCapture" capture="camera" accept="image/*" onchange="uploadPhoto()" />Changer La Photo
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <img id="patPhoto" class="ui fluid rounded image patPhoto" src="json/images/square-image.png">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="nine wide column">
-                                    <div class="ui tiny equal width form">
-                                        <div class="six wide field">
-                                            <label>No Dossier</label>
-                                            <input id="EID" readonly="" type="text">
-                                        </div>
-                                        <div class="two fields">
-                                            <div class="field">
-                                                <label>Nom</label>
-                                                <input id="Efirst" type="text">
-                                            </div>
-                                            <div class="field">
-                                                <label>Prenom</label>
-                                                <input id="Elast" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="two fields">
-                                            <div class="field">
-                                                <label>Rue</label>
-                                                <input id="Elast" readonly="" type="text">
-                                            </div>
-                                            <div class="field">
-                                                <label>Ville</label>
-                                                <input id="Elast" readonly="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="two fields">
-                                            <div class="eight wide field">
-                                                <label>Province</label>
-                                                <input id="Elast" readonly="" type="text">
-                                            </div>
-                                            <div class="eight wide field">
-                                                <label>Code Postal</label>
-                                                <input id="Elast" readonly="" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="two column row">
-                                <div class="eight wide column ">
-                                    <div class="ui form segment">
-                                        <div class="two fields">
-                                            <div class="ten wide field">
-                                                <label>RAMQ</label>
-                                                <input type="text" id="ramq_no">
-                                            </div>
-                                            <div class="field">
-                                                <label>Expiration</label>
-                                                <input type="date" id="ramq_exp">
-                                            </div>
-                                        </div>
-                                        <div class="three fields">
-                                            <div class="nine wide field">
-                                                <label>Date de nais.</label>
-                                                <input type="date" id="Ebirth">
-                                            </div>
-                                            <div class="field">
-                                                <label>Sexe</label>
-                                                <input type="text" id="sexe">
-                                            </div>
-                                            <div class="five wide field">
-                                                <label>Age</label>
-                                                <input type="text" id="age">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="eight wide column ">
                                     <div class="ui form segment">
                                         <div class="two fields">
@@ -6410,22 +6194,6 @@
                                             $('.modalNoteProt.modal').modal('hide');
                                         }
                                     });
-
-                                // function addToFactTbl()
-                                // {
-                                //  //facturefunction
-
-                                // }
-
-                                //fawad modal functions
-                                //Dont need for now
-                                // function factTableAdd()
-                                // {
-
-                                //   $('.factTableAddWindow.modal').modal('attach events', '.modalFacture td') .modal({
-                                //   allowMultiple: true
-                                // }).modal('show').modal('setting', 'closable', false);
-                                // }
                                 function modCdan1() {
                                     $('.modalCdan1').modal('show');
                                 }
@@ -7162,7 +6930,6 @@
                                     loadProts();
                                     loadSelect();
                                     loadSelo();
-                                    //loadPAT();
                                 });
 
                                 $("#odonto").on('mouseup', function(evt) {
@@ -7343,57 +7110,50 @@
                                     };
                                 })
                             </script>
-  <script type="text/javascript">
-      function changeLang(x) {
-          if (x == 'en') {
-              $('#en_ln').hide();
-              $('#fr_ln').show();
-          }
-          if (x == 'fr') {
-              $('#en_ln').show();
-              $('#fr_ln').hide();
-          }
-          translator.lang(x);
-      }
+    <script type="text/javascript">
+        function changeLang(x) {
+            if (x == 'en') {
+                $('#en_ln').hide();
+                $('#fr_ln').show();
+            }
+            if (x == 'fr') {
+                $('#en_ln').show();
+                $('#fr_ln').hide();
+            }
+            translator.lang(x);
+        }
 
-      $(document).ready(function() {
-          locatn = curr_location();
-          var thisTag = [];
+        $(document).ready(function() {
+            locatn = curr_location();
+            var thisTag = [];
 
-          $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider').each(function() {
+            $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider').each(function() {
+                var words = $(this).text();
 
-              var words = $(this).text();
+                if (words != "") {
+                    var found = $.inArray(words, thisTag);
+                    if (found < 0) {
+                        thisTag.push($.trim(words));
+                    }
+                }
+            });
 
-              if (words != "") {
+            var thisData = [];
 
-                  var found = $.inArray(words, thisTag);
-                  if (found < 0) {
-                      thisTag.push($.trim(words));
+            $.each(thisTag, function(idx, val) {
+                thisData.push('' + val + '"' + ' : { en:" " },');
+            });
 
-                  } else {
-                      // console.log('repeated:'+ $(this).text());
-                  }
-
-              }
-
-          });
-
-          var thisData = [];
-
-          $.each(thisTag, function(idx, val) {
-              thisData.push('' + val + '"' + ' : { en:" " },');
-          });
-
-          thisData2 = {};
-          thisData2 = {
-              'Dictionar': thisData
-          };
-      });
-  </script>
-  <script type="text/javascript">
-      $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1 ').removeClass('trn');
-      $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1').addClass('trn');
-  </script>
+            thisData2 = {};
+            thisData2 = {
+                'Dictionar': thisData
+            };
+        });
+    </script>
+    <script type="text/javascript">
+        $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1 ').removeClass('trn');
+        $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1').addClass('trn');
+    </script>
 </body>
 
 </html>

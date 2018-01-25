@@ -1973,23 +1973,20 @@ function RamqUpdateGlobalBill()
             if (result.outcome == 'updateFacture error')
                 alert(result.message);
             else {
-                ////We don't need cda version for now
-                //var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
-                //if (cdaVersion == '2')
-                //{
-                //    $('#insr_cdan_version_1').prop('checked', true);
-                //    getAllTrData(); //Open Payment form
-                //}
-                //else if (cdaVersion == '4') {
-                //    $('#insr_cdan_version_4').prop('checked', true);
-                //    getAllTrData(); //Open Payment form
-                //}
-                //else {
-                //    alert("Cda version is not correct!");
-                //}
-                getAllTrData(); //Open Payment form
+                var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                if (cdaVersion == '2')
+                {
+                    $('#insr_cdan_version_1').prop('checked', true);
+                    getAllTrData(); //Open Payment form
+                }
+                else if (cdaVersion == '4') {
+                    $('#insr_cdan_version_4').prop('checked', true);
+                    getAllTrData(); //Open Payment form
+                }
+                else {
+                    alert("Cda version is not correct!");
+                }
             }
-                
         });
 }
 

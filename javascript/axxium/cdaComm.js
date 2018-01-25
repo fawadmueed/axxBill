@@ -459,6 +459,12 @@ function CdaCommGetCommStatus(pResponseLine)
 function CdaCommGetVersion(pCode)
 {
     var version = '';
+    //TODO: For Test Only
+    if (pCode == '')
+    {
+        pCode = 'SUN';
+    }
+
     $.ajax({
         type: 'GET',
         url: "json/insurances/insurances.json",
@@ -467,16 +473,17 @@ function CdaCommGetVersion(pCode)
         success: function (data) {
             insuranceData = data;
 
-            for (var i = 0; i < data.length; i++)
-            {
-                if (data[i].code == pCode)
-                {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].code == pCode) {
                     version = data[i].cdaVersion;
                     break;
                 }
             }
         }
     });
+
+
+    
     return version;
 }
 

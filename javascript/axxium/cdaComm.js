@@ -460,7 +460,7 @@ function CdaCommGetVersion(pCode)
 {
     var version = '';
     //TODO: For Test Only
-    if (pCode == '')
+    if (!pCode)
     {
         pCode = 'SUN';
     }

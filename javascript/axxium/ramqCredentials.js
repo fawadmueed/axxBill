@@ -181,12 +181,12 @@ function RamqGetVisionRData() {
 
                       $('#pamnt_no_prof').val(globVisionRData.IdProf);
 
-                      //Show prof name on Payment -> Assurances
-                      document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
-                      //Show prof name on CDANET Modal - 1 -> Requérant
-                      document.getElementById("cdan1_req").value = globVisionRData.ProfName;
-                      //Show prof name on CDANET Modal - 2 -> Requérant
-                      document.getElementById("cdan2_req").value = globVisionRData.ProfName;
+                    //   //Show prof name on Payment -> Assurances
+                    //   document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
+                    //   //Show prof name on CDANET Modal - 1 -> Requérant
+                    //   document.getElementById("cdan1_req").value = globVisionRData.ProfName;
+                    //   //Show prof name on CDANET Modal - 2 -> Requérant
+                    //   document.getElementById("cdan2_req").value = globVisionRData.ProfName;
 
                   },
                   error: function (xhr, ajaxOptions, thrownError) {

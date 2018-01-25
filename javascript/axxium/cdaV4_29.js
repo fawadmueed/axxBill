@@ -2320,7 +2320,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                 url: globCdaNetAPIuri + "PostGenerTransaction",
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify({ Version: '2', TransactionType: globCdanetTranscode, NoDossier: globNoDossier, Dentiste: globDentist }),
+                data: JSON.stringify({ Version: '4', TransactionType: globCdanetTranscode, NoDossier: globNoDossier, Dentiste: globDentist }),
                 success: function (result) {
                     switch (globCdanetTranscode) {
                         case '1'://Claim
@@ -2334,7 +2334,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     //console.log(result);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    debugger;
+                    //debugger;
                     alert(xhr.statusText);
                 }
             });

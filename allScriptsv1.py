@@ -959,8 +959,8 @@ if tx == "getRamqData":
             logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
             logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
             logFile.close()  
-            
-            print '{ "outcome" : "error", "message" : "Something was wrong. code %" }'%(r.status_code)
+        
+            print '{ "outcome" : "error", "message" : "Something was wrong. Code % : %" }'%(r.status_code, r.reason)
         else:
             xmlresp = r.text
             if xmlresp is None or not xmlresp:          
@@ -973,7 +973,7 @@ if tx == "getRamqData":
                 logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
                 logFile.close()     
 
-                print '{ "outcome" : "error", "message" : "Something was wrong" }'
+                print '{ "outcome" : "error", "message" : "Something was wrong. Response empty" }'
             else:         
                 if xmlresp.find("Error") > -1 or xmlresp.find("null") > -1:   #In case, something happen in server side code 500
                     if xmlresp.find("null") > -1:

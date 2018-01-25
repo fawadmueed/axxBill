@@ -960,7 +960,7 @@ if tx == "getRamqData":
             logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
             logFile.close()  
             
-            print '{ "outcome" : "error", "message" : "Something was wrong" }'
+            print '{ "outcome" : "error", "message" : "Something was wrong. code %" }'%(r.status_code)
         else:
             xmlresp = r.text
             if xmlresp is None or not xmlresp:          

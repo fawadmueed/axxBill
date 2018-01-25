@@ -10,7 +10,7 @@ var globPatientId = "";
 var globNoDossier = "";
 var globDentist = "";
 var globIsBillCreated = false; //This flag is used to create new bill when user click "Generer la facture" button.
-var globRamqTotal = 0.00;
+var globRamqTotal = -2; // -2: error occurs, -1: bill was canceled
 var globLang = 'fr';
 
 // dent_Type is a global variable : Dentist, Chirurgiens, Denturologiste
@@ -1209,7 +1209,7 @@ function displayResponsePaiment(_response)
     var globalStaRecev = _response.GlobalStaRecev;
     if (globalStaRecev == "2") //Error message.
     {
-        globRamqTotal = -1; //Uses as a flag to send data to VisionR
+        globRamqTotal = -2; //Uses as a flag to send data to VisionR
         var GlobalArrListeMsgExplRecev = _response.GlobalArrListeMsgExplRecev;
         if (GlobalArrListeMsgExplRecev != null) {
             for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
@@ -1327,7 +1327,7 @@ function displayResponseModification(_response)
                 errormsg += _response.GlobalArrListeMsgExplRecev2[i].code +': '+_response.GlobalArrListeMsgExplRecev2[i].text + '\n';
             }
         }
-        globRamqTotal = -1;
+        globRamqTotal = -2;
         displayRamqAnswer("RAMQ", msg);
     }
 
@@ -1339,7 +1339,7 @@ function displayResponseAnnulation(_response)
     var errormsg = '';
     if (_response.GlobalStaRecev == '1')
     {
-        globRamqTotal = 0.00;
+        globRamqTotal = -1; //Send to VisionR -1 means bill was canceled
         displayRamqAnswer("RAMQ", "La facture a été annulé avec succès.");
     }
     else if (_response.GlobalStaRecev == '2')
@@ -1357,10 +1357,9 @@ function displayResponseAnnulation(_response)
                 errormsg += _response.GlobalArrListeMsgExplRecev2[i].code + ': ' + _response.GlobalArrListeMsgExplRecev2[i].text + '\n';
             }
         }
-        globRamqTotal = -1;
+        globRamqTotal = -2;
         displayRamqAnswer("RAMQ", errormsg);
     }
-        
 }
 
 function removeCDATA(str) {
@@ -2042,7 +2041,7 @@ function RamqPostalCodeValid(pPostCode)
 
 function RamqValidation()
 {
-    //TODO:
+    //TODO: Implement
     var res = false;
     var errorMsg = '';
 

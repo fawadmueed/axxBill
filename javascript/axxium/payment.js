@@ -23,6 +23,8 @@ function PaymGetFactGridTypesInfo()
     return res;
 }
 
+
+//TODO:Implement
 //Enable (disable) section of Payment form depends on operation types
 function PaymEnableSectionIPaymeForm() {
     var types = PaymGetFactGridTypesInfo();

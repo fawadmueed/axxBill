@@ -1,5 +1,5 @@
 function factureResponseClose() {
-    if (globRamqTotal > -1) {
+    if (globRamqTotal > -2) { //-2 means error occurs, -1: bill was canceled
         //Sending data to Visionr.
         var curDate = RamqGetCurrentDate();
         var xml = RamqCreateXmlForVisionR(0, curDate, 0.00, 0.00, 0.00);

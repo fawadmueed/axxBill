@@ -1025,8 +1025,8 @@ var dict = {
     en: "Additional information Régie",
     fr: "Informations complémentaires Régie"
   },
-  "Informations complementaires Régie - Deatail Facture": {
-    en: "Additional information Régie - Detail Invoice ",
+  "Informations complementaires Régie - Detail Facture": {
+    en: "Additional information Régie - Invoice Detail  ",
     fr: "Informations complémentaires Régie - Détail Facture"
   },
   "Infos Patient": {

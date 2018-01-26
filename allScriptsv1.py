@@ -1098,7 +1098,7 @@ if (tx == "getECFiles"):
                     if comma:
                         print ','
                     print '{ "file" : "%s"'%filename.split('/')[3]
-                    print ', "url" : "http://%s/%s/%s"'%(os.environ['HTTP_HOST'], 'axxium', filename)
+                    print ', "url" : "http://%s/%s"'%(os.environ['HTTP_HOST'], filename)
                     print ', "date" : "%s"'%time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(mdate))
                     print " } "
                     comma = True

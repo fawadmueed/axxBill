@@ -3,11 +3,11 @@
 // ~Updated
 
  function get_type_surf(val){
- 	
+
         // LINE 1525 u_fact2
       var type_surf;
       type_surf=3;
-      // Condition 1 
+      // Condition 1
         if(val==''){
 		type_surf=4;
           console.log('Surface empty Type is :' + type_surf);
@@ -20,12 +20,12 @@
         }
 
         //Condition 3
-        if((!(isNaN(val)))&&(val.length!='')) 
-        { 
+        if((!(isNaN(val)))&&(val.length!=''))
+        {
           //isNAN Not-A-Number Function , If NOT A NUMBER : TRUE , IF NUMBER - FALSE
           //in loop when NOT TRUE - isNAN
           console.log('Surface is number : ' + isNaN(val));
-            
+
             if(val=='97'||val=='87')
             { //tested
               type_surf=5;
@@ -39,7 +39,7 @@
             }
         else{
                 // isNAN is TRUE
-                type_surf=1; 
+                type_surf=1;
               }
 
         }
@@ -47,7 +47,7 @@
         var surf_sextant=surface_validation_sextant(val);
 
         //Condition 4
-        if(surf_sextant) 
+        if(surf_sextant)
         {
           type_surf=2; //tested
         }
@@ -56,16 +56,16 @@
         var concatStr2=val+string_surface;
         console.log('Sendng str to check repeat' + concatStr2);
         var ifExistInString=checkRepeatChrcInString(concatStr2);
-        
+
         //Condition 5
         if(val.length!=0)
         {
 	        if(ifExistInString<1){
-	          // means User did not Input I,M,O,B,D,L 
+	          // means User did not Input I,M,O,B,D,L
 	          console.log('TYPE 0 because string did not present in IMOBDL');
 	          type_surf=0;
 	        }
-        
+
 	        if (type_surf==0)
 
 	        {
@@ -74,7 +74,7 @@
 	    }
 
         return type_surf;
-    }   
+    }
 
 
  function surface_validation_sextant(val){
@@ -102,14 +102,14 @@
 
  		if ((init_code=='')||(surf=='O'))
  		{
- 			
+
  			warnMsg(msgerr.msg021);
  			return false;
  		}
 
  	}
- 	
- 	else if((dent>=14 && dent<=18)||(dent>=24 && dent<=28)||(dentl>=34 && dent<=38)||(dentl>=44 && dent<=48)||(dentl>=54 && dent<=55)||(dentl>=64 && dent<=65)||(dentl>=74 && dent<=75)||(dentl>=84 && dent<=85))
+
+ 	else if((dent>=14 && dent<=18)||(dent>=24 && dent<=28)||(dent>=34 && dent<=38)||(dent>=44 && dent<=48)||(dent>=54 && dent<=55)||(dent>=64 && dent<=65)||(dent>=74 && dent<=75)||(dent>=84 && dent<=85))
  	{
  		init_code='';
  		if(surf!='97')
@@ -139,7 +139,7 @@
  	if(surf.length!=1){
 
  	}
- 	
+
  	switch (surf.charAt(0)){
 
  		case 'B':
@@ -178,7 +178,7 @@
  			{
  			 init_code='23102';
  			}
- 			
+
  		break;
  		case 'M':
  			var aouc=aouc_fn(1);
@@ -245,42 +245,42 @@
  	{
 		init_code='2110'+surf_length;
 
-		if((surf=='M')||(surf=='B')||(surf=='BM')) 
+		if((surf=='M')||(surf=='B')||(surf=='BM'))
 		{
 			var aouc=aouc_fn(2);
 			if(aouc==2)
 			{
-				init_code='2330'+surf_length;				
+				init_code='2330'+surf_length;
 			}
 			if(aouc==6)
 			{
-				init_code='2123'+surf_length;	
+				init_code='2123'+surf_length;
 			}
 		else{
 				warnMsg(msgerr.msg077);
 				return false;
 			}
-		}		
+		}
  	}
  	if((dent>=34 && dent<=35)||(dent>=44 && dent<=45))
  	{
 		init_code='2121'+surf_length;
 
-		if((surf=='DM')||(surf=='BL')) 
+		if((surf=='DM')||(surf=='BL'))
 		{
 			warnMsg(msgerr.msg077);
 			return false;
-		}		
+		}
  	}
  	if((dent>=16 && dent<=18)||(dent>=26 && dent<=28)||(dent>=36 && dent<=38)||(dent>=46 && dent<=48))
  	{
 		init_code='2122'+surf_length;
 
-		if((surf=='DM')||(surf=='BL')) 
+		if((surf=='DM')||(surf=='BL'))
 		{
 			warnMsg(msgerr.msg077);
 			return false;
-		}		
+		}
  	}
  }
 
@@ -330,7 +330,7 @@ else {
 			   		else
 			   		{
 			   			init_code='2111'+surf_length;
-			   		}			
+			   		}
 
 		   	 	break;
 
@@ -342,10 +342,10 @@ else {
 			   		else
 			   		{
 			   			init_code='2130'+surf_length;
-			   		}			
+			   		}
 
 		   	 	break;
-		   	 	
+
 		   	 	case '8':
 		   	 			if(locatn=='Quebec')
 			   		{
@@ -354,24 +354,24 @@ else {
 			   		else
 			   		{
 			   			init_code='2312'+surf_length;
-			   		}			
-		   	 	
+			   		}
+
 		   	 	break;
-		   	 	
+
 		   	 	case '2':
 		   	 		if(((dent>=54 && dent<=55)||(dent>=64 && dent<=65)||(dent>=74 && dent<=75)||(dent>84 && dent<=85)))
 		   	 		{
 		   	 			init_code='2341'+surf_length;
 		   	 		}
 		   	 	break;
-		   	 	
+
 		   	 	case '6':
 		   	 		init_code='2112'+surf_length;
 		   	 	break;
 		   	 	case '7':
 		   	 		init_code='2112'+surf_length;
 		   	 	break;
-		   	 	
+
 		   	 	case '0':
 		   	 			//FALSE
 		   	 	break;
@@ -379,8 +379,8 @@ else {
 		   	 	case 'X':
 		   	 		// TRUE
 		   	 	break;
-		   	 	
-		   	 	
+
+
 		   	 }
 
 		   }
@@ -446,23 +446,23 @@ else {
 		   	 		}
 		   	 	break;
 		   	 	case 'B':
-		   	 		
+
 		   	 			init_code='25221';
 		   	 	break;
 		   	 	case '5':
-		   	 		
+
 		   	 			init_code='25500';
 		   	 	break;
 		   	 	case '6':
-		   	 		
+
 		   	 			init_code='2123'+surf_length;
 		   	 	break;
 		   	 	case '7':
-		   	 		
+
 		   	 		init_code='2123'+surf_length;
 		   	 	break;
 		   	 	case '8':
-		   	 		
+
 		   	 		init_code='2312'+surf_length;
 		   	 	break;
 		   	 	case '0':
@@ -472,8 +472,8 @@ else {
 		   	 	case 'X':
 		   	 		// TRUE
 		   	 	break;
-		   	 	
-		   	
+
+
 		   	}
 		   }
 
@@ -493,7 +493,7 @@ else {
 		   	 	break;
 
 		   	 	case '3':
-		   	 		
+
 		   	 		if(surf_length<=3)
 		   	 		{
 		   	 			init_code='25'+surf_length+'00';
@@ -523,7 +523,7 @@ else {
 		   	 		break;
 				case 'B':
 		   	 		init_code='25221';
-		   	 		
+
 		   	 	break;
 		   	 	case '5':
 		   	 		init_code='25500';
@@ -535,9 +535,9 @@ else {
 		   	 	case '7':
 		   	 		init_code='2123'+surf_length;
 		   	 	break;
-		   	 	
+
 		   	 	case '8':
-		   	 		
+
 		   	 		if((val.indexOf('O') > 0)||(val.indexOf('B') > 0)||(val.indexOf('L') > 0))
 					{
 						init_code='23210';
@@ -546,16 +546,16 @@ else {
 		   	 		{
 		   	 			init_code='2331'+surf_length;
 		   	 		}
-		   	 	
-		   	 	break;	
+
+		   	 	break;
 		   	 	case '0':
 		   	 			//FALSE
 		   	 	break;
 
 		   	 	case 'X':
 		   	 		// TRUE
-		   	 	break;	   	 	
-		   	
+		   	 	break;
+
 		   	}
 }
 		   	if((dent>=16 && dent<=18)||(dent>=26 && dent<=28)||(dent>=36 && dent<=38)||(dent>46 && dent<=48))
@@ -624,7 +624,7 @@ else {
 		   	 		{
 		   	 			init_code='2332'+surf_length;
 		   	 		}
-		   	 	
+
 		   	 	break;
 
 		   	 	case '0':
@@ -633,14 +633,14 @@ else {
 		   	 	case 'X':
 		   	 		// TRUE
 		   	 	break;
-		   	
+
 		   	}
 
 
 	 }
-   
+
    }
-   
+
 
 
  }

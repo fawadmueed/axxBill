@@ -93,7 +93,7 @@
         else
           return results[1];
       }
-      
+
       function keyEntryPIN(aNum)
       {
         //alert(aNum);
@@ -113,30 +113,30 @@
           }
         }
       }
-      
+
       function getPIN()
       {
         keyNumPIN = "";
         $('.modalPIN.modal')
         .modal({
           closable  : false,
-          allowMultiple: true, 
+          allowMultiple: true,
           onDeny    : function(){
             return false;
           }
         })
         .modal('show')
       }
-      
+
       function checkPIN()
       {
         if (keyNumPIN.length != 0)
-      
+
         {
           alert("Le code numérique doit compter 4 chiffres");
           keyNumPIN = "";
-      
-      
+
+
         }
         else
         {
@@ -157,12 +157,12 @@
                     }
               });
         }
-      
+
       }
-      
+
       function updatePrix()
       {
-      
+
         code=document.getElementById('keyPrixEdit').innerHTML;
         ramq=$('#newRamqPrixRead').val();
         prix=$('#newPrixRead').val();
@@ -170,19 +170,19 @@
         special=$('#newSpecialPrixRead').val();
         //Debug F
         alert(code);
-      
+
         $.get("allScriptsv1.py?tx=updatePrix&code="+code+"&prix="+prix+"&ramq="+ramq+"&insurance="+insurance+"&special="+special,function(data,status){
         });
         //Debug F
         alert('File Updated');
-      
+
         $('#prixEdit').modal('hide');
         $.getJSON("json/params/blank.json",function(data){
           dataJsonCode=data;
         });
         $('#codesBody').html(" ");
       }
-      
+
    </script>
    <script src="javascript/axxium/facture_table.js"></script>
 </head>
@@ -235,7 +235,7 @@
             Deconnexion
          </a>
          <a class="item" id="en_ln" onclick="changeLang('en')"><b>En</b></a>
-         <a class="item" id="fr_ln" onclick="changeLang('fr')"><b>Fr</b></a>  
+         <a class="item" id="fr_ln" onclick="changeLang('fr')"><b>Fr</b></a>
       </div>
       <h4 class="ui center aligned header" id="patNameSub"></h4>
    </div>
@@ -274,8 +274,8 @@
            $(".teal item").removeClass("active");
            $(this).addClass("active");
          });
-         
-         
+
+
       </script>
       <br>
       <div class="ui content" id="updateAvail">
@@ -1570,7 +1570,7 @@
                                  <div class="ui basic label">$</div>
                               </div>
                            </div>
-                           <!-- 
+                           <!--
                               <div class="four fields">
                                   <div class="inline field">
                                     <input type="checkbox" ></input>
@@ -1614,7 +1614,7 @@
                               <input type="date" id="txtRamqPaymentDateTo">
                            </div>
                            <div class="ui axxium tiny button" onclick="RamqBillGetPaymentList()">Chercher</div>
-                           <div class="field" style="margin-left:30px"> 
+                           <div class="field" style="margin-left:30px">
                               <input type="checkbox" name="" id="chkRamqPaymentDisplayAllPatient">
                               <label>Tous les patients</label>
                            </div>
@@ -2988,14 +2988,14 @@
                         <div class="inline fields">
 
                         <div class="inline field">
-                           
+
                            <input type="radio" name="insr_ver_select" id="insr_cdan_version_1" disabled>
                            <label>Version 2</label>
                         </div>
                         <div class="inline field">
                            <input type="radio" name="insr_ver_select" id="insr_cdan_version_4" disabled >
                            <label>Version 4</label>
-                           
+
                         </div>
                       </div>
                         <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
@@ -3110,13 +3110,13 @@
                                     </select>
                                  </div>
                                  <script type="text/javascript">
-                                    $('.ui.dropdown').dropdown();                                  
+                                    $('.ui.dropdown').dropdown();
                                  </script>
-                                 <!--  -->                                 
+                                 <!--  -->
                                  <script type="text/javascript">
                                     $(document).on('change','.lieu',function(){
                                     if($('#lieu_codifie').is(':checked')){
-                                                                            
+
                                         $('.codif_selection_lieu').show();
                                         $('.codif_selection_non').hide();
                                       };
@@ -3126,7 +3126,7 @@
                                       };
                                       // alert($('#lieu_codifie_non').checked());
                                     })
-                                                                     
+
                                  </script>
                                  <label>Type de lieu</label>
                                  <div class="inline field">
@@ -3302,26 +3302,26 @@
                   </div>
                   <script type="text/javascript">
                      $(document).ready(function(){
-                     
+
                        $('.fact_rec_check').click(function(){
-                       
+
                        if($('.fact_rec_check').is(':checked'))
                        {
-                         
+
                          $('#facture_select_check').show();
                        }
                        else
-                       { 
-                         
+                       {
+
                          $('#facture_select_check').hide();
                        }
                          });
-                     
+
                        $('.paiemnt_question').change(function(){
-                     
+
                         pamnt_trnsfr_modal_stats=0;
-                     
-                     
+
+
                         if( ($('#asur_1_oui').is(':checked')) && ($('#asur_2_oui').is(':checked')) ) {
                           //conition 1 : •  If the answers are yes and yes the button Transfer to insurance opens the information window - Insurance (see Information window - Insurance in the patient file)
                           $('.button.trns_insur').removeAttr('disabled');
@@ -3330,7 +3330,7 @@
                           // modInsuranceAddForm();
                           console.log('1st');
                         }
-                        
+
                         if( ($('#asur_1_oui').is(':checked')) && ($('#asur_2_non').is(':checked')) ) {
                           //conition 2:  If the answers are Yes and No Transfer Insurance opens the information window - CDAnet Claim (2 windows below the choice of the window depends on the insurer In the guide CDAnet insurers with version 2 have the window. 1 and insurers having version 4 have the window 2
                           pamnt_trnsfr_modal_stats=2;
@@ -3338,24 +3338,24 @@
                           console.log('2nd');
                         }
                         if($('#asur_1_non').is(':checked')) {
-                          //conition 3 :  If the answer is no to the first question of whatever the answer to the second question the user can not transfer insurance              
+                          //conition 3 :  If the answer is no to the first question of whatever the answer to the second question the user can not transfer insurance
                           $('.button.trns_insur').attr('disabled','disabled');
                           pamnt_trnsfr_modal_stats=3;
                           console.log('3rd');
                        }
-                     
-                     
-                     
+
+
+
                      })
                        })
-                     
+
                      function  pamnt_trnsfr_modal_show(){
-                     
+
 
                       if(pamnt_trnsfr_modal_stats==1){
                         modInsuranceAddForm();
-                      } 
-                     
+                      }
+
                       if(pamnt_trnsfr_modal_stats==2){
                           // open modal CDA NET 1 or 2 depending on Version of insurance
 
@@ -3367,10 +3367,10 @@
                           {
                             modCdan2();
                           }
-                      } 
-                     
+                      }
+
                      }
-                     
+
                   </script>
                   <div class="three wide column" id="facture_select_check" style="display: none;">
                      <div class="ui form segment">
@@ -3534,7 +3534,7 @@
                            <input type="text" name="" id="pamnt_no_grp_regie_fact">
                         </div>
                         <div class="inline field">
-                           <input type="radio" class="optRegiePa_radio_upd" name="fact_paimn_radio" 
+                           <input type="radio" class="optRegiePa_radio_upd" name="fact_paimn_radio"
                               id="optRegiePaimentComptePers_upd" checked="checked"'>
                            <label>Compte Personnel</label>
                         </div>
@@ -3640,7 +3640,7 @@
                         <script type="text/javascript">
                            $(document).on('change','.lieu',function(){
                              if($('#lieu_codifie_regie_fact').is(':checked')){
-                               
+
                                $('.codif_selection_lieu').show();
                                $('.codif_selection_non').hide();
                              };
@@ -3728,7 +3728,7 @@
    <div class="ui modalCdan1 modal">
       <i class="close icon"></i>
       <div class="header">
-         <i class="user icon"></i>CDANET Modal - 1 
+         <i class="user icon"></i>CDANET Modal - 1
       </div>
       <div class="content">
          <div class="ui axxium form segment">
@@ -3823,7 +3823,7 @@
    <div class="ui modalCdan2 modal">
       <i class="close icon"></i>
       <div class="header">
-         <i class="user icon"></i>CDANET Modal - 2 
+         <i class="user icon"></i>CDANET Modal - 2
       </div>
       <div class="content">
          <div class="ui axxium form segment">
@@ -3961,7 +3961,7 @@
                         <input type="text" name="">
                      </div>
                   </div>
-                  
+
                </div>
                <button class="right floated ui axxium button" onclick="CdaV4SendRequestToCdaNet()">OK</button>
                <button class="right floated ui axxium button" >Annuler</button>
@@ -3980,13 +3980,13 @@
           <div class="" id="cdanet_response_div">
 
           </div>
-        </div>  
+        </div>
         <div class="three fields">
           <button class="ui axxium right floated button">Imprimer</button>
           <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()" disabled>Transférer assurance 2</button>
           <button class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</button>
         </div>
-        
+
       </div>
    </div>
 
@@ -4051,27 +4051,27 @@
         </div>
       </div>
    </div>
-   
+
 
    <script type="text/javascript">
       $(".ui.fluid.selection.dropdown.references").change(function(){
         sel();
       });
-      
+
       function sel(){
-      
+
          var selection=$(".ui.fluid.selection.dropdown option:selected" ).text();
-      
-      
+
+
          switch(selection) {
           case "Patient":
             var string= '<div class="ui divider"></div><div class="ui two column grid"><div class="thirteen wide column"><div class="field"> <textarea></textarea></div></div> <div class="three wide column"><div class="field"><div class="ui axxium tiny button" style="margin: 4px;" onclick="reOpenSearch();">Chercher Patient</div><div class="ui axxium tiny button" onclick=";" style="margin: 4px;">Imprimer Une etiquette</div><div class="ui axxium tiny button" onclick=";"  style="margin: 4px;">Courriel a la reference</div></div></div></div> ' ;
-      
+
             $('.SelectedContent').empty();
              $('.SelectedContent').append(string);
-      
+
           break;
-      
+
           case "Medical":
           var string1='\
            <br>\
@@ -4095,37 +4095,37 @@
           <div class="ui axxium tiny button" onclick="adRef();" style="margin: 4px;">Ajouter</div>\
           <div class="ui axxium tiny button" onclick=";" style="margin: 4px;">Imprimer Une etiquette</div>\
           <div class="ui axxium tiny button" onclick=";"  style="margin: 4px;">Courriel a la reference</div></div></div> </div>';
-      
-      
+
+
              $('.SelectedContent').empty();
              $('.SelectedContent').append(string1);
           break;
-      
+
           case "En passant":
           $('.SelectedContent').empty();
-      
+
           break;
-      
+
           case "PubliPos":
           $('.SelectedContent').empty();
           break;
-      
+
           case "Internet":
           $('.SelectedContent').empty();
           break;
-      
+
           case "Aucune":
           $('.SelectedContent').empty();
           break;
-      
+
           default:
             alert('Error getting the Selected value! ');
-      
-      
-      
+
+
+
          }
-      
-      
+
+
       }
    </script>
    <div class="ui modalFactTableMore fullscreen modal">
@@ -4202,7 +4202,7 @@
                          function add_list_medi_del(){
                           $('#medi_com_list option:selected').remove();
                         }
-                        
+
                      </script>
                      <div class="field">
                         <label>Éléments de contexte</label>
@@ -4252,13 +4252,13 @@
                      </div>
                      <script type="text/javascript">
                         function add_list_elem_meas(){
-                          $('#form_dentiste #elem_meas_list').append('<option selected="selected">'+ 
+                          $('#form_dentiste #elem_meas_list').append('<option selected="selected">'+
                             $('#form_dentiste #mesurables_dentiste').val()+'/'+$('#form_dentiste #medicmnt_msrbles_options_dentiste').val()+'</option>');
                         }
                          function del_list_elem_meas(){
                           $('#form_dentiste #elem_meas_list option:selected').remove();
                         }
-                        
+
                      </script>
                   </div>
                   <div class="eight wide column">
@@ -4375,17 +4375,17 @@
       </div>
       <script type="text/javascript">
          $(document).on('change','#form_dentiste .lieu',function(){
-           
+
                if($('#form_dentiste #lieu_codifie_dent').is(':checked')){
-           
+
                  $('#form_dentiste #codif_selection_lieu').show();
                  $('#form_dentiste #secteur_active_denti_div').show();
-                                    
+
                  $('#form_dentiste #codif_selection_non').hide();
                  $('#form_dentiste #type_lieu_cont').hide();
                };
                if($('#form_dentiste #lieu_codifie_non_dent').is(':checked')){
-           
+
                  $('#form_dentiste #codif_selection_non').show();
                  $('#form_dentiste #type_lieu_cont').show();
                  $('#form_dentiste #codif_selection_lieu').hide();
@@ -4458,7 +4458,7 @@
                          function add_list_medi_del(){
                           $('#form_chirurgiens #medi_com_list_chir option:selected').remove();
                         }
-                        
+
                      </script>
                      <div class="field">
                         <label>Éléments de contexte</label>
@@ -4510,13 +4510,13 @@
                      <script type="text/javascript">
                         function add_list_elem_meas_chir(){
                          console.log($('#form_chirurgiens #medicmnt_msrbles_options_chir').val());
-                          $('#form_chirurgiens #elem_meas_list').append('<option selected="selected">'+ 
+                          $('#form_chirurgiens #elem_meas_list').append('<option selected="selected">'+
                             $('#form_chirurgiens #mesurables_chir').val()+'/'+$('#form_chirurgiens #medicmnt_msrbles_options_chir').val()+'</option>');
                         }
                          function del_list_elem_meas_chir(){
                           $('#form_chirurgiens #elem_meas_list option:selected').remove();
                         }
-                        
+
                      </script>
                   </div>
                   <div class="eight wide column">
@@ -4633,17 +4633,17 @@
       </div>
       <script type="text/javascript">
          $(document).on('change','#form_chirurgiens .lieu',function(){
-           
+
                if($('#form_chirurgiens #lieu_codifie_chir').is(':checked')){
-                 
+
                  $('#form_chirurgiens #codif_selection_lieu').show();
                  $('#form_chirurgiens #secteur_active_bucc_div').show();
-                 
+
                  $('#form_chirurgiens #codif_selection_non').hide();
                  $('#form_chirurgiens #type_lieu_cont').hide();
                };
                if($('#form_chirurgiens #lieu_codifie_non_chir').is(':checked')){
-           
+
                  $('#form_chirurgiens #codif_selection_non').show();
                  $('#form_chirurgiens #type_lieu_cont').show();
                  $('#form_chirurgiens #codif_selection_lieu').hide();
@@ -4792,7 +4792,7 @@
                          function add_list_medi_del_Up(){
                           $('#medi_com_list_Up option:selected').remove();
                         }
-                        
+
                      </script>
                      <div class="field">
                         <label>Éléments de contexte</label>
@@ -4842,13 +4842,13 @@
                      </div>
                      <script type="text/javascript">
                         function add_list_elem_meas_Up(){
-                          $('#form_dentiste_Up #elem_meas_list_Up').append('<option selected="selected">'+ 
+                          $('#form_dentiste_Up #elem_meas_list_Up').append('<option selected="selected">'+
                             $('#form_dentiste_Up #mesurables_dentiste').val()+'/'+$('#form_dentiste_Up #medicmnt_msrbles_options_dentiste').val()+'</option>');
                         }
                          function del_list_elem_meas_Up(){
                           $('#form_dentiste_Up #elem_meas_list_Up option:selected').remove();
                         }
-                        
+
                      </script>
                   </div>
                   <div class="eight wide column">
@@ -4965,17 +4965,17 @@
       </div>
       <script type="text/javascript">
          $(document).on('change','#form_dentiste_Up .lieu',function(){
-           
+
                if($('#form_dentiste_Up #lieu_codifie_dent').is(':checked')){
-           
+
                  $('#form_dentiste_Up #codif_selection_lieu').show();
                  $('#form_dentiste_Up #secteur_active_denti_divUpd').show();
-                                     
+
                  $('#form_dentiste_Up #codif_selection_non').hide();
                  $('#form_dentiste_Up #type_lieu_cont').hide();
                };
                if($('#form_dentiste_Up #lieu_codifie_non_dent').is(':checked')){
-           
+
                  $('#form_dentiste_Up #codif_selection_non').show();
                  $('#form_dentiste_Up #type_lieu_cont').show();
                  $('#form_dentiste_Up #codif_selection_lieu').hide();
@@ -5048,7 +5048,7 @@
                          function add_list_medi_del(){
                           $('#form_chirurgiens_Up #medi_com_list_chir option:selected').remove();
                         }
-                        
+
                      </script>
                      <div class="field">
                         <label>Éléments de contexte</label>
@@ -5099,13 +5099,13 @@
                      </div>
                      <script type="text/javascript">
                         function add_list_elem_meas_chir(){
-                          $('#form_chirurgiens_Up #elem_meas_list').append('<option selected="selected">'+ 
+                          $('#form_chirurgiens_Up #elem_meas_list').append('<option selected="selected">'+
                             $('#form_chirurgiens_Up #mesurables_chir').val()+'/'+$('#form_chirurgiens_Up #medicmnt_msrbles_options_chir').val()+'</option>');
                         }
                          function del_list_elem_meas_chir(){
                           $('#form_chirurgiens_Up #elem_meas_list option:selected').remove();
                         }
-                        
+
                      </script>
                   </div>
                   <div class="eight wide column">
@@ -5222,18 +5222,18 @@
       </div>
       <script type="text/javascript">
          $(document).on('change','.lieu',function(){
-           
+
                if($('#form_chirurgiens_Up #lieu_codifie_chir').is(':checked')){
-           
+
                  $('#form_chirurgiens_Up #codif_selection_lieu').show();
                  $('#form_chirurgiens_Up #secteur_active_bucc_divUpd').show();
-                 
-         
+
+
                  $('#form_chirurgiens_Up #codif_selection_non').hide();
                  $('#form_chirurgiens_Up  #type_lieu_cont').hide();
                };
                if($('#form_chirurgiens_Up #lieu_codifie_non_chir').is(':checked')){
-           
+
                  $('#form_chirurgiens_Up #codif_selection_non').show();
                  $('#form_chirurgiens_Up #type_lieu_cont').show();
                  $('#form_chirurgiens_Up #codif_selection_lieu').hide();
@@ -6069,7 +6069,7 @@
          Ramq Credential Expiration
       </div>
       <div class="modRamqCredentialAlert content">
-         <div id="message_ramq_credential_alert"> 
+         <div id="message_ramq_credential_alert">
          </div>
          <div class="ui grid">
             <div class="row">
@@ -6084,9 +6084,9 @@
          </div>
       </div>
    </div>
-   <div class="ui basic fact_surface mini modal">
-      <i class="close icon" style="padding-right:250px"></i>
-      <div class="header" style="padding-left:270px">
+   <div class="ui fact_surface mini modal">
+      <i class="close icon"></i>
+      <div class="header">
          <i class="user icon" ></i>Choix de Composants de Surface
       </div>
       <div class="ui centered grid">
@@ -6099,11 +6099,11 @@
                <div class="field"><button class="ui axxium fluid button surfbtn"  id="surfbtn5" value="5" onclick="surf_btn_val(5)">5. Incr. 3 surf. avec Recouv</button></div>
                <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtn6" value="6" onclick="surf_btn_val(6)">6. Amalgame Collé</button></div>
                <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtn7" value="7" onclick="surf_btn_val(7)">7. Amalgame avec Résine</button></div>
-               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtn8" value="8" onclick="surf_btn_val()8">8. Composite avec Résine</button></div>
-               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtnA" value="A" onclick="surf_btn_val('A')">A. Incr. sans recouv céram. empr optique</button></div>
-               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtnB" value="B" onclick="surf_btn_val('B')">B. Incr. avec recouv. céram empr optique</button></div>
+               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtn8" value="8" onclick="surf_btn_val(8)">8. Composite avec Résine</button></div>
+               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtnA" value="A" onclick="surf_btn_val(9)">A. Incr. sans recouv céram. empr optique</button></div>
+               <div class="field"><button class="ui axxium  fluid button surfbtn" id="surfbtnB" value="B" onclick="surf_btn_val(10)">B. Incr. avec recouv. céram empr optique</button></div>
                <div class="row">
-                  
+
                   <div class="ten wide field" style="margin-left:65px">
                      <div class="ui action input">
                         <input type="text" name="" id="surfbtn_manuel">
@@ -6153,7 +6153,7 @@
    </div>
    <script>
       $(document).ready(function(){
-      
+
         //Default Language French
         changeLang('fr');
 
@@ -6163,35 +6163,35 @@
           on: 'hover'
         });
         });
-                              
+
         $("#disb,#disb1,#disb2,#disb3,#disb4,#disb5,#disb6,#disb7,#disb8 ").hide();
         // click(function(){
-          
+
         //   $(this).off(click).hide();
         // } );
-      
+
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1; //January is 0!
-      
+
         var yyyy = today.getFullYear();
         if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
-      
+
           $('#date_de_service_dentiste').attr('value', today);
-      
+
       });
-      
+
       $(document.body).on('focusout',"#factTableBody td",function(){
                    $(this).text($(this).text().toUpperCase());
                  })
       $(document.body).on('focusout',"#factTableBody_regie td",function(){
                    $(this).text($(this).text().toUpperCase());
                  })
-      
-      $('.reg_fact_chck').change(function(){ 
+
+      $('.reg_fact_chck').change(function(){
                       RamqBillUpdateMessageTable();
                     });
-      
+
       $('.modNoteProt.content .ui.form')
            .form({
            fields : {
@@ -6211,18 +6211,18 @@
                    $('.modalNoteProt.modal').modal('hide');
                }
              });
-      
+
       // function addToFactTbl()
       // {
       //  //facturefunction
-      
+
       // }
-      
+
       //fawad modal functions
       //Dont need for now
       // function factTableAdd()
       // {
-      
+
       //   $('.factTableAddWindow.modal').modal('attach events', '.modalFacture td') .modal({
       //   allowMultiple: true
       // }).modal('show').modal('setting', 'closable', false);
@@ -6231,7 +6231,7 @@
       {
         $('.modalCdan1').modal('show');
       }
-      
+
        function modCdan2()
       {
         $('.modalCdan2').modal('show');
@@ -6257,16 +6257,16 @@
 
       function modToCAS()
       {
-       $('.modalToCAS').modal('show'); 
+       $('.modalToCAS').modal('show');
       }
-      
-      
+
+
       function modPayment()
       {
        $('.modalPayment.modal').modal('show');
       }
-      
-      
+
+
       function modLabo()
       {
        $('.modalLabo.modal').modal('show');
@@ -6276,7 +6276,7 @@
         console.log('button function VALUE : ');
         $(this).prop("value");
       })
-      
+
       function surf_btn_val(selectd){
 
         if(selectd=='field')
@@ -6291,15 +6291,15 @@
         console.log('User selected button : ' +surf_modal_btn_val);
         surf_modal_wait_flag=true;
       }
-      
+
       function facture_surf_modal(){
       $('.fact_surface.mini.modal').modal({
-      
+
       onDeny    : function(){
       window.alert('Wait not yet!');
       return false;
     },
-      
+
       onApprove : function() {
        return true;
     },
@@ -6310,17 +6310,17 @@
       }
     }).modal('show');
       }
-      
+
        function ramqCredentialAlert()
       {
        $('.modRamqCredentialAlert.modal').modal('show');
       }
-      
+
        function modCreateDos()
       {
        $('.modalCreateDossier.small.modal').modal('show');
       }
-      
+
        function modResponsable()
       {
        $('.modalResponsable.small.modal').modal('show');
@@ -6329,27 +6329,27 @@
       {
        $('.modalFamille.small.modal').modal('show');
       }
-      
+
        function modExtra()
       {
        $('.modalExtra.small.modal').modal('show');
       }
-      
+
       function dosConsul()
       {
         $('.modalDosConsul.small.modal').modal('show');
       }
-      
+
       function modReference()
       {
        $('.modalReference.small.modal').modal('show');
       }
-      
+
       function adRef()
       {
         $('.modalAdRef.small.modal').modal('show');
       }
-      
+
       function modAlertNew()
       {
          var d=new Date();
@@ -6357,27 +6357,27 @@
          $('.dateAlert').val(shortDate);
        $('.modalAlertNew.modal').modal('show');
       }
-      
+
       function modIntervenRappel()
       {
        $('.modalIntervenRappel').modal('show');
       }
-      
+
       function modInfoCourver()
       {
        $('.modalInfoCourver').modal('show');
       }
-      
+
       function modNumeroRetire()
       {
        $('.modalNumeroRetire').modal('show');
       }
-      
+
       function modInsuranceAdd()
       {
        $('.modalInsuranceAdd').modal('show');
       }
-      
+
       function modInsuranceAddForm()
       {
        $('.modalInsuranceAddForm').modal('show');
@@ -6387,23 +6387,23 @@
       {
       $('.facture_response').modal('show');
       }
-      
+
       function modPaimnt(){
         $('.modalPaiementRegie').modal('show');
       }
-      
+
       $('.coupled.modal')
       .modal({
        allowMultiple: true
       });
-    
-      
-      
-      
-      
+
+
+
+
+
       //==========
-      
-      
+
+
       function modifyLabo()
       {
                  patLabo = { };
@@ -6434,7 +6434,7 @@
                  });
                    $('.modalLabo.modal').modal('hide');
        }
-      
+
       function modSuivi()
       {
        document.getElementById("EsuiviM").value = "";
@@ -6449,7 +6449,7 @@
          }
        $('.modalSuivi.modal').modal('show');
       }
-      
+
       function modifySuivi()
       {
                  patSuivi = { };
@@ -6484,7 +6484,7 @@
                  });
                    $('.modalSuivi.modal').modal('hide');
        }
-      
+
       function modAlert()
       {
        document.getElementById("EalertM").value = "";
@@ -6499,7 +6499,7 @@
          }
        $('.modalAlert.modal').modal('show');
       }
-      
+
       function modifyAlert()
       {
                  patAlert = { };
@@ -6534,14 +6534,14 @@
                  });
                    $('.modalAlert.modal').modal('hide');
        }
-      
+
       function addDoc(aNum)
       {
        document.getElementById("Ecomm").value = "";
        document.getElementById("Efile").value = "";
        $('.modalDoc.modal').modal('show');
       }
-      
+
       $('.modDoc.content .ui.form')
            .form({
            fields : {
@@ -6569,7 +6569,7 @@
                    $('.modalDoc.modal').modal('hide');
                }
              });
-      
+
       $('.modCorr.content .ui.form')
            .form({
            fields : {
@@ -6590,7 +6590,7 @@
                    $('.modalCorr.modal').modal('hide');
                }
              });
-      
+
       function addNotes(aNum)
       {
        modalNum = aNum;
@@ -6598,7 +6598,7 @@
        document.getElementById("Enote").value = "";
        $('.modalNote.modal').modal('show');
       }
-      
+
       $('.modNote.content .ui.form')
            .form({
            fields : {
@@ -6626,7 +6626,7 @@
                    $('.modalNote.modal').modal('hide');
                }
              });
-      
+
       function addNotes2(aNum)
       {
        modalNum2 = aNum;
@@ -6634,7 +6634,7 @@
        document.getElementById("Enote2").value = "";
        $('.modalNote2.modal').modal('show');
       }
-      
+
       $('.modNote2.content .ui.form')
            .form({
            fields : {
@@ -6662,7 +6662,7 @@
                    $('.modalNote2.modal').modal('hide');
                }
              });
-      
+
       function addRep2(aNum)
       {
        modalRep2 = aNum;
@@ -6670,7 +6670,7 @@
        document.getElementById("Erep2").value = "";
        $('.modalRep2.modal').modal('show');
       }
-      
+
       $('.modRep2.content .ui.form')
            .form({
            fields : {
@@ -6700,7 +6700,7 @@
                    $('.modalRep2.modal').modal('hide');
                }
              });
-      
+
       $('.modMontant.content .ui.form')
            .form({
            fields : {
@@ -6741,7 +6741,7 @@
                    $('.modalMontant.modal').modal('hide');
                }
              });
-      
+
       $('.modMed.content .ui.form')
            .form({
            fields : {
@@ -6804,16 +6804,16 @@
                    $('.modalMed.modal').modal('hide');
                }
              });
-      
-      
+
+
    </script>
    <script>
       var fact_tbl_row_id=0;
       var fact_tbl_row_id_Up=0;
       var ramq_id=0;
       var ramq_id_Up=0;
-      var arrGrilleDeFacturation=[]; 
-      var arrGrilleDeFacturation_forms=[]; 
+      var arrGrilleDeFacturation=[];
+      var arrGrilleDeFacturation_forms=[];
       var arrGrilleDeFacturation_update=[];
       var arrGrilleDeFacturation_forms_update=[];
       var lang = getLang();
@@ -6927,14 +6927,14 @@
       var surf_modal_btn_val;
       var surf_modal_wait_flag=true;
       var surf_focusout_finish=false;
-      
+
       $(document).on('change','.type_rate',function(){
         if($('.type_rate').is(':checked')){
           type_rate_glbl=$(this).val();
-      
+
         }
       })
-      
+
       $('#context2 .menu .item').tab({
         // tabs are inside of this element
         context: $('#context2')
@@ -6943,17 +6943,17 @@
         // tabs are inside of this element
         context: $('#context3')
       });
-      
+
       $('document').ready(function(){
-      
+
       $('.sortable.table').tablesort();
-      
+
       $('.modalProts.modal')
           .modal({ allowMultiple: true });
-      
+
       $('.modRamqCredentialAlert.modal')
           .modal({ allowMultiple: true });
-      
+
       $('.modalNoteProt.modal')
           .modal({
             allowMultiple: true
@@ -7011,7 +7011,7 @@
             allowMultiple: true
           });
         $('.modalFactTableMore_Up.modal').modal('setting','allowMultiple',true);
-      
+
       loadParams();
         getPIN();
         loadQJSON(firstJSON);
@@ -7022,7 +7022,7 @@
         loadSelo();
         //loadPAT();
       });
-      
+
       $("#odonto").on('mouseup', function(evt) {
         if (!isLockedODO)
         {
@@ -7042,7 +7042,7 @@
           }
         }
       });
-      
+
       $("#odonto").on('touchend', function(evt) {
         if (!isLockedODO)
         {
@@ -7062,7 +7062,7 @@
           }
         }
       });
-      
+
       $("#paro").on('mouseup', function(evt) {
         if (!isLockedPAR)
         {
@@ -7079,7 +7079,7 @@
           }
         }
       });
-      
+
       $("#paro").on('touchend', function(evt) {
         if (!isLockedPAR)
         {
@@ -7096,18 +7096,18 @@
           }
         }
       });
-      
+
    </script>
    <script type="text/javascript">
       //load all data code6.json onceioioujkuijkiuh
       var dataJsonCode;
-      
+
         $.getJSON("json/params/blank.json",function(data){
           dataJsonCode=data;
         });
-      
-      
-      
+
+
+
    </script>
    <script type="text/javascript">
 
@@ -7117,18 +7117,18 @@
       }
 
       function searchPrix(){
-      
+
        var output;
-      
+
         var search1= $('.search1').val();
         var reg=new RegExp(search1,'i');
-      
+
           $.each(dataJsonCode,function(key,val){
-      
+
             if(key.search(reg) != -1)
             {
-      
-      
+
+
             output+="<tr>";
             output+="<td id=" + key + " class=selectable> <a href='javascript:modalPrixEdit("+key+","+val.prix+","+val.ramq+","+val.insurance+","+val.special+");'> <b>" +key+" </b> </a></td>";
             output+="<td id=" + key + ">" +val.prix+"</td>";
@@ -7137,50 +7137,50 @@
             output+="<td id=" + key + ">" +val.special+"</td>";
             //output+='<td> <button class="btn btn-success btn-small" data-toggle="modal" data-target="#exampleModal">Edit</button> </td>';
             output+="</tr>";
-      
+
             //console.log(key);
           }
           });
-      
-      
-      
+
+
+
           $('#codesBody').html(output);
-      
-      
+
+
       };
-      
+
       function modalPrixEdit(key,prix,ramq,insurance,special){
-      
+
         $('#keyPrixEdit').html(key);
-      
+
         document.getElementById('ramqPrixRead').value=ramq;
         document.getElementById('prixRead').value=prix;
         document.getElementById('insurancePrixRead').value=insurance;
         document.getElementById('specialPrixRead').value=special;
          $('#prixEdit').modal('show');
       };
-      
+
       $('.ui.dropdown')
       .dropdown()
       ;
-      
+
       $('.ui.checkbox')
       .checkbox();
-      
-      
-      
+
+
+
    </script>
    <script type="text/javascript">
       $(document).on('change','#cdan_select_dd',function(){
-      
-      
+
+
         var Dd_option=$('#cdan_select_dd').val();
         console.log(Dd_option);
-      
+
         switch (Dd_option){
           case 'Transactions':
           console.log('trasaction');
-      
+
             $('#cdan_transac').show();
             $('#cdan_soum').hide();
             $('#cdan_inter').hide();
@@ -7204,14 +7204,14 @@
    </script>
    <script type="text/javascript">
       $(document).ready(function(){
-      
+
       $(document).on('change','.optRegiePa_radio',function(){
        if($("#optRegiePaimentCompteAdmin").is(":checked")){
         $('.txtRegiPa').show();
           }
-      
+
       else{
-            
+
             $('.txtRegiPa').hide();
           };
         })
@@ -7220,13 +7220,13 @@
        if($("#optRegiePaimentCompteAdmin_upd").is(":checked")){
         $('.txtRegiPa_upd').show();
           }
-      
+
       else{
-            
+
             $('.txtRegiPa_upd').hide();
           };
         })
-      
+
    </script>
    <script type="text/javascript">
 
@@ -7240,51 +7240,51 @@
           if(x=='fr')
           {
             $('#en_ln').show();
-            $('#fr_ln').hide(); 
+            $('#fr_ln').hide();
           }
           // $("label").addClass("trn");
           // $("th").addClass("trn");
           // $("div").addClass("trn");
           translator.lang(x);
         }
-      
+
       $(document).ready(function(){
-      
+
         locatn=curr_location();
         var thisTag = [];
 
-      
+
       $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider').each(function(){
-      
+
         var words=$(this).text();
-      
+
         if(words!=""  ){
-      
+
           var found=$.inArray(words,thisTag);
           if(found <0){
             thisTag.push($.trim(words));
-          
+
             }
       else{
               // console.log('repeated:'+ $(this).text());
            }
-        
+
         }
-      
+
       });
-      
+
       var thisData=[];
-      
+
       $.each(thisTag,function(idx,val){
-      
+
         thisData.push(''+val+ '"'+' : { en:" " },' );
-      
+
       });
-      
+
       thisData2={};
       thisData2={'Dictionar': thisData };
-      
-      
+
+
       // thisData=JSON.stringify(thisData);
       // console.log(thisData2);
       // $.post("allScriptsv1.py",{tx: "translator", thisData: 'hyeeeeeee'},function(result){
@@ -7294,14 +7294,14 @@
       // $.post("allScriptsv1.py", {tx: "uploadJSONP", sub: "translator", name: 'wordDict3', json:JSON.stringify(thisData2)  }, function(result){
       //   console.log(result);
       // });
-      
+
       });
-      
+
    </script>
    <script type="text/javascript">
       $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1 ').removeClass('trn');
       $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1').addClass('trn');
-      
+
    </script>
 </body>
 </html>

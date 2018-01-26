@@ -784,8 +784,9 @@ if tx == "getAcceptedBills": #ACCEPTED
         fichiers = []
 
         if patientId is not None and patientId != '':
-            fichiers = os.listdir("json/facturation/%s/%s"%(clinicId, patientId))
-            fichiers = ['json/facturation/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
+            if os.path.isdir('json/facturation/%s/%s/log'%(clinicId, patientId)):
+                fichiers = os.listdir("json/facturation/%s/%s"%(clinicId, patientId))
+                fichiers = ['json/facturation/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
         else:
             for path, subdirs, files in os.walk('json/facturation/%s'%clinicId):
                 files = [elt for elt in files if elt.endswith(".json")]

@@ -569,8 +569,7 @@ if tx == "getPatientLogs":
                 datefrom = getdate(form['dFrom'].value)
             except:
                 d = date.today()
-                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
-                datefrom = d
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -625,8 +624,7 @@ if tx == "getPatientFactures":
                 datefrom = getdate(form['dFrom'].value)
             except:
                 d = date.today()
-                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
-                datefrom = d
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -771,8 +769,7 @@ if tx == "getAcceptedBills": #ACCEPTED
             datefrom = getdate(form['dFrom'].value)
         except:
             d = date.today()
-            d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
-            datefrom = d
+            datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
         try:
             dateto = getdate(form['dTo'].value)  
@@ -1058,7 +1055,7 @@ if tx == "getEtatCompte":
                 logFile = open('json/ec/'+ clinicId + '/' + FileName, 'wb')
                 logFile.write(file_64_decode)
                 logFile.close()
-                message = {'outcome' : 'success', 'message': 'http://%s/%s/json/ec/%s/%s'%(os.environ['HTTP_HOST'], 'axxium', clinicId, FileName)}
+                message = {'outcome' : 'success', 'message': 'http://%s/json/ec/%s/%s'%(os.environ['HTTP_HOST'], clinicId, FileName)}
                 print (json.dumps(message))         
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -1076,8 +1073,7 @@ if (tx == "getECFiles"):
                 datefrom = getdate(form['dFrom'].value)
             except:
                 d = date.today()
-                d.replace(year=d.year if d.month > 1 else d.year - 1, month=d.month - 1 if d.month > 1 else 12, day=1)
-                datefrom = d
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  

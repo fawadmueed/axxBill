@@ -990,8 +990,9 @@ function get_age(){
   var curr_year;
   var patnt_year;
 
-  var formD=$('#Ebirth').val();
-  var formD=formD.split('-');
+    //var formD=$('#Ebirth').val(); 
+  var formD = globVisionRData.DatNaissPers;
+  formD=formD.split('-');
   patnt_year=formD[0];
 
   var d1 = new Date();

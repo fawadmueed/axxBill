@@ -181,6 +181,10 @@ function RamqGetVisionRData() {
 
                       $('#pamnt_no_prof').val(globVisionRData.IdProf);
 
+                      //Display Patient name
+                      var patName = globVisionRData.PrePers + ' ' + globVisionRData.NomPers;
+                      $('#patNameSub').html(patName);
+
                     //   //Show prof name on Payment -> Assurances
                     //   document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
                     //   //Show prof name on CDANET Modal - 1 -> Requérant

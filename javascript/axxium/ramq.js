@@ -1985,6 +1985,7 @@ function RamqUpdateGlobalBill()
                 }
                 else {
                     alert("Cda version is not correct!");
+                    getAllTrData(); //Open Payment form
                 }
             }
         });

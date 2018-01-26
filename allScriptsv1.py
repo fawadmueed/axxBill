@@ -568,7 +568,7 @@ if tx == "getPatientLogs":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                d = date.today()
+                d = datetime.today().date()
                 datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
@@ -623,7 +623,7 @@ if tx == "getPatientFactures":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                d = date.today()
+                d = datetime.today().date()
                 datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
@@ -768,7 +768,7 @@ if tx == "getAcceptedBills": #ACCEPTED
         try:
             datefrom = getdate(form['dFrom'].value)
         except:
-            d = date.today()
+            d = datetime.today().date()
             datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
         try:
@@ -1072,7 +1072,7 @@ if (tx == "getECFiles"):
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                d = date.today()
+                d = datetime.today().date()
                 datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:

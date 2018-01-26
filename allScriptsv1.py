@@ -1254,16 +1254,17 @@ if (tx == "SendXmlToVisionR"):
         dataJson = json.loads(form['json'].value)
         dataxml = dataJson["data"] 
         
-        #verify if log folder exists if not, create it
-        #for now, we write the string xml, but, we must send it by using socket
-        if not os.path.isdir('monitoring'):
-            os.makedirs('monitoring')
+        #send the request to WebApi that calls RAMQ server
+        dataJSON = { 'Input': CleanXML(dataxml), 'LUN': nodossier + '-' + nofactext}
+        headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSaveTransaction', json=dataJSON, headers=headers)
 
-        f = open('monitoring/%s_%s.xml'%(nodossier, nofactext), 'wb')
-        f.write(dataxml)
-        f.close()
+        resp = r.json()
+        if r.status_code != 200:
+            message = {'outcome' : 'error', 'message': resp["message"] }
+        else:           
+            message = {'outcome' : 'success', 'message': resp["message"] }
 
-        message = {'outcome' : 'success' }
         print json.dumps(message)
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()

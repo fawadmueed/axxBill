@@ -1937,7 +1937,7 @@ function RamqCreateNewGlobalBill()
                 else
                 {
                     globBillNumber = result.nofact;
-                    alert("Facture #" + globBillNumber + " a été créée.")
+                    //alert("Facture #" + globBillNumber + " a été créée.")
                     //TODO: Display UI
                 }
             });
@@ -1984,7 +1984,7 @@ function RamqUpdateGlobalBill()
                     getAllTrData(); //Open Payment form
                 }
                 else {
-                    alert("Cda version is not correct!");
+                    //alert("Cda version is not correct!");
                     getAllTrData(); //Open Payment form
                 }
             }

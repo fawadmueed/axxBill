@@ -1845,9 +1845,13 @@ var dict = {
     en: "Referrer ",
     fr: "Référant"
   },
-  "Régie": {
-    en: "Régie",
-    fr: "Régie"
+  "Sélection du tarif":{
+      en:"Tarif Selection",
+      fr:"Sélection du tarif"
+  },
+  "Cas hospitalier": {
+      en: "Hospital case",
+    fr: "Cas hospitalier"
   },
   "Réponse": {
     en: "Answer",
@@ -2043,7 +2047,7 @@ var dict = {
   },
   "Tarif spécial": {
     en: "Special Rate",
-    fr: "Tarif régulier"
+    fr: "Tarif spécial"
   },
   Telephone: {
     en: "Telephone",

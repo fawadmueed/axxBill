@@ -325,7 +325,7 @@ function CdaV4PopulateClaimObj()
     var objDataFromDB = globCdaDataFromDB;
     var objDataFromUI = CdaV4GetDataFromUI();
     var procLineNumber = CdaV4GGetNumProcedures(); //Number of insurance lines.
-    obj.f23 = []; obj.f24 = []; obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f34 = [];
+    obj.f23 = []; obj.f24 = []; obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f34 = []; obj.f35 = []; obj.f36 = [];
     
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
@@ -449,8 +449,11 @@ function CdaV4PopulateClaimObj()
             obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1. Initilite it with spaces.
             obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
 
+            obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 Initialisation
+            obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 Initialisation
+
             var honoraire = 0.00;
-            if (lineCount + 1 <= procLineNumber) //if there is at least one linde after
+            if (lineCount + 1 <= procLineNumber) //if there is at least one line after
             {
                 if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code))
                 {
@@ -469,6 +472,7 @@ function CdaV4PopulateClaimObj()
                 }
             }
 
+            //Lab Procedure #2
             if (lineCount + 2 <= procLineNumber)
             {
                 honoraire = 0.00;

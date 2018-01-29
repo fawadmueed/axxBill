@@ -2077,6 +2077,289 @@
         </div>
     </div>
 
+    <div class="ui modalCdan1 modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>CDANET Modal - 1
+        </div>
+        <div class="content">
+            <div class="ui axxium form segment">
+                <h4 class="ui horizontal divider header">Renseignements - Reclamations CDANET</h4>
+                <div class="ui two column grid">
+                    <div class="column">
+                        <div class="ui form segment">
+                            <div class="field">
+                                <label>Type de transaction:</label>
+                                <input type="text" name="" placeholder="Demande de reglement" id="cdan1_typ_trns">
+                            </div>
+                            <div class="field">
+                                <label>Requerant:</label>
+                                <input type="text" name="" id="cdan1_req">
+                            </div>
+                            <div class="field">
+                                <label>Payable &agrave;:</label>
+                                <select id="cdan1_payabl">
+                                    <option value="0">At the dentist</option>
+                                    <option value="1">At the insured</option>
+                                    <option value="2">At another person</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>No de confirmation du plan</label>
+                                <input type="text" name="" id="cdan1_no_confrmtn_plan">
+                            </div>
+                            <div class="field">
+                                <label>Date de l'accident</label>
+                                <input type="date" name="" id="cdan1_date_accident">
+                            </div>
+                            <div class="field">
+                                <label>Placement initial ?</label>
+                                <select id="cdan1_placmnt">
+                                    <option value="Y">Oui</option>
+                                    <option value="N">Non</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Date de placement</label>
+                                <input type="text" id="cdan1_placmnt_date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui form segment field" id="cdan1_pieces_suivre">
+                            <label>Pièces à suivre</label>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Aucune">
+                                <label>Aucune</label>
+                            </div>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Courriel">
+                                <label>Courriel</label>
+                            </div>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Lettre">
+                                <label>Lettre</label>
+                            </div>
+                        </div>
+                        <div class="ui form segment field">
+                            <label>S'agit-il de traitements en vue de soins orthodontiques?</label>
+                            <div class="two fields ">
+                                <div class="inline field">
+                                    <input type="radio" name="quest1" value="Oui" id="q1_orthodon_oui">
+                                    <label>Oui</label>
+                                </div>
+                                <div class="inline field">
+                                    <input type="radio" name="quest1" value="Non" checked="" id="q1_orthodon_non">
+                                    <label>Non</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui form segment field ">
+                            <label>Si extraction, saisir la date et le nombre</label>
+                            <div class="five wide field">
+                                <label>Date extraction</label>
+                                <input type="date" name="dat_extrac">
+                            </div>
+                            <div class="eight wide field">
+                                <label>Nombre de dents extraites</label>
+                                <input type="number" name="nomb_dent">
+                            </div>
+                        </div>
+                        <button class="right floated ui axxium button" onclick="CdaV2SendRequestToCdaNet()">OK</button>
+                        <button class="right floated ui axxium button">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modalCdan2 modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>CDANET Modal - 2
+        </div>
+        <div class="content">
+            <div class="ui axxium form segment">
+                <h4 class="ui horizontal divider header">Renseignements - Reclamations CDANET</h4>
+                <div class="ui two column grid">
+                    <div class="column">
+                        <div class="ui form segment">
+                            <div class="field">
+                                <label>Type de transaction</label>
+                                <input type="text" name="" placeholder="Demande de reglement" id="cdan2_typ_trns">
+                            </div>
+                            <div class="field">
+                                <label>Requerant</label>
+                                <input type="text" name="" id="cdan2_req">
+                            </div>
+                            <div class="field">
+                                <label>Payable à</label>
+                                <select id="cdan2_payabl">
+                                    <option value="4">At the dentist</option>
+                                    <option value="1">At the insured</option>
+                                    <option value="2">At another person</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>No de confirmation du plan</label>
+                                <input type="text" name="" id="cdan2_no_confrmtn_plan">
+                            </div>
+                            <div class="field">
+                                <label>Date de l'accident</label>
+                                <input type="date" name="" id="cdan2_date_accident">
+                            </div>
+                            <div class="field">
+                                <label>Placement initial maxillaire</label>
+                                <select id="cdan_placmnt_maxl">
+                                    <option value="Y">Oui</option>
+                                    <option value="N">Non</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Date de placement maxillaire</label>
+                                <input type="date" name="" id="cdan_date_plcmnt_maxl">
+                            </div>
+                            <div class="field">
+                                <label>Placement initial mandibulaire</label>
+                                <select id="cdan_placmnt_mand">
+                                    <option value="Y">Oui</option>
+                                    <option value="N">Non</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Date de placement mandibulaire</label>
+                                <input type="date" name="" id="cdan_date_plcmnt_mand">
+                            </div>
+                        </div>
+                        <div class="ui form segment field" id="cdan1_pieces_suivre">
+                            <label>Pièces à suivre</label>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Courriel">
+                                <label>Courriel</label>
+                            </div>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Aucune">
+                                <label>Correspondance</label>
+                            </div>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Lettre">
+                                <label>Modèles</label>
+                            </div>
+                            <div class="inline field">
+                                <input type="checkbox" name="" value="Lettre">
+                                <label>Rayons X</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui form segment">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>No CDANET du dentist</label>
+                                    <input type="text" name="">
+                                </div>
+                                <div class="field">
+                                    <label>Groupe CDANET</label>
+                                    <input type="text" name="" id="">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>No CDANET du dentist bénéficiare si autre</label>
+                                <input type="text" name="">
+                            </div>
+                            <div class="field">
+                                <label>No CDANET du dentist reférant</label>
+                                <input type="text" name="">
+                            </div>
+                            <div class="field">
+                                <label>Raison de la référence</label>
+                                <select>
+                                    <option></option>
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui form segment field">
+                            <label>S'agit-il de traitements en vue de soins orthodontiques?</label>
+                            <div class="two fields ">
+                                <div class="inline field">
+                                    <input type="radio" name="quest2" value="oui" id="q2_orthodon_oui">
+                                    <label>Oui</label>
+                                </div>
+                                <div class="inline field">
+                                    <input type="radio" name="quest2" value="non" id="q2_orthodon_non" checked="checked">
+                                    <label>Non</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui form segment field">
+                            <label>Si extraction, saisir la date et le nombre</label>
+                            <div class="five wide field">
+                                <label>Date extraction</label>
+                                <input type="date" name="dat_extrac2">
+                            </div>
+                            <div class="eight wide field">
+                                <label>Nombre de dents extraites</label>
+                                <input type="number" name="nomb_dent2">
+                            </div>
+                        </div>
+                        <div class="ui form segment field">
+                            <label>Patients Autochtones</label>
+                            <div class="inline field">
+                                <label>No de bande</label>
+                                <input type="text" name="">
+                            </div>
+                            <div class="inline field">
+                                <label>No de famille</label>
+                                <input type="text" name="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="right floated ui axxium button" onclick="CdaV4SendRequestToCdaNet()">OK</button>
+                    <button class="right floated ui axxium button">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui small modalResponseCDANET modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>Résponse CDANET
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div class="" id="cdanet_response_div">
+
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button">Imprimer</button>
+                <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()" disabled>Transférer assurance 2</button>
+                <button class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui small modalCdaClaimReversConfirm modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>CDANET
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div>
+                    <p>Voulez-vous vraiment annuler cette transaction?</p>
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button" onclick="CdaCommSendClaimReversRequest()">Oui</button>
+                <button class="ui axxium right floated button" onclick="$('.modalCdaClaimReversConfirm').modal('hide');">Non</button>
+            </div>
+        </div>
+    </div>
+
     <div class="ui small modalMessage modal">
         <i class="close icon"></i>
         <div class="header">

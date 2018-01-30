@@ -246,7 +246,7 @@ function getAllTrData(){
     // 
 
     // console.log(moreInfoArray_glbl  )
-    modPayment();
+    //modPayment(); AK modPayment should be called separetely.
     // getMoreInfo();
    }
   

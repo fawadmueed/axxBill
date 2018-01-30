@@ -46,8 +46,8 @@ function CdaCommSendToSecondIns()
 { }
 
 function CdaCommOpenCASPopup() {
-    var montantReclame = (isNaN(parseFloat(globCdaRespObj.g04))) ? 0 : parseFloat(globCdaRespObj.g04);
-    var montantTotalRembourse = (isNaN(parseFloat(globCdaRespObj.g28))) ? 0 : parseFloat(globCdaRespObj.g28);
+    var montantReclame = (globCdaRespObj && globCdaRespObj.g04 && !isNaN(parseFloat(globCdaRespObj.g04))) ? parseFloat(globCdaRespObj.g04):0;
+    var montantTotalRembourse = (globCdaRespObj && globCdaRespObj.g28 && !isNaN(parseFloat(globCdaRespObj.g28))) ? parseFloat(globCdaRespObj.g28):0;
     var montantCas = (montantReclame - montantTotalRembourse);
 
     $('#to_cas_montant_de_facture').val(montantReclame.toFixed(2));
@@ -59,11 +59,13 @@ function CdaCommOpenCASPopup() {
 
 function CdaCommSendToCAS()
 {
-    var montantTotalRembourse = (isNaN(parseFloat(globCdaRespObj.g28))) ? 0 : parseFloat(globCdaRespObj.g28);
+    var montantTotalRembourse = (globCdaRespObj && globCdaRespObj.g28 && !isNaN(parseFloat(globCdaRespObj.g28))) ? parseFloat(globCdaRespObj.g28) : 0;
     var montantCash = (isNaN(parseFloat($('#to_cas_enter_montant').val())) ? 0 : parseFloat($('#to_cas_enter_montant').val()));
     $('#ass_total').val(montantTotalRembourse.toFixed(2));
     $('#pers_total').val(montantCash.toFixed(2));
-    getAllTrData(); //Open Payment form
+    //Open Payment form
+    getAllTrData(); 
+    modPayment();
 }
 
 function CdaCommShowResp(pRespMessage)
@@ -638,4 +640,29 @@ function CdaCommIsClaimReversPossible()
         res = false;
     }
     return res;
+}
+
+//Returns date of birth in format YYYYMMDD for givent ramqNo
+function CdaCommGetDateOfBirthFromRamq(pRamqNo) {
+    var currentYear = new Date().getFullYear();
+    var century = Math.floor(currentYear / 100) * 100;
+
+    var birthYear = parseInt(pRamqNo.substring(4, 6));
+    birthYear += century;
+
+    if (birthYear > currentYear) {
+        birthYear -= 100;
+    }
+
+    var birthMonth = parseInt(pRamqNo.substring(6, 8));
+    var birthDay = parseInt(pRamqNo.substring(8, 10));
+    if (birthMonth >= 51) {
+        birthMonth -= 50;
+    }
+
+    if (birthMonth < 10) birthMonth = '0' + birthMonth;
+
+
+    return birthYear.toString() + birthMonth + birthDay.toString();
+
 }

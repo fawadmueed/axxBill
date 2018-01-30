@@ -29,8 +29,15 @@ function CdaV4CallCDAService() {
                     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
 
                     var objResp = CdaV4ReadResponse(transactionLine);
+                    var respMessage = '';
+                    if (objResp) {
+                        respMessage = CdaV4CreateRespMessage(objResp, transactionLine);
+                    }
+                    else {
+                        respMessage = 'Parsing CdaNet response failed.'
+                    }
 
-                    var respMessage = CdaV4CreateRespMessage(objResp, transactionLine);
+                    
                     CdaCommShowResp(respMessage);
                 }
             }
@@ -376,7 +383,7 @@ function CdaV4PopulateClaimObj()
     obj.c17 = CDAV4FormatField(objDataFromDB.c17, 'N', 2); //Primary Dependant Code
     obj.c03 = CDAV4FormatField(objDataFromDB.c03, 'N', 1); //Relationship Code
     obj.c04 = CDAV4FormatField(objDataFromDB.c04, 'A', 1); //Patient's Sex
-    obj.c05 = CDAV4FormatField(globVisionRData.DatNaissPers, 'N', 8); //Patient's Birthday
+    obj.c05 = CDAV4FormatField(CdaCommGetDateOfBirthFromRamq(globVisionRData.IdPers), 'N', 8); //Patient's Birthday
     obj.c06 = CDAV4FormatField(objDataFromDB.c06, 'AE', 25); //Patient's Last Name
     obj.c07 = CDAV4FormatField(objDataFromDB.c07, 'AE', 15); //Patient's First Name
     obj.c08 = CDAV4FormatField(objDataFromDB.c08, 'AE', 1); //Patient's Middle Initial
@@ -452,13 +459,14 @@ function CdaV4PopulateClaimObj()
         obj.f24[i] = CDAV4FormatField(objDataFromDB.f24[i], 'N', 8); //Extraction Date
     }
 
-    
+    obj.f16 = []; obj.f17 = [];
+    var lineCount = 1;
     for (var i = 0; i<arrGrilleDeFacturation.length; i++)
     {
         
         if (CdaCommIsRamqCode(arrGrilleDeFacturation[i].Type) || (CdaV4IsLabProc(arrGrilleDeFacturation[i].Code || arrGrilleDeFacturation[i].Code.trim() != '') && arrGrilleDeFacturation[i].Code != '99111'))
             continue;
-        var lineCount = 1;
+        
        
             obj.f07[i] = CDAV4FormatField(lineCount, 'N', 1); //Procedure Line Number
             obj.f08[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Code, 'AN', 5); //Procedure Code
@@ -475,7 +483,7 @@ function CdaV4PopulateClaimObj()
 
 
             var honoraire = 0.00;
-            if (lineCount + 1 <= procLineNumber) //if there is at least one linde after
+            if (lineCount + 1 <= procLineNumber && arrGrilleDeFacturation[i + 1]) //if there is at least one line after
             {
                 if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code))
                 {
@@ -494,7 +502,7 @@ function CdaV4PopulateClaimObj()
                 }
             }
 
-            if (lineCount + 2 <= procLineNumber)
+            if (lineCount + 2 <= procLineNumber && arrGrilleDeFacturation[i + 2])
             {
                 honoraire = 0.00;
                 if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && !CdaCommIsRamqCode(arrGrilleDeFacturation[i + 2].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 2].Code))
@@ -509,7 +517,7 @@ function CdaV4PopulateClaimObj()
                     obj.f36[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 2 
                 }
             }
-            obj.f16 = []; obj.f17 = [];
+            
             obj.f16[i] = CDAV4FormatField('X', 'A', 5); //Procedure Type Codes
             obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
 
@@ -927,47 +935,54 @@ function CdaV4ReadResponse(pResponse)
 {
     pResponse = pResponse.toString();
     var res = {};
-    var transCode = '';
-    if(pResponse)
-    {
-        transCode = pResponse.substring(20, 23);
-        
-        switch (transCode) {
-            case '18':
-                res = CdaV4ParseEligibilityResp(pResponse);
-                break;
-            case '11':
-                res = CdaV4ParseClaimAcknResp(pResponse);
-                break;
-            case '21':
-                res = CdaV4ParseEOBResp(pResponse);
-                break;
-            case '19':
-                res = CdaV4ParseAttachmentResp(pResponse);
-                break;
-            case '12':
-                res = CdaV4ParseClaimReversResp(pResponse);
-                break;
-            case '13':
-                res = CdaV4ParsePredetAcknResp(pResponse);
-                break;
-            case '23':
-                res = CdaV4ParsePredetEOBResp(pResponse);
-                break;
-            case '14':
-                res = CdaV4ParseOutstandAcknResp(pResponse);
-                break;
-            case '24':
-                res = CdaV4ParseOutstandEmailResp(pResponse);
-                break;
-            case '16':
-                res = CdaV4ParseReconsilResp(pResponse);
-                break;
-            case '15':
-                res = CdaV4ParseSummReconsilResp(pResponse);
-                break;
+    try {
+        var transCode = '';
+        if (pResponse) {
+            transCode = pResponse.substring(20, 23);
 
+            switch (transCode) {
+                case '18':
+                    res = CdaV4ParseEligibilityResp(pResponse);
+                    break;
+                case '11':
+                    res = CdaV4ParseClaimAcknResp(pResponse);
+                    break;
+                case '21':
+                    res = CdaV4ParseEOBResp(pResponse);
+                    break;
+                case '19':
+                    res = CdaV4ParseAttachmentResp(pResponse);
+                    break;
+                case '12':
+                    res = CdaV4ParseClaimReversResp(pResponse);
+                    break;
+                case '13':
+                    res = CdaV4ParsePredetAcknResp(pResponse);
+                    break;
+                case '23':
+                    res = CdaV4ParsePredetEOBResp(pResponse);
+                    break;
+                case '14':
+                    res = CdaV4ParseOutstandAcknResp(pResponse);
+                    break;
+                case '24':
+                    res = CdaV4ParseOutstandEmailResp(pResponse);
+                    break;
+                case '16':
+                    res = CdaV4ParseReconsilResp(pResponse);
+                    break;
+                case '15':
+                    res = CdaV4ParseSummReconsilResp(pResponse);
+                    break;
+                default:
+                    res = null;
+
+            }
         }
+    }
+    catch (e)
+    {
+        return null;
     }
     return res;
 }
@@ -2246,7 +2261,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     v = v.trim(); //remove spaces
 
                     //Check if all characters are alphabetical
-                    if (/^[a-zA-Z]+$/.test(v) || v == '') {
+                    if (/^[a-zA-Z\s]+$/.test(v) || v == '') {
                         var len = v.length;
                         if (len < pRequiredLength) {
                             //Fill with spaces on the right.
@@ -2263,7 +2278,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                         }
                     }
                     else
-                        alert('adoV4FormatField Error: Value contains not alphabetical caracters.');
+                        alert('adoV4FormatField Error: Value "'+ v +'" contains not alphabetical caracters.');
                 }
                 break;
 

@@ -312,8 +312,7 @@
                                     <div class="eight wide column">
                                         <div class="ui form segment">
                                             <div class="grouped fields">
-                                                <!--<h4 class="ui horizontal divider header"><label>Sélection du tarif</label></h4>-->
-                                                <b><label>Sélection du tarif</label></b>
+                                                <h4 class="ui horizontal divider header">Tarif Selection</h4>
                                                 <div class="field">
                                                     <div class="ui slider checkbox">
                                                         <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
@@ -329,21 +328,20 @@
                                                 <div class="field">
                                                     <div class="ui slider checkbox">
                                                         <input type="radio" name="tarif_fact" value="3" class="type_rate">
-                                                        <label>Cas hospitalier</label>
+                                                        <label>Régie</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="thirteen wide field">
                                                 <select class="ui dropdown fluid selection">
-                                                    <!--<option selected="selected" disabled="disabled">Cas hospitalier</option>-->
-                                                    <option></option>
+                                                    <option selected="selected" disabled="disabled">Cas hospitalier</option>
                                                     <option>Anesthésie locale</option>
                                                     <option>Anesthésie générale</option>
                                                     <option>Non applicable</option>
                                                 </select>
                                             </div>
                                             <div class="field">
-                                                <button class="ui axxium button" onclick="RamqCreateNewGlobalBill()">OK</button>
+                                                <!--<button class="ui axxium button" onclick="RamqCreateNewGlobalBill()">OK</button>-->
                                             </div>
                                         </div>
                                     </div>
@@ -1337,8 +1335,7 @@
                 <div class="ui axxium form segment">
                     <div class="ui three column grid">
                         <div class="seven wide column">
-                            <!-- 
-                                                            <div class="ui form segment" id="divPaymentInsurance">
+                            <div class="ui form segment" id="divPaymentInsurance">
                                 <div class="ui horizontal divider"> <strong>Assurance</strong></div>
                                 <p1>Réclamation électronique pour <span id="assurProfName"></span>. Êtes-vous sur de vouloir transmettre la requête?</p1>
                                 <div class="eight fields">
@@ -1353,8 +1350,8 @@
                                 <!-- <div class="field">
                           <label>Insurance Version Select</label>
                           <input type="text" name="" id="insr_cdan_version">
-                      </div>
-                         <div class="inline fields">
+                      </div> -->
+                                <div class="inline fields">
 
                                     <div class="inline field">
 
@@ -1368,12 +1365,7 @@
                                     </div>
                                 </div>
                                 <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
-                            </div>       
-                                
-                                -->
-                                
-
-                           
+                            </div>
                             <div class="ui form segment" id="divPaymentRamq">
                                 <div class="ui horizontal divider"> <strong>RENSEIGNEMENTS COMPLÉMENTAIRES RÉGIE</strong></div>
                                 <div class="inline fields">
@@ -1561,7 +1553,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<div class="six wide column">
+                        <div class="six wide column">
                             <div class="ui form segment" id="divPaymentPayment">
                                 <div class="ui horizontal divider"> <strong>PAIEMENT</strong></div>
                                 <div class="ui axxium form">
@@ -1665,7 +1657,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
                         <script type="text/javascript">
                             $(document).ready(function() {
 
@@ -2085,7 +2077,6 @@
         </div>
     </div>
 
-    <!--AK Add cda modals 2018-01-29-->
     <div class="ui modalCdan1 modal">
         <i class="close icon"></i>
         <div class="header">
@@ -2219,6 +2210,7 @@
                             <div class="field">
                                 <label>Placement initial maxillaire</label>
                                 <select id="cdan_placmnt_maxl">
+                                    <option value="X">--</option>
                                     <option value="Y">Oui</option>
                                     <option value="N">Non</option>
                                 </select>
@@ -2230,6 +2222,7 @@
                             <div class="field">
                                 <label>Placement initial mandibulaire</label>
                                 <select id="cdan_placmnt_mand">
+                                    <option value="X">--</option>
                                     <option value="Y">Oui</option>
                                     <option value="N">Non</option>
                                 </select>
@@ -2327,6 +2320,44 @@
                     <button class="right floated ui axxium button" onclick="CdaV4SendRequestToCdaNet()">OK</button>
                     <button class="right floated ui axxium button">Annuler</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui small modalResponseCDANET modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>Résponse CDANET
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div class="" id="cdanet_response_div">
+
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button">Imprimer</button>
+                <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()" disabled>Transférer assurance 2</button>
+                <button class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui small modalCdaClaimReversConfirm modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>CDANET
+        </div>
+        <div class="content ">
+            <div class="ui axxium form segment">
+                <div>
+                    <p>Voulez-vous vraiment annuler cette transaction?</p>
+                </div>
+            </div>
+            <div class="three fields">
+                <button class="ui axxium right floated button" onclick="CdaCommSendClaimReversRequest()">Oui</button>
+                <button class="ui axxium right floated button" onclick="$('.modalCdaClaimReversConfirm').modal('hide');">Non</button>
             </div>
         </div>
     </div>
@@ -4877,7 +4908,6 @@
                 $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1 ').removeClass('trn');
                 $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1').addClass('trn');
             </script>
-
-            </body>
+</body>
 
 </html>

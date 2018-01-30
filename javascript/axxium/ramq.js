@@ -1930,17 +1930,25 @@ function RamqGenerateNoDemExt()
 //creates new global bill (json file) on the servert and returns bill number.
 function RamqCreateNewGlobalBill()
 {
-    $.post("allScriptsv1.py", { tx: "createFacture", patientId: globPatientId, nodossier: globNoDossier, clinicId: globClinicId },
+    if (!globIsBillCreated)
+    {
+        $.post("allScriptsv1.py", { tx: "createFacture", patientId: globPatientId, nodossier: globNoDossier, clinicId: globClinicId },
             function (result) {
                 if (result.outcome == 'error')
                     alert(result.message);
-                else
-                {
+                else {
                     globBillNumber = result.nofact;
+<<<<<<< HEAD
                     //alert("Facture #" + globBillNumber + " a été créée.")
+=======
+                    globIsBillCreated = true;
+                    alert("Facture #" + globBillNumber + " a été créée.")
+                    RamqUpdateGlobalBill()
+>>>>>>> cdaFixingBugs
                     //TODO: Display UI
                 }
             });
+    }
 }
 
 function RamqUpdateGlobalBill()
@@ -1948,47 +1956,58 @@ function RamqUpdateGlobalBill()
     //Create new bill if wasn't created.
     if (!globIsBillCreated) {
         RamqCreateNewGlobalBill();
-        globIsBillCreated = true;
+
     }
-    //RAMQ
-    var arrRamqData = [];
-    arrRamqData[0] = [];
-    arrRamqData[1] = RamqGetRamqDataFromGrille();
-    arrRamqData[2] = arrGrilleDeFacturation_forms;
+    else {
+        getAllTrData();//Save data from facturation grid in global array
+        //RAMQ
+        var arrRamqData = [];
+        arrRamqData[0] = [];
+        arrRamqData[1] = RamqGetRamqDataFromGrille();
+        arrRamqData[2] = arrGrilleDeFacturation_forms;
 
-    //Insurance
-    var arrInsData = RamqGetInsDataFromGrille();
+        //Insurance
+        var arrInsData = RamqGetInsDataFromGrille();
 
-    //Cash
-    var arrCasData = RamqGetCasDataFromGrille();
+        //Cash
+        var arrCasData = RamqGetCasDataFromGrille();
 
-    var inputXMl = {
-        "ins": arrInsData,
-        "amq": arrRamqData,
-        "cas": arrCasData
-    };
+        var inputXMl = {
+            "ins": arrInsData,
+            "amq": arrRamqData,
+            "cas": arrCasData
+        };
 
-    $.post("allScriptsv1.py", { tx: "updateFacture", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(inputXMl) },
-        function (result) {
-            if (result.outcome == 'updateFacture error')
-                alert(result.message);
-            else {
-                var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
-                if (cdaVersion == '2')
-                {
-                    $('#insr_cdan_version_1').prop('checked', true);
-                    getAllTrData(); //Open Payment form
-                }
-                else if (cdaVersion == '4') {
-                    $('#insr_cdan_version_4').prop('checked', true);
-                    getAllTrData(); //Open Payment form
-                }
+        $.post("allScriptsv1.py", { tx: "updateFacture", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(inputXMl) },
+            function (result) {
+                if (result.outcome == 'updateFacture error')
+                    alert(result.message);
                 else {
+<<<<<<< HEAD
                     //alert("Cda version is not correct!");
                     getAllTrData(); //Open Payment form
+=======
+                    var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                    if (cdaVersion == '2') {
+                        $('#insr_cdan_version_1').prop('checked', true);
+                        getAllTrData();//Save data from facturation grid in global array
+                        modPayment();//Open Payment form
+                    }
+                    else if (cdaVersion == '4') {
+                        $('#insr_cdan_version_4').prop('checked', true);
+                        getAllTrData();//Save data from facturation grid in global array
+                        modPayment();//Open Payment form
+                    }
+                    else {
+                        alert("Cda version is not correct!");
+                        getAllTrData();//Save data from facturation grid in global array
+                        modPayment();//Open Payment form
+                    }
+>>>>>>> cdaFixingBugs
                 }
-            }
-        });
+            });
+    }
+
 }
 
 //Returns an array with ONLY RamqData (AMQ, BES, HOP)

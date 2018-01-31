@@ -22,6 +22,7 @@ $(document).ready(function () {
             null,
             null,
             { "visible": false },
+            { "visible": false },
             { "visible": false }
         ],
         //dom: 'Bfrtip',
@@ -41,6 +42,9 @@ $(document).ready(function () {
         //}
         globCdaTransHistSelectedData = globCdaTransHistTable.row(this).data();
         globBillNumber = globCdaTransHistSelectedData[11];
+
+        //TODO:
+        CdaCommDisplayTransDetails();
     });
 });
 
@@ -75,7 +79,7 @@ function CdaCommShowResp(pRespMessage)
     var message = pRespMessage.replace(/\n/g, '<br/>');
     var div = document.getElementById('cdanet_response_div');
 
-    div.innerHTML = '<p>' + message + '</p>'
+    div.innerHTML = '<p>' + message + '</p>';
     //Show modal
     modResponseCDANET();
 }
@@ -553,6 +557,8 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         objOutputData.Status = objInputData.status;
         objOutputData.VersionNumber = versionNumber;
         objOutputData.NoFacture = objInputData.facture;
+        objOutputData.Resp = objInputData.resp;
+
 
         arrData.push(objOutputData);
     }
@@ -577,6 +583,7 @@ function CdaCommUpdateTransHistTable() {
         arr.push(CdaCommGetStatus(globCdaTransHistListData[i].Status));
         arr.push(globCdaTransHistListData[i].VersionNumber);
         arr.push(globCdaTransHistListData[i].NoFacture);
+        arr.push(globCdaTransHistListData[i].Resp);
         arrData.push(arr);
     }
 
@@ -668,5 +675,19 @@ function CdaCommGetDateOfBirthFromRamq(pRamqNo) {
     if (birthDay < 10) birthDay = '0' + birthDay;
 
     return birthYear.toString() + birthMonth + birthDay.toString();
+
+}
+
+function CdaCommDisplayTransDetails()
+{
+    var resp = globCdaTransHistSelectedData[12];
+    var txtArea = document.getElementById('txtCdaTransDetails');
+    txtArea.innerHTML = resp;
+    //var respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
+
+    //var message = pRespMessage.replace(/\n/g, '<br/>');
+    //var div = document.getElementById('cdanet_response_div');
+
+    //div.innerHTML = '<p>' + message + '</p>';
 
 }

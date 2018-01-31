@@ -195,7 +195,7 @@ function CdaV2PopulateClaimObj() {
     obj.a05 = CdaV2FormatField(objDataFromDB.a05, 'N', 6); //Carrier Identification Number
     obj.a06 = CdaV2FormatField(objDataFromDB.a06, 'AN', 3); //Software System ID
     obj.a07 = CdaV2FormatField((370+37*CdaV2GGetNumProcedures()).toString(), 'N', 4); //Message Length
-    obj.a08 = CdaV2FormatField(objDataFromDB.a08, 'A', 1); //E-Mail Flag
+    obj.a08 = CdaV2FormatField(CdaV2GetEmailFlag(), 'A', 1); //E-Mail Flag
 
     //B Provider Identification
     obj.b01 = CdaV2FormatField(objDataFromDB.b01, 'AN', 9); //CDA Provider Number
@@ -207,7 +207,7 @@ function CdaV2PopulateClaimObj() {
     obj.c02 = CdaV2FormatField(objDataFromDB.c02, 'AN', 11); //Subscriber Identification Number
     obj.c03 = CdaV2FormatField(objDataFromDB.c03, 'N', 1); //Relationship Code
     obj.c04 = CdaV2FormatField(objDataFromDB.c04, 'A', 1); //Patient's Sex
-    obj.c05 = CdaV2FormatField(objDataFromDB.c05, 'N', 8); //Patient's Birthday
+    obj.c05 = CdaV2FormatField(CdaCommGetDateOfBirthFromRamq(globVisionRData.IdPers), 'N', 8); //Patient's Birthday
     obj.c06 = CdaV2FormatField(objDataFromDB.c06, 'A', 25); //Patient's Last Name
     obj.c07 = CdaV2FormatField(objDataFromDB.c07, 'A', 15); //Patient's First Name
     obj.c08 = CdaV2FormatField(objDataFromDB.c08, 'A', 1); //Patient's Middle Initial
@@ -243,9 +243,9 @@ function CdaV2PopulateClaimObj() {
     obj.f06 = CdaV2FormatField(CdaV2GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
 
 
-    obj.f07=[]; obj.f08=[]; obj.f09=[]; obj.f10=[]; obj.f11=[]; obj.f12=[]; obj.f13=[]; obj.f14=[];
+    obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f14 = [];
+    var lineCount = 0;
     for (var i = 0; i < arrGrilleDeFacturation.length; i++) {
-        var lineCount = 0;
         if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP') {
             lineCount++;
             obj.f07[i] = CdaV2FormatField(lineCount, 'N', 1); //Procedure Line Number
@@ -1095,6 +1095,22 @@ function CdaV2GetTransactionName() {
 
     }
     return transName;
+}
+
+function CdaV2GetEmailFlag()
+{
+    var res = '';
+    if ($('#chkCda2FollowNo').prop('checked'))
+    {
+        res = '0'
+    }
+    else if ($('#chkCda2FollowEmail').prop('checked')) {
+        res = '1'
+    }
+    else if ($('#chkCda2FollowLettre').prop('checked')) {
+        res = '2'
+    }
+    return res;
 }
 
 

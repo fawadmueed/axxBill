@@ -661,7 +661,7 @@ function CdaCommGetDateOfBirthFromRamq(pRamqNo) {
     }
 
     if (birthMonth < 10) birthMonth = '0' + birthMonth;
-
+    if (birthDay < 10) birthDay = '0' + birthDay;
 
     return birthYear.toString() + birthMonth + birthDay.toString();
 

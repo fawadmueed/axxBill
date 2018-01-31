@@ -502,7 +502,7 @@ if tx == "updateFacture":
         
         if dataJson["ins"] is not None:
             if len(dataJson["ins"]) > 0:
-                data["ins"] = {'req': dataJson["ins"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
+                data["ins"] = {'req': dataJson["ins"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext, 'transaction': None, 'info' : None}
 
         if dataJson["cas"] is not None:
             if len(dataJson["cas"]) > 0:

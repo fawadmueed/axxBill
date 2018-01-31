@@ -663,6 +663,7 @@ if tx == "getPatientFactures":
                             tmp_fact = {}
                             tmp_fact["facture"] = filename.split('/')[4].split('_')[1].split('.')[0]
                             tmp_fact["nodossier"] = filename.split('/')[4].split('_')[0]
+                            tmp_fact["info"] = data["ins"]["info"]
                             tmp_fact["req"] = data["ins"]["req"]
                             tmp_fact["resp"] = '' if data["ins"]["resp"] is None else data["ins"]["resp"]
                             tmp_fact["datetransaction"] = data["ins"]["date"]

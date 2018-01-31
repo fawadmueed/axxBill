@@ -199,6 +199,7 @@ function RamqBillGetStatus(pstatus)
 
 function RamqBillPopulatDetailsArrays(pBillNumber)
 {
+    globBillNumber = pBillNumber;
     for (var i = 0; i < globRamqBillArrListBill.length; i++)
     {
         if (globRamqBillArrListBill[i].facture == pBillNumber)
@@ -709,7 +710,7 @@ function RamqBillMessageShowError(pMessage)
     if (pMessage != '')
     {
         var msg = pMessage.replace(/\|/g, '\n');
-        alert(msg);
+        modMessage('RAMQ',msg);
     }
 }
 

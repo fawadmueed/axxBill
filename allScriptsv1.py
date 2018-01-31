@@ -568,7 +568,8 @@ if tx == "getPatientLogs":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+                d = datetime.today().date()
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -622,7 +623,8 @@ if tx == "getPatientFactures":
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = getdate()
+                d = datetime.today().date()
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -710,7 +712,7 @@ if tx == "cancelRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -766,7 +768,8 @@ if tx == "getAcceptedBills": #ACCEPTED
         try:
             datefrom = getdate(form['dFrom'].value)
         except:
-            datefrom = date(datetime.today().date().year, datetime.today().date().month -1, datetime.today().date().day)
+            d = datetime.today().date()
+            datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
         try:
             dateto = getdate(form['dTo'].value)  
@@ -778,8 +781,9 @@ if tx == "getAcceptedBills": #ACCEPTED
         fichiers = []
 
         if patientId is not None and patientId != '':
-            fichiers = os.listdir("json/facturation/%s/%s"%(clinicId, patientId))
-            fichiers = ['json/facturation/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
+            if os.path.isdir('json/facturation/%s/%s/log'%(clinicId, patientId)):
+                fichiers = os.listdir("json/facturation/%s/%s"%(clinicId, patientId))
+                fichiers = ['json/facturation/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
         else:
             for path, subdirs, files in os.walk('json/facturation/%s'%clinicId):
                 files = [elt for elt in files if elt.endswith(".json")]
@@ -868,8 +872,8 @@ if tx == "modifyRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
-
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+        
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
         else:
@@ -940,8 +944,8 @@ if tx == "getRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = {'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
-
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+       
         if r.status_code != 200:
             json_data = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'r')
             data = json.load(json_data)
@@ -951,7 +955,7 @@ if tx == "getRamqData":
             logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
             logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
             logFile.close()  
-            
+        
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
         else:
             xmlresp = r.text
@@ -965,7 +969,7 @@ if tx == "getRamqData":
                 logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
                 logFile.close()     
 
-                print '{ "outcome" : "error", "message" : "Something was wrong" }'
+                print '{ "outcome" : "error", "message" : "Something was wrong. Response empty" }'
             else:         
                 if xmlresp.find("Error") > -1 or xmlresp.find("null") > -1:   #In case, something happen in server side code 500
                     if xmlresp.find("null") > -1:
@@ -1033,7 +1037,7 @@ if tx == "getEtatCompte":
         #get Etat Compte
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'UserId': UserId, 'UserPass': UserPass, 'IdEntIntvnEchg': IdEntIntvnEchg, 'TypEntIntvnEchg': TypEntIntvnEchgs}
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostReceiveEtatDeCompteAsByteArray', json=dataJSON, headers=headers)
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostReceiveEtatDeCompteAsByteArray', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1051,7 +1055,7 @@ if tx == "getEtatCompte":
                 logFile = open('json/ec/'+ clinicId + '/' + FileName, 'wb')
                 logFile.write(file_64_decode)
                 logFile.close()
-                message = {'outcome' : 'success', 'message': 'http://%s/%s/json/ec/%s/%s'%(os.environ['HTTP_HOST'], 'axxium', clinicId, FileName)}
+                message = {'outcome' : 'success', 'message': 'http://%s/json/ec/%s/%s'%(os.environ['HTTP_HOST'], clinicId, FileName)}
                 print (json.dumps(message))         
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -1068,7 +1072,8 @@ if (tx == "getECFiles"):
             try:
                 datefrom = getdate(form['dFrom'].value)
             except:
-                datefrom = getdate()
+                d = datetime.today().date()
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
 
             try:
                 dateto = getdate(form['dTo'].value)  
@@ -1089,7 +1094,7 @@ if (tx == "getECFiles"):
                     if comma:
                         print ','
                     print '{ "file" : "%s"'%filename.split('/')[3]
-                    print ', "url" : "http://%s/%s/%s"'%(os.environ['HTTP_HOST'], 'axxium', filename)
+                    print ', "url" : "http://%s/%s"'%(os.environ['HTTP_HOST'], filename)
                     print ', "date" : "%s"'%time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(mdate))
                     print " } "
                     comma = True
@@ -1110,7 +1115,7 @@ if (tx == "GenerIdMachine"):
 
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'CodeErreur': None, 'NoIntervenant': pNoIntervenant, 'IdUtilisateur': pIdUtilisateur, 'MotDePasse': pMotDePasse, 'IdMachine': None, 'MotDePasseMachine': None, 'ServerError': None}
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostGenerIdMacine', json=dataJSON, headers=headers)
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostGenerIdMacine', json=dataJSON, headers=headers)
 
         if(r.status_code != 200):
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1153,7 +1158,7 @@ if (tx == "ChangePassword"):
 
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'CodeErreur': None, 'NoIntervenant': pNoIntervenant, 'IdMachine': pMachineId, 'AncienMotDePasse': pMachineIdPass, 'MotDePasseMachine': '', 'ServerError': None}
-        r = requests.post('http://semiosisaxxiumwebapi20171101022833.azurewebsites.net/api/RamqWebApi/PostChangePassword', json=dataJSON, headers=headers)
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostChangePassword', json=dataJSON, headers=headers)
 
         if(r.status_code != 200):
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1204,7 +1209,6 @@ if (tx == "sendInsurance"):
             if data["amq"]["resp"] is not None:
                 data["amq"]["resp"] = data["amq"]["resp"].replace("\"", "\\\"")
 
-        #send the request to WebApi that calls RAMQ server
         dataJSON = { 'Input': strreq, 'LUN': lun}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
@@ -1233,6 +1237,32 @@ if (tx == "sendInsurance"):
 
             message = {'outcome' : 'success', 'message': txtresp }
             print json.dumps(message)
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+
+
+if (tx == "SendXmlToVisionR"):   
+    try:
+        #read parameters from request
+        nodossier = form['nodossier'].value
+        nofactext = form['nofact'].value
+        dataJson = json.loads(form['json'].value)
+        dataxml = dataJson["data"] 
+        
+        #send the request to WebApi that calls RAMQ server
+        dataJSON = { 'Input': CleanXML(dataxml), 'LUN': nodossier + '-' + nofactext}
+        headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
+        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSaveTransaction', json=dataJSON, headers=headers)
+
+        resp = r.json()
+        if r.status_code != 200:
+            message = {'outcome' : 'error', 'message': resp["message"] }
+        else:           
+            message = {'outcome' : 'success', 'message': resp["message"] }
+
+        print json.dumps(message)
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

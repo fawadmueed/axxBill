@@ -43,10 +43,20 @@ $(document).ready(function () {
     globPatientId = RamqGetParamFromUrl("patientId");
     globNoDossier = RamqGetParamFromUrl("dossierNo");
     globDentist = RamqGetParamFromUrl("dentist");
+    globLang = RamqGetParamFromUrl('lng');
 
-    //RamqGetVisionRData();
+    //Change language
+    if (globLang === 'en') {
+        changeLang('en');
+    }
+    else {
+        globLang = 'fr'; //French by default
+        changeLang('fr');
+    }
 
-
+    
+    RamqCheckCredentials();
+    RamqGetVisionRData();
 });
 
 function RamqCheckCredentials()
@@ -145,9 +155,9 @@ function RamqDayDiff(date1, date2)
 //returns param value for the given param name.
 function RamqGetParamFromUrl(name) {
     //TODO: uncomment for production.
-    // var url = location.href;
-    //var url = window.location.href;
-    var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=000192&dentist=AR";// For test only.
+    var url = location.href;
+    var url = window.location.href;
+    //var url = "http://myserver/action?clinicId=AGP18011&patientId=234577&dossierNo=114625&dentist=AR";// For test only.
 
     if (!url) url = location.href;
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -155,5 +165,38 @@ function RamqGetParamFromUrl(name) {
     var regex = new RegExp(regexS);
     var results = regex.exec(url);
     return results === null ? null : results[1];
+}
+
+function RamqGetVisionRData() {
+    $.ajax(
+              {
+                  url: globRamqAPIuri + "PostRamqParameterRequired",
+                  type: "POST",
+                  contentType: "application/json",
+                  data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist }),
+                  success: function (result) {
+                      //alert(result.Result);
+                      globVisionRData = RamqPopulateVisionRDataObj(result);
+                      newRecordFact(); //facture_table.js
+
+                      $('#pamnt_no_prof').val(globVisionRData.IdProf);
+
+                      //Display Patient name
+                      var patName = globVisionRData.PrePers + ' ' + globVisionRData.NomPers;
+                      $('#patNameSub').html(patName);
+
+                    //   //Show prof name on Payment -> Assurances
+                    //   document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;
+                    //   //Show prof name on CDANET Modal - 1 -> Requérant
+                    //   document.getElementById("cdan1_req").value = globVisionRData.ProfName;
+                    //   //Show prof name on CDANET Modal - 2 -> Requérant
+                    //   document.getElementById("cdan2_req").value = globVisionRData.ProfName;
+
+                  },
+                  error: function (xhr, ajaxOptions, thrownError) {
+                      //debugger;
+                      alert(xhr.statusText);
+                  }
+              });
 }
 

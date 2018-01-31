@@ -300,6 +300,7 @@
             <div class="ui secondary pointing menu">
                 <a class="active item" data-tab="facturation-sub">Facture</a>
                 <a class="item" data-tab="Regie-sub">Régie</a>
+                <a class="item" data-tab="cdanEt-sub">CDANET</a>
             </div>
             <!-- ================ -->
             <div class="ui tab segment active" data-tab="facturation-sub">
@@ -312,7 +313,8 @@
                                     <div class="eight wide column">
                                         <div class="ui form segment">
                                             <div class="grouped fields">
-                                                <h4 class="ui horizontal divider header">Tarif Selection</h4>
+                                                <!--<h4 class="ui horizontal divider header">Tarif Selection</h4>-->
+                                                <b><label>Sélection du tarif</label></b>
                                                 <div class="field">
                                                     <div class="ui slider checkbox">
                                                         <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
@@ -406,6 +408,136 @@
                     </div>
                 </div>
             </div>
+
+            <div class="ui tab segment " data-tab="cdanEt-sub">
+                <div class="ui two column grid">
+                    <div class="three wide column ui form">
+                        <select id="cdan_select_dd">
+                            <option value="Transactions" selected>Transactions</option>
+                            <option value="Soumission">Soumission de plan de traitement</option>
+                            <option value="Interrogation">Interrogation sur l'admissibilité</option>
+                        </select>
+                    </div>
+                    <div class="twelve wide column">
+                        <!-- ================ -->
+                        <div class="ui form segment" style="" id="cdan_transac">
+                            <h4 class="ui horizontal divider header">Historique des transactions</h4>
+                            <div class="inline ten fields">
+                                <div class="four wide field">
+                                    <label>Année</label>
+                                    <input type="date" id="ins_fact_ane_start" />
+                                </div>
+                                <div class="four wide field">
+                                    <label>-</label>
+                                    <input type="date" id="ins_fact_ane_end" />
+                                </div>
+                                <div class="ui axxium tiny button" onclick="CdaCommGetTransList()">Chercher</div>
+
+
+                            </div>
+                            <table class="ui striped axxium compact table segment" id="cdan_table" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>No séq</th>
+                                        <th>Description</th>
+                                        <th>No Dossier</th>
+                                        <th>Prénom</th>
+                                        <th>Nom</th>
+                                        <th>Ass.</th>
+                                        <th>Couver</th>
+                                        <th>Date</th>
+                                        <th>No. de réf</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cdan_tableBody"></tbody>
+                            </table>
+                            <div class="ui form segment">
+                                <h4 class="ui horizontal divider header">Détails</h4>
+                                <div class="field">
+                                    <textarea></textarea>
+                                </div>
+                            </div>
+                            <div class="fields">
+                                <div class="left floated field">
+                                    <select id="cdan_transc_dd">
+                                        <option>Trier par</option>
+                                        <option>No séquence</option>
+                                        <option>No de dossier</option>
+                                        <option>Nom</option>
+                                        <option>Cie d'assurance</option>
+                                        <option>Date</option>
+                                        <option>Type de transaction</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <button class="ui axxium tiny right floated button">Retransmission réclamation</button>
+                                    <button class="ui axxium tiny right floated button">Interroger réclamation en suspens</button>
+                                    <button class="ui axxium tiny right floated button" onclick="CdaCommOpenClaimReversPopup()">Annuler réclamation</button>
+                                    <button class="ui axxium tiny right floated button">Imprimer</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ================================== -->
+                        <div class="ui form segment" style="display:none" id="cdan_soum">
+                            <h4 class="ui horizontal divider header">Plan de traitement</h4>
+                            <table class="ui striped axxium compact table segment" id="cdan_table_soum">
+                                <thead>
+                                    <tr>
+                                        <th>Numéro</th>
+                                        <th>Facturer</th>
+                                        <th>Référence</th>
+                                        <th>Confirmation</th>
+                                        <th>Date</th>
+                                        <th>Réclamation</th>
+                                        <th>Déductible</th>
+                                        <th>Remboursement</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cdan_table_soum_body">
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="ui grid">
+                                <div class="row">
+                                    <button class="ui axxium tiny right floated button">Nouveau</button>
+                                    <button class="ui axxium tiny right floated button">Effacer</button>
+                                    <button class="ui axxium tiny right floated button">Soumettre</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ================= -->
+                        <div id="cdan_inter" style="display: none">
+                            <div class="ui form segment">
+                                <h4 class="ui horizontal divider header">Interrogation d'admissibilité</h4>
+                                <div class="field">
+                                    <label>Veuillez saisir la date pour laquelle vous voulez vérifier l'admissibilité du patient</label>
+                                    <div class="three wide field">
+                                        <input type="text" name="" id="">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>S'il s'agit d'un patient autochtone, veuillez saisir ce qui suit</label>
+                                    <div class="two fields">
+                                        <div class="two wide field">
+                                            <label>No de bande</label>
+                                            <input type="text" name="">
+                                        </div>
+                                        <div class="two wide field">
+                                            <label>No de famille</label>
+                                            <input type="text" name="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="ui axxium tiny button">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="ui tab segment" data-tab="Regie-sub">
                 <div class="ui selection dropdown fact_regie">
                     <input type="hidden" name="gender">

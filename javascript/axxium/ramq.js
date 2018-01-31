@@ -1938,13 +1938,13 @@ function RamqCreateNewGlobalBill()
                     alert(result.message);
                 else {
                     globBillNumber = result.nofact;
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     //alert("Facture #" + globBillNumber + " a été créée.")
-=======
+//=======
                     globIsBillCreated = true;
                     alert("Facture #" + globBillNumber + " a été créée.")
                     RamqUpdateGlobalBill()
->>>>>>> cdaFixingBugs
+//>>>>>>> cdaFixingBugs
                     //TODO: Display UI
                 }
             });
@@ -1983,10 +1983,10 @@ function RamqUpdateGlobalBill()
                 if (result.outcome == 'updateFacture error')
                     alert(result.message);
                 else {
-<<<<<<< HEAD
-                    //alert("Cda version is not correct!");
-                    getAllTrData(); //Open Payment form
-=======
+////<<<<<<< HEAD
+//                    //alert("Cda version is not correct!");
+//                    getAllTrData(); //Open Payment form
+////=======
                     var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
                     if (cdaVersion == '2') {
                         $('#insr_cdan_version_1').prop('checked', true);
@@ -2003,7 +2003,7 @@ function RamqUpdateGlobalBill()
                         getAllTrData();//Save data from facturation grid in global array
                         modPayment();//Open Payment form
                     }
->>>>>>> cdaFixingBugs
+//>>>>>>> cdaFixingBugs
                 }
             });
     }

@@ -21,6 +21,7 @@ $(document).ready(function () {
             null,
             null,
             null,
+            { "visible": false },
             { "visible": false }
         ],
         //dom: 'Bfrtip',
@@ -39,6 +40,7 @@ $(document).ready(function () {
         //    $(this).addClass('active');
         //}
         globCdaTransHistSelectedData = globCdaTransHistTable.row(this).data();
+        globBillNumber = globCdaTransHistSelectedData[11];
     });
 });
 
@@ -539,7 +541,7 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
             objResponse = CdaV4ReadResponse(strResponse);
             description = CdaV4GetTransactionName((objResponse.a04).toString().trim());
         }
-        objOutputData.NoSeq = (objResponse.a02).toString().trim();
+        objOutputData.NoSeq = (objResponse.a02)? (objResponse.a02).toString().trim():'';
         objOutputData.Description = description;
         objOutputData.NoDossier = objInputData.nodossier;
         objOutputData.Prenom = objInputData.info.Prenom;
@@ -547,9 +549,10 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         objOutputData.Assur = objInputData.info.Ass;
         objOutputData.Couver = '';
         objOutputData.Date = objInputData.datetransaction;
-        objOutputData.NoRef = (objResponse.g01).toString().trim();
+        objOutputData.NoRef = (objResponse.g01)?(objResponse.g01).toString().trim():'';
         objOutputData.Status = objInputData.status;
         objOutputData.VersionNumber = versionNumber;
+        objOutputData.NoFacture = objInputData.facture;
 
         arrData.push(objOutputData);
     }
@@ -573,6 +576,7 @@ function CdaCommUpdateTransHistTable() {
         arr.push(globCdaTransHistListData[i].NoRef);
         arr.push(CdaCommGetStatus(globCdaTransHistListData[i].Status));
         arr.push(globCdaTransHistListData[i].VersionNumber);
+        arr.push(globCdaTransHistListData[i].NoFacture);
         arrData.push(arr);
     }
 

@@ -274,13 +274,43 @@
  	}
  	if((dent>=16 && dent<=18)||(dent>=26 && dent<=28)||(dent>=36 && dent<=38)||(dent>=46 && dent<=48))
  	{
-		init_code='2122'+surf_length;
+		//init_code='2122'+surf_length;
+				if (surf_modal_btn_val == "1")
+				{
+		   	 			init_code='2122'+surf_length;
+				}
+				else if (surf_modal_btn_val == "2")
+				{
+		   	 			init_code='2322'+surf_length;
+				}
+				else if (surf_modal_btn_val == "3")
+				{
+		   	 		if(surf_length<=3)
+		   	 		{
+		   	 			init_code='25'+surf_length+'00';
+		   	 		}
+				}
+				else if (surf_modal_btn_val == "4")
+				{
+		   	 		if(surf_length<=2)
+		   	 		{
+		   	 			init_code='2512'+surf_length;
+		   	 		}
+		   	 		if(surf_length>=3)
+		   	 		{
+		   	 			init_code='25123';
+		   	 		}
+				}
+				else
+				{
+					init_code=surf_modal_btn_val;
+				}
 
-		if((surf=='DM')||(surf=='BL'))
-		{
-			warnMsg(msgerr.msg077);
-			return false;
-		}
+		//if((surf=='DM')||(surf=='BL'))
+		//{
+		//	warnMsg(msgerr.msg077);
+		//	return false;
+		//}
  	}
  }
 

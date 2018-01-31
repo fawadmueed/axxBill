@@ -8,7 +8,7 @@
 			var first_3 = code.substring(0, 3);
 			if(first_3 == '711' || first_3 == '714' || first_3 == '722') {
 				var dent = parseInt(tooth);
-				if((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28) 
+				if((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28)
 				|| (dent >= 31 && dent <= 38) || (dent >= 41 && dent <= 48) || (dent >= 51 && dent <= 55)
 				|| (dent >= 61 && dent <= 65) || (dent >= 71 && dent <= 75) || (dent >= 81 && dent <= 85)) {
 					//Call Depuis function
@@ -28,7 +28,7 @@
 						warnMsg(msgerror.msg029);
 						return false;
 					}
-					
+
 					if(first_3 == '714' || code == '72351' || code == '72361') {
 						warnMsg(msgerror.msg030);
 						return false;
@@ -57,14 +57,14 @@
 
 			if(!regle1_4(13, insurance, parseInt(age)) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 				warnMsg(msgerror.msg27);
-				return false;	
+				return false;
 			}
 
 			if(code.substring(2, 3) == '9') {
 				warnMsg(msgerror.msg216);
-				return false;	
+				return false;
 			}
-			
+
 			if(code != '32211' && code != '32310') {
 				warnMsg(msgerror.msg213);
 				return false;
@@ -86,7 +86,7 @@
 				}
 				else if(parseInt(age) >= 10) {
 					warnMsg(msgerror.msg219);
-					return false;						
+					return false;
 				}
 
 				var trois_dern = code.substring(2, 6);
@@ -98,7 +98,7 @@
 					}
 					else if(!perment_tooth(parseInt(tooth))) {
 						warnMsg(msgerror.msg078);
-						return false;						
+						return false;
 					}
 				}
 				else {
@@ -106,7 +106,7 @@
 					return false;
 				}
 			}
-		
+
 			return true;
 		}
 
@@ -123,48 +123,48 @@
 
 			if(code.substring(2, 3) == '9') { // 3eme
 				warnMsg(msgerror.msg210);
-				return false;				
+				return false;
 			}
 
 			var deux_dern = code.substring(3);
 			var dent = parseInt(tooth);
 			switch(deux_dern){
 				case "01":
-				case "21":					
+				case "21":
 					if(!((dent >= 1 && dent <= 6) || (dent >= 51 && dent <= 53)
 						|| (dent >= 61 && dent <= 63) || (dent >= 71 && dent <= 73) || (dent >= 81 && dent <= 83)) && code.substring(0, 3) != '511') {
 						warnMsg(msgerror.msg211);
-						return false;	
+						return false;
 					}
 					break;
 				case "03":
 					if(!((dent >= 1 && dent <= 6) || (dent >= 54 && dent <= 55)
 						|| (dent >= 64 && dent <= 65) || (dent >= 74 && dent <= 75) || (dent >= 84 && dent <= 85))) {
 						warnMsg(msgerror.msg212);
-						return false;	
-					}					
+						return false;
+					}
 					break;
 				case "11":
 				case "13":
 					if(code.substring(2, 3) != '4') {
 						warnMsg(msgerror.msg213);
-						return false;	
+						return false;
 					}
 					if(deux_dern == '11') {
 						if(!((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 13)
 						|| (dent >= 21 && dent <= 23) || (dent >= 31 && dent <= 33) || (dent >= 41 && dent <= 43))) {
 							warnMsg(msgerror.msg214);
-							return false;	
+							return false;
 						}
 					} else if(deux_dern == '13') {
 						if(!((dent >= 1 && dent <= 6) || (dent >= 14 && dent <= 18)
 						|| (dent >= 24 && dent <= 28) || (dent >= 34 && dent <= 38) || (dent >= 44 && dent <= 48))) {
 							warnMsg(msgerror.msg215);
-							return false;	
+							return false;
 						}
 					} else {
 						warnMsg(msgerror.msg213);
-						return false;							
+						return false;
 					}
 					break;
 			}
@@ -182,9 +182,9 @@
 				if(!(parseInt(age) >= 0 && parseInt(age) <= 11) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 					warnMsg(msgerror.msg21);
 					return false;
-				}			
+				}
 				//return depuis(code, '', '', 365, 1, true);
-			} 
+			}
 
 			if(code == '01130') {
 				if(!(parseInt(age) >= 12 && parseInt(age) <= 15)) {
@@ -193,7 +193,7 @@
 						return false;
 					}
 				}
-				
+
 				//return depuis(code, '', '', 365, 1, true);
 			}
 
@@ -201,7 +201,7 @@
 				if(!(parseInt(age) >= 0 && parseInt(age) <= 15)) {
 					if(!(insurance == 'BES' && parseInt(age) >= 16) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg23);
-						return false;					
+						return false;
 					}
 				}
 			}
@@ -210,7 +210,7 @@
 				if(!(parseInt(age) >= 12 && parseInt(age) <= 15)) {
 					if(!(insurance == 'BES' && parseInt(age) >= 16) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg22);
-						return false;	
+						return false;
 					}
 				}
 
@@ -221,7 +221,7 @@
 				if(!(parseInt(age) >= 12 && parseInt(age) <= 15)) {
 					if(!(insurance == 'BES' && parseInt(age) >= 16) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg22);
-						return false;	
+						return false;
 					}
 				}
 				//return depuis(code, '', '', 365, 1, true);
@@ -230,7 +230,7 @@
 			if(code == '43500') {
 				if(!(insurance == 'BES' && parseInt(age) >= 16) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 					warnMsg(msgerror.msg24);
-					return false;	
+					return false;
 				}
 				//return depuis(code, '', '', 365, 1, true);
 			}
@@ -238,7 +238,7 @@
 			if(code == '12400') {
 				if((code != 'BES' || !(parseInt(age) >= 12 && parseInt(age) <= 15)) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 					warnMsg(msgerror.msg25);
-					return false;	
+					return false;
 				}
 				//return depuis(code, '', '', 365, 1, true);
 			}
@@ -249,34 +249,34 @@
 
 			if(code == '23999') {
 				var tmp_code = '21999';
-				if(!((parseInt(tooth) >= 1 && parseInt(tooth) <= 6) || parseInt(tooth) == 14 || parseInt(tooth) == 15 
+				if(!((parseInt(tooth) >= 1 && parseInt(tooth) <= 6) || parseInt(tooth) == 14 || parseInt(tooth) == 15
 				|| parseInt(tooth) == 24 || parseInt(tooth) == 25) && !regle1_4(13, insurance, age)) {
 					warnMsg(msgerror.msg26);
-					return false;	
+					return false;
 				}
 
 				//return  depuis(code, dentstr, surface, 365, 5, true)
 			}
 
 			if(is_obturation_code(code) && is_dent_anterieur(tooth)) {
-				//return depuis(code, dentstr, Surface, 365, 2, true) 
+				//return depuis(code, dentstr, Surface, 365, 2, true)
 			}
 
 			if(code == '21301' || code == '21302' || code == '21306') {
 				if(!regle1_4(13, insurance, age) && !(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 					warnMsg(msgerror.msg27);
-					return false;						
+					return false;
 				}
 			}
 
 			if(code == '29101') {
 				var dent = parseInt(tooth);
-				if(!(regle1_4(13, insurance, age) && ((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28) 
+				if(!(regle1_4(13, insurance, age) && ((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28)
 					|| (dent >= 31 && dent <= 38) || (dent >= 41 && dent <= 48) || (dent >= 51 && dent <= 55)
 					|| (dent >= 61 && dent <= 65) || (dent >= 71 && dent <= 75) || (dent >= 81 && dent <= 85)))) {
 					if(!(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg28);
-						return false;	
+						return false;
 					}
 				}
 			}
@@ -286,12 +286,12 @@
 					return true;
 
 				var dent = parseInt(tooth);
-				if(!regle1_4(13, insurance, age) && ((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28) 
+				if(!regle1_4(13, insurance, age) && ((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28)
 					|| (dent >= 31 && dent <= 38) || (dent >= 41 && dent <= 48) || (dent >= 51 && dent <= 55)
 					|| (dent >= 61 && dent <= 65) || (dent >= 71 && dent <= 75) || (dent >= 81 && dent <= 85))) {
 					if(!(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg28);
-						return false;	
+						return false;
 					}
 				}
 			}
@@ -300,43 +300,44 @@
 				if(!regle1_4(13, insurance, age) && !perment_tooth(tooth)) {
 					if(!(parseInt(tooth) >= 1 && parseInt(tooth) <= 6)) {
 						warnMsg(msgerror.msg29);
-						return false;	
+						return false;
 					}
 				}
 			}
-	
+
 			if(insurance == 'BES' || insurance == 'AMQ') {
-				if($.inArray(code, regiecodes) == -1) {
+				//if($.inArray(code, regiecodes) == -1) {
 					// -1 If Not Found , if its not -1 its FOUND
-					console.log(code);
-					warnMsg(msgerror.msg0162.replace("@@", code));
-						return false;	
-				}
+				//	console.log(code);
+				//	warnMsg(msgerror.msg0162.replace("@@", code));
+				//	return false;
+				//}
+				return true;
 			}
 
 			return true;
 		}
-		
+
 		function quest_recl() {
 			if (confirm(msgerror.msg0161)) {
 				return true;
 			} else {
 				return false;
-			}		
+			}
 		}
 
 		function perment_tooth(tooth) {
 			var dent_perment = [1,2,3,4,5,6,11,12,13,14,15,16,17,18,21,22,23,24,25,26,27,28,31,32,33,34,35,36,37,38,41,42,43,44,45,46,47,48];
 			if($.inArray(tooth, dent_perment) > -1)
 				return true
-			return false;					
+			return false;
 		}
 
 		function primary_tooth(tooth) {
 			var dent_primary = [51,52,53,54,55,61,62,63,64,65,71,72,73,74,75,81,82,83,84,85];
 			if($.inArray(tooth, dent_primary) > -1)
 				return true
-			return false;			
+			return false;
 		}
 
 		function code_avec_dent(code) {
@@ -356,7 +357,7 @@
 
 		function code_avec_dent_et_surface(code, tooth) {
 			if(code == '23210' || code == '23220')
-				return false;	
+				return false;
 
 			if(dent_Type != 'Denturologiste' && !code_avec_dent(code)) { //we must be in QC to execute this
 				var c_avec_dent = [211, 212, 231, 232, 233, 234, 251, 252, 253, 255];
@@ -375,7 +376,7 @@
 				var row = getCodeData(obj.code);
 				return;
 				//Fill up the next row with informations in row.....
-				warnMsg(row.fr);			
+				warnMsg(row.fr);
 			}
 		}
 
@@ -395,21 +396,21 @@
 						'23904', '23214', '23215', '23221', '23222', '23223', '23224',
 						'23225', '23301', '23302', '23311', '23312', '23313', '23314',
 						'23315', '23411', '23412', '23413', '23414', '23415', '23901',
-						'23902', '23903', '23904', '23905', 
+						'23902', '23903', '23904', '23905',
 						'25100', '25200', '25300', '25500', '25521', '25601', '25602',
 						'25603', '25604',
-						'25121', '25122', '25123', 
+						'25121', '25122', '25123',
 						'25221', '25222', '25223',
 						'25521',
 						'23121', '23123',
-						'23122', 
+						'23122',
 						'21301', '21302', '21303', '21304', '21306', '27421', '27401',
 						'27403', '27411', '27413', '27901', '27903', '27921', '29101'];
-			
+
 			var valeur = tooth.substring(tooth.length - 1);
 			if(tooth == '' || (valeur == "1" || valeur == "2" || valeur == "3"))
 				return false;
-			
+
 			// One teeth can have ONLY one valeur de base. make a lopp to verifiy this.  if find same code and dent, exit, return false
 
 			if($.inArray(obj.code, tenons_code) > -1)
@@ -456,7 +457,7 @@
 			var dent_anterieur = [1,2,3,4,5,6,11,12,13,21,22,23,31,32,33,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83];
 			if($.inArray(parseInt(tooth), dent_anterieur) > -1)
 				return true
-			return false;			
+			return false;
 		}
 
 		function is_endo_code(code) {
@@ -469,7 +470,7 @@
 		}
 
 		function is_ablation_code(code) {
-			var ablation_code = [71101, 71111, 71401, 71411, 72210, 72230, 72250, 72260, 72300, 72311, 72351, 72361, 
+			var ablation_code = [71101, 71111, 71401, 71411, 72210, 72230, 72250, 72260, 72300, 72311, 72351, 72361,
 								72320, 75350, 75360, 79301];
 			if($.inArray(parseInt(code), ablation_code) > -1)
 				return true
@@ -482,7 +483,7 @@
 					return false;
 				} else {
 					if(insuranceCo == 'BES' && insurance == 'HOP') {
-						return false;	
+						return false;
 					} else {
 						switch(limit) {
 							case 13:
@@ -496,10 +497,10 @@
 						}
 					}
 				}
-			}			
+			}
 			return true;
 		}
-		
+
 		function prothese(insurance, code) {
 			if(code.substring(0, 1) != '5' || code == '55101' || code == '55102' || code == '55201' || code == '55202')
 				return true;
@@ -512,18 +513,18 @@
 			var deux_dern = code.substring(3);
 			switch(code.substring(1, 2)) {
 				case "1":
-					if(!(code.substring(2, 3) == '1' && 
+					if(!(code.substring(2, 3) == '1' &&
 						(deux_dern == '00' || deux_dern == '01' || deux_dern == '10' || deux_dern == '11' || deux_dern == '20' || deux_dern == '21'))) {
 						warnMsg(msgerror.msg213);
 						return false;
 					}
 					break;
 				case "2":
-					if(!(code.substring(2, 3) == '2' && 
+					if(!(code.substring(2, 3) == '2' &&
 						(deux_dern == '40' || deux_dern == '41' || deux_dern == '50' || deux_dern == '51' || deux_dern == '60' || deux_dern == '61'))) {
 						warnMsg(msgerror.msg213);
 						return false;
-					}					
+					}
 					break;
 				case "5":
 					if(!((code.substring(2, 3) == '1' || code.substring(2, 3) == '2') && (deux_dern == '01' || deux_dern == '02'))) {

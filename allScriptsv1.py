@@ -1214,7 +1214,8 @@ if (tx == "sendInsurance"):
         r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
-            print '{ "outcome" : "error", "message" : "Something was wrong" }'
+            resp = r.json()
+            print '{ "outcome" : "error", "message" : "' + resp["message"] + '" }'
         else:
             resp = r.json()
             txtresp = resp["resp"]             

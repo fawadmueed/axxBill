@@ -410,7 +410,7 @@ function CdaCommCreateRandomNumber(min, max)
 
     while (random.length < len)
     {
-        random += '0' + random;
+        random = '0' + random;
     }
 
     return random;
@@ -426,7 +426,7 @@ function CdaCommGetCommStatus(pResponseLine)
     var result = parseInt(pResponseLine.substring(startPos, endPos));
     switch(result)
     {
-        case 1001: CommErrormess = ('Erreur interne .Consulter le fichier CDALOG.TXT pour plus de détails'); break;
+        case 1001: CommErrormess = ('Erreur interne. '); break; //Consulter le fichier CDALOG.TXT pour plus de détails
         case 1003: CommErrormess = ('Appel interrompu par l\'utilisateur...'); break;
         case 1011: CommErrormess = ('Cryptage non autorisé.' + '\n'+ 'Le cryptage a  été déclaré dans le fichier de requête mais pas dans le fichier de configuration CCD.INI...'); break;
         case 1012: CommErrormess = ('Ne peut encrypter .' + '\n' + 'Le cryptage nécessite une connexion de 8 bits alors que la connexion déclarée dans CCD.INI est de 7 bits...'); break;
@@ -456,8 +456,8 @@ function CdaCommGetCommStatus(pResponseLine)
 
     if (result != 0)
     {
-        var errorMess = 'Erreur de communication ' + inttostr(result) +'\n'+ CommErrormess;
-        alert('errorMess');
+        var errorMess = 'Erreur de communication ' + result.toString() +'\n'+ CommErrormess;
+        alert(errorMess);
     }
     return result;
 
@@ -547,17 +547,17 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         }
         objOutputData.NoSeq = (objResponse.a02)? (objResponse.a02).toString().trim():'';
         objOutputData.Description = description;
-        objOutputData.NoDossier = objInputData.nodossier;
-        objOutputData.Prenom = objInputData.info.Prenom;
-        objOutputData.Nom = objInputData.info.Nom;
-        objOutputData.Assur = objInputData.info.Ass;
+        objOutputData.NoDossier = (objInputData.nodossier) ? objInputData.nodossier : '';
+        objOutputData.Prenom = (objInputData.info && objInputData.info.Prenom)?objInputData.info.Prenom:'';
+        objOutputData.Nom = (objInputData.info && objInputData.info.Nom)?objInputData.info.Nom:'';
+        objOutputData.Assur = (objInputData.info && objInputData.info.Ass)?objInputData.info.Ass:'';
         objOutputData.Couver = '';
-        objOutputData.Date = objInputData.datetransaction;
+        objOutputData.Date = (objInputData.datetransaction)?objInputData.datetransaction:'';
         objOutputData.NoRef = (objResponse.g01)?(objResponse.g01).toString().trim():'';
-        objOutputData.Status = objInputData.status;
+        objOutputData.Status = (objInputData.status)?objInputData.status:'';
         objOutputData.VersionNumber = versionNumber;
-        objOutputData.NoFacture = objInputData.facture;
-        objOutputData.Resp = objInputData.resp;
+        objOutputData.NoFacture = (objInputData.facture)?objInputData.facture:'';
+        objOutputData.Resp = (objInputData.resp)?objInputData.resp:'';
 
 
         arrData.push(objOutputData);
@@ -680,14 +680,18 @@ function CdaCommGetDateOfBirthFromRamq(pRamqNo) {
 
 function CdaCommDisplayTransDetails()
 {
-    var resp = globCdaTransHistSelectedData[12];
+    var responseLine = globCdaTransHistSelectedData[12];
+    var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
+    var respMessage = '';
+
+    if (globCdaTransHistSelectedData[10] == '02') {
+        var cdaRespObj = CdaV2ReadResponse(transactionLine);
+        respMessage = CdaV2CreateRespMessage(cdaRespObj, transactionLine);
+    }
+    else if (globCdaTransHistSelectedData[10] == '04') {
+        
+    }
+    //var message = respMessage.replace(/\n/g, '<br/>');
     var txtArea = document.getElementById('txtCdaTransDetails');
-    txtArea.innerHTML = resp;
-    //var respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
-
-    //var message = pRespMessage.replace(/\n/g, '<br/>');
-    //var div = document.getElementById('cdanet_response_div');
-
-    //div.innerHTML = '<p>' + message + '</p>';
-
+    txtArea.innerHTML = respMessage;
 }

@@ -17,8 +17,14 @@ function CdaV4CallCDAService() {
         "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
 
+    //Show progress
+    document.getElementById("loaderCdan4Form").setAttribute("class", "ui active inverted dimmer");
+
     $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
         function (result) {
+            //Hide progress
+            document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
+
             if (result.outcome === 'error')
                 alert(result.message);
             else {

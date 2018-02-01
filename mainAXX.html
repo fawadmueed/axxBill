@@ -56,7 +56,7 @@
     <script src="javascript/axxium/printing.js"></script>
 
     <!-- <script type="text/javascript"> var translator = $('body').translate({lang:"", t:dict});  </script> -->
-    <!-- Alexey JS FILE -->
+
     <style type="text/css">
         *[contenteditable] {
             text-transform: uppercase;
@@ -185,9 +185,10 @@
     <!-- HEADER END -->
 
     <!-- Main loading indicator -->
-    <!-- <div id="loadingText" class="ui active inverted dimmer">
-        <div class="ui text loader">Chargement initial des données...</div>
-    </div> -->
+     <!--<div id="loadingText" class="ui active inverted dimmer">-->
+    <!--<div id="loadingText" class="ui inverted dimmer">
+        <div class="ui text loader">...</div>
+    </div>--> 
     <!-- Main loading indicator END-->
 
     <!-- tabs1 -->
@@ -1464,6 +1465,9 @@
                 <i class="user icon"></i>Paiement
             </div>
             <div class="content">
+                <div id="loaderPaimentForm" class="ui inverted dimmer">
+                    <div class="ui text loader">...</div>
+                </div> 
                 <div class="ui axxium form segment">
                     <div class="ui three column grid">
                         <div class="seven wide column">
@@ -2212,9 +2216,12 @@
     <div class="ui modalCdan1 modal">
         <i class="close icon"></i>
         <div class="header">
-            <i class="user icon"></i>CDANET Modal - 1
+            <i class="user icon"></i>CDANET Modal - 2
         </div>
         <div class="content">
+            <div id="loaderCdan2Form" class="ui inverted dimmer">
+                <div class="ui text loader">...</div>
+            </div>
             <div class="ui axxium form segment">
                 <h4 class="ui horizontal divider header">Renseignements - Reclamations CDANET</h4>
                 <div class="ui two column grid">
@@ -2298,7 +2305,7 @@
                             </div>
                         </div>
                         <button class="right floated ui axxium button" onclick="CdaV2SendRequestToCdaNet()">OK</button>
-                        <button class="right floated ui axxium button">Annuler</button>
+                        <button class="right floated ui axxium button" onclick="$('.modalCdan1').modal('hide');">Annuler</button>
                     </div>
                 </div>
             </div>
@@ -2307,9 +2314,12 @@
     <div class="ui modalCdan2 modal">
         <i class="close icon"></i>
         <div class="header">
-            <i class="user icon"></i>CDANET Modal - 2
+            <i class="user icon"></i>CDANET Modal - 4
         </div>
         <div class="content">
+            <div id="loaderCdan4Form" class="ui inverted dimmer">
+                <div class="ui text loader">...</div>
+            </div> 
             <div class="ui axxium form segment">
                 <h4 class="ui horizontal divider header">Renseignements - Reclamations CDANET</h4>
                 <div class="ui two column grid">
@@ -2450,7 +2460,7 @@
 
                     </div>
                     <button class="right floated ui axxium button" onclick="CdaV4SendRequestToCdaNet()">OK</button>
-                    <button class="right floated ui axxium button">Annuler</button>
+                    <button class="right floated ui axxium button" onclick="$('.modalCdan2').modal('hide');">Annuler</button>
                 </div>
             </div>
         </div>

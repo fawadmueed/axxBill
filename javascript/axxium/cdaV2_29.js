@@ -16,9 +16,14 @@ function CdaV2CallCDAService()
         //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
         "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
+    //Show progress
+    document.getElementById("loaderCdan2Form").setAttribute("class", "ui active inverted dimmer");
 
     $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl)},
         function (result) {
+            //Hide progress
+            document.getElementById("loaderCdan2Form").setAttribute("class", "ui inverted dimmer");
+
             if (result.outcome === 'error')
                 alert(result.message);
             else
@@ -777,7 +782,7 @@ function CdaV2GetDataFromDB() {
                 //console.log(result);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                debugger;
+                //debugger;
                 alert(xhr.statusText);
             }
         });

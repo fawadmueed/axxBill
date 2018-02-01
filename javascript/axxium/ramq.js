@@ -37,9 +37,13 @@ function SoumissionDemandesPaiement()
         }
 
         var strJsonXML = JSON.stringify(jsonXML)
-        
+        //Show progress
+        document.getElementById("loaderPaimentForm").setAttribute("class", "ui active inverted dimmer");
+
         $.post("allScriptsv1.py", { tx: "getRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: strJsonXML },
                     function (result) {
+                        //Hide progress
+                        document.getElementById("loaderPaimentForm").setAttribute("class", "ui inverted dimmer");
                         if (result.outcome === 'error')//Display python Error
                         {
                             alert(result.message);

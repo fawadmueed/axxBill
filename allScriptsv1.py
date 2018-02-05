@@ -669,6 +669,7 @@ if tx == "getPatientFactures":
                             tmp_fact["datetransaction"] = data["ins"]["date"]
                             tmp_fact["datecreation"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(mdate))
                             tmp_fact["status"] = data["ins"]["status"]
+                            tmp_fact["transaction"] = data["ins"]["transaction"]
                             factures.append(tmp_fact)
                     elif section == 'cas':
                         if data["cas"] is not None:

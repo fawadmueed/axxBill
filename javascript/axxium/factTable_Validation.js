@@ -1,8 +1,9 @@
  
+ // TODO: Each dentist will have its own codes file. This needs to be fixed!
     var dataJson_Code;      
       $.ajax({
   type:'GET',
-  url:"json/params/codes6.json",
+  url:"json/params/codes.json",
   async:false,
   dataType: 'json',
   success: function (data) {

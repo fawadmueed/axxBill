@@ -6,19 +6,28 @@ var globCdaV4g01 = '';
 function CdaV4SendRequestToCdaNet() {
 
     //Check if patient has two insurance
-    if ($('#asur_2_oui').is(':checked'))
-    {
+    if ($('#asur_2_oui').is(':checked')) {
         //Check if patient has two same insurance
-        if (globVisionRData.InsTypeList[0] === globVisionRData.InsTypeList[1])
-        {
+        if (globVisionRData.InsTypeList[0] === globVisionRData.InsTypeList[1]) {
             //Start request process
             CdaV4GetDataFromDB();
         }
     }
+    else {
+        //Start request process
+        CdaV4GetDataFromDB();
+    }
 }
 
-function CdaV4CallCDAService() {
-    var strRequest = CdaV4CreateRequestString();
+function CdaV4CallCDAService(pReqString) {
+    var strRequest ='';
+    if (pReqString) {
+        strRequest = pReqString;
+    }
+    else {
+        strRequest = CdaV4CreateRequestString();
+    } 
+
     var randomNum = CdaCommCreateRandomNumber(1, 999);
 
     var inputXMl = {
@@ -2397,9 +2406,10 @@ function CdaV4GetResponseListForEligibility(pResp) {
                 success: function (result) {
                     switch (globCdanetTranscode) {
                         case '1'://Claim
+                        case '2'://Claim reversial
                             {
                                 globCdaDataFromDB = result;
-                                CdaV4CallCDAService();
+                                CdaV4CallCDAService('');
                             }
                             break;
                     }

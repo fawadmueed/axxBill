@@ -23,6 +23,7 @@ $(document).ready(function () {
             null,
             { "visible": false },
             { "visible": false },
+            { "visible": false },
             { "visible": false }
         ],
         //dom: 'Bfrtip',
@@ -41,6 +42,7 @@ $(document).ready(function () {
         //    $(this).addClass('active');
         //}
         globCdaTransHistSelectedData = globCdaTransHistTable.row(this).data();
+        globNoDossier = globCdaTransHistSelectedData[2];
         globBillNumber = globCdaTransHistSelectedData[11];
 
         //TODO:
@@ -50,6 +52,12 @@ $(document).ready(function () {
 
 function CdaCommSendToSecondIns()
 { }
+
+function CdaCommReSendClaim()
+{
+    var strRequest = globCdaTransHistSelectedData[2];
+
+}
 
 function CdaCommOpenCASPopup() {
     var montantReclame = (globCdaRespObj && globCdaRespObj.g04 && !isNaN(parseFloat(globCdaRespObj.g04))) ? parseFloat(globCdaRespObj.g04):0;
@@ -584,6 +592,7 @@ function CdaCommUpdateTransHistTable() {
         arr.push(globCdaTransHistListData[i].VersionNumber);
         arr.push(globCdaTransHistListData[i].NoFacture);
         arr.push(globCdaTransHistListData[i].Resp);
+        arr.push(globCdaTransHistListData[i].transaction);
         arrData.push(arr);
     }
 
@@ -609,7 +618,8 @@ function CdaCommOpenClaimReversPopup()
 {
     if (globCdaTransHistSelectedData)
     {
-        if (CdaCommIsClaimReversPossible()) {
+        //if (CdaCommIsClaimReversPossible()) {
+        if (true) {
             modCdaClaimReversConfirm();
         }
         else {

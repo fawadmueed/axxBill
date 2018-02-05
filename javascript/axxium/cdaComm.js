@@ -53,11 +53,7 @@ $(document).ready(function () {
 function CdaCommSendToSecondIns()
 { }
 
-function CdaCommReSendClaim()
-{
-    var strRequest = globCdaTransHistSelectedData[2];
 
-}
 
 function CdaCommOpenCASPopup() {
     var montantReclame = (globCdaRespObj && globCdaRespObj.g04 && !isNaN(parseFloat(globCdaRespObj.g04))) ? parseFloat(globCdaRespObj.g04):0;
@@ -538,22 +534,27 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         var description = '';
         var strResponse = '';
         var versionNumber = '';
+        var transCode = '';
+        var noSeq = '';
         var objInputData = pTransactions[i];
         strResponse = objInputData.resp.split(',').slice(3).toString(); // extract string after 3th comma;
         
-        versionNumber = strResponse.substring(18, 20);
-        
+        var transactionString = (objInputData.transaction)? objInputData.transaction:'';
+        versionNumber = transactionString.substring(18, 20);
+        transCode = transactionString.substring(20, 22);
+        noSeq = transactionString.substring(12, 18);
+
         if (versionNumber == '02')
         {
             objResponse = CdaV2ReadResponse(strResponse);
-            description = CdaV2GetTransactionName((objResponse.a04).toString().trim());
+            description = CdaV2GetTransactionName(transCode);
         }
         else if (versionNumber == '04')
         {
             objResponse = CdaV4ReadResponse(strResponse);
-            description = CdaV4GetTransactionName((objResponse.a04).toString().trim());
+            description = CdaV4GetTransactionName(transCode);
         }
-        objOutputData.NoSeq = (objResponse.a02)? (objResponse.a02).toString().trim():'';
+        objOutputData.NoSeq = noSeq;
         objOutputData.Description = description;
         objOutputData.NoDossier = (objInputData.nodossier) ? objInputData.nodossier : '';
         objOutputData.Prenom = (objInputData.info && objInputData.info.Prenom)?objInputData.info.Prenom:'';
@@ -561,12 +562,12 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         objOutputData.Assur = (objInputData.info && objInputData.info.Ass)?objInputData.info.Ass:'';
         objOutputData.Couver = '';
         objOutputData.Date = (objInputData.datetransaction)?objInputData.datetransaction:'';
-        objOutputData.NoRef = (objResponse.g01)?(objResponse.g01).toString().trim():'';
+        objOutputData.NoRef = (objResponse&&objResponse.g01) ? (objResponse.g01).toString().trim() : '';
         objOutputData.Status = (objInputData.status)?objInputData.status:'';
         objOutputData.VersionNumber = versionNumber;
         objOutputData.NoFacture = (objInputData.facture)?objInputData.facture:'';
         objOutputData.Resp = (objInputData.resp)?objInputData.resp:'';
-
+        objOutputData.Transaction = (objInputData.transaction) ? objInputData.transaction : '';
 
         arrData.push(objOutputData);
     }
@@ -592,7 +593,7 @@ function CdaCommUpdateTransHistTable() {
         arr.push(globCdaTransHistListData[i].VersionNumber);
         arr.push(globCdaTransHistListData[i].NoFacture);
         arr.push(globCdaTransHistListData[i].Resp);
-        arr.push(globCdaTransHistListData[i].transaction);
+        arr.push(globCdaTransHistListData[i].Transaction);
         arrData.push(arr);
     }
 
@@ -642,6 +643,21 @@ function CdaCommSendClaimReversRequest()
     }
 }
 
+function CdaCommReSendClaimRequest() {
+    globCdanetTranscode = '1';
+    var strRequest = globCdaTransHistSelectedData[13];
+    if (strRequest)
+    {
+        //get version number from request
+        if (globCdaTransHistSelectedData[10] == '02') {
+            CdaV2SendRequestToCdaNet();
+        }
+        else if (globCdaTransHistSelectedData[10] == '04') {
+            CdaV4SendRequestToCdaNet();
+        }
+    }
+    
+}
 //Returns false if Claim date more than 24 hours from now. Otherwise true;
 function CdaCommIsClaimReversPossible()
 {

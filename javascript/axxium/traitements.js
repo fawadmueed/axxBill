@@ -777,9 +777,8 @@
       }
     }
 
-  //alert("Get the protocols!");
-  xmlhttp2.open("GET","json/ramq/protocoles3.json",true);
-  xmlhttp2.send();
+		xmlhttp2.open("GET","json/params/protocoles.json",true);
+		xmlhttp2.send();
 
   }
 
@@ -826,9 +825,8 @@
       }
     }
 
-  //alert("Get the protocols!");
-  xmlhttp2.open("GET","json/ramq/select2.json",true);
-  xmlhttp2.send();
+		xmlhttp2.open("GET","json/params/select.json",true);
+		xmlhttp2.send();
 
   }
 

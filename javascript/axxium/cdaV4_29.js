@@ -4,7 +4,17 @@
 var globCdaV4g01 = '';
 
 function CdaV4SendRequestToCdaNet() {
-    CdaV4GetDataFromDB();
+
+    //Check if patient has two insurance
+    if ($('#asur_2_oui').is(':checked'))
+    {
+        //Check if patient has two same insurance
+        if (globVisionRData.InsTypeList[0] === globVisionRData.InsTypeList[1])
+        {
+            //Start request process
+            CdaV4GetDataFromDB();
+        }
+    }
 }
 
 function CdaV4CallCDAService() {

@@ -196,6 +196,7 @@
         <div id="context1">
             <div class="ui top attached tabular menu active">
                 <div class="item active" data-tab="facturation" id="facturation" onclick="checkDentType();"><i class="dollar circular  blue icon trn" data-trn-key=""></i>Facturation</div>
+                <!--<div class="item" id="" data-tab="plans"><i class="list circular blue icon trn" data-trn-key=""></i>Plan RDV</div>-->
             </div>
         </div>
         <script>
@@ -831,6 +832,56 @@
             </div>
         </div>
     </div>
+
+    <!--<div class="ui bottom attached tab segment" data-tab="plans">
+        <div class="ui one column grid">
+            <div class="row">
+                <div class="column">
+                    <table id="planList" class="ui axxium sortable striped compact table segment">
+                        <thead>
+                        <th class="one wide"><i class="remove icon"></i></th>
+                        <th class="one wide">Code</th>
+                        <th class="one wide">Dent</th>
+                        <th class="one wide">Surf.</th>
+                        <th class="four wide">Description</th>
+                        <th class="one wide">Mod.</th>
+                        <th class="one wide">Unités</th>
+                        <th class="one wide">Prix</th>
+                        <th class="five wide">Rendez-vous</th>
+                        </thead>
+                        <tbody id="eachPlan"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            <h3 class="ui header">
+                <div id="delPLA" class="ui axxium tiny button" onclick='delPLA();'>Supprimer les traitements</div>
+                &nbsp;&nbsp;Total du plan de traitement :
+                <div class="ui content" id="totPlan">
+                </div>
+            </h3>
+        </div>
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="four wide column">
+                    <img id="sigBelowPLA0" class="ui left floated medium image">
+                </div>
+                <div class="four wide column">
+                    <img id="sigBelowPLA1" class="ui left floated medium image">
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <label id="dateBelowPLA0"></label>
+                </div>
+                <div class="four wide column">
+                    <label id="dateBelowPLA1"></label>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
 
     <div class="ui modalSign0 modal">
         <i class="close icon"></i>
@@ -1529,11 +1580,11 @@
                                 <div class="inline fields">
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
-                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked">
+                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" >
                                         <label>Oui</label>
                                     </div>
                                     <div class="field">
-                                        <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1">
+                                        <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked">
                                         <label>Non</label>
                                     </div>
                                 </div>
@@ -1813,16 +1864,17 @@
                                     pamnt_trnsfr_modal_stats = 0;
 
 
-                                    if (($('#asur_1_oui').is(':checked')) && ($('#asur_2_oui').is(':checked'))) {
-                                        //conition 1 : •  If the answers are yes and yes the button Transfer to insurance opens the information window - Insurance (see Information window - Insurance in the patient file)
-                                        $('.button.trns_insur').removeAttr('disabled');
-                                        // call this modInsuranceAddForm();
-                                        pamnt_trnsfr_modal_stats = 1;
-                                        // modInsuranceAddForm();
-                                        console.log('1st');
-                                    }
+                                    //if (($('#asur_1_oui').is(':checked')) && ($('#asur_2_oui').is(':checked'))) {
+                                    //    //conition 1 : •  If the answers are yes and yes the button Transfer to insurance opens the information window - Insurance (see Information window - Insurance in the patient file)
+                                    //    $('.button.trns_insur').removeAttr('disabled');
+                                    //    // call this modInsuranceAddForm();
+                                    //    pamnt_trnsfr_modal_stats = 1;
+                                    //    // modInsuranceAddForm();
+                                    //    console.log('1st');
+                                    //}
 
-                                    if (($('#asur_1_oui').is(':checked')) && ($('#asur_2_non').is(':checked'))) {
+                                    //if (($('#asur_1_oui').is(':checked')) && ($('#asur_2_non').is(':checked'))) {
+                                    if (($('#asur_1_oui').is(':checked'))) {
                                         //conition 2:  If the answers are Yes and No Transfer Insurance opens the information window - CDAnet Claim (2 windows below the choice of the window depends on the insurer In the guide CDAnet insurers with version 2 have the window. 1 and insurers having version 4 have the window 2
                                         pamnt_trnsfr_modal_stats = 2;
                                         $('.trns_insur').removeAttr('disabled');

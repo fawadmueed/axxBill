@@ -1987,10 +1987,20 @@ function RamqUpdateGlobalBill()
                 if (result.outcome == 'updateFacture error')
                     alert(result.message);
                 else {
-////<<<<<<< HEAD
-//                    //alert("Cda version is not correct!");
-//                    getAllTrData(); //Open Payment form
-////=======
+                    //Check if patient has two insurances
+                    var insQty = globVisionRData.InsTypeList.length;
+                    if (insQty == 2) {
+                        //check if it's not Ramq or cash
+                        if ((globVisionRData.InsTypeList[0].Type !== 'AMQ' && globVisionRData.InsTypeList[0].Type !== 'BES' && globVisionRData.InsTypeList[0].Type !== 'HOP' && globVisionRData.InsTypeList[0].Type !== 'CAS') && (globVisionRData.InsTypeList[1].Type !== 'AMQ' && globVisionRData.InsTypeList[1].Type !== 'BES' && globVisionRData.InsTypeList[1].Type !== 'HOP' && globVisionRData.InsTypeList[1].Type !== 'CAS'))
+                        {
+                            $("#asur_2_oui").prop("checked", true);
+                        }
+                    }
+                    else {
+                        $("#asur_2_non").prop("checked", true);
+                    }
+
+                    //check cda verson
                     var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
                     if (cdaVersion == '2') {
                         $('#insr_cdan_version_1').prop('checked', true);
@@ -2003,15 +2013,13 @@ function RamqUpdateGlobalBill()
                         modPayment();//Open Payment form
                     }
                     else {
-                        alert("Cda version is not correct!");
+                        //alert("Cda version is not correct!");
                         getAllTrData();//Save data from facturation grid in global array
                         modPayment();//Open Payment form
                     }
-//>>>>>>> cdaFixingBugs
                 }
             });
     }
-
 }
 
 //Returns an array with ONLY RamqData (AMQ, BES, HOP)

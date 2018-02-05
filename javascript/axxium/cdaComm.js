@@ -644,16 +644,17 @@ function CdaCommSendClaimReversRequest()
 }
 
 function CdaCommReSendClaimRequest() {
-    globCdanetTranscode = '1';
     var strRequest = globCdaTransHistSelectedData[13];
     if (strRequest)
     {
+        var transCode = parseInt(globCdaTransHistSelectedData[13].substring(20, 22)).toString();
+        globCdanetTranscode = transCode;
         //get version number from request
         if (globCdaTransHistSelectedData[10] == '02') {
             CdaV2SendRequestToCdaNet();
         }
         else if (globCdaTransHistSelectedData[10] == '04') {
-            CdaV4SendRequestToCdaNet();
+            CdaV4CallCDAService(strRequest);
         }
     }
     
@@ -709,13 +710,14 @@ function CdaCommDisplayTransDetails()
     var responseLine = globCdaTransHistSelectedData[12];
     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
     var respMessage = '';
-
-    if (globCdaTransHistSelectedData[10] == '02') {
+    var versionNumber = globCdaTransHistSelectedData[10];
+    if (versionNumber == '02') {
         var cdaRespObj = CdaV2ReadResponse(transactionLine);
         respMessage = CdaV2CreateRespMessage(cdaRespObj, transactionLine);
     }
-    else if (globCdaTransHistSelectedData[10] == '04') {
-        
+    else if (versionNumber == '04') {
+        var cdaRespObj = CdaV4ReadResponse(transactionLine);
+        respMessage = CdaV4CreateRespMessage(cdaRespObj, transactionLine);
     }
     //var message = respMessage.replace(/\n/g, '<br/>');
     var txtArea = document.getElementById('txtCdaTransDetails');

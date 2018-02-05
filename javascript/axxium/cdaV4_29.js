@@ -29,7 +29,6 @@ function CdaV4CallCDAService(pReqString) {
     } 
 
     var randomNum = CdaCommCreateRandomNumber(1, 999);
-
     var inputXMl = {
         "request": strRequest, //request to send
         //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
@@ -38,12 +37,13 @@ function CdaV4CallCDAService(pReqString) {
 
     //Show progress
     document.getElementById("loaderCdan4Form").setAttribute("class", "ui active inverted dimmer");
+    document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
 
     $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
         function (result) {
             //Hide progress
             document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
-
+            document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
             if (result.outcome === 'error')
                 alert(result.message);
             else {
@@ -713,10 +713,11 @@ function PopulateClaimReversalObj() {
     var transactionType = "ClaimReversal";
     var objDataFromDB = globCdaDataFromDB;
     var objDataFromUI = CdaV4GetDataFromUI();
+    var oficeSeqNumber = globCdaTransHistSelectedData[13].substring(12, 18);
 
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
-    obj.a02 = CDAV4FormatField(objDataFromDB.a02, 'N', 6); //Office Sequence Number
+    obj.a02 = CDAV4FormatField(oficeSeqNumber, 'N', 6); //Office Sequence Number
     obj.a03 = CDAV4FormatField(objDataFromDB.a03, 'N', 2); //Format Version Number
     obj.a04 = CDAV4FormatField(objDataFromDB.a04, 'N', 2); //Transaction Code
     obj.a05 = CDAV4FormatField(objDataFromDB.a05, 'N', 6); //Carrier Identification Number
@@ -1621,7 +1622,7 @@ function CdaV4ParseSummReconsilResp(pResponse)
 
 function CdaV4CreateRespMessage(pResp, pResponseLine) {
     var ResponseList = '';
-    ResponseList += 'cdanetTranscode : ' + globCdanetTranscode;
+    ResponseList += 'cdanetTranscode : ' + globCdanetTranscode + '\n';
 
     if (![2, 4, 5, 6, 99].includes(parseInt(globCdanetTranscode)))
     {
@@ -1649,13 +1650,13 @@ function CdaV4CreateRespMessage(pResp, pResponseLine) {
         ResponseList += 'Assurance: ' + assurance + '\n';
     }
 
-    var noSequence = pResp.a02;
+    var noSequence = (pResp.a02) ? pResp.a02 : '';
     ResponseList += 'No de Séquence: ' + noSequence + '\n';
 
-    var respCode = pResp.a04.toString();
+    var respCode = (pResp.a04)?pResp.a04.toString():'';
     ResponseList += 'responseCode: ' + respCode + '\n';
 
-    var MailBox = pResp.a11;
+    var MailBox = (pResp.a11) ? pResp.a11 : '';
     ResponseList += 'MailBox : ' + MailBox + '\n';
 
     if (respCode == '16') //Reconciliation des paiements

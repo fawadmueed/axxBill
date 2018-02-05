@@ -18,12 +18,12 @@ function CdaV2CallCDAService()
     };
     //Show progress
     document.getElementById("loaderCdan2Form").setAttribute("class", "ui active inverted dimmer");
-
+    document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
     $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl)},
         function (result) {
             //Hide progress
             document.getElementById("loaderCdan2Form").setAttribute("class", "ui inverted dimmer");
-
+            document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
             if (result.outcome === 'error')
                 alert(result.message);
             else

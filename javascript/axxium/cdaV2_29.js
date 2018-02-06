@@ -6,9 +6,16 @@ function CdaV2SendRequestToCdaNet() {
     CdaV2GetDataFromDB();
 }
 
-function CdaV2CallCDAService()
+function CdaV2CallCDAService(pReqString)
 {
-    var strRequest = CdaV2CreateRequestString();
+    var strRequest = '';
+    if (pReqString) {
+        strRequest = pReqString;
+    }
+    else {
+        strRequest = CdaV2CreateRequestString();
+    }
+
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     //var transCode = globCdaDataFromDB.a04;//TODO: send to server
     var inputXMl = {
@@ -28,15 +35,21 @@ function CdaV2CallCDAService()
                 alert(result.message);
             else
             {
-                var responseLine = result.message;
+                //var responseLine = result.message;
+                var responseLine = '39679,0,017,11321111    039679021300001101450515708008316              A00LE DEMANDE A ETE ACCEPTEE POUR TRAITEMENT ULTERIEUR.                       N0052200';
                 var communicationResult = CdaCommGetCommStatus(responseLine);
                 if (communicationResult == 0)// No errors
                 {
                     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
 
                     globCdaRespObj = CdaV2ReadResponse(transactionLine);
-
-                    var respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
+                    if (globCdaRespObj) {
+                        respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
+                    }
+                    else {
+                        respMessage = 'Parsing CdaNet response failed.'
+                    }
+                    
                     CdaCommShowResp(respMessage);
                 }
             }
@@ -118,7 +131,7 @@ function CdaV2CreateClaimReversalRequest(pG01) {
     res += req.b01 + req.b02;
     res += req.c01 + req.c11 + req.c02 + req.c03;
     res += req.d02 + req.d03 + req.d04;
-    res += CdaV2FormatField(pG01, 'AN', 14);
+    res += req.g01;
     return res;
 }
 
@@ -889,7 +902,7 @@ function CdaV2GetResponseListForClaimAck(pResp)
     else
         responsemess = 'Réponse la demande de réglement: ';
 
-    ResponseList += Responsemess;
+    ResponseList += responsemess;
     var responsestatus = pResp.g05;
 
     switch (responsestatus) {
@@ -961,7 +974,7 @@ function CdaV2GetResponseListForPredeterm(pResp) {
     ResponseList += responsemess;
     ResponseList += CdaCommFrompage850(pResp.g07) + '\n'; //g07 disposition;
 
-    ResponseList.add('No de Référence: ' + pResp.g01) + '\n';
+    ResponseList += 'No de Référence: ' + pResp.g01 + '\n';
 
     var montantReclame = (isNaN(parseFloat(pResp.g04))) ? 0 : parseFloat(pResp.g04);
     ResponseList += 'Montant réclamé : ' + montantReclame.toFixed(2) + '\n';
@@ -1065,11 +1078,11 @@ function CdaV2GetResponseListForEligibil(pResp) {
     return ResponseList;
 }
 
-function CdaV2GetTransactionName() {
+function CdaV2GetTransactionName(pTransNumber) {
     var transName = '';
 
     //TODO: Translate to french.
-    switch (globCdanetTranscode) {
+    switch (pTransNumber) {
         case '': transName = ''; break;
         case '00': transName = 'Eligibility'; break;
 

@@ -19,6 +19,9 @@ print 'Content-type: text/json; charset=utf-8\n\n'
 form = cgi.FieldStorage()
 tx = form["tx"].value
 
+#global variable to replace for each clinic
+uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
+
 if (tx == "getNextNumber"):
 	try:
 		f1 = open("currentNumber.txt")
@@ -713,7 +716,7 @@ if tx == "cancelRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -873,7 +876,7 @@ if tx == "modifyRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
         
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -945,7 +948,7 @@ if tx == "getRamqData":
         #send the request to WebApi that calls RAMQ server
         dataJSON = {'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': CleanXML(xmlreq)}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostPaymentRequest', json=dataJSON, headers=headers)
        
         if r.status_code != 200:
             json_data = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'r')
@@ -1038,7 +1041,7 @@ if tx == "getEtatCompte":
         #get Etat Compte
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'UserId': UserId, 'UserPass': UserPass, 'IdEntIntvnEchg': IdEntIntvnEchg, 'TypEntIntvnEchg': TypEntIntvnEchgs}
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostReceiveEtatDeCompteAsByteArray', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostReceiveEtatDeCompteAsByteArray', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1116,7 +1119,7 @@ if (tx == "GenerIdMachine"):
 
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'CodeErreur': None, 'NoIntervenant': pNoIntervenant, 'IdUtilisateur': pIdUtilisateur, 'MotDePasse': pMotDePasse, 'IdMachine': None, 'MotDePasseMachine': None, 'ServerError': None}
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostGenerIdMacine', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostGenerIdMacine', json=dataJSON, headers=headers)
 
         if(r.status_code != 200):
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1159,7 +1162,7 @@ if (tx == "ChangePassword"):
 
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         dataJSON = {'CodeErreur': None, 'NoIntervenant': pNoIntervenant, 'IdMachine': pMachineId, 'AncienMotDePasse': pMachineIdPass, 'MotDePasseMachine': '', 'ServerError': None}
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/RamqWebApi/PostChangePassword', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/RamqWebApi/PostChangePassword', json=dataJSON, headers=headers)
 
         if(r.status_code != 200):
             print '{ "outcome" : "error", "message" : "Something was wrong" }'
@@ -1212,7 +1215,7 @@ if (tx == "sendInsurance"):
 
         dataJSON = { 'Input': strreq, 'LUN': lun}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
 
         if r.status_code != 200:
             resp = r.json()
@@ -1256,7 +1259,7 @@ if (tx == "SendXmlToVisionR"):
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'Input': CleanXML(dataxml), 'LUN': nodossier + '-' + nofactext}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post('http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/PostSaveTransaction', json=dataJSON, headers=headers)
+        r = requests.post(uri + '/api/InsuranceWebApi/PostSaveTransaction', json=dataJSON, headers=headers)
 
         resp = r.json()
         if r.status_code != 200:

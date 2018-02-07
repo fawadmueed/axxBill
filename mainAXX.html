@@ -188,7 +188,7 @@
      <!--<div id="loadingText" class="ui active inverted dimmer">-->
     <!--<div id="loadingText" class="ui inverted dimmer">
         <div class="ui text loader">...</div>
-    </div>--> 
+    </div>-->
     <!-- Main loading indicator END-->
 
     <!-- tabs1 -->
@@ -311,6 +311,11 @@
                     <div class="ui two column grid">
                         <div class="row">
                             <div class="ui left aligned column">
+                        		<canvas id="odonto2" width="600" height="395" style="border:1px solid #c3c3c3;">
+										Your browser does not support the HTML5 canvas tag.
+								</canvas>
+							</div>
+                            <div class="ui right aligned column">
                                 <div class="ui grid">
                                     <div class="eight wide column">
                                         <div class="ui form segment">
@@ -612,7 +617,7 @@
                                             <div class="ui basic label">$</div>
                                         </div>
                                     </div>
-                                    <!-- 
+                                    <!--
                             <div class="four fields">
                                 <div class="inline field">
                                   <input type="checkbox" ></input>
@@ -1518,7 +1523,7 @@
             <div class="content">
                 <div id="loaderPaimentForm" class="ui inverted dimmer">
                     <div class="ui text loader">...</div>
-                </div> 
+                </div>
                 <div class="ui axxium form segment">
                     <div class="ui three column grid">
                         <div class="seven wide column">
@@ -1881,7 +1886,7 @@
                                         console.log('2nd');
                                     }
                                     if ($('#asur_1_non').is(':checked')) {
-                                        //conition 3 :  If the answer is no to the first question of whatever the answer to the second question the user can not transfer insurance              
+                                        //conition 3 :  If the answer is no to the first question of whatever the answer to the second question the user can not transfer insurance
                                         $('.button.trns_insur').attr('disabled', 'disabled');
                                         pamnt_trnsfr_modal_stats = 3;
                                         console.log('3rd');
@@ -2371,7 +2376,7 @@
         <div class="content">
             <div id="loaderCdan4Form" class="ui inverted dimmer">
                 <div class="ui text loader">...</div>
-            </div> 
+            </div>
             <div class="ui axxium form segment">
                 <h4 class="ui horizontal divider header">Renseignements - Reclamations CDANET</h4>
                 <div class="ui two column grid">
@@ -4374,7 +4379,7 @@
                                 <div class="ten wide field" style="margin-left:65px">
                                     <div class="ui action input">
                                         <input type="text" name="" id="surfbtn_manuel">
-                                        <button class="ui blue right button surfbtn" onclick="surf_btn_val( 'field')">Manuel</button>
+                                        <button class="ui axxium right button surfbtn" onclick="surf_btn_val('field')">Manuel</button>
                                     </div>
                                 </div>
                             </div>
@@ -4386,7 +4391,7 @@
                 $(document).ready(function() {
 
                     //Default Language French
-                    //changeLang('fr'); 
+                    //changeLang('fr');
 
                     $(document).ready(function() {
 
@@ -4490,10 +4495,10 @@
 
                     if (selectd == 'field') {
                         surf_modal_btn_val = $('#surfbtn_manuel').val();
+                        //alert('Manual input!');
                     } else {
                         surf_modal_btn_val = selectd;
                     }
-
                     console.log('User selected button : ' + surf_modal_btn_val);
                     surf_modal_wait_flag = true;
                 }

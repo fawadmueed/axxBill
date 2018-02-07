@@ -1,51 +1,16 @@
-
-  function drawOdonFact(aCanvas)
-  {
-    //alert("Draw the whole thing!");
-  	var canvas = document.getElementById(aCanvas);
-    var ctx = canvas.getContext("2d");
-  	canvas.width = 600 * odoX;
-  	canvas.height = 395 * odoY;
-  	var background = new Image();
-  	background.src = "images/odontogramme.png";
-
-  	background.onload = function(){
-      	ctx.drawImage(background,0,0,canvas.width,canvas.height);
-
-		//Amalgame and Composite
-		drawRest(ctx,mapping["amalgame"],mapping["composite"],odonto.exist);
-
-		//Exo
-		drawExo(ctx,"ffffff",odonto.exist);
-
-		//Endo
-		drawEnd(ctx,mapping["exist"],odonto.exist);
-
-		//Peripiale
-		drawPer(ctx,mapping["todo"],odonto.exist);
-
-		//Rotation top
-		drawRto(ctx,mapping["todo"],odonto.exist);
-
-		//Rotation bottom
-		drawRbo(ctx,mapping["todo"],odonto.exist);
-
-		//Corps etranger
-		drawEtr(ctx,mapping["todo"],odonto.exist);
-
-		//Incluse
-		drawInc(ctx,mapping["todo"],odonto.exist);
-
-		//Pontique
-		drawPon(ctx,mapping["exist"],odonto.exist);
-
-		//Couronne
-		drawCou(ctx,mapping["exist"],odonto.exist);
-	}
+ 
+    var dataJson_Code;      
+      $.ajax({
+  type:'GET',
+  url:"json/params/codes6.json",
+  async:false,
+  dataType: 'json',
+  success: function (data) {
+    dataJson_Code=data;
   }
 
-  var dataJson_Code;
-
+ })
+  
   var dataSurfaceRules;
      $.ajax({
   type:'GET',
@@ -67,9 +32,9 @@
   success: function (data) {
     msgerr=data;
    }
- })
+ })     
 
- var insuranceData;
+       var insuranceData;
      $.ajax({
   type:'GET',
   url:"json/insurances/insurances.json",
@@ -81,58 +46,49 @@
  })
      // console.log(insuranceData);
 
-$(document).ready(function(){
+    $(document).ready(function(){ 
 
-//$(document.body).on('focusin', "#factTableBody td[data-target='Type'] ,#factTableBody_regie td[data-target='Type']", function(){
-//    	$(this).text('CAS');
-//     });
+       
+  
 
-$(document.body).on('focusin', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent']", function(){
-    	$(this).text('');
-     });
-
-$(document.body).on('focusin', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
-    	$(this).text('');
-     });
-
-//$(document.body).on('focusin', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code']", function(){
-//    	$(this).text('');
-//     });
-
-//$(document.body).on('focusin', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais']", function(){
-//    	$(this).text('');
-//     });
-
-//$(document.body).on('focusin', "#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires']", function(){
-//    	$(this).text('');
-//     });
-
-$(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTableBody_regie td[data-target='Type']", function(){
+     $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTableBody_regie td[data-target='Type']", function(){
 
     var valid;
     var val=$(this).text();
-    valid=validation('Type',val);
-    console.log(valid);
-    if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
+    if(val=="")
+    { // Condition 1 : If no entries , type CAS
+      // alert("Selecing Default Type:CAS");
+      $(this).text('CAS');
+      warnMsg('Selecting Default TYPE : CAS ');
+      valid=true;
+    }
+    else
+    {
+      valid=validation('Type',val);
+     console.log(valid);
+      if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
       {
-        $(this).siblings("td[data-target='codeRole']").text('1');
+        $(this).siblings("td[data-target='codeRole']").text(1);
       }
-    else{
-        $(this).siblings("td[data-target='codeRole']").text('');
+      else{
+        $(this).siblings("td[data-target='codeRole']").text(); 
       }
+
+    }
 
     if(!valid){
       $(this).focus();
       $(this).text('');
+      
     }
-});
+     });
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent']", function(){
 
-
+  
     var valid;
     var val=$(this).text();
-
+  
     var dent_chck=val;
     var surf_chck=$(this).siblings("td[data-target='Surface']").text();
     var type_val=$(this).siblings("td[data-target='Type']").text();
@@ -147,7 +103,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         valid=validation('Dent',val);
 
          if((val=="")||(val==null))
-          {
+          { 
             // warnMsg('No Value entered in DENT. Selecting default value 1.')
             // alert("No Value, Selecting default Val :1");
             // $(this).text('1');
@@ -157,13 +113,13 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           {
             valid=validation('Dent',val);
           }
-
+        
 
        if(!valid){
             valid=true;
             alert('Wrong Range! Please Enter Correct value.');
             $(this).text('');
-
+            
           }
 
       }
@@ -173,16 +129,16 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
 
-
+    
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
-
+    
 
     var surf_chck=val;
     var type_chck=$(this).siblings("td[data-target='Type']").text();
     var dent_chck=$(this).siblings("td[data-target='Dent']").text();
     var code_chck=$(this).siblings("td[data-target='Code']").text();
-
+    
     console.log($(this).siblings("td[data-target='Code']"));
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
     if(!chckDentSurf){
@@ -193,30 +149,23 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     //--------------- suf_dent_code ---------------------------------
 
-    // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
-    if (type_chck == "AMQ")
-    {
-		alert("RAMQ Amalgame auto");
-	}
-	else
-	{
-    	facture_surf_modal();
-    	surf_modal_wait_flag=false;
-    	wait_for_user_input();
-	}
+    // Generate CODE based on SURFACE DENT,SURFACE & TYPE - 
+    facture_surf_modal();
+    surf_modal_wait_flag=false;
+    wait_for_user_input();
 
     function wait_for_user_input()
     {
      console.log('in wait function :' + surf_modal_wait_flag);
-      if (!surf_modal_wait_flag)
+      if (!surf_modal_wait_flag) 
       {
           // console.log('waiting because flag =' + surf_modal_wait_flag);
-       surf_modal_wait_flag=false;
-      setTimeout(wait_for_user_input,3000);
-      }
-      else
+       surf_modal_wait_flag=false;   
+      setTimeout(wait_for_user_input,2000);
+      } 
+      else 
       {
-            surf_modal_wait_flag=true;
+            surf_modal_wait_flag=true;   
             console.log('Done with Waiting , Value flag : ' + surf_modal_wait_flag+': calling rest program');
             surf_code_dent_gen_validation();
       }
@@ -240,19 +189,19 @@ function surf_code_dent_gen_validation()
       {
         warnMsg(msgerr.msg013);
         $(this).focus();
-
+        
       }
 
     }
 
-    if( dent_Type=='Dentiste' || dent_Type=='Chirurgiens')
+    if( dent_Type=='Dentiste' || dent_Type=='Chirurgiens') 
     {
-
+      
       if(dent_chck=='99')
       {
         surf_dent_code=true;
-      }
-
+      }    
+      
     }
 
 
@@ -273,14 +222,14 @@ function surf_code_dent_gen_validation()
         }
         if(dent_chck=='')
         {
-         warnMsg(msgerr.msg019);
+         warnMsg(msgerr.msg019); 
         }
 
         console.log(init_code);
         break;
 
       case 2:
-
+        
         console.log('In type surf case 2 ');
         if((type_chck=='AMQ')||(type_chck=='BES'))
         {
@@ -292,12 +241,12 @@ function surf_code_dent_gen_validation()
         break;
 
       case 3:
-
+      
       console.log('In type surf case 3 ');
 
       if(dent_chck.length==0)
       {
-       warnMsg(msgerr.msg019);
+       warnMsg(msgerr.msg019); 
       }
 
       if(type_chck=='AMQ' || type_chck=='BES'|| type_chck=='HOP')
@@ -320,7 +269,7 @@ function surf_code_dent_gen_validation()
 
             //find generated code in AMQ_Codes
             var check=$.inArray(init_code, regiecodes)
-            if(check==-1)
+            if(check==-1) 
             {
               // FALSE VALIDATION VALUE
             //-1 if not found
@@ -331,7 +280,7 @@ function surf_code_dent_gen_validation()
             {
               console.log('Generated Code FOUND in Regie Codes!' + init_code);
 
-            }
+            } 
 
 
         }
@@ -359,7 +308,7 @@ function surf_code_dent_gen_validation()
       console.log('init code b4 surf alpha fn :'+init_code);
       var surf_alpha=surf_alpha_fn(val,dent_chck);
       console.log('Done with function surf_alpha, Init code is :'+init_code);
-
+      
       var check_init_code='';
             check_init_code=getCodeData(init_code);
             console.log('Case 3, Verifying Generate Code in JSON FILE');
@@ -381,7 +330,7 @@ console.log('In type surf case 3 ');
 
       if(dent_chck.length==0)
       {
-       warnMsg(msgerr.msg019);
+       warnMsg(msgerr.msg019); 
       }
 
       if(type_chck=='AMQ' || type_chck=='BES'|| type_chck=='HOP')
@@ -404,7 +353,7 @@ console.log('In type surf case 3 ');
 
             //find generated code in AMQ_Codes
             var check=$.inArray(init_code, regiecodes)
-            if(check==-1)
+            if(check==-1) 
             {
               // FALSE VALIDATION VALUE
             //-1 if not found
@@ -415,7 +364,7 @@ console.log('In type surf case 3 ');
             {
               console.log('Generated Code FOUND in Regie Codes!' + init_code);
 
-            }
+            } 
 
 
         }
@@ -443,7 +392,7 @@ console.log('In type surf case 3 ');
       console.log('init code b4 surf alpha fn :'+init_code);
       var surf_alpha=surf_alpha_fn(val,dent_chck);
       console.log('Done with function surf_alpha, Init code is :'+init_code);
-
+      
       var check_init_code='';
             check_init_code=getCodeData(init_code);
             console.log('Case 3, Verifying Generate Code in JSON FILE');
@@ -461,21 +410,21 @@ console.log('In type surf case 3 ');
 
 
       case 4:
-
+        
       break;
       }
 
-
+   
   surf_focusout_finish=true;
   var this_code_val=$('#factTableBody tr[id='+this_row_id+'],#factTableBody_regie tr[id='+this_row_id+']').children("td[data-target='Code']").text(init_code);
 
    $( "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code" ).trigger( "focusout" );
-   }
+   } 
 
 
+    
 
-
-
+    
     //------------------------------------------------------
 
 })
@@ -516,20 +465,20 @@ console.log('In type surf case 3 ');
 
     if(code_data && !(val==""))
     {
-      $(popData).children("td[data-target='Description']").text(code_data.descrf);
-      $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
-      $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
+      $(popData).children("td[data-target='Description']").text(code_data.fr);
+      $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais).toFixed(2));
+       $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prix).toFixed(2));
 
     }
     else
     {
       warnMsg('Invalid value entered in CODE.');
     }
-
-    var sibl=$(this).siblings("td[data-target='Honoraires']");
-    var hono;
-    if($(sibl).text()=="")
-          {
+    
+     var sibl=$(this).siblings("td[data-target='Honoraires']");
+        var hono;
+        if($(sibl).text()=="") 
+          { 
             hono=0;
             rhono=hono.toFixed(2);
           }
@@ -538,11 +487,11 @@ console.log('In type surf case 3 ');
             rhono=hono.toFixed(2);
 
           }
-
+        
      var sibl=$(this).siblings("td[data-target='Frais']");
-
-     if($(sibl).text()=="")
-          {
+     
+     if($(sibl).text()=="") 
+          { 
             frais=0;
             rfrais=frais.toFixed(2);
           }
@@ -550,40 +499,40 @@ console.log('In type surf case 3 ');
             frais= parseFloat($(sibl).text());
             rfrais=frais.toFixed(2);
           }
-
+        
           // console.log(hono);
           // console.log(frais);
       var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
 
-      var total=$(this).siblings("td[data-target='Total']");
-        $(total).text(totalVal);
-      }
+    var total=$(this).siblings("td[data-target='Total']");
+        $(total).text(totalVal);        
+        }
 
 
-
+        
      });
 
-
+  
     $(document.body).on('focusout', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais']", function(){
 
         var valid;
         var valFrais=$(this).text();
         $(this).text(parseFloat(valFrais).toFixed(2));
 
-     if(valFrais=="")
-          {
+     if(valFrais=="") 
+          { 
             valFrais=0;
             rvalFrais=valFrais.toFixed(2);
           }
       else{
-            valFrais=parseFloat(valFrais);
+            valFrais=parseFloat(valFrais); 
             rvalFrais=valFrais.toFixed(2);
           }
-
+        
         var sibl=$(this).siblings("td[data-target='Honoraires']");
         var hono;
-        if($(sibl).text()=="")
-          {
+        if($(sibl).text()=="") 
+          { 
             hono=0;
             rhono=hono.toFixed(2);
           }
@@ -591,8 +540,8 @@ console.log('In type surf case 3 ');
             hono= parseFloat($(sibl).text());
             rhono=hono.toFixed(2);
           }
-
-
+         
+          
         var totalVal=parseFloat(parseFloat(rvalFrais)+parseFloat(rhono)).toFixed(2);
 
         var total=$(this).siblings("td[data-target='Total']");
@@ -605,9 +554,9 @@ console.log('In type surf case 3 ');
         var valid;
         var valHono=$(this).text();
         $(this).text(parseFloat(valHono).toFixed(2));
-
-        if(valHono=="")
-          {
+      
+        if(valHono=="") 
+          { 
             valHono=0;
             rvalHono=valHono.toFixed(2);
           }
@@ -615,11 +564,11 @@ console.log('In type surf case 3 ');
             valHono= parseFloat(valHono);
             rvalHono=valHono.toFixed(2);
           }
-
+        
         var sibl=$(this).siblings("td[data-target='Frais']");
-
-     if($(sibl).text()=="")
-          {
+      
+     if($(sibl).text()=="") 
+          { 
             frais=0;
             rfrais=frais.toFixed(2);
           }
@@ -627,25 +576,25 @@ console.log('In type surf case 3 ');
             frais= parseFloat($(sibl).text());
             rfrais=frais.toFixed(2);
           }
-
+     
         console.log(rfrais.replace(/\ $/g,''));
         console.log(rvalHono.replace(/\ $/g,''));
 
         var totalVal=parseFloat(parseFloat(rvalHono)+parseFloat(rfrais)).toFixed(2);
-
+        
         console.log(totalVal.replace(/\ $/g,''));
 
         var total=$(this).siblings("td[data-target='Total']");
 
         $(total).text(totalVal);
-
+      
     });
 
      $(document.body).on('focusout', "#factTableBody td[data-target='codeRole'],#factTableBody_regie td[data-target='codeRole']", function(){
 
       var thisTxt=$(this).text();
       var type=$(this).siblings("td[data-target='Type']").text();
-
+      
       if(type=="AMQ" || type=="BES" || type=="HOP")
       {
        $(this).text(thisTxt);
@@ -666,10 +615,10 @@ console.log('In type surf case 3 ');
 //     console.log('VALIDATION IN-ACTIVE');
 //    }
 // // =====================================================================
-// });
+// }); 
   function surface_validation(typ,dent,surf,code)
   {
-
+  
     if(!(typ == 'AMQ' || typ == 'BES' || typ == 'HOP' || typ =='CAS'))
     {
       // console.log('no amq bes typ code validation');
@@ -677,28 +626,28 @@ console.log('In type surf case 3 ');
     }
 
    for( var i=0; i <dataSurfaceRules.length; i++)
-        {
-
-              for( var i=0; i < dataSurfaceRules.length; i++)
+        {    
+          
+              for( var i=0; i < dataSurfaceRules.length; i++) 
                {
-                  if(dataSurfaceRules[i].ins == typ && dataSurfaceRules[i].too == dent && dataSurfaceRules[i].surf == surf && dataSurfaceRules[i].cod == code)
-                  {
+                  if(dataSurfaceRules[i].ins == typ && dataSurfaceRules[i].too == dent && dataSurfaceRules[i].surf == surf && dataSurfaceRules[i].cod == code) 
+                  {                                
                       alert(dataSurfaceRules[i].msg);
                 return false;
                 break;
                   }
-                }
-
+                }                    
+        
         }
 
           return true;
 }
 
  function warnMsg(msg)
- {
+ {  
+  
 
-
-
+    
     // $('#wrn_msg_fact_tbl').removeClass('hidden');
     $('#wrn_msg_fact_tbl').finish();
     $('#warn_msg_fact_content').text(msg);
@@ -706,26 +655,28 @@ console.log('In type surf case 3 ');
       $('#wrn_msg_fact_tbl').removeClass('visible');
       $('#wrn_msg_fact_tbl').addClass('hidden');
        });
-
- }
+    
+ }  
 
   function validation(type,val)
   {
     // console.log(type);
     // =========== TYPE VALIDATION==============
     if(type=="Type")
-    {
+    { 
       //Condition 2: If none of AMQ BES HOP and CAS and Selected DrpDown Value - MESSAGE ERROR
       if ((!(val=="AMQ"||val=="BES"||val=="HOP" ))&&(!(val=="CAS"))&&(!(val==$("#ramq_select").val()))&&(!(ifExist=checkInsuranceExist(val))))
       {
         // alert('Error! No type selected');
         // warnMsg('TYPE error. Please enter correct type.')
         // return false;
-        warnMsg('Type not CAS, AMQ or Insurance Company');
-        return false;
+        warnMsg('Type not CAS, AMQ or Insrance Company');
+        
       }
-      //Condition 3: If AMQ BEs HOP check RAMQ Card Number & Expiry
-      if(val=="AMQ" || val=="BES" || val=="HOP"){
+      
+
+          //Condition 3: If AMQ BEs HOP check RAMQ Card Number & Expiry
+          if(val=="AMQ" || val=="BES" || val=="HOP"){
 
                   if(!($('#optRegiIndFactAssosDrNo').is(':checked')))
                   {
@@ -734,17 +685,17 @@ console.log('In type surf case 3 ');
                       var ramq_field = 1;// Bypass validation
                     if(ramq_field==1)
                       {
-                        return true;
+                        return true;  
                       }
 
                       var valid_ramq=check_Ramq_Num();
-
+                      
                       if(!valid_ramq)
                       {
                       // alert('Invalid RAMQ Card Number : Please check Ramq Card Number');
                       warnMsg('Invalid RAMQ card number. Please check RAMQ card number.');
                       return false;
-
+                    
                       }
                       else
                       {
@@ -765,7 +716,7 @@ console.log('In type surf case 3 ');
 
                   $(this).siblings("td[data-target='Code']").text(1);
             }
-
+        
         else{
             return true;
             }
@@ -776,17 +727,17 @@ console.log('In type surf case 3 ');
   if(type=='Dent'){
     if((val=='')||(val==null)){
       valid=true;
-
+      
     }
     // console.log(dent_Type);
 
     val=parseInt(val);
     switch(dent_Type){
-
+  
     case 'Denturologiste':
       if((val>=11 && val<=18)||(val>=21 && val<=28)||(val>=31 && val<=38)||(val>=41 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=88))
       {
-
+        
         return true
       }
       else
@@ -800,7 +751,7 @@ console.log('In type surf case 3 ');
 
       if((val>=0 && val<=8)||(val>=10 && val<=20)||(val>=21 && val<=28)||(val>=30 && val<=38)||(val>=40 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=85)||(val==99))
        {
-
+        
         return true;
       }
       else
@@ -809,10 +760,10 @@ console.log('In type surf case 3 ');
         return false;
       }
       break;
-
+      
     default:
        if((val<1)||(val>85))
-    {
+    { 
       warnMsg('Invalid input.This value does not exist for any Dent Type.')
       return false;
     }
@@ -835,10 +786,10 @@ else{
     // the month of birth (to which 50 is added to indicate female)
     // the day of birth
     // an administrative code used by the Régie
-
+    
     console.log('Checking RAMQ Card Number');
     var ramq_num=$('#ramq_no').val(); //get ramq_number
-    var firstName=$('#Elast').val();
+    var firstName=$('#Elast').val(); 
     var lastName=$('#Efirst').val();
     var Sexe=$('#sexe').val();
     var sexe_factor=0;
@@ -870,10 +821,10 @@ else{
     {
       sexe_factor='';
     }
-
+    
     var ramqNumber_toBe=lastName+firstName+formD_year+(sexe_factor+formD_month)+formD_day+ramq_num.slice(10);
     // console.log(ramqNumber_toBe);
-
+    
     if(ramqNumber_toBe==ramq_num)
     {
       // console.log('Correct Ramq Number');
@@ -901,7 +852,7 @@ else{
    //  var nthDigit_number=ramq_num.slice(10,11);
 
    //  if(!(nthDigit_number==9))
-    // {
+    // {  
    //    alert('Not working');
     //  return false;
     // }
@@ -911,7 +862,7 @@ else{
     //  return true;
 
     // }
-
+    
 
 
   }
@@ -936,19 +887,19 @@ else{
       if(curMonth<formD_month)
       {
       return true;
-
+      
       }
       else
       {
       alert('Card is Expired');
       $(this).text('CAS');
-      return false;
+      return false; 
       }
     }
     else
-    {
+    { 
       alert('Card is Expired');
-
+      
       return false;
     }
   }
@@ -956,23 +907,27 @@ else{
 
 
 function getCodeData(codeVal){
+        
+       var output;
+      
+        var search1= codeVal;
+        var reg=new RegExp(search1,'i');
+      
+          $.each(dataJson_Code,function(key,val){
+      
+            if(key.search(reg) != -1)
+            {
+               output=val;
 
-	return dataJson_Code[codeVal];
-
-       //var output;
-       // var search1= codeVal;
-       // var reg=new RegExp(search1,'i');
-       //   $.each(dataJson_Code,function(key,val){
-       //     if(key.search(reg) != -1)
-       //     {
-       //        output=val;
-       //   }
-       //   });
-       // return output;
+          }
+          });
+      
+        return output;
+      
           // $('#codesBody').html(output);
-
-
-}
+      
+      
+      };
 
 function chckDentSurfExistTbl(dent,surf)
   {
@@ -984,7 +939,7 @@ function chckDentSurfExistTbl(dent,surf)
     var surfFound=0;
 
     $.each(trs, function(id,val){
-
+    
      var cur_Dent= $(val).find('td[data-target=Dent]').text();
       var cur_Surf= $(val).find('td[data-target=Surface]').text();
       // cur_Surf
@@ -1002,14 +957,14 @@ function chckDentSurfExistTbl(dent,surf)
   if(checkReptCharc>=1){
     surfFound=surfFound+1;
   }
-
+ 
     })
 
      if((dentFound>=2) && (surfFound>=2)){
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
       // console.log('this match Already Exist! Sorry');
       return false;
-
+      
     }
     else{
     return true;
@@ -1021,11 +976,11 @@ function checkRepeatChrcInString(str){
   var reslt;
   console.log('Check repeat function');
   console.log('String received' + str);
-   try{
+   try{ 
     reslt=str.toLowerCase().split("").sort().join("").match(/(.)\1+/g).length;
     console.log('Result of STRING Repeat :'+reslt);
     return reslt;  }
-   catch(e){
+   catch(e){ 
     console.log('Result of STRING Repeat is 0');
    return 0; } // if TypeError
 }
@@ -1035,7 +990,7 @@ function get_age(){
   var curr_year;
   var patnt_year;
 
-    //var formD=$('#Ebirth').val();
+    //var formD=$('#Ebirth').val(); 
   var formD = globVisionRData.DatNaissPers;
   formD=formD.split('-');
   patnt_year=formD[0];
@@ -1048,14 +1003,14 @@ function get_age(){
 }
 
 
-function checkInsuranceExist(compny){
+function checkInsuranceExist(compny){ 
   var validation;
 
   $.each(insuranceData,function(key,val){
     if(val.code==compny)
-    {
+    { 
       validation=true;
-
+      
     }
 
   })
@@ -1066,21 +1021,21 @@ function checkInsuranceExist(compny){
   else{
     return false;
   }
-
+  
 }
 
 // function wait_for_user_input(){
-
+  
 //   console.log('in wait function :' + surf_modal_wait_flag);
-//   if (!surf_modal_wait_flag)
+//   if (!surf_modal_wait_flag) 
 //   {
 //       // console.log('waiting because flag =' + surf_modal_wait_flag);
-//    surf_modal_wait_flag=false;
+//    surf_modal_wait_flag=false;   
 //   setTimeout(wait_for_user_input,2500);
-//   }
-//   else
+//   } 
+//   else 
 //   {
-//         surf_modal_wait_flag=true;
+//         surf_modal_wait_flag=true;   
 //         console.log('Done with Waiting , Value flag : ' + surf_modal_wait_flag);
 //         return true;
 //   }

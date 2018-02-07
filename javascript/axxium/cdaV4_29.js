@@ -48,6 +48,7 @@ function CdaV4CallCDAService(pReqString) {
                 alert(result.message);
             else {
                 var responseLine = result.message;
+                //var responseLine = '100559,0,162,HD*         100559041212345600169Y5301234011234                    R05*WARNING* NO MATCHING RESPONSE FOUND FOR YOUR TRANSAC. simtr v2.0 15-APR-01000000000044012019020109';
                 var communicationResult = CdaCommGetCommStatus(responseLine);
                 if (communicationResult == 0)// No errors
                 {
@@ -359,9 +360,6 @@ function CdaV4PopulateClaimObj()
     var objDataFromUI = CdaV4GetDataFromUI();
     var procLineNumber = CdaV4GGetNumProcedures(); //Number of insurance lines.
     obj.f23 = []; obj.f24 = []; obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f34 = []; obj.f35 = []; obj.f36 = [];
-//<<<<<<< HEAD
-    
-//=======
 
     //calculate transaction length
     var transLength = 0;
@@ -382,7 +380,6 @@ function CdaV4PopulateClaimObj()
     }
     transLength += 56 * procLineNumber;
 
-//>>>>>>> cdaFixingBugs
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
     obj.a02 = CDAV4FormatField(objDataFromDB.a02, 'N', 6); //Office Sequence Number
@@ -1657,13 +1654,13 @@ function CdaV4CreateRespMessage(pResp, pResponseLine) {
         ResponseList += 'Assurance: ' + assurance + '\n';
     }
 
-    var noSequence = (pResp.a02) ? pResp.a02 : '';
+    var noSequence = (pResp&&pResp.a02) ? pResp.a02 : '';
     ResponseList += 'No de Séquence: ' + noSequence + '\n';
 
-    var respCode = (pResp.a04)?pResp.a04.toString():'';
+    var respCode = (pResp && pResp.a04) ? pResp.a04.toString() : '';
     ResponseList += 'ResponseCode: ' + respCode + '\n';
 
-    var MailBox = (pResp.a11) ? pResp.a11 : '';
+    var MailBox = (pResp && pResp.a11) ? pResp.a11 : '';
     ResponseList += 'MailBox : ' + MailBox + '\n';
 
     if (respCode == '16') //Reconciliation des paiements

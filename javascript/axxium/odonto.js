@@ -134,13 +134,13 @@
     	  			}
     	  	}
   }
-  
+
   function drawExo(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=3;
-	
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -178,13 +178,13 @@
     	  	}
     	  }
   }
-  
+
   function drawExo2(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=3;
-	
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -202,13 +202,13 @@
     	  	}
     	  }
   }
-  
+
   function drawEnd(ctx,aColor,aList)
   {
 		ctx.strokeStyle = "#"+aColor;
 		ctx.fillStyle = "#"+aColor;
 		ctx.lineWidth=3;
-		
+
       		for (cd in aList)
       		{
     	  		if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -242,13 +242,13 @@
     	  		}
     	  	}
   }
-  
+
   function drawPer(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=3;
-		
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -278,13 +278,13 @@
     	  	}
     	  }
   }
-  
+
   function drawEtr(ctx,aColor,aList)
   {
 		ctx.strokeStyle = "#"+aColor;
 		ctx.fillStyle = "#"+aColor;
 		ctx.lineWidth=3;
-		
+
       		for (cd in aList)
       		{
     	  		if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -309,13 +309,13 @@
     	  		}
     	  	}
   }
-  
+
   function drawInc(ctx,aColor,aList)
   {
 		ctx.strokeStyle = "#"+aColor;
 		ctx.fillStyle = "#"+aColor;
 		ctx.lineWidth=3;
-		
+
       		for (cd in aList)
       		{
     	  		if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -340,13 +340,13 @@
     	  		}
     	  	}
   }
-  
+
   function drawRto(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=3;
-		
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -408,13 +408,13 @@
     	  	}
     	  }
   }
-  
+
   function drawRbo(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=3;
-		
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -476,13 +476,13 @@
     	  	}
     	  }
   }
-  
+
   function drawPon(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=2;
-	
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -490,18 +490,18 @@
     	  		if ((aList[cd].code.substr(0,3) == "625" || aList[cd].code.substr(0,3) == "655"))
     	  		{
     	  			pos = mapping[aList[cd]["tooth"]+"Ex"];
-				
+
 				var p = document.createElement("canvas")
 				p.width=16;
 				p.height=8;
 				var pctx=p.getContext('2d');
-				
+
 				var x0=18;
 				var x1=-2;
 				var y0=-1;
 				var y1=9;
 				var offset=16;
-				
+
 				pctx.strokeStyle = "#0000ff";
 				pctx.lineWidth=2;
 				pctx.beginPath();
@@ -512,9 +512,9 @@
 				pctx.moveTo(x0+offset,y0);
 				pctx.lineTo(x1+offset,y1);
 				pctx.stroke();
-				
+
 				ctx.fillStyle=ctx.createPattern(p,'repeat');
-				
+
 				if ((showAdult && aList[cd]["tooth"] < 30) || (!showAdult && aList[cd]["tooth"] < 70))
 				{
 					ctx.beginPath();
@@ -535,13 +535,13 @@
     	  	}
     	  }
   }
-  
+
   function drawCou(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	ctx.lineWidth=2;
-	
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && ((showAdult && aList[cd]["tooth"] < 50) || (!showAdult && aList[cd]["tooth"] > 50)))
@@ -549,7 +549,7 @@
     	  		if (aList[cd].code.substr(0,2) == "27")
     	  		{
     	  			pos = mapping[aList[cd]["tooth"]+"Ex"];
-				
+
 				if ((showAdult && aList[cd]["tooth"] < 30) || (!showAdult && aList[cd]["tooth"] < 70))
 				{
 					ctx.strokeRect(pos.x*odoX,(pos.y+(pos.dy*0.56))*odoY,(pos.dx-3)*odoX,(pos.dy/5)*odoY);
@@ -562,13 +562,13 @@
     	  	}
     	  }
   }
-  
+
   function drawCar(ctx,aColor,aList)
   {
 	ctx.strokeStyle = "#"+aColor;
 	ctx.fillStyle = "#"+aColor;
 	// console.log(aList);
-	
+
       	for (cd in aList)
       	{
     	  	if (aList[cd]["tooth"] && (aList[cd].code == "23111" || aList[cd].code == "23112" || aList[cd].code == "23113"))
@@ -669,7 +669,7 @@
     	  		}
     	  }
   }
-  
+
   function cancelSelo()
   {
 	$('.modalSelo.modal').modal('hide');
@@ -748,14 +748,14 @@
   {
 	$('.modalSeloSurf.modal').modal('hide');
   }
-  
+
   function toggleOdon()
   {
         showAdult = !showAdult;
-  	drawOdon();
+  		drawOdon("odonto");
       	displaySub("odontos");
   }
-  
+
   function delODO()
   {
   	var ctrp = 0;
@@ -773,7 +773,7 @@
   	  ctrp = ctrp + 1;
   	}
   	odonto.exist = qNewExist;
-  	
+
   	ctrp = 0;
   	var qNewTodo = [ ];
   	for (tt in odonto.todo)
@@ -789,7 +789,7 @@
   	  ctrp = ctrp + 1;
   	}
   	odonto.todo = qNewTodo;
-  	
+
   	ctrp = 0;
   	var qNewObserv = [ ];
   	for (tt in odonto.observ)
@@ -805,11 +805,11 @@
   	  ctrp = ctrp + 1;
   	}
   	odonto.observ = qNewObserv;
-  	
+
   	uploadODO(qFileOdo);
   	//setTimeout(loadODONS(curPatient), 500);
   }
-  
+
   function createODO()
   {
   	if (qODONS.files.length > 0)
@@ -826,7 +826,7 @@
   	//drawOdon();
   	//setTimeout(loadODONS(curPatient), 500);
   }
-  
+
   function uploadODO(aName)
   {
         $.post("uploadJSONsub.py", {sub: "odonto", name: aName, json: JSON.stringify(odonto)}, function(result){
@@ -835,10 +835,10 @@
         });
   }
 
-  function drawOdon()
+  function drawOdon(aCanvas)
   {
     //alert("Draw the whole thing!");
-  	var canvas = document.getElementById("odonto");
+  	var canvas = document.getElementById(aCanvas);
     	var ctx = canvas.getContext("2d");
 
   	if (showAdult)
@@ -857,14 +857,14 @@
   	}
 
   	background.onload = function(){
-      		ctx.drawImage(background,0,0,canvas.width,canvas.height);
-  		if (curOdo == 1)
-  		{
-			ctx.strokeStyle = "#"+mapping["exist"];
-			ctx.lineWidth=5;
-  			ctx.strokeRect(0,0,canvas.width,canvas.height);
-  		}
-		
+      	ctx.drawImage(background,0,0,canvas.width,canvas.height);
+  		//if (curOdo == 1)
+  		//{
+		//	ctx.strokeStyle = "#"+mapping["exist"];
+		//	ctx.lineWidth=5;
+  		//	ctx.strokeRect(0,0,canvas.width,canvas.height);
+  		//}
+
 		//Amalgame and Composite
 		drawRest(ctx,mapping["amalgame"],mapping["composite"],odonto.exist);
 
@@ -939,7 +939,7 @@
   		{
   			currentCode = "01205";
   		}
-    
+
     if (aList == 0)
     	{
     		odonto.exist.push({ "code" : currentCode, "tooth" : aTooth, "surface" : textSurf(), "note" : note42 });
@@ -952,7 +952,7 @@
     	{
     		odonto.observ.push({ "code" : currentCode, "tooth" : aTooth, "surface" : textSurf(), "note" : note42 });
     	}
-    drawOdon();
+    drawOdon("odonto");
     clearVal1();
     uploadODO(qFileOdo);
   }
@@ -1015,47 +1015,47 @@
   	document.getElementById("butRes").setAttribute("class","ui axxium large fluid button");
   }
 
-  function setC1() { 
-  	is1 = true; 
+  function setC1() {
+  	is1 = true;
   	document.getElementById("butM").setAttribute("class","ui red large fluid button");
   	document.getElementById("butM").setAttribute("onclick","setC1();");
   	document.getElementById("butM").innerHTML = "<font size=5>1</font>";
-  	addText("CLASSE 1"); 
+  	addText("CLASSE 1");
   }
-  function setC2() { 
-  	is2 = true; 
+  function setC2() {
+  	is2 = true;
   	document.getElementById("butL").setAttribute("class","ui red large fluid button");
   	document.getElementById("butL").setAttribute("onclick","setC2();");
   	document.getElementById("butL").innerHTML = "<font size=5>2</font>";
-  	addText("CLASSE 2"); 
+  	addText("CLASSE 2");
   }
-  function setC3() { 
-  	is3 = true; 
+  function setC3() {
+  	is3 = true;
   	document.getElementById("butD").setAttribute("class","ui red large fluid button");
   	document.getElementById("butD").setAttribute("onclick","setC3();");
   	document.getElementById("butD").innerHTML = "<font size=5>3</font>";
-  	addText("CLASSE 3"); 
+  	addText("CLASSE 3");
   }
-  function setC4() { 
-  	is4 = true; 
+  function setC4() {
+  	is4 = true;
   	document.getElementById("butB").setAttribute("class","ui red large fluid button");
   	document.getElementById("butB").setAttribute("onclick","setC4();");
   	document.getElementById("butB").innerHTML = "<font size=5>4</font>";
-  	addText("CLASSE 4"); 
+  	addText("CLASSE 4");
   }
-  function setC5() { 
-  	is5 = true; 
+  function setC5() {
+  	is5 = true;
   	document.getElementById("butO").setAttribute("class","ui red large fluid button");
   	document.getElementById("butO").setAttribute("onclick","setC5();");
   	document.getElementById("butO").innerHTML = "<font size=5>5</font>";
-  	addText("CLASSE 5"); 
+  	addText("CLASSE 5");
   }
-  function setC6() { 
-  	is6 = true; 
+  function setC6() {
+  	is6 = true;
   	document.getElementById("butS").setAttribute("class","ui red large fluid button");
   	document.getElementById("butS").setAttribute("onclick","setC6();");
   	document.getElementById("butS").innerHTML = "<font size=5>6</font>";
-  	addText("CLASSE 6"); 
+  	addText("CLASSE 6");
   }
 
   function reset12345()
@@ -1082,7 +1082,7 @@
   	document.getElementById("butO").setAttribute("class","ui axxium large fluid button");
   	document.getElementById("butO").setAttribute("onclick","setC5();");
   	document.getElementById("butO").innerHTML = "<font size=5>5</font>";
-  	
+
   	document.getElementById("butS").setAttribute("style","visibility:visible");
   	document.getElementById("butS").setAttribute("class","ui axxium large fluid button");
   	document.getElementById("butS").setAttribute("onclick","setC6();");
@@ -1112,7 +1112,7 @@
   	document.getElementById("butO").setAttribute("class","ui axxium large fluid button");
   	document.getElementById("butO").setAttribute("onclick","setO();");
   	document.getElementById("butO").innerHTML = "<font size=6>O</font>";
-  	
+
   	document.getElementById("butS").setAttribute("style","visibility:hidden");
   }
 
@@ -1387,7 +1387,7 @@
       	document.getElementById("delODO").setAttribute("class","ui axxium tiny button");
       	//document.getElementById("addTrait").setAttribute("class","ui axxium tiny button");
       }
-      drawOdon();
+      drawOdon("odonto");
       displaySign(odonto,"ODO");
       }
   }
@@ -1567,7 +1567,7 @@
   {
   	var qKeys = Object.keys(qSelo);
   	for (key in qKeys)
-  	{	
+  	{
       		var ctrp = 0;
       		for (rr in qSelo[qKeys[key]]["rows"])
       			{
@@ -1589,7 +1589,7 @@
     				}
     			}
   	}
-    	drawOdon();
+    	drawOdon("odonto");
     	uploadODO(qFileOdo);
   	$('.modalSelo.modal').modal('hide');
   }
@@ -1598,7 +1598,7 @@
   {
   	var qKeys = Object.keys(qSelo);
   	for (key in qKeys)
-  	{	
+  	{
       		var ctrp = 0;
       		for (rr in qSelo[qKeys[key]]["rows"])
       			{
@@ -1620,7 +1620,7 @@
     				}
     			}
   	}
-    	drawOdon();
+    	drawOdon("odonto");
     	uploadODO(qFileOdo);
   	$('.modalSelo.modal').modal('hide');
   }
@@ -1629,7 +1629,7 @@
   {
   	var qKeys = Object.keys(qSelo);
   	for (key in qKeys)
-  	{	
+  	{
       		var ctrp = 0;
       		for (rr in qSelo[qKeys[key]]["rows"])
       			{
@@ -1651,7 +1651,7 @@
     				}
     			}
   	}
-    	drawOdon();
+    	drawOdon("odonto");
     	uploadODO(qFileOdo);
   	$('.modalSelo.modal').modal('hide');
   }
@@ -1707,7 +1707,7 @@
       	odoX = odoX + 0.5;
       	odoY = odoY + 0.5;
       }
-      drawOdon();
+      drawOdon("odonto");
   }
 
   function odonMoins()
@@ -1717,6 +1717,5 @@
       	odoX = odoX - 0.5;
       	odoY = odoY - 0.5;
       }
-      drawOdon();
+      drawOdon("odonto");
   }
-  

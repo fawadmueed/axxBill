@@ -14,7 +14,7 @@
             - save MachineId and MachineIdPassword in the json file in our server.
         2.2. If request returns credentials (means MachineId was generated),
             -Check expiration date.
-                - if credentials will be expired soon (less than 5 days), 
+                - if credentials will be expired soon (less than 5 days),
                     - show popup that allows user to insert three parameters:
                         - Numéro de transmission de l’agence (we can get it from VisionR if they have it).
                         - Identifiant machine (we can get it from Credentials json file from our server).
@@ -22,7 +22,7 @@
                     - send these parameters to RAMQ in order to get new MachineIdPassword
                     - get new MachineIdPassword and save it in the appropriate json file.
     Also, user should be able to change MachineIdPassword at any time. So, we need an appropriate button anywhere.
-   
+
 
 */
 
@@ -54,7 +54,17 @@ $(document).ready(function () {
         changeLang('fr');
     }
 
-    
+  $.ajax({
+  	type:'GET',
+  	url:"json/params/codtar"+globDentist+".json",
+  	//url:"json/params/codes6.json",
+  	async:false,
+  	dataType: 'json',
+  	success: function (data) {
+    	dataJson_Code=data;
+  	}
+  })
+
     RamqCheckCredentials();
     RamqGetVisionRData();
 });

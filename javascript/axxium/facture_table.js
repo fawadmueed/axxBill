@@ -13,25 +13,25 @@ $(document).ready(function(){
             }
             return e.which!=13;
               });
-  
+
   $(document.body).on("submit","#form_dentiste", function(event) {
-      
+
                 submitForm(this);
               });
 
   $(document.body).on("submit","#form_chirurgiens", function(event) {
                 submitForm(this);
-                
+
               });
   $(document.body).on("submit","#form_denturologiste", function(event) {
               submitForm(this);
               });
- 
+
 
 $(document.body).on('focusout',"form :text",function(){
                 $(this).val($(this).val().toUpperCase());
-              })            
- 
+              })
+
    });
 
 function newRecordFact(){
@@ -46,16 +46,20 @@ function newRecordFact(){
 
         switch(fields[i]){
 
-        
+
 
           case 'Type':
-       
+
             if(fact_tbl_row_id==1)
                 {
                  // Get First Value in TYPE from AMQ
-                tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]); 
+                //tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text('CAS');
                 // globVisionRData.InsTypeList[0]  TYPE from VisionR
                 tblData.appendTo(tblRow);
+                //draw odonto
+                odonto = {"id":"1","date":"2018/01/01","exist":[]};
+                drawOdonFact("odonto2");
                 }
             else{
                 //typeOfLastRow
@@ -64,80 +68,83 @@ function newRecordFact(){
                 prevsRowType=getPrevRowType(prevRowId);
                 tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(prevsRowType);
                 tblData.appendTo(tblRow);
-                } 
+                //draw odonto
+                odonto.exist.push({"code":getPrevRowCode(prevRowId),"tooth":getPrevRowDent(prevRowId),"surface":getPrevRowSurf(prevRowId),"note":""});
+                drawOdonFact("odonto2");
+                }
 
           break;
-          
+
           case 'Dent':
-           
+
             tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
-            
+
           break;
-          
+
           case 'Surface':
-          
+
 
             tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
-            
-           
+
+
           break;
-          
+
           case 'Code':
-          
+
 
             tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
-            
-            
+
+
           break;
-          
+
           case 'Description':
-           
+
             tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
-            
+
           break;
-          
+
           case 'Frais':
-          
+
 
             tblData=$('<td>').attr('contenteditable','true').attr('class','mont').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
              tblData=$('<td>').attr('class','dol').text('$');
              tblData.appendTo(tblRow);
-            
+
           break;
-          
+
           case 'Honoraires':
-           
+
             tblData=$('<td>').attr('contenteditable','true').attr('class','mont').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
               tblData=$('<td>').attr('class','dol').text('$');
-             tblData.appendTo(tblRow);  
-            
+             tblData.appendTo(tblRow);
+
            break;
-          
+
           case 'Total':
-          
+
               tblData=$('<td>').attr('contenteditable','true').attr('class','mont').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
               tblData=$('<td>').attr('class','dol').text('$');
              tblData.appendTo(tblRow);
-            
+
           break;
 
           case 'Prod':
-          
+
               tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(1);
              tblData.appendTo(tblRow);
-            
+
           break;
-          
+
           case 'codeRole':
 
-          
+
               tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i])
               .bind('keypress', function (e)
               {
@@ -146,7 +153,7 @@ function newRecordFact(){
                   //Rob Function : call this when change the current row
                  var code_s=$(this).siblings("td[data-target='Code']").text();
                  var dent_s=$(this).siblings("td[data-target='Dent']").text();
-                
+
                   traiter_valeur_de_base(code_s, dent_s);
 
                 };
@@ -154,34 +161,79 @@ function newRecordFact(){
 
               })
              tblData.appendTo(tblRow);
-             
+
           break;
-          
+
         }
 
-          
+
     }
            tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="modFactTableMore(this);" >Plus</div><div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
        tblData.appendTo(tblRow);
 
         tblRow.appendTo(tblBody);
 
-        
+
+
+}
+
+function getPrevRowCode(idPrev){
+
+
+  var factBody=$('#factTableBody tr[id='+idPrev+']');
+  var prevCode;
+  $.each(factBody,function(id,val){
+  prevCode=$(val).find('td[data-target=Code]').text();
+
+
+  })
+
+  return prevCode;
+
+}
+
+function getPrevRowDent(idPrev){
+
+
+  var factBody=$('#factTableBody tr[id='+idPrev+']');
+  var prevDent;
+  $.each(factBody,function(id,val){
+  prevDent=$(val).find('td[data-target=Dent]').text();
+
+
+  })
+
+  return prevDent;
+
+}
+
+function getPrevRowSurf(idPrev){
+
+
+  var factBody=$('#factTableBody tr[id='+idPrev+']');
+  var prevSurf;
+  $.each(factBody,function(id,val){
+  prevSurf=$(val).find('td[data-target=Surface]').text();
+
+
+  })
+
+  return prevSurf;
 
 }
 
 function getPrevRowType(idPrev){
 
-  
+
   var factBody=$('#factTableBody tr[id='+idPrev+']');
   var prevType;
   $.each(factBody,function(id,val){
   prevType=$(val).find('td[data-target=Type]').text();
-  
+
 
   })
 
-  return prevType; 
+  return prevType;
 
 }
 
@@ -195,7 +247,7 @@ function getAllTrData(){
   var mytrs=$('#factTableBody tr');
 // console.log(mytrs);
   $.each(mytrs, function(idx,val){
-    
+
     var myObjects={};
     // For each TR
     var mytds=$(val).children();
@@ -203,7 +255,7 @@ function getAllTrData(){
     var key='row_id';
     var value=$(val).attr('id');
     myObjects[key]=value;
-    
+
     $.each(mytds,function(idx,val){
 
       var key=$(val).attr('data-target');
@@ -229,27 +281,27 @@ function getAllTrData(){
 
       arrGrilleDeFacturation.push(myObjects);
 });
-  
+
    if((count_ramq>=10)||(count_insur>=7))
    {
     alert('Limit Exceeded! Allow Limit : RamQ Bill = 10 Lines , Insurance Bill = 7 Lines. Delete few entries to proceed');
    }
    else{
 
-    console.log(arrGrilleDeFacturation); 
+    console.log(arrGrilleDeFacturation);
     console.log(arrGrilleDeFacturation_forms);
 
     arrGrilleDeFacturation_update=arrGrilleDeFacturation;
     // arrGrilleDeFacturation_forms_update=arrGrilleDeFacturation_forms;
-    
-    
-    // 
+
+
+    //
 
     // console.log(moreInfoArray_glbl  )
     //modPayment(); AK modPayment should be called separetely.
     // getMoreInfo();
    }
-  
+
 
 }
 
@@ -267,20 +319,20 @@ function submitForm(thisForm){
 
 
 
-                
+
 }
 
 // function findTableData(x){
 //   //Get id of the Row Working
-//   var row_id=$(x).closest('tr').attr('id'); 
-//   modFactTableMore(row_id);  
+//   var row_id=$(x).closest('tr').attr('id');
+//   modFactTableMore(row_id);
 // }
 
 function getMoreInfo(){
-  
+
   // var anyData={};
   // anyData['hello']='fawad';
-  // console.log(anyData); 
+  // console.log(anyData);
 
 
 }
@@ -288,39 +340,39 @@ function getMoreInfo(){
 //===Modal
 
 function modFactTableMore(x)
-{ 
- 
+{
+
   var row_id=$(x).closest('tr').attr('id');
 
    switch(dent_Type){
-      
+
       case 'Dentiste':
 
               var data=$('#div_dentiste').html();
-              $('#modal_factTbl_more').html(data); 
-              $('form #rowId_dent').val(row_id); //Assign id of Row Working - to the Form 
-              var thisFromData=getThisFormData(row_id);  //gets the Complete Array of FORM Data to populate 
+              $('#modal_factTbl_more').html(data);
+              $('form #rowId_dent').val(row_id); //Assign id of Row Working - to the Form
+              var thisFromData=getThisFormData(row_id);  //gets the Complete Array of FORM Data to populate
               populateForm('form_dentiste',thisFromData);
               break;
 
       case 'Chirurgiens':
-      
+
               var data=$('#div_chirurgiens').html();
               $('#modal_factTbl_more').html(data);
-              $('form #rowId_chir').val(row_id); //Assign id of Row Working - to the Form 
+              $('form #rowId_chir').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);
               populateForm('form_chirurgiens',thisFromData);
-              
+
               break;
       case 'Denturologiste':
-      
+
               var data=$('#div_denturologiste').html();
               $('#modal_factTbl_more').html(data);
-              $('form #rowId_dentu').val(row_id); //Assign id of Row Working - to the Form 
+              $('form #rowId_dentu').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);
 
               populateForm('form_denturologiste',thisFromData);
-      
+
               break;
       default:
               $('#modal_factTbl_more').html('<h1>Error Aquiring the Dentist Type</h1>');
@@ -333,48 +385,48 @@ function getThisFormData(row_id){
 
   var arrayToPopulateForm=[];
   $.each(arrGrilleDeFacturation_forms,function(idx,value){
-    
-    
+
+
     $.each(value,function(id,val){
-     
+
       if((val.name=="row_id")&&(val.value==row_id))
       {
         arrayToPopulateForm=value;
-        
+
       }
-      
+
     })
   })
-  
+
   return arrayToPopulateForm;
 }
 
 function populateForm(formname,thisFromData)
-{ 
-  
-    
+{
+
+
       $("#"+formname).deserialize(thisFromData);
-    
+
       if(formname=='form_dentiste'){
-        
+
         $('#form_dentiste #medi_com_list option').remove();
         $('#form_dentiste #elem_meas_list option').remove();
 
         $.each(thisFromData,function(id,val){
-        
+
 
         if(val.name=='liste_med_consm_denti'){
-        
+
           $('#form_dentiste #medi_com_list').append('<option selected="selected">'+val.value+'</option>')
         }
-        
+
         if(val.name=='liste_elm_mesur_denti'){
           $('#form_dentiste #elem_meas_list').append('<option selected="selected">'+val.value+'</option>')
         }
 
 
      })
-  
+
       }
       else if(formname=='form_chirurgiens'){
 
@@ -382,11 +434,11 @@ function populateForm(formname,thisFromData)
         $('#form_chirurgiens #elem_meas_list option').remove();
 
          $.each(thisFromData,function(id,val){
-        
+
         if(val.name=='liste_med_consm_bucc'){
         $('#form_chirurgiens #medi_com_list_chir').append('<option selected="selected">'+val.value+'</option>')
         }
-        
+
         if(val.name=='liste_elm_mesur_bucc'){
         $('#form_chirurgiens #elem_meas_list').append('<option selected="selected">'+val.value+'</option>')
         }
@@ -398,7 +450,7 @@ function populateForm(formname,thisFromData)
       else if(formname=='form_denturologiste'){
 
       }
-    
+
 
  }
 
@@ -408,19 +460,19 @@ function emptyTable (option){
   fact_tbl_row_id=0;
   arrGrilleDeFacturation=[];
   arrGrilleDeFacturation_forms=[];
-  dent_Type=''; 
+  dent_Type='';
   init_code='';
   surf_type='';
   checkDentType();
   //IMP! call Dent_type Modal again for selection in Main FactTabl
-  $("#factTableBody tr").remove(); 
-  
+  $("#factTableBody tr").remove();
+
   if(option=='newTbl')
     {
       newRecordFact();
     }
   else
-    { 
+    {
       return;
     }
 
@@ -430,7 +482,7 @@ function deleteRow(x){
 
   var row_id_Del=$(x).closest('tr').attr('id');
   var row=$(x).closest('tr').remove();
-  //remove this Row's Form too 
+  //remove this Row's Form too
   var deleteThisIdForm=deleteFromArray('delete','row_id',row_id_Del);
   if(deleteThisIdForm){ console.log('Deleted Success'); };
 
@@ -455,17 +507,17 @@ function deleteFromArray(toDo,namR,valR){
               arrGrilleDeFacturation_forms.splice([i],1);
               return true;
               }
-            
-              
+
+
             }
-          
+
           }
         }
 }
 
 function updateArray(namR,valR,newArray){
    // Update complete array if Matched in its object nameR and valR send i.e : nameR=row_id valR=2
-   
+
   var nameD=namR;
   var valueD=valR;
   var newArray=newArray;
@@ -485,7 +537,7 @@ function updateArray(namR,valR,newArray){
               console.log('Form Array updated');
               console.log(arrGrilleDeFacturation_forms);
               return false;
-              
+
             }
           }
         }
@@ -506,19 +558,19 @@ function updateArray(namR,valR,newArray){
     //           console.log('new Array');
     //           console.log(newArray);
     //           // return true;
-              
-            
-              
+
+
+
     //         }
-          
+
     //       }
     //     }
 
 
 
 function checkDentType(){
-  
-  // will check any type for Dentist Selected - 
+
+  // will check any type for Dentist Selected -
   if(dent_Type!=''){
     return;
   }
@@ -549,7 +601,7 @@ function robData(){
                 if(result.outcome == 'error')
                     $("#message").append(result.message);
                 else
-                    $("#message").append("<h2>&nbsp;Creation of the file was .... </h2>");        
+                    $("#message").append("<h2>&nbsp;Creation of the file was .... </h2>");
                   console.log(result);
                   formData=result.infos;
                   rowData=result.rows;
@@ -564,10 +616,10 @@ function robData(){
                      })
                   })
                   var max = Math.max.apply(Math, row_id_count);
-                  
+
                   fact_tbl_row_id=max;
             });
-  
+
 
 
 }
@@ -582,17 +634,17 @@ function populate_tbl_from(arrayForm,arrayTbl)
 }
 
 function populate_table_fact(arrToPopTabl){
-    
-    var arrayToPopulate=arrToPopTabl; 
+
+    var arrayToPopulate=arrToPopTabl;
 
     // arrGrilleDeFacturation_update=arrayToPopulate;
     // console.log(arrGrilleDeFacturation_update);
 
-    
+
     var tblBody=$('#factTableBody');
 
           $.each(arrayToPopulate,function(idx,val){
-            // val - each row 
+            // val - each row
 
               //only Rows with ramq_id ( RAMQ )
             // fact_tbl_row_id_=val.row_id;
@@ -601,7 +653,7 @@ function populate_table_fact(arrToPopTabl){
             tblRow=$('<tr>').attr('id',val.row_id).attr('ramq_id',val.ramq_id);
 
             var fields=['Type','Dent','Surface','Code','Description','Frais','Honoraires','Total','Prod','codeRole'];
-            
+
                  for(i=0;i<10;i++)
                   {
 
@@ -651,7 +703,7 @@ function populate_table_fact(arrToPopTabl){
                   }
                    tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="modFactTableMore(this,arrGrilleDeFacturation_forms);" >Plus</div><div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
                tblData.appendTo(tblRow);
-          
+
 
                 tblRow.appendTo(tblBody);
         });

@@ -1280,9 +1280,8 @@
       }
     }
 
-  //alert("Get the Files!");
-  //xmlhttp2.open("GET","json/ramq/codes6.json",true);
-  xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=codes6&rand="+Math.random(),true);
+		// TODO: Each dentist will have its own codes file. This needs to be fixed!
+  xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=codes&rand="+Math.random(),true);
   xmlhttp2.send();
 
   }
@@ -1307,9 +1306,7 @@
       }
   }
 
-  //alert("Get the Mappings!");
-  //xmlhttp2.open("GET","json/ramq/mapping5.json",true);
-  xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=mapping6&rand="+Math.random(),true);
+  xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=mapping&rand="+Math.random(),true);
   xmlhttp2.send();
 
   }
@@ -1561,10 +1558,8 @@
       }
     }
 
-  //alert("Get the protocols!");
-  //xmlhttp2.open("GET","json/ramq/odonto1.json",true);
-  xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=odonto1&rand="+Math.random(),true);
-  xmlhttp2.send();
+		xmlhttp2.open("GET","allScriptsv1.py?tx=getJSONsub&sub=params&code=odonto&rand="+Math.random(),true);
+  	xmlhttp2.send();
 
   }
 

@@ -3,7 +3,7 @@ json/documents/*.json
 json/ec/*.json
 json/ententes/*.json
 json/examens/*.json
-json/facturation/*.json
+json/facturation/**/*.json
 json/factureValidation/*.json
 json/images/*.json
 json/labos/*.json

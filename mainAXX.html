@@ -186,9 +186,9 @@
 
     <!-- Main loading indicator -->
      <!--<div id="loadingText" class="ui active inverted dimmer">-->
-    <!--<div id="loadingText" class="ui inverted dimmer">
+    <div id="loaderMain" class="ui inverted dimmer">
         <div class="ui text loader">...</div>
-    </div>-->
+    </div> 
     <!-- Main loading indicator END-->
 
     <!-- tabs1 -->
@@ -478,7 +478,7 @@
                                     </select>
                                 </div>
                                 <div class="row">
-                                    <button class="ui axxium tiny right floated button">Retransmission réclamation</button>
+                                    <button class="ui axxium tiny right floated button" onclick="CdaCommReSendClaimRequest()">Retransmission réclamation</button>
                                     <button class="ui axxium tiny right floated button">Interroger réclamation en suspens</button>
                                     <button class="ui axxium tiny right floated button" onclick="CdaCommOpenClaimReversPopup()">Annuler réclamation</button>
                                     <button class="ui axxium tiny right floated button">Imprimer</button>
@@ -2596,7 +2596,7 @@
                 </div>
                 <div class="fields">
                     <div class="field"> <button class="ui axxium right floated button" onclick="CdaCommSendToCAS()">OK</button></div>
-                    <div class="field"><button class="ui axxium right floated button">Annuler</button></div>
+                    <div class="field"><button class="ui axxium right floated button" onclick="$('.modalToCAS').modal('hide');">Annuler</button></div>
                 </div>
             </div>
         </div>

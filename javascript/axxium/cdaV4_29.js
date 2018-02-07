@@ -29,7 +29,6 @@ function CdaV4CallCDAService(pReqString) {
     } 
 
     var randomNum = CdaCommCreateRandomNumber(1, 999);
-
     var inputXMl = {
         "request": strRequest, //request to send
         //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
@@ -38,12 +37,13 @@ function CdaV4CallCDAService(pReqString) {
 
     //Show progress
     document.getElementById("loaderCdan4Form").setAttribute("class", "ui active inverted dimmer");
+    document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
 
     $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
         function (result) {
             //Hide progress
             document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
-
+            document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
             if (result.outcome === 'error')
                 alert(result.message);
             else {
@@ -53,16 +53,15 @@ function CdaV4CallCDAService(pReqString) {
                 {
                     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
 
-                    var objResp = CdaV4ReadResponse(transactionLine);
+                    globCdaRespObj = CdaV4ReadResponse(transactionLine);
                     var respMessage = '';
-                    if (objResp) {
-                        respMessage = CdaV4CreateRespMessage(objResp, transactionLine);
+                    if (globCdaRespObj) {
+                        respMessage = CdaV4CreateRespMessage(globCdaRespObj, transactionLine);
                     }
                     else {
                         respMessage = 'Parsing CdaNet response failed.'
                     }
 
-                    
                     CdaCommShowResp(respMessage);
                 }
             }
@@ -713,10 +712,11 @@ function PopulateClaimReversalObj() {
     var transactionType = "ClaimReversal";
     var objDataFromDB = globCdaDataFromDB;
     var objDataFromUI = CdaV4GetDataFromUI();
+    var oficeSeqNumber = globCdaTransHistSelectedData[13].substring(12, 18);
 
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
-    obj.a02 = CDAV4FormatField(objDataFromDB.a02, 'N', 6); //Office Sequence Number
+    obj.a02 = CDAV4FormatField(oficeSeqNumber, 'N', 6); //Office Sequence Number
     obj.a03 = CDAV4FormatField(objDataFromDB.a03, 'N', 2); //Format Version Number
     obj.a04 = CDAV4FormatField(objDataFromDB.a04, 'N', 2); //Transaction Code
     obj.a05 = CDAV4FormatField(objDataFromDB.a05, 'N', 6); //Carrier Identification Number
@@ -980,7 +980,7 @@ function CdaV4ReadResponse(pResponse)
     try {
         var transCode = '';
         if (pResponse) {
-            transCode = pResponse.substring(20, 23);
+            transCode = pResponse.substring(20, 22);
 
             switch (transCode) {
                 case '18':
@@ -1070,6 +1070,8 @@ function CdaV4ParseEligibilityResp(pResponse)
 function CdaV4ParseClaimAcknResp(pResponse)
 {
     var res = {};
+    res.g32 = []; res.f07 = []; res.g08 = [];
+
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1124,6 +1126,11 @@ function CdaV4ParseClaimAcknResp(pResponse)
 function CdaV4ParseEOBResp(pResponse)
 {
     var res = {};
+    res.f07 = []; res.g12 = []; res.g13 = []; res.g14 = []; res.g15 = []; res.g43 = []; res.g56 = []; res.g57 = []; res.g58 = []; res.g02 = []; res.g59 = []; res.g60 = []; res.g61 = []; res.g16 = []; res.g17 = [];
+    res.g18 = []; res.g19 = []; res.g20 = []; res.g44 = []; res.g21 = []; res.g22 = []; res.g23 = []; res.g24 = []; res.g25 = [];
+    res.g41 = []; res.g45 = []; res.g26 = [];
+
+
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1163,6 +1170,7 @@ function CdaV4ParseEOBResp(pResponse)
         res.g14[i] = parseInt(pResponse.substring(lastPos, lastPos + 3));//Eligible Percentage
         lastPos += 3;
         res.g15[i] = (parseFloat(pResponse.substring(lastPos, lastPos + 6)) / 100).toFixed(2);//Benefit Amount for the Procedure
+        lastPos += 6;
         res.g43[i] = (parseFloat(pResponse.substring(lastPos, lastPos + 6)) / 100).toFixed(2); //Eligible Amount for Lab Procedure # 1
         lastPos += 6;
         res.g56[i] = (parseFloat(pResponse.substring(lastPos, lastPos + 5)) / 100).toFixed(2); //Deductible Amount for Lab Procedure # 1
@@ -1621,7 +1629,7 @@ function CdaV4ParseSummReconsilResp(pResponse)
 
 function CdaV4CreateRespMessage(pResp, pResponseLine) {
     var ResponseList = '';
-    ResponseList += 'cdanetTranscode : ' + globCdanetTranscode;
+    ResponseList += 'Cdanet Transcode : ' + globCdanetTranscode + '\n';
 
     if (![2, 4, 5, 6, 99].includes(parseInt(globCdanetTranscode)))
     {
@@ -1649,13 +1657,13 @@ function CdaV4CreateRespMessage(pResp, pResponseLine) {
         ResponseList += 'Assurance: ' + assurance + '\n';
     }
 
-    var noSequence = pResp.a02;
+    var noSequence = (pResp.a02) ? pResp.a02 : '';
     ResponseList += 'No de Séquence: ' + noSequence + '\n';
 
-    var respCode = pResp.a04.toString();
-    ResponseList += 'responseCode: ' + respCode + '\n';
+    var respCode = (pResp.a04)?pResp.a04.toString():'';
+    ResponseList += 'ResponseCode: ' + respCode + '\n';
 
-    var MailBox = pResp.a11;
+    var MailBox = (pResp.a11) ? pResp.a11 : '';
     ResponseList += 'MailBox : ' + MailBox + '\n';
 
     if (respCode == '16') //Reconciliation des paiements
@@ -1861,19 +1869,19 @@ function CdaV4GetResponseListForEOB(pResp) {
     var gNoConfirm  = pResp.g30;
     ResponseList +='No de confirmation : ' + gNoConfirm + '\n';
 
-    var totalAmount = (isNaN(pResp.g04 / 100)) ? '0' : (pResp.g04 / 100).toFixed(2);
+    var totalAmount = (isNaN(pResp.g04 / 100)) ? '0' : pResp.g04;
     ResponseList += 'Montant réclamé : ' + totalAmount + '\n';
 
-    var deductibleAmount = (isNaN(pResp.g29 / 100)) ? '0' : (pResp.g29 / 100).toFixed(2);
+    var deductibleAmount = (isNaN(pResp.g29 / 100)) ? '0' : pResp.g29;
     ResponseList += 'Montant du déductible non alloué : ' + deductibleAmount + '\n';
 
-    var totalBenefitAmounts = (isNaN(pResp.g28 / 100)) ? '0' : (pResp.g28 / 100).toFixed(2);
+    var totalBenefitAmounts = (isNaN(pResp.g28 / 100)) ? '0' : pResp.g28;
     ResponseList += 'Montant des prestations : ' + totalBenefitAmounts + '\n';
 
-    var adjustmentAmount = (isNaN(pResp.g33 / 100)) ? '0' : (pResp.g33 / 100).toFixed(2);
+    var adjustmentAmount = (isNaN(pResp.g33 / 100)) ? '0' : pResp.g33;
     ResponseList += 'Montant pour ajustement : ' + adjustmentAmount + '\n';
 
-    var totalPayable = (isNaN(pResp.g55 / 100)) ? '0' : (pResp.g55 / 100).toFixed(2);
+    var totalPayable = (isNaN(pResp.g55 / 100)) ? '0' : pResp.g55;
     ResponseList += 'Montant total remboursé : ' + totalPayable + '\n';
 
     var paymentDate = pResp.g03.toString();
@@ -1898,7 +1906,7 @@ function CdaV4GetResponseListForEOB(pResp) {
     var noteTxt;
     for (var i = 0; i < nNotes; i++)
     {
-        noteTxt = g45[i] + ' ' + g26[i];
+        noteTxt = pResp.g45[i] + ' ' + pResp.g26[i];
         noteTxt = CdaCommFrompage850(noteTxt);
         ResponseList += noteTxt + '\n';
     }
@@ -1945,7 +1953,7 @@ function CdaV4GetResponseListForClaimAck(pResp)
         responsemess = 'Réponse à l\'interrogation sur l\'admissibilité';
     }
     else
-        responsemess = 'Réponse la demande de réglement';
+        responsemess = 'Réponse la demande de réglement:';
 
     ResponseList += responsemess + '\n';
 
@@ -1966,7 +1974,7 @@ function CdaV4GetResponseListForClaimAck(pResp)
     var gTransref = pResp.g01; //g01
     ResponseList += 'No de Référence: ' + gTransref + '\n';
 
-    var totalAmount = (isNaN(pResp.g04 / 100)) ? '0' : (pResp.g04 / 100).toFixed(2);
+    var totalAmount = (isNaN(pResp.g04 / 100)) ? '0' : pResp.g04;
     ResponseList += 'Montant réclamé : ' + totalAmount + '\n';
 
     var nError = pResp.g06;
@@ -1989,15 +1997,20 @@ function CdaV4GetResponseListForClaimAck(pResp)
         ResponseList += 'Messages  (' + messageCount + ')' + '\n';
 
         for (var j = 0; j < messageCount; j++) {
-            var displayMessage = CdaCommFrompage850(pRes.g32[i]);
+            var displayMessage = CdaCommFrompage850(pResp.g32[i]);
             ResponseList += displayMessage + '\n';
         }
     }
 
+
     // stupid logic from VisionR
-    var mFormId = pResp.g08[g08.length - 1]; //last formid
-    if (responsestatus == 'R')
-    {
+    //var mFormId = pResp.g08[pResp.g08.length - 1]; //last formid
+    //if (responsestatus == 'R')
+    //{
+    //    ResponseList += 'Type de Formulaire  à imprimer : ' + CdaCommGetFormToPrint(mFormId) + '\n';
+    //}
+    var mFormId = pResp.g42;
+    if (responsestatus == 'R') {
         ResponseList += 'Type de Formulaire  à imprimer : ' + CdaCommGetFormToPrint(mFormId) + '\n';
     }
     return ResponseList;
@@ -2085,7 +2098,7 @@ function CdaV4GetResponseListForOutstAckn(pResp) {
 function CdaV4GetResponseListForClaimRevers(pResp)
 {
     var ResponseList = '';
-    ResponseList += 'Réponse à la demande d\'annulation de la réclamation No :' + globCdaProviderSequence + '\n';
+    ResponseList += 'Réponse à la demande d\'annulation de la réclamation No :' + pResp.a02 + '\n';
 
     var gTransref = pResp.g01;
     ResponseList += 'No de Référence: ' + gTransref + '\n';

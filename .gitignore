@@ -16,3 +16,4 @@ json/plans/*.json
 json/ramqCredentials/*.json
 json/signatures/*.json
 json/traitements/*.json
+json/params/codtar*.json

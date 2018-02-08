@@ -1543,10 +1543,8 @@
                           <label>Insurance Version Select</label>
                           <input type="text" name="" id="insr_cdan_version">
                       </div> -->
-                                <div class="inline fields">
-
+                                <!--<div class="inline fields">
                                     <div class="inline field">
-
                                         <input type="radio" name="insr_ver_select" id="insr_cdan_version_1" disabled>
                                         <label>Version 2</label>
                                     </div>
@@ -1555,7 +1553,7 @@
                                         <label>Version 4</label>
 
                                     </div>
-                                </div>
+                                </div>-->
                                 <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
                             </div>
                             <div class="ui form segment" id="divPaymentRamq">
@@ -1744,6 +1742,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="ui form segment">
+                                <label>Cocher les cases appropriées</label>
+                                <div class="inline field"><input type="checkbox" name="" id="formlr_asur_check"><label>Formulaire d'assurance</label></div>
+                                <div class="inline field"><input type="checkbox" name="" class="fact_rec_check"><label>Facture ou un reçu</label></div>
+                                <div class="ui grid">
+                                    <div class="row">
+                                        <div class="column">
+                                            <div class="ui axxium right floated button">Envoyer par courriel</div>
+                                            <div class="ui axxium right floated button">Imprimer</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="six wide column">
                             <div class="ui form segment" id="divPaymentPayment">
@@ -1767,7 +1778,7 @@
                                                 </div>
                                                 <div class="field">
                                                     <label>POST-DATÉS</label>
-                                                    <input type="date" name="" id=post_solde>
+                                                    <input type="text" name="" id=post_solde>
                                                 </div>
                                             </div>
                                         </div>
@@ -1791,64 +1802,66 @@
                                     </div>
                                 </div>
                                 <div class="ui form segment">
-                                    <div class="two fields">
-                                        <div class="field"><label>ARGENT</label> <input type="text" name="" id="argnt_pamnt"></div>
-                                        <div class="field"><label>DÉBIT </label> <input type="text" name="" id="debit_pamnt"></div>
+                                    <div class="ui form segment">
+                                        <div class="ui horizontal divider"> <strong>COMPTANT</strong></div>
+                                        <div class="two fields">
+                                            <div class="inline field"><label>ARGENT</label> <input type="text" name="" id="argnt_pamnt"></div>
+                                            <div class="inline field"><label>DÉBIT </label> <input type="text" name="" id="debit_pamnt"></div>
+                                        </div>
                                     </div>
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"><label>CRÉDIT</label></div>
-                                        <div class="two fields">
-                                            <div class="inline field"><input type="radio" name="" id="visa_crdt_rad"><label>VISA</label></div>
+                                        <div class="three fields">
+                                            <div class="inline field"><input type="radio" name="payment-credit" id="visa_crdt_rad"><label>VISA</label></div>
+                                            <div class="inline field"><input type="radio" name="payment-credit" id="amex_crdt"><label>AMEX</label></div>
+                                            <div class="inline field"><input type="radio" name="payment-credit" id="mstr_crdt"><label>Master Card</label></div>
+                                        </div>
+                                        <div class="field">
                                             <div class="inline field"> <input type="text" name="" id="visa_crdt_inpt"> </div>
                                         </div>
-                                        <div class="inline field"><input type="radio" name="" id="amex_crdt"><label>AMEX</label></div>
-                                        <div class="inline field"><input type="radio" name="" id="mstr_crdt"><label>Master Card</label></div>
                                     </div>
                                     <div class="ui form segment">
+                                        <div class="ui horizontal divider"><label>POST-DATÉS</label></div>
                                         <div class="two fields">
-                                            <div class="two wide field"> <label>No</label> <input type="text" name="" id="pst_dat_no"></div>
+                                            <div class="three wide field"> <label>No</label> <input type="text" name="" id="pst_dat_no" value="1"></div>
                                             <div class=" field"> <label>Montant</label> <input type="text" name="" id="pst_dat_mnt"></div>
                                         </div>
                                         <div class="two fields">
-                                            <div class=" field"> <label>Date</label> <input type="date" name="" id="pst_dat"></div>
-                                            <div class="two wide field"> <label>Nb</label> <input type="text" name="" id="pst_nb"></div>
+                                            <div class="ten wide field"> <label>Date</label> <input type="date" name="" id="pst_dat"></div>
+                                            <div class="field"> <label>Nb</label> <input type="text" name="" id="pst_nb"></div>
                                         </div>
-                                        <div class="five wide field">
-                                            <label>Type</label>
-                                            <select id="pst_type">
-                                  <option selected="selected">Chéque</option>
-                                  <option>MC</option>
-                                  <option>VISA</option>
-                                  <option>AMEX</option>
-                                  <option>Financement</option>
-                                </select>
+                                        <div class="ui two column grid">
+                                            <div class="row">
+                                                <div class="column">
+                                                    <label>Type</label>
+                                                    <select id="pst_type">
+                                                        <option selected="selected">Chéque</option>
+                                                        <option>MC</option>
+                                                        <option>VISA</option>
+                                                        <option>AMEX</option>
+                                                        <option>Financement</option>
+                                                    </select>
+                                                </div>
+                                                <div class="column">
+                                                    <button class="ui right floated button axxium " onclick="">Details</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="inline field">
                                         <input type="checkbox" name="" id="fract_pmnt_check">
                                         <label>Fractioner les paiements</label>
                                     </div>
-                                    <div class="ui right labeled input three wide field">
-                                        <label style="color: RED" class="ui label basic">TOTAL</label>
-                                        <input type="text" name="" id="total_pamnt" class="ui right labeled input">
-                                        <div class="ui basic label">$</div>
+                                    <div class="inline field">
+                                        <label style="color: RED">Total Facture</label>
+                                        <input type="text" name="" id="total_pamnt">
+                                        <label>$</label>
                                     </div>
+                                        
                                 </div>
                                 <div class="five wide field"> <label>Lab %</label><input type="text" name="" id="lab_prcnt"></div>
                             </div>
-                            <div class="ui form segment">
-                                <label>Cocher les cases appropriées</label>
-                                <div class="inline field"><input type="checkbox" name="" id="formlr_asur_check"><label>Formulaire d'assurance</label></div>
-                                <div class="inline field"><input type="checkbox" name="" class="fact_rec_check"><label>Facture ou un reçu</label></div>
-                                <div class="ui grid">
-                                    <div class="row">
-                                        <div class="column">
-                                            <div class="ui axxium right floated button">Envoyer par courriel</div>
-                                            <div class="ui axxium right floated button">Imprimer</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <button class="ui right floated axxium button" onclick="">Sauvegarder Facture</button>
                         </div>
                         <script type="text/javascript">
                             $(document).ready(function() {
@@ -1907,17 +1920,17 @@
                                 if (pamnt_trnsfr_modal_stats == 2) {
                                     // open modal CDA NET 1 or 2 depending on Version of insurance
 
-                                    if ($('#insr_cdan_version_1').is(':checked')) {
+                                    if (globCdaVersion ==='2') {
                                         modCdan1();
                                     }
-                                    if ($('#insr_cdan_version_4').is(':checked')) {
+                                    else if (globCdaVersion === '4') {
                                         modCdan2();
                                     }
                                 }
 
                             }
                         </script>
-                        <div class="three wide column" id="facture_select_check" style="display: none;">
+                        <div class="three wide column" id="facture_select_check">
                             <div class="ui form segment">
                                 <label>Fractionner Paiement</label>
                                 <div class="two fields">
@@ -1925,11 +1938,11 @@
                                 </div>
                                 <textarea id="frac_pamnt_text"></textarea>
                             </div>
-                            <p1><strong>Montant Total : </strong></p1>
+                            <!--<p1><strong>Montant Total : </strong></p1>
                             <div class="two fields">
                                 <div class="ui axxium tiny button">retour a facturation</div>
                                 <div class="ui axxium tiny button">Enregistrer</div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>

@@ -20,23 +20,21 @@ function CdaV2CallCDAService(pReqString)
     //var transCode = globCdaDataFromDB.a04;//TODO: send to server
     var inputXMl = {
         "request": strRequest, //request to send
-        //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
         "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
     //Show progress
     document.getElementById("loaderCdan2Form").setAttribute("class", "ui active inverted dimmer");
     document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
-    $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl)},
+    try {
+        $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
         function (result) {
             //Hide progress
             document.getElementById("loaderCdan2Form").setAttribute("class", "ui inverted dimmer");
             document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
             if (result.outcome === 'error')
                 alert(result.message);
-            else
-            {
-                //var responseLine = result.message;
-                var responseLine = '39679,0,017,11321111    039679021300001101450515708008316              A00LE DEMANDE A ETE ACCEPTEE POUR TRAITEMENT ULTERIEUR.                       N0052200';
+            else {
+                var responseLine = result.message;
                 var communicationResult = CdaCommGetCommStatus(responseLine);
                 if (communicationResult == 0)// No errors
                 {
@@ -49,11 +47,18 @@ function CdaV2CallCDAService(pReqString)
                     else {
                         respMessage = 'Parsing CdaNet response failed.'
                     }
-                    
+
                     CdaCommShowResp(respMessage);
                 }
             }
         });
+    }
+    catch (e)
+    {
+        document.getElementById("loaderCdan2Form").setAttribute("class", "ui inverted dimmer");
+        document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
+        alert(e.message);
+    }
 }
 
 //============================================= Create request string =============================================
@@ -445,6 +450,8 @@ function CdaV2ReadResponse(pResponse) {
 
 function CdaV2ParseEligibilityResp(pResponse) {
     var res = {};
+    res.g08 = [];
+
     pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
@@ -472,6 +479,9 @@ function CdaV2ParseEligibilityResp(pResponse) {
 
 function CdaV2ParseClaimAcknResp(pResponse) {
     var res = {};
+    res.f07 = [];
+    res.g08 = [];
+
     pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
@@ -507,6 +517,10 @@ function CdaV2ParseClaimAcknResp(pResponse) {
 
 function CdaV2ParseEOBResp(pResponse) {
     var res = {};
+    res.f07 = []; res.g12 = []; res.g13 = []; res.g14 = []; res.g15 = []; res.g16 = []; res.g17 = [];
+    res.g18 = []; res.g19 = []; res.g20 = []; res.g21 = []; res.g22 = []; res.g23 = []; res.g24 = []; res.g25 = [];
+    res.g26 = [];
+
     pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
@@ -532,7 +546,6 @@ function CdaV2ParseEOBResp(pResponse) {
 
 
     var lastPos = 103;
-    res.f07 = []; res.g12 = []; res.g13 = []; res.g14 = []; res.g15 = []; res.g16 = []; res.g17 = []; res.g18 = []; res.g19 = []; res.g20 = []; res.g21 = []; res.g22 = []; res.g23 = []; res.g24 = []; res.g25 = []; res.g26 = [];
     for (var i = 0; i < res.f06; i++) {
         res.f07[i] = parseInt(pResponse.substring(lastPos, lastPos + 1));
         lastPos += 1;
@@ -580,6 +593,7 @@ function CdaV2ParseEOBResp(pResponse) {
 
 function CdaV2ParseClaimReversResp(pResponse) {
     var res = {};
+    res.g08 = [];
     pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
@@ -607,6 +621,7 @@ function CdaV2ParseClaimReversResp(pResponse) {
 
 function CdaV2ParsePredetAcknResp(pResponse) {
     var res = {};
+    res.f07 = []; res.g08 = [];
     pResponse = pResponse.toString();
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number

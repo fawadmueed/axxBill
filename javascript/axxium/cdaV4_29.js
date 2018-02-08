@@ -31,15 +31,15 @@ function CdaV4CallCDAService(pReqString) {
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     var inputXMl = {
         "request": strRequest, //request to send
-        //"info": { 'NoSeq': globCdaDataFromDB.a02, 'Description': CdaV2GetTransactionName(), 'NoDossier': globNoDossier, 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0], 'Couver': '', 'Date': CdaCommConvertDate('00000000') } // JSON data
         "info": { 'Prenom': globVisionRData.PrePers, 'Nom': globVisionRData.NomPers, 'Ass': globVisionRData.InsTypeList[0] } // JSON data
     };
 
     //Show progress
     document.getElementById("loaderCdan4Form").setAttribute("class", "ui active inverted dimmer");
     document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
+    try {
 
-    $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
+        $.post("allScriptsv1.py", { tx: "sendInsurance", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, lun: randomNum, json: JSON.stringify(inputXMl) },
         function (result) {
             //Hide progress
             document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
@@ -48,7 +48,6 @@ function CdaV4CallCDAService(pReqString) {
                 alert(result.message);
             else {
                 var responseLine = result.message;
-                //var responseLine = '100559,0,162,HD*         100559041212345600169Y5301234011234                    R05*WARNING* NO MATCHING RESPONSE FOUND FOR YOUR TRANSAC. simtr v2.0 15-APR-01000000000044012019020109';
                 var communicationResult = CdaCommGetCommStatus(responseLine);
                 if (communicationResult == 0)// No errors
                 {
@@ -67,7 +66,13 @@ function CdaV4CallCDAService(pReqString) {
                 }
             }
         });
-
+    }
+    catch (e)
+    {
+        document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
+        document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
+        alert(e.message);
+    }
 }
 
 //============================================= Create request string =============================================
@@ -1029,6 +1034,7 @@ function CdaV4ReadResponse(pResponse)
 function CdaV4ParseEligibilityResp(pResponse)
 {
     var res = {};
+    res.g08 = []; res.g32 = [];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1233,6 +1239,7 @@ function CdaV4ParseEOBResp(pResponse)
 function CdaV4ParseAttachmentResp(pResponse)
 {
     var res = {};
+    res.g08 = []; res.g32 = [];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1269,6 +1276,7 @@ function CdaV4ParseAttachmentResp(pResponse)
 function CdaV4ParseClaimReversResp(pResponse)
 {
     var res = {};
+    res.g32 = []; res.g08 = [];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1296,7 +1304,7 @@ function CdaV4ParseClaimReversResp(pResponse)
         lastPos += 75;
     }
 
-    for (var j = 0; j < res.g31; j++)
+    for (var j = 0; j < res.g06; j++)
     {
         res.g08[j] = parseInt(pResponse.substring(lastPos, lastPos + 3));//Error Code
         lastPos += 3;
@@ -1309,6 +1317,7 @@ function CdaV4ParseClaimReversResp(pResponse)
 function CdaV4ParsePredetAcknResp(pResponse)
 {
     var res = {};
+    res.g32 = []; res.g42 = []; res.g46 = []; res.g47 = []; res.f07 = []; res.g08 = [];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1362,6 +1371,10 @@ function CdaV4ParsePredetAcknResp(pResponse)
 function CdaV4ParsePredetEOBResp(pResponse)
 {
     var res = {};
+    res.f07=[]; res.g12=[]; res.g13=[]; res.g14=[]; res.g15=[]; res.g43=[]; res.g56=[]; res.g57=[]; res.g58=[]; res.g02=[]; res.g59=[]; res.g60=[]; res.g61=[]; res.g16=[]; res.g17=[];
+    res.g18=[]; res.g19=[]; res.g20=[]; res.g44=[]; res.g21=[]; res.g22=[]; res.g23=[]; res.g24=[]; res.g25=[];
+    res.g41=[]; res.g45=[]; res.g26=[];
+
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1445,11 +1458,11 @@ function CdaV4ParsePredetEOBResp(pResponse)
 
     for (var k = 0; k < res.g11; k++)
     {
-        res.g41 = parseInt(pResponse.substring(lastPos, lastPos + 1));//Message Output Flag
+        res.g41[k] = parseInt(pResponse.substring(lastPos, lastPos + 1));//Message Output Flag
         lastPos += 1;
-        res.g45 = parseInt(pResponse.substring(lastPos, lastPos + 1));//Note Number
+        res.g45[k] = parseInt(pResponse.substring(lastPos, lastPos + 1));//Note Number
         lastPos += 1;
-        res.g26 = pResponse.substring(lastPos, lastPos + 1); //Note Text
+        res.g26[k] = pResponse.substring(lastPos, lastPos + 1); //Note Text
         lastPos += 1;
     }
 
@@ -1463,6 +1476,7 @@ function CdaV4ParsePredetEOBResp(pResponse)
 function CdaV4ParseOutstandAcknResp(pResponse)
 {
     var res = {};
+    res.g08 = [];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1490,6 +1504,7 @@ function CdaV4ParseOutstandAcknResp(pResponse)
 function CdaV4ParseOutstandEmailResp(pResponse)
 {
     var res = {};
+    res.g53=[];
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1516,6 +1531,10 @@ function CdaV4ParseOutstandEmailResp(pResponse)
 function CdaV4ParseReconsilResp(pResponse)
 {
     var res = {};
+    res.b01 = []; res.b02 = []; res.b03 = []; es.a05 = []; res.a02 = []; res.g01 = []; res.g38 = [];
+    res.g41=[];    res.g26=[];
+    res.g08=[];
+
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1568,13 +1587,16 @@ function CdaV4ParseReconsilResp(pResponse)
         res.g08[k] = pResponse.substring(lastPos, lastPos + 3); //Error Code
         lastPos += 3;
     }
-
     return res;
 }
 
 function CdaV4ParseSummReconsilResp(pResponse)
 {
     var res = {};
+    res.b01 = []; res.a05 = []; res.a02 = []; res.g01 = []; res.g38 = [];
+    res.g41 = []; res.g26 = [];
+    res.g08=[];
+
     res.a01 = pResponse.substring(0, 12); //Transaction Prefix
     res.a02 = parseInt(pResponse.substring(12, 18));//Office Sequence Number
     res.a03 = parseInt(pResponse.substring(18, 20));//Format Version Number
@@ -1633,16 +1655,6 @@ function CdaV4CreateRespMessage(pResp, pResponseLine) {
         var lastName = (globVisionRData && globVisionRData.NomPers) ? globVisionRData.NomPers : '';
         var firstName = (globVisionRData && globVisionRData.PrePers) ? globVisionRData.PrePers : '';
         ResponseList += 'Patient: ' + lastName + ' ' + firstName + '\n';
-
-        //if (strToint(CDANETTranscode) = 8) and not (primaryeligibility) then
-        //ResponseList.add('Assurance secondaire : ' + policer.ass2)
-        //else
-        //    begin
-        //if coverage = 'S' then
-        //ResponseList.add('Assurance : ' + policer.ass2)
-        //else
-        //          ResponseList.add('Assurance : ' + patientr.ass);
-        //end;
 
         var isFirstCoverage = true;//TODO implement functionality to know if it is first coverage.
         var assurance;

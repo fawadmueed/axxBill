@@ -6,6 +6,7 @@ var globCdaRespObj;
 var globCdaTransHistListData =[];
 var globCdaTransHistTable;
 var globCdaTransHistSelectedData;
+var globCdaVersion = '';
 
 $(document).ready(function () {
     //Transaction history table

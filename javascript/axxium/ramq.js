@@ -1942,14 +1942,9 @@ function RamqCreateNewGlobalBill()
                     alert(result.message);
                 else {
                     globBillNumber = result.nofact;
-//<<<<<<< HEAD
-                    //alert("Facture #" + globBillNumber + " a été créée.")
-//=======
                     globIsBillCreated = true;
                     alert("Facture #" + globBillNumber + " a été créée.")
                     RamqUpdateGlobalBill()
-//>>>>>>> cdaFixingBugs
-                    //TODO: Display UI
                 }
             });
     }
@@ -2001,14 +1996,14 @@ function RamqUpdateGlobalBill()
                     }
 
                     //check cda verson
-                    var cdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
-                    if (cdaVersion == '2') {
-                        $('#insr_cdan_version_1').prop('checked', true);
+                    globCdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                    if (globCdaVersion === '2') {
+                        //$('#insr_cdan_version_1').prop('checked', true);
                         getAllTrData();//Save data from facturation grid in global array
                         modPayment();//Open Payment form
                     }
-                    else if (cdaVersion == '4') {
-                        $('#insr_cdan_version_4').prop('checked', true);
+                    else if (globCdaVersion == '4') {
+                        //$('#insr_cdan_version_4').prop('checked', true);
                         getAllTrData();//Save data from facturation grid in global array
                         modPayment();//Open Payment form
                     }

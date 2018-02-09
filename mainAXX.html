@@ -52,6 +52,7 @@
     <script src="javascript/axxium/cdaV4_29.js"></script>
     <script src="javascript/axxium/cdaComm.js"></script>
     <script src="javascript/axxium/payment.js"></script>
+    <script src="javascript/axxium/cash.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -1843,7 +1844,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="column">
-                                                    <button class="ui right floated button axxium " onclick="">Details</button>
+                                                    <button class="ui right floated button axxium " onclick="CashCreateDataForPostDateTable();">Details</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1933,16 +1934,24 @@
                         <div class="three wide column" id="facture_select_check">
                             <div class="ui form segment">
                                 <label>Fractionner Paiement</label>
-                                <div class="two fields">
-                                    <label>Montant</label> <label> Products</label>
-                                </div>
-                                <textarea id="frac_pamnt_text"></textarea>
+                                <table id="tblPaymentFract" class="ui striped compact table segment">
+                                    <thead>
+                                        <tr>
+                                            <th>Montant</th>
+                                            <th>Producteur</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblPaymentFractBody">
+                                        <tr>
+                                            <td contenteditable="true"data-target='montant'></td>
+                                            <td contenteditable="true" data-target='producteur'></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <label>Montant total &#58 &#32 </label>
+                                <label id="lblPaymentFractAmount">0.00</label>
                             </div>
-                            <!--<p1><strong>Montant Total : </strong></p1>
-                            <div class="two fields">
-                                <div class="ui axxium tiny button">retour a facturation</div>
-                                <div class="ui axxium tiny button">Enregistrer</div>
-                            </div>-->
+
                         </div>
                     </div>
                 </div>
@@ -2614,6 +2623,36 @@
             </div>
         </div>
     </div>
+
+    <div class="ui small modalCashPostDate modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>Chéque Post Datés
+        </div>
+        <div class="content">
+            <div class="ui axxium form segment">
+                <table id="tblCashPostDate" class="ui striped compact table segment" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Date</th>
+                            <th>Montant</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblCashPostDateBody">
+
+                    </tbody>
+                </table>
+                <div class="fields">
+                    <div class="field"> <button class="ui axxium right floated button" onclick="CashUpdatePostDateData();">OK</button></div>
+                    <!--<div class="field"><button class="ui axxium right floated button" onclick="$('.modalCashPostDate').modal('show');">Annuler</button></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 
     <div class="ui modalFactTableMore fullscreen modal">
         <i class="close icon"></i>

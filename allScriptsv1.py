@@ -20,7 +20,7 @@ form = cgi.FieldStorage()
 tx = form["tx"].value
 
 #global variable to replace for each clinic
-uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
+uri = os.environ["AXXIUM_WEBAPI_URL"]    # 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
 
 if (tx == "getNextNumber"):
 	try:

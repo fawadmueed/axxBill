@@ -97,27 +97,93 @@ function CashFractCalcTotal()
     return total;
 }
 
+function CashSaveBill()
+{
+    var jsondata = CashGetCashData();
+    var inputXMl = {
+        "ins" : jsondata,
+        "amq" : null,
+        "cas" : null
+    };
+    $.post("allScriptsv1.py", {tx: "updateFacture", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier , nofact: globBillNumber, json: JSON.stringify(inputXMl)}, 
+        function(result){
+                            
+            if (result.outcome == 'error')
+                alert(result.message);
+            else
+                alert("Good");
+        });
+}
 
+function CashGetCashData()
+{
+    //      $('#').val();
+    var creditCardType = 0;
+    if ($('#visa_crdt_rad').is(':checked')) creditCardType = 1;
+    else if ($('#amex_crdt').is(':checked')) creditCardType = 2;
+    else if ($('#mstr_crdt').is(':checked')) creditCardType = 3;
 
+    var obj = {};
+    obj.comptant_agrent = $('#argnt_pamnt').val();
+    obj.comptant_debit = $('#debit_pamnt').val();
+    obj.credit_type = creditCardType;
+    obj.credit_montant = $('#visa_crdt_inpt').val();
+    obj.postDate_No = $('#pst_dat_no').val();
+    obj.postDate_montant = $('#pst_dat_mnt').val();
+    obj.postDate_date = $('#pst_dat').val();
+    obj.postDate_nb = $('#pst_nb').val();
+    obj.postDate_type = $('#pst_type').val();
+    obj.postDate_list = CashGetPostDatesArr();
+    obj.fractPayment = $('#visa_crdt_rad').is(':checked');
+    obj.fract_list = CashFractArr();
+    obj.total_fact = $('#total_pamnt').val();
+    obj.lab = $('#lab_prcnt').val();
+    obj.listLigneFact = RamqGetCasDataFromGrille();
+    return obj;
+}
 
+function CashGetPostDatesArr()
+{
+    var arr =  [];
+    var table = document.getElementById('tblCashPostDate');
+    var rows = table.rows;
+    for (var i = 1, row; row = table.rows[i]; i++)
+    {
+        var obj = {};
+        obj.no = row.cells[0].textContent;
+        obj.date = row.cells[1].textContent;
+        obj.montant = row.cells[2].textContent;
+        arr.push(obj);
+    }
+    return arr;
+}
 
+function CashFractArr()
+{
+    var arr = [];
+    var table = document.getElementById('tblPaymentFract');
+    var rows = table.rows;
+    for (var i = 1, row; row = table.rows[i]; i++) {
+        var obj = {};
+        obj.montant = row.cells[0].textContent;
+        obj.prod = row.cells[1].textContent;
+        arr.push(obj);
+    }
+    return arr;
+}
 
+function CashDisplayFractPayment() {
+    if ($('#fract_pmnt_check').is(':checked')) {
+        $("#facture_select_check").show();
+    }
+    else {
+        $("#facture_select_check").hide();
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function CashCalculateCashTotal() {
+    //TODO:
+}
 
 function isLeapYear(year) {
     return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));

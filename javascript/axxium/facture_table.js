@@ -28,9 +28,13 @@ $(document).ready(function(){
               });
 
 
-$(document.body).on('focusout',"form :text",function(){
-                $(this).val($(this).val().toUpperCase());
-              })
+  $(document.body).on('focusout', "form :text", function () {
+      $(this).val($(this).val().toUpperCase());
+  });
+
+  $(document.body).on('focusout', '.cashComponent', function (event) {
+      CashCalculateCashTotal();
+  });
 
    });
 

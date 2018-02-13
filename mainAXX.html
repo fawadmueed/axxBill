@@ -4419,15 +4419,15 @@
                     <div class="content">
                         <div class="ui axxium form">
                             <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn1" value="1" onclick="surf_btn_val('1')">1. Amalgame</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn2" value="2" onclick="surf_btn_val(2)">2. Composite ou Acryl</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn3" value="3" onclick="surf_btn_val(3)">3. Incrustation en Or</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn4" value="4" onclick="surf_btn_val(4)">4. Incr. sans Recouvr. en Porc. ou Rés</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn5" value="5" onclick="surf_btn_val(5)">5. Incr. 3 surf. avec Recouv</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn6" value="6" onclick="surf_btn_val(6)">6. Amalgame Collé</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn7" value="7" onclick="surf_btn_val(7)">7. Amalgame avec Résine</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn8" value="8" onclick="surf_btn_val(8)">8. Composite avec Résine</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtnA" value="A" onclick="surf_btn_val(9)">A. Incr. sans recouv céram. empr optique</button></div>
-                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtnB" value="B" onclick="surf_btn_val(10)">B. Incr. avec recouv. céram empr optique</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn2" value="2" onclick="surf_btn_val('2')">2. Composite ou Acryl</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn3" value="3" onclick="surf_btn_val('3')">3. Incrustation en Or</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn4" value="4" onclick="surf_btn_val('4')">4. Incr. sans Recouvr. en Porc. ou Rés</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn5" value="5" onclick="surf_btn_val('5')">5. Incr. 3 surf. avec Recouv</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn6" value="6" onclick="surf_btn_val('6')">6. Amalgame Collé</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn7" value="7" onclick="surf_btn_val('7')">7. Amalgame avec Résine</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtn8" value="8" onclick="surf_btn_val('8')">8. Composite avec Résine</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtnA" value="A" onclick="surf_btn_val('A')">A. Incr. sans recouv céram. empr optique</button></div>
+                            <div class="field"><button class="ui axxium fluid button surfbtn" id="surfbtnB" value="B" onclick="surf_btn_val('B')">B. Incr. avec recouv. céram empr optique</button></div>
                             <div class="row">
 
                                 <div class="ten wide field" style="margin-left:65px">
@@ -4545,15 +4545,19 @@
                     $(this).prop("value ");
                 })
 
-                function surf_btn_val(selectd) {
+                function surf_btn_val(selectd) 
+                {
 
-                    if (selectd == 'field') {
+                    if (selectd == 'field') 
+                    {
                         surf_modal_btn_val = $('#surfbtn_manuel').val();
                         //alert('Manual input!');
-                    } else {
+                    } 
+                    else 
+                    {
                         surf_modal_btn_val = selectd;
                     }
-                    console.log('User selected button : ' + surf_modal_btn_val);
+                    
                     surf_modal_wait_flag = true;
 
                     surf_code_dent_gen_validation();

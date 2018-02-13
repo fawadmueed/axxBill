@@ -176,8 +176,6 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
-
-
     var surf_chck=val;
     var type_chck=$(this).siblings("td[data-target='Type']").text();
     var dent_chck=$(this).siblings("td[data-target='Dent']").text();
@@ -185,7 +183,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     console.log($(this).siblings("td[data-target='Code']"));
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
-    if(!chckDentSurf){
+    if(!chckDentSurf)
+    {
       warnMsg('Same procedure already exist. Please change Dent or Surface values');
        $(this).focus();
       $(this).text('');
@@ -213,28 +212,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       globVarSurfValidation_code_chck=code_chck;
       globVarSurfValidation_this_row_id=this_row_id
 
-    // function wait_for_user_input()
-    // {
-    //  console.log('in wait function :' + surf_modal_wait_flag);
-    //   if (!surf_modal_wait_flag)
-    //   {
-    //       // console.log('waiting because flag =' + surf_modal_wait_flag);
-    //    surf_modal_wait_flag=false;
-    //   setTimeout(wait_for_user_input,3000);
-    //   }
-    //   else
-    //   {
-    //         surf_modal_wait_flag=true;
-    //         console.log('Done with Waiting , Value flag : ' + surf_modal_wait_flag+': calling rest program');
-    //         surf_code_dent_gen_validation(val,surf_chck,dent_chck,type_chck,code_chck,this_row_id);
-    //   }
-    // }
 
     // STEP # 1   //752 line U_FACTPA
-
-
-
-
 
     //------------------------------------------------------
 

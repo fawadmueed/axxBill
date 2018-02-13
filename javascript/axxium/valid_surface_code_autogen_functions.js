@@ -335,7 +335,7 @@
 
 else {
 
-		if(((dent>=11 && dent<=13)||(dent>=21 && dent<=23)||(dent>=31 && dent<=33)||(dent>41 && dent<=43))&&(val=='97'))
+		if(((dent>=11 && dent<=13)||(dent>=21 && dent<=23)||(dent>=31 && dent<=33)||(dent>=41 && dent<=43))&&(val=='97'))
 		{
 	   		if(locatn=='Quebec')
 	   		{
@@ -348,7 +348,7 @@ else {
    		}
 	   else
 	   {
-	   		if((dent>=51 && dent<=53)||(dent>=54 && dent<=55)||(dent>=61 && dent<=63)||(dent>64 && dent<=65)||(dent>71 && dent<=73)||(dent>74 && dent<=75)||(dent>81 && dent<=83)||(dent>84 && dent<=85))
+	   		if((dent>=51 && dent<=53)||(dent>=54 && dent<=55)||(dent>=61 && dent<=63)||(dent>=64 && dent<=65)||(dent>=71 && dent<=73)||(dent>=74 && dent<=75)||(dent>=81 && dent<=83)||(dent>=84 && dent<=85))
 		   {
 		   	 switch (surf_modal_btn_val){
 
@@ -389,7 +389,7 @@ else {
 		   	 	break;
 
 		   	 	case '2':
-		   	 		if(((dent>=54 && dent<=55)||(dent>=64 && dent<=65)||(dent>=74 && dent<=75)||(dent>84 && dent<=85)))
+		   	 		if(((dent>=54 && dent<=55)||(dent>=64 && dent<=65)||(dent>=74 && dent<=75)||(dent>=84 && dent<=85)))
 		   	 		{
 		   	 			init_code='2341'+surf_length;
 		   	 		}
@@ -415,7 +415,7 @@ else {
 
 		   }
 
-		   if((dent>=1 && dent<=6)||(dent>=11 && dent<=13)||(dent>=21 && dent<=23)||(dent>31 && dent<=33)||(dent>41 && dent<=43))
+		   if((dent>=1 && dent<=6)||(dent>=11 && dent<=13)||(dent>=21 && dent<=23)||(dent>=31 && dent<=33)||(dent>=41 && dent<=43))
 		   {
 		   	switch (surf_modal_btn_val)
 		   	{
@@ -507,7 +507,7 @@ else {
 		   	}
 		   }
 
-		   	 if((dent>=14 && dent<=15)||(dent>=24 && dent<=25)||(dent>=34 && dent<=35)||(dent>44 && dent<=45))
+		   	 if((dent>=14 && dent<=15)||(dent>=24 && dent<=25)||(dent>=34 && dent<=35)||(dent>=44 && dent<=45))
 		   {
 		   	switch (surf_modal_btn_val)
 		   	{
@@ -588,7 +588,7 @@ else {
 
 		   	}
 }
-		   	if((dent>=16 && dent<=18)||(dent>=26 && dent<=28)||(dent>=36 && dent<=38)||(dent>46 && dent<=48))
+		   	if((dent>=16 && dent<=18)||(dent>=26 && dent<=28)||(dent>=36 && dent<=38)||(dent>=46 && dent<=48))
 		   {
 		   	switch (surf_modal_btn_val)
 		   	{

@@ -1828,7 +1828,7 @@
                                             <div class=" field"> <label>Montant</label> <input type="text" class="cashComponent" name="" id="pst_dat_mnt"></div>
                                         </div>
                                         <div class="two fields">
-                                            <div class="ten wide field"> <label>Date</label> <input type="date" name="" id="pst_dat"></div>
+                                            <div class="ten wide field"> <label>Date</label> <input type="date" name="" id="pst_dat" onchange="CashPostDateOnChange();"></div>
                                             <div class="field"> <label>Nb</label> <input type="text" name="" id="pst_nb"></div>
                                         </div>
                                         <div class="ui two column grid">
@@ -2628,7 +2628,7 @@
     <div class="ui small modalCashPostDate modal">
         <i class="close icon"></i>
         <div class="header">
-            <i class="user icon"></i>Chéque Post Datés
+            <i class="user icon"></i>Chèque Post Datés
         </div>
         <div class="content">
             <div class="ui axxium form segment">
@@ -2646,8 +2646,8 @@
                     </tbody>
                 </table>
                 <div class="fields">
-                    <div class="field"> <button class="ui axxium right floated button" onclick="CashUpdatePostDateData();">OK</button></div>
-                    <!--<div class="field"><button class="ui axxium right floated button" onclick="$('.modalCashPostDate').modal('show');">Annuler</button></div>-->
+                    <div class="field"><button class="ui axxium right floated button" onclick="$('.modalCashPostDate').modal('hide'); modPayment();">Annuler</button></div>
+                    <div class="field"> <button class="ui axxium right floated button" onclick="CashUpdatePostDateData();">Mettre à jour</button></div>
                 </div>
             </div>
         </div>

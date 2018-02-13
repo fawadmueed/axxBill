@@ -260,7 +260,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       $(popData).children("td[data-target='Description']").text(code_data.descrf);
       $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
       $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
-
+      $(popData).children("td[data-target='Prod']").text(code_data.producer);
     }
     else
     {

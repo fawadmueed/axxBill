@@ -40,10 +40,12 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.text(topX+9, topY+3.5, 'PROCHAIN RENDEZ-VOUS / NEXT APPOINTMENT');
 	doc.rect(topX, topY+6, 100, 20);
 	doc.setTextColor(0,0,0);
-	doc.text(topX+2, topY+12, 'DR '+curDentist+', '+curTitle);
+	doc.text(topX+2, topY+12, globVisionRData.ProfName +', '+globVisionRData.TypProf);
 	doc.setFontType("normal");
-	doc.text(topX+2, topY+18, 'TEL: '+qParams["tel"]+' * '+qPAT.patients[curPatRow].last+", "+qPAT.patients[curPatRow].first);
-	doc.text(topX+2, topY+23, 'Avec / With '+curDentist);
+	doc.text(topX+2, topY+18, 'TEL: '+ globVisionRData.Tel +' * '+globVisionRData.NomPers +' '+ globVisionRData.PrePers);
+	doc.text(topX+2, topY+23, 'Avec/With '+globVisionRData.ProfName);
+	// doc.text(topX+2, topY+18, 'TEL: '+qParams["tel"]+' * '+globVisionRData.NomPers+", "+qPAT.patients[curPatRow].first);
+	
   }
 
   function printCLIN(doc,topX,topY)
@@ -54,10 +56,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.rect(topX+1, topY, 199, 20);
 	//doc.addImage(qParams["imgD"], qParams["imgT"], topX+1, topY+1, 10, 10);
 	doc.setFontType("bold");
-	doc.text(topX+60, topY+6, qParams["name"]);
-	doc.text(topX+68, topY+11, 'DR '+curDentist+', '+curTitle);
+	doc.text(topX+70, topY+4, qParams["name"]);
+	doc.text(topX+68, topY+9, globVisionRData.ProfName+', '+globVisionRData.TypProf);
 	doc.setFontType("normal");
-	doc.text(topX+31, topY+16, qParams["adr"]+' TEL: '+qParams["tel"]);
+	doc.text(topX+31, topY+13, qParams["adr"]+' TEL: '+qParams["tel"]);
   }
 
   function printDATE(doc,topX,topY)
@@ -73,7 +75,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.rect(topX+37, topY, 63, 5);
 	doc.text(topX+38, topY+4, "Reference ");
 	doc.rect(topX+101, topY, 99, 5);
-	doc.text(topX+102, topY+4, curTitle+" "+curDentist);
+	doc.text(topX+102, topY+4, globVisionRData.TypProf+" "+globVisionRData.ProfName);
   }
 
   function printPERS(doc,topX,topY)
@@ -84,9 +86,9 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setFillColor(0,0,0);
 	doc.rect(topX+1, topY, 80, 16);
   	doc.text(topX+5, topY+3.5, "Personne responsable / Party responsible ");
-	doc.text(topX+2, topY+7, qPAT.patients[curPatRow].last+", "+qPAT.patients[curPatRow].first);
-  	doc.text(topX+2, topY+11, "23 RUE DE LA CONCORDE");
-  	doc.text(topX+2, topY+15, "LAVAL QC H7N 3K5");
+	doc.text(topX+2, topY+7, globVisionRData.NomPers+", "+globVisionRData.PrePers);
+  	doc.text(topX+2, topY+11, globVisionRData.AdrPersPatnt);
+  	// doc.text(topX+2, topY+15);
 	doc.rect(topX+82, topY, 118, 16);
   	doc.text(topX+83, topY+4, "# confirmation: ");
   	doc.text(topX+83, topY+7, "   authorization ");
@@ -101,9 +103,9 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);
 	doc.rect(topX+1, topY, 80, 12);
-  	doc.text(topX+2, topY+4, "Patient "+qPAT.patients[curPatRow].last+", "+qPAT.patients[curPatRow].first);
-	doc.text(topX+2, topY+9, '# dossier: '+curPatient);
-	doc.text(topX+25, topY+9, 'Ass. Mal. #: '+qPAT.patients[curPatRow].NAM);
+  	doc.text(topX+2, topY+4, "Patient "+globVisionRData.NomPers+", "+globVisionRData.PrePers);
+	doc.text(topX+2, topY+9, '# dossier:'+globNoDossier);
+	doc.text(topX+30, topY+9, 'Ass. Mal.#:'+globVisionRData.IdPers);
   }
 
   function printAMT(doc,topX,topY,ope,tfr,ten,amt)
@@ -173,36 +175,60 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
   function printRAMQ()
   {
-    var doc = new jsPDF();
+  	
+	var doc = new jsPDF(); 
+	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
+
+	var amount_cash=$('#pers_total').val();
+  	var amount_insur=$('#ass_total').val();
+  	var amount_amq=$('#amq_total').val();
+  	var previousBal=37;
+  	var honoraires=0;
+
+	$.each(arrGrilleDeFacturation,function(idx,valx)
+  	{
+  		honoraires=parseInt(honoraires)+parseInt(valx.Honoraires);
+  	})
+  	
+  	var totalOwe=parseInt(previousBal)+parseInt(honoraires);
+  	var balanceDue=parseInt(totalOwe)-parseInt(amount_cash);
+  	balanceDue=parseInt(balanceDue)-parseInt(amount_insur);
+
 
 	//alert("Start print RAMQ");
 	printRDV(doc,2,2);
 	printRDV(doc,103,2);
 	doc.setLineWidth(0.5);
 	//doc.line(2, 24, 202, 24);
-	dottedLine(doc, 2, 24, 202, 24, 3);
+	dottedLine(doc, 2, 29, 202, 29, 3);
 	doc.setLineWidth(0.1);
-	doc.rect(2, 25, 201, 111);
-	printCLIN(doc,2,26);
-	printDATE(doc,2,42);
-	printPERS(doc,2,48);
-	printPAT(doc,2,65);
-	printAMT(doc,2,78,"","Solde anterieur","Previous balance","37.00");
-	printAMT(doc,2,86,"+","Honoraires","Fees","293.00");
-	printAMT(doc,2,94,"=","Vous devez ce montant","You owe this amount","330.00");
-	printAMT(doc,2,102,"-","Montant paye par patient","Amount paid by patient","140.00");
-	printAMT(doc,2,110,"-","Montant paye par l'assurance","Amount paid by insurance","0.00");
-	printAMT(doc,2,118,"=","Solde a payer","Balance due","190.00");
-	printAMT(doc,2,127,"","Cheques post-dates","Post-dated checks","");
-	printGRID(doc,84,65);
-	printMESS(doc,84,127);
-	printITEM(doc,84,78,"SOLDE ANTERIEUR","","","","37.00");
+	doc.rect(2, 30, 201, 111);
+	printCLIN(doc,2,31);
+	printDATE(doc,2,45);
+	printPERS(doc,2,51);
+	printPAT(doc,2,68);
+	printAMT(doc,2,81,"","Solde anterieur","Previous balance",previousBal.toString());
+	printAMT(doc,2,89,"+","Honoraires","Fees",honoraires.toString());
+
+	printAMT(doc,2,97,"=","Vous devez ce montant","You owe this amount",totalOwe.toString());
+	printAMT(doc,2,105,"-","Montant paye par patient","Amount paid by patient",amount_cash.toString());
+	printAMT(doc,2,113,"-","Montant paye par l'assurance","Amount paid by insurance",amount_insur.toString());
+	printAMT(doc,2,121,"=","Solde a payer","Balance due",balanceDue.toString());
+	printAMT(doc,2,130,"","Cheques post-dates","Post-dated checks","");
+	printGRID(doc,84,69);
+	printMESS(doc,84,130);
+	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","","37.00");
 	var coy = 82;
-	for (fitem in globRamqBillInfo["info"][1])
-	{
-		printITEM(doc,84,coy,fitem.Description,fitem.Code,fitem.Dent,fitem.Surface,fitem.Frais);
-		coy = coy + 4;
-	}
+
+	$.each(arrGrilleDeFacturation,function(idx,val){
+
+		// for (fitem in globRamqBillInfo["info"][1])
+		// {
+			printITEM(doc,84,coy,val.Description,val.Code,val.Dent,val.Surface,val.Honoraires);
+			coy = coy + 4;
+		// }
+
+	})
 	//printITEM(doc,84,82,"COMPOSITE, PREMOLAIRE, TROIS SURFACES","23213","15","DMO","190.00");
 	//printITEM(doc,84,86,"COMPOSITE, PREMOLAIRE, UNE SURFACE","23211","45","O","103.00");
 
@@ -222,11 +248,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);
   	doc.text(topX+2, topY, "123456789");
-	doc.text(topX+2, topY+7, qPAT.patients[curPatRow].last+", "+qPAT.patients[curPatRow].first);
+	doc.text(topX+2, topY+7, globVisionRData.NomPers+", "+globVisionRData.PrePers);
   	doc.text(topX+2, topY+11, "23 RUE DE LA CONCORDE");
   	doc.text(topX+2, topY+15, "LAVAL QC H7N 3K5");
   	doc.text(topX+2, topY+19, "(514) 555-1234");
-	doc.text(topX+68, topY+7, curDentist+', '+curTitle);
+	doc.text(topX+68, topY+7, globVisionRData.ProfName+', '+globVisionRData.TypProf);
 	doc.text(topX+68, topY+11, qParams["adr"]);
 	doc.text(topX+68, topY+15, qParams["tel"]);
   }

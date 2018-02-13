@@ -1581,7 +1581,7 @@ function RamqPopulateVisionRDataObj(pData) {
     res.Nas = pData.Nas;//'123456789123';
     res.AdrPersPatnt = pData.AdrPersPatnt;//'333 Place de la Belle-rive, Laval, QC, H7X3R5';
     res.RepdnIdPers = pData.RepdnIdPers;//'DISL14082217';
-
+    res.Tel=pData.Tel;
     //$('#pamnt_no_prof').val(res.IdProf);
 
     return res;

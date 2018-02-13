@@ -42,7 +42,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setTextColor(0,0,0);
 	doc.text(topX+2, topY+12, globVisionRData.ProfName +', '+globVisionRData.TypProf);
 	doc.setFontType("normal");
-	doc.text(topX+2, topY+18, 'TEL: '+' Obtain frm Rob'+' * '+globVisionRData.NomPers +' '+ globVisionRData.PrePers);
+	doc.text(topX+2, topY+18, 'TEL: '+ globVisionRData.Tel +' * '+globVisionRData.NomPers +' '+ globVisionRData.PrePers);
 	doc.text(topX+2, topY+23, 'Avec/With '+globVisionRData.ProfName);
 	// doc.text(topX+2, topY+18, 'TEL: '+qParams["tel"]+' * '+globVisionRData.NomPers+", "+qPAT.patients[curPatRow].first);
 	
@@ -175,7 +175,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
   function printRAMQ()
   {
-  	var amount_cash=$('#pers_total').val();
+  	
+	var doc = new jsPDF(); 
+	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
+
+	var amount_cash=$('#pers_total').val();
   	var amount_insur=$('#ass_total').val();
   	var amount_amq=$('#amq_total').val();
   	var previousBal=37;
@@ -190,8 +194,6 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	var balanceDue=parseInt(totalOwe)-parseInt(amount_cash);
   	balanceDue=parseInt(balanceDue)-parseInt(amount_insur);
 
-	var doc = new jsPDF(); 
-	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
 
 	//alert("Start print RAMQ");
 	printRDV(doc,2,2);

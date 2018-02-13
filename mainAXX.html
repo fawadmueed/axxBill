@@ -1807,8 +1807,8 @@
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"> <strong>COMPTANT</strong></div>
                                         <div class="two fields">
-                                            <div class="inline field"><label>ARGENT</label> <input type="text" name="" id="argnt_pamnt"></div>
-                                            <div class="inline field"><label>DÉBIT </label> <input type="text" name="" id="debit_pamnt"></div>
+                                            <div class="inline field cashComponent"><label>ARGENT</label> <input type="text" name="" id="argnt_pamnt"></div>
+                                            <div class="inline field cashComponent"><label>DÉBIT </label> <input type="text" name="" id="debit_pamnt"></div>
                                         </div>
                                     </div>
                                     <div class="ui form segment">
@@ -1819,14 +1819,14 @@
                                             <div class="inline field"><input type="radio" name="payment-credit" id="mstr_crdt"><label>Master Card</label></div>
                                         </div>
                                         <div class="field">
-                                            <div class="inline field"> <input type="text" name="" id="visa_crdt_inpt"> </div>
+                                            <div class="inline field cashComponent"> <input type="text" name="" id="visa_crdt_inpt"> </div>
                                         </div>
                                     </div>
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"><label>POST-DATÉS</label></div>
                                         <div class="two fields">
                                             <div class="three wide field"> <label>No</label> <input type="text" name="" id="pst_dat_no" value="1"></div>
-                                            <div class=" field"> <label>Montant</label> <input type="text" name="" id="pst_dat_mnt"></div>
+                                            <div class=" field"> <label>Montant</label> <input type="text" class="cashComponent" name="" id="pst_dat_mnt"></div>
                                         </div>
                                         <div class="two fields">
                                             <div class="ten wide field"> <label>Date</label> <input type="date" name="" id="pst_dat"></div>
@@ -1851,7 +1851,7 @@
                                         </div>
                                     </div>
                                     <div class="inline field">
-                                        <input type="checkbox" name="" id="fract_pmnt_check">
+                                        <input type="checkbox" name="" id="fract_pmnt_check" onclick="CashDisplayFractPayment();">
                                         <label>Fractioner les paiements</label>
                                     </div>
                                     <div class="inline field">
@@ -1863,21 +1863,22 @@
                                 </div>
                                 <div class="five wide field"> <label>Lab %</label><input type="text" name="" id="lab_prcnt"></div>
                             </div>
-                            <button class="ui right floated axxium button" onclick="">Sauvegarder Facture</button>
+                            <button class="ui right floated axxium button" onclick="CashSaveBill();">Sauvegarder Facture</button>
                         </div>
                         <script type="text/javascript">
                             $(document).ready(function() {
 
-                                $('.fact_rec_check').click(function() {
+                                //$('.fact_rec_check').click(function() {
 
-                                    if ($('.fact_rec_check').is(':checked')) {
+                                //    if ($('.fact_rec_check').is(':checked')) {
 
-                                        $('#facture_select_check').show();
-                                    } else {
+                                //        $('#facture_select_check').show();
+                                //    } else {
 
-                                        $('#facture_select_check').hide();
-                                    }
-                                });
+                                //        $('#facture_select_check').hide();
+                                //    }
+                                //});
+                                $('#facture_select_check').hide();
 
                                 $('.paiemnt_question').change(function() {
 

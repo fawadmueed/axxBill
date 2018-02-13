@@ -4555,7 +4555,12 @@
                     }
                     console.log('User selected button : ' + surf_modal_btn_val);
                     surf_modal_wait_flag = true;
+
+                    surf_code_dent_gen_validation();
+
                 }
+
+
 
                 function facture_surf_modal() {
                     $('.fact_surface.mini.modal').modal({
@@ -4872,6 +4877,12 @@
                 var surf_modal_btn_val;
                 var surf_modal_wait_flag = true;
                 var surf_focusout_finish = false;
+                var globVarSurfValidation_val ;       
+                var globVarSurfValidation_surf_chck  ;
+                var globVarSurfValidation_dent_check ;
+                var globVarSurfValidation_type_chck  ;
+                var globVarSurfValidation_code_chck  ;
+                var globVarSurfValidation_this_row_id;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

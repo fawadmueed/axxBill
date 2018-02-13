@@ -4568,6 +4568,9 @@
                         onApprove: function() {
                             return true;
                         },
+                        onHide: function() {
+                            surf_modal_wait_flag=true;
+                        },
                         selector: {
                             close: '.close, .actions .deny',
                             approve: '.surfbtn',

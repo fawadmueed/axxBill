@@ -190,9 +190,8 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	var balanceDue=parseInt(totalOwe)-parseInt(amount_cash);
   	balanceDue=parseInt(balanceDue)-parseInt(amount_insur);
 
-
-
-    var doc = new jsPDF();
+	var doc = new jsPDF(); 
+	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
 
 	//alert("Start print RAMQ");
 	printRDV(doc,2,2);

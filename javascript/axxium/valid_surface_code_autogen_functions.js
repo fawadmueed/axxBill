@@ -133,7 +133,7 @@
  	}
 
  	if(surf=='87'){
- 		init_code='23108'
+ 		init_code='23108';
  	}
 
  	if(surf.length!=1){

@@ -1,9 +1,11 @@
 json/antecedents/*.json
 json/documents/*.json
 json/ec/*.json
+json/ec/**
 json/ententes/*.json
 json/examens/*.json
 json/facturation/**/*.json
+json/facturation/**/**/log/*.xml
 json/factureValidation/*.json
 json/images/*.json
 json/labos/*.json

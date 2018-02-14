@@ -244,7 +244,9 @@ function getAllTrData(){
   var count_ramq=0;
   var count_insur=0;
 
-  arrGrilleDeFacturation=[]
+  arrGrilleDeFacturation=[] // For All Bills
+  arrGrilleDeFacturation_Insurance=[]; // For Just Insurance Bills
+
   var mytrs=$('#factTableBody tr');
 // console.log(mytrs);
   $.each(mytrs, function(idx,val){
@@ -270,10 +272,12 @@ function getAllTrData(){
         var valID=ramq_id;
         myObjects[ramqId]=valID;
       }
+
       if(key=='Type'&&((!(value=='AMQ'||value=='BES'||value=='HOP'))&&(!(value=='CAS')) )) {
         // Count Table Row entries for type Insurance
         count_insur=count_insur+1;
         console.log('INSUR count'+ count_insur);
+        insur_bills_flag=1;
       }
 
       myObjects[key]=value;
@@ -281,7 +285,15 @@ function getAllTrData(){
       })
 
       arrGrilleDeFacturation.push(myObjects);
+      
+      if(insur_bills_flag==1)
+      { 
+        // Array containing Just Insurance Bills 
+        arrGrilleDeFacturation_Insurance.push(myObjects);
+        insur_bills_flag=0;
+      }
 });
+
 
    if((count_ramq>=10)||(count_insur>=7))
    {
@@ -290,6 +302,7 @@ function getAllTrData(){
    else{
 
     console.log(arrGrilleDeFacturation);
+    console.log(arrGrilleDeFacturation_Insurance);
     console.log(arrGrilleDeFacturation_forms);
 
     arrGrilleDeFacturation_update=arrGrilleDeFacturation;

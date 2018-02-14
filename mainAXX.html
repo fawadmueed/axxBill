@@ -412,7 +412,7 @@
                                 <!--<div class="ui axxium tiny button" onclick="robData();">RobData</div>-->
                                 <!--  <div class="ui axxium tiny button" onclick="modPaimnt();">PamntMOdalTEst</div> -->
                                 <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
-                                <div class="ui axxium tiny button" onclick="printRAMQ()">Imprimer</div>
+                                <div class="ui axxium tiny button" onclick="modPlanTraitTable()">Imprimer</div>
                                 <!--<div class="ui axxium tiny button" onclick="modToCAS()">TEST-MODAL</div>-->
                             </div>
                         </div>
@@ -433,41 +433,7 @@
                             <div class="ui right aligned column">
                                 <div class="ui grid">
                                     <div class="eight wide column">
-                                        <div class="ui form segment">
-                                            <div class="grouped fields">
-                                                <!--<h4 class="ui horizontal divider header">Tarif Selection</h4>-->
-                                                <b><label>Sélection du tarif</label></b>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact_planTrait" checked="checked" value="1" class="type_rate_planTrait">
-                                                        <label>Tarif régulier</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact_planTrait" value="2" class="type_rate_planTrait">
-                                                        <label>Tarif spécial</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate_planTrait">
-                                                        <label>Régie</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="thirteen wide field">
-                                                <select class="ui dropdown fluid selection">
-                                                    <option selected="selected" disabled="disabled">Cas hospitalier</option>
-                                                    <option>Anesthésie locale</option>
-                                                    <option>Anesthésie générale</option>
-                                                    <option>Non applicable</option>
-                                                </select>
-                                            </div>
-                                            <div class="field">
-                                                <!--<button class="ui axxium button" onclick="RamqCreateNewGlobalBill()">OK</button>-->
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1196,6 +1162,43 @@
             </div>
         </div>
     </div>
+
+    <div class="ui PlanTrait modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>Plan de traitement
+        </div>
+        <div class="content">
+            <table class="ui striped axxium compact table segment" id="cdan_table_soum_modal">
+                                <thead>
+                                    <tr>
+                                        <th>Numéro</th>
+                                        <th>Facturer</th>
+                                        <th>Référence</th>
+                                        <th>Confirmation</th>
+                                        <th>Date</th>
+                                        <th>Réclamation</th>
+                                        <th>Déductible</th>
+                                        <th>Remboursement</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cdan_table_soum_body_modal">
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="ui grid">
+                                <div class="row">
+                                    <button class="ui axxium tiny right floated button">Nouveau</button>
+                                    <button class="ui axxium tiny right floated button">Effacer</button>
+                                    <button class="ui axxium tiny right floated button">Soumettre</button>
+                                </div>
+                            </div>
+                        
+        </div>
+    </div>
+
     <div class="ui large modalInsuranceAddForm modal">
         <i class="close icon"></i>
         <div class="header">
@@ -4626,6 +4629,11 @@
 
                 function modCdan1() {
                     $('.modalCdan1').modal('show');
+                }
+
+                function modPlanTraitTable()
+                {
+                    $('.PlanTrait').modal('show');
                 }
 
                 function modCdan2() {

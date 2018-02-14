@@ -127,7 +127,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     }
 });
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent'],#factTableBody_planTrait td[data-target='Dent']", function(){
 
 
     var valid;
@@ -171,7 +171,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 });
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface'], #factTableBody_planTrait td[data-target='Surface']", function(){
 
 
     var val=$(this).text();
@@ -215,7 +215,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
 
       var type_s=$(this).siblings("td[data-target='Type']").text();
       var dent_s=$(this).siblings("td[data-target='Dent']").text();
@@ -311,7 +311,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
      });
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais', #factTableBody_planTrait td[data-target='Frais']", function(){
 
         var valid;
         var valFrais=$(this).text();
@@ -347,7 +347,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     });
 
-     $(document.body).on('focusout', "#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires']", function(){
+     $(document.body).on('focusout', "#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires', #factTableBody_planTrait td[data-target='Honoraires']", function(){
 
         var valid;
         var valHono=$(this).text();
@@ -388,7 +388,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     });
 
-     $(document.body).on('focusout', "#factTableBody td[data-target='codeRole'],#factTableBody_regie td[data-target='codeRole']", function(){
+     $(document.body).on('focusout', "#factTableBody td[data-target='codeRole'],#factTableBody_regie td[data-target='codeRole', #factTableBody_planTrait td[data-target='codeRole']", function(){
 
       var thisTxt=$(this).text();
       var type=$(this).siblings("td[data-target='Type']").text();

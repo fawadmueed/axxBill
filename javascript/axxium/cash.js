@@ -65,7 +65,9 @@ function CashPostDateIsDateChanged(pCurrPostDateArr)
     for (var i = 0; i < globArrPostDateData.length; i++) {
 
         if (globArrPostDateData[i].date !== pCurrPostDateArr[i].date) {
-            if (!isNaN(parseDate(pCurrPostDateArr[i].date))) {
+            var olddate = parseDate(globArrPostDateData[i].date);
+            var newDate = parseDate(pCurrPostDateArr[i].date);
+            if (!isNaN(newDate) && (newDate > olddate)) {
                 return i;
             }
         }
@@ -170,17 +172,15 @@ function CashSaveBill()
     var jsondata = CashGetCashData();
     var xmlBillInfo = CashCreateXmlForVisionR(jsondata);
     var inputXMl = {
-        "ins" : jsondata,
-        "amq" : null,
-        "cas" : null
+        "xml":xmlBillInfo,
+        "cas": jsondata
     };
-    $.post("allScriptsv1.py", {tx: "updateFacture", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier , nofact: globBillNumber, json: JSON.stringify(inputXMl)}, 
+    $.post("allScriptsv1.py", { tx: "SendUpdateToVisionR", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(inputXMl) },
         function(result){
-                            
             if (result.outcome == 'error')
                 alert(result.message);
             else
-                alert("Good");
+                displayRamqAnswer("VisionR", 'Les données ont été envoyées à VisionR avec succès');
         });
 }
 

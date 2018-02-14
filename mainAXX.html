@@ -31,6 +31,7 @@
     <script src="javascript/axxium/labos.js"></script>
     <script src="javascript/axxium/modals-facturation.js"></script>
     <script src="javascript/axxium/factTable_validation.js"></script>
+    <script src="javascript/axxium/factTable_planTrait.js"></script>
     <script src="javascript/axxium/code_validation.js"></script>
     <script src="javascript/axxium/code_validation_function.js"></script>
     <script src="javascript/axxium/valid_surface_code_autogen_functions.js"></script>
@@ -302,6 +303,7 @@
             <!-- ===========Tabs 2========= -->
             <div class="ui secondary pointing menu">
                 <a class="active item" data-tab="facturation-sub">Facture</a>
+                <a class=" item" data-tab="PlanTraitement-sub">Plan de traitement</a>
                 <a class="item" data-tab="Regie-sub">Régie</a>
                 <a class="item" data-tab="cdanEt-sub">CDANET</a>
             </div>
@@ -417,6 +419,125 @@
                     </div>
                 </div>
             </div>
+
+             <div class="ui tab segment " data-tab="PlanTraitement-sub">
+                <div class="ui hidden divider"></div>
+                <div class="ui form">
+                    <div class="ui two column grid">
+                        <div class="row">
+                            <div class="ui left aligned column">
+                                <canvas id="odonto3" width="600" height="395" style="border:1px solid #c3c3c3;">
+                                        Your browser does not support the HTML5 canvas tag.
+                                </canvas>
+                            </div>
+                            <div class="ui right aligned column">
+                                <div class="ui grid">
+                                    <div class="eight wide column">
+                                        <div class="ui form segment">
+                                            <div class="grouped fields">
+                                                <!--<h4 class="ui horizontal divider header">Tarif Selection</h4>-->
+                                                <b><label>Sélection du tarif</label></b>
+                                                <div class="field">
+                                                    <div class="ui slider checkbox">
+                                                        <input type="radio" name="tarif_fact_planTrait" checked="checked" value="1" class="type_rate_planTrait">
+                                                        <label>Tarif régulier</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui slider checkbox">
+                                                        <input type="radio" name="tarif_fact_planTrait" value="2" class="type_rate_planTrait">
+                                                        <label>Tarif spécial</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui slider checkbox">
+                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate_planTrait">
+                                                        <label>Régie</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="thirteen wide field">
+                                                <select class="ui dropdown fluid selection">
+                                                    <option selected="selected" disabled="disabled">Cas hospitalier</option>
+                                                    <option>Anesthésie locale</option>
+                                                    <option>Anesthésie générale</option>
+                                                    <option>Non applicable</option>
+                                                </select>
+                                            </div>
+                                            <div class="field">
+                                                <!--<button class="ui axxium button" onclick="RamqCreateNewGlobalBill()">OK</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                    drawOdonFact('odonto3');
+                    })
+                    </script>
+
+                    <div class="ui negative message hidden" id="wrn_msg_fact_tbl_planTrait">
+                        <i class="close icon"></i>
+                        <div style="display:inline;"> <i class="warning icon"></i></div>
+                        <div class="header" id="warn_msg_fact_content_planTrait" style="display:inline;">
+                        </div>
+                    </div>
+                    <div class="ui grid">
+                        <div class="sixteen wide column">
+                            <div class="ui teal form raised segment">
+                                <table id="factureTable_planTrait" class="ui striped compact table segment" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Dent</th>
+                                            <th>Surface</th>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th class="montn">Frais Lab.</th>
+                                            <th></th>
+                                            <th class="montn">Honoraires</th>
+                                            <th></th>
+                                            <th class="montn">Total</th>
+                                            <th></th>
+                                            <th>Prod</th>
+                                            <th>Rôle</th>
+                                            <th></th>
+                                        </tr>
+                                        <!-- NOTE : Role : By default 1 In every field -->
+                                        <!-- Note: Element contecxtuels : Displays Number of associated text / decription  -->
+                                    </thead>
+                                    <tbody id="factTableBody_planTrait">
+                                        <!-- <tr id="1" class="">
+                                            <td contenteditable="true" data-target="Type"></td>
+                                            <td contenteditable="true" data-target="Dent"></td>
+                                            <td contenteditable="true" data-target="Surface"></td>
+                                            <td contenteditable="true" data-target="Code"></td>
+                                            <td contenteditable="true" data-target="Description"></td>
+                                            <td contenteditable="true" data-target="Frais"></td>
+                                            <td contenteditable="true" data-target="Honoraires"></td>
+                                            <td contenteditable="true" data-target="Total"></td>
+                                            <td contenteditable="true" data-target="Prod" class="firstTdProd"></td>
+                                            <td><div class="ui axxium tiny button" onclick="findTableData(this)" >More!</div></td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                                <!--<div class="ui axxium tiny button" onclick="emptyTable( 'newTbl');">Nlle facture</div>-->
+                                <!-- <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div> -->
+                                <!-- getAllTrData(); -->
+                                <!--<div class="ui axxium tiny button" onclick="robData();">RobData</div>-->
+                                <!--  <div class="ui axxium tiny button" onclick="modPaimnt();">PamntMOdalTEst</div> -->
+                                <!-- <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div> -->
+                                <!-- <div class="ui axxium tiny button" onclick="printRAMQ()">Imprimer</div> -->
+                                <!--<div class="ui axxium tiny button" onclick="modToCAS()">TEST-MODAL</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="ui tab segment " data-tab="cdanEt-sub">
                 <div class="ui two column grid">
@@ -4759,6 +4880,7 @@
             </script>
             <script>
                 var fact_tbl_row_id = 0;
+                var fact_tbl_row_id_planTrait= 0;
                 var fact_tbl_row_id_Up = 0;
                 var ramq_id = 0;
                 var ramq_id_Up = 0;
@@ -4974,6 +5096,8 @@
                     loadSelect();
                     loadSelo();
                 });
+
+
 
                 $("#odonto").on('mouseup', function(evt) {
                     if (!isLockedODO) {

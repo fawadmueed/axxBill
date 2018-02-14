@@ -176,37 +176,37 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   function print1Part(doc)
   {
 	  	//Unique Number
-	doc.text(8, 33, '1222222222');	
+	doc.text(8, 38, '1222222222');	
 
 	//Numero Patient
-	doc.text(95, 33, '1');	
+	doc.text(95, 38, '1');	
 
 	//AMQ
-	doc.text(128, 33, 'BLE1123');	
+	doc.text(128, 38, 'BLE1123');	
 
 	//Patient Details	
-	doc.text(8, 40, 'Patient First'+" "+'Patient Last');
-	doc.text(8, 45, 'Address , Montreal Quebec 1234');
-	doc.text(8, 50, '5147924783');
+	doc.text(10, 46, 'Patient First'+" "+'Patient Last');
+	doc.text(10, 51, 'Address , Montreal Quebec 1234');
+	doc.text(10, 56, '5147924783');
 
 	//Dentiste Details
-	doc.text(84, 40, 'Dentiste First'+" "+'Dentiste Last');
-	doc.text(84, 45, 'Dentiste Address , Montreal Quebec 1234');
-	doc.text(84, 50, '5147924783');
+	doc.text(84, 46, 'Dentiste First'+" "+'Dentiste Last');
+	doc.text(84, 51, 'Dentiste Address , Montreal Quebec 1234');
+	doc.text(84, 56, '5147924783');
 
 	//$193
-	doc.setFontSize(5);
-	doc.text(158, 68, '193');	
+	doc.setFontSize(8);
+	doc.text(158, 77, '193');	
 
 	//VERIFICATION Dentiste Name
-	doc.setFontSize(6);
-	doc.text(130, 84, 'Dentiste Name ');	
-	doc.text(170, 84, '18/08/2012 ');	
+	doc.setFontSize(8);
+	doc.text(130, 95, 'Dentiste Name ');	
+	doc.text(170, 95, '18/08/2012 ');	
 
 	//===Bills 
 	//date
 	
-	var yAxis=96;
+	var yAxis=108;
 
 	$.each(arrGrilleDeFacturation_Insurance,function(idx,val){
 
@@ -221,10 +221,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	})
 
 	//Total Rembourse Montant
-	doc.text(68, 144, 'Total 0.00');
+	doc.text(68, 163, 'Total 0.00');
 
 	//Total Montant
-	doc.text(115, 144, 'Total 193');
+	doc.text(115, 163, 'Total 193');
 
   }
 
@@ -233,21 +233,21 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	// === 2e Partie === 
 
 	//Numero Regime ass
-	doc.text(40, 152, 'Num 12345555');
+	doc.text(40, 172, 'Num 12345555');
 
 	// NOM En Lettres
-	doc.text(148, 152, 'Nom BLEAU JOE');
+	doc.text(148, 172, 'Nom BLEAU JOE');
 
 	// Identification Lassureur
-	doc.text(48, 160, 'La Capitale');
+	doc.text(48, 181, 'La Capitale');
 
 	//Numero certificat 
-	doc.text(154, 159, '4321');
+	doc.text(154, 180, '4321');
 
 	//Date naissance 
-	doc.text(135, 164, 'Year');
-	doc.text(147, 164, 'Month');
-	doc.text(158, 164, 'Day');
+	doc.text(135, 185, 'Year');
+	doc.text(147, 185, 'Month');
+	doc.text(158, 185, 'Day');
 	// !-- 2e Partie
 
   }
@@ -257,11 +257,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	  	// 3e Patie ===== 
 
 	//Patient lien parente
-	doc.text(52, 175, 'Titulaire');
+	doc.text(52, 198, 'Titulaire');
 	//Date naissance 
-	doc.text(42, 178, 'Year');
-	doc.text(50, 178, 'Month');
-	doc.text(58, 178, 'Day');
+	doc.text(38, 202, '2012');
+	doc.text(46, 202, '12');
+	doc.text(51, 202, '06');
 
 	//!-3e Partie
   }
@@ -339,10 +339,10 @@ var imgDataFrench = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAYG
 
 var doc = new jsPDF();
 
-doc.setFontSize(40);
-doc.text(35, 25, "Octonyan loves jsPDF");
-doc.addImage(imgDataFrench, 'JPEG', 1, 1, 208, 250);
-doc.setFontSize(6);
+// A4 Size Coordinates for This Image
+doc.addImage(imgDataFrench, 'JPEG', 2, 1, 206, 283); 
+
+doc.setFontSize(8);
 	doc.setFontType("normal");
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);

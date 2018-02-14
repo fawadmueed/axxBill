@@ -118,6 +118,42 @@ function newRecordFact_planTrait(){
 
 }
 
+function getAllTrData_planTrait(){
+
+  
+  arrGrilleDeFacturation_planTrait=[];
+
+  var mytrs=$('#factTableBody_planTrait tr');
+// console.log(mytrs);
+  $.each(mytrs, function(idx,val){
+
+    var myObjects={};
+    // For each TR
+    var mytds=$(val).children();
+
+    var key='row_id';
+    var value=$(val).attr('id');
+    myObjects[key]=value;
+
+    $.each(mytds,function(idx,val){
+
+      var key=$(val).attr('data-target');
+      var value=$(val).text();
+
+      myObjects[key]=value;
+
+      })
+
+      arrGrilleDeFacturation_planTrait.push(myObjects);
+});
+
+   
+
+    console.log(arrGrilleDeFacturation_planTrait);
+    
+
+}
+
 $(document).ready(function(){
 newRecordFact_planTrait();
 });

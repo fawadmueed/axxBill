@@ -193,16 +193,10 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     //--------------- suf_dent_code ---------------------------------
 
     // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
-    if (type_chck == "AMQ")
-    {
-		alert("RAMQ Amalgame auto");
-	  }
-	  else
-	  {
-      if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
-        facture_surf_modal();
-      }
-	  }
+    if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
+      facture_surf_modal();
+    }
+
 
   //-- Set global variable for  surf_code_dent_gen_validation function 
       globVarSurfValidation_val=val;
@@ -210,14 +204,14 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       globVarSurfValidation_dent_check=dent_chck;
       globVarSurfValidation_type_chck=type_chck;
       globVarSurfValidation_code_chck=code_chck;
-      globVarSurfValidation_this_row_id=this_row_id
+      globVarSurfValidation_this_row_id=this_row_id;
 
 
     // STEP # 1   //752 line U_FACTPA
 
     //------------------------------------------------------
 
-})
+});
 
 
 
@@ -259,11 +253,20 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var code_data=getCodeData(val);
 
     if(code_data && val!="")
-    {
+    {  
+      //1 = Tarif Regulier , 2 = Tarif Special , 3 is Regie  
       $(popData).children("td[data-target='Description']").text(code_data.descrf);
-      $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
-      $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
       $(popData).children("td[data-target='Prod']").text(code_data.producer);
+      $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
+      if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
+        $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixa).toFixed(2));
+      }
+      else {
+        if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
+          $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
+        else
+          $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixs).toFixed(2));      
+      }
     }
     else
     {
@@ -531,10 +534,9 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     switch(dent_Type){
 
     case 'Denturologiste':
-      if((val>=11 && val<=18)||(val>=21 && val<=28)||(val>=31 && val<=38)||(val>=41 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=88))
+      if((val>=11 && val<=18)||(val>=21 && val<=28)||(val>=31 && val<=38)||(val>=41 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=88) || isNaN(val))
       {
-
-        return true
+        return true;
       }
       else
       {
@@ -545,9 +547,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     case 'Dentiste':
 
-      if((val>=0 && val<=8)||(val>=10 && val<=20)||(val>=21 && val<=28)||(val>=30 && val<=38)||(val>=40 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=85)||(val==99))
-       {
-
+      if((val>=0 && val<=8)||(val>=10 && val<=20)||(val>=21 && val<=28)||(val>=30 && val<=38)||(val>=40 && val<=48)||(val>=51 && val<=55)||(val>=61 && val<=65)||(val>=71 && val<=75)||(val>=81 && val<=85)||(val==99)|| isNaN(val))
+      {
         return true;
       }
       else
@@ -737,7 +738,7 @@ function chckDentSurfExistTbl(dent,surf)
     surfFound=surfFound+1;
   }
 
-    })
+    });
 
      if((dentFound>=2) && (surfFound>=2)){
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');

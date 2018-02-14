@@ -509,7 +509,7 @@ if tx == "updateFacture":
 
         if dataJson["cas"] is not None:
             if len(dataJson["cas"]) > 0:
-                data["cas"] = {'req': dataJson["cas"], 'resp' : None, 'date' : None, 'status' : 0, 'nofact' : nofactext}
+                data["cas"] = {'req': dataJson["cas"], 'date' : None, 'status' : 0, 'nofact' : nofactext}
 
         logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
         logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
@@ -1256,6 +1256,51 @@ if (tx == "SendXmlToVisionR"):
         dataJson = json.loads(form['json'].value)
         dataxml = dataJson["data"] 
         
+        #send the request to WebApi that calls RAMQ server
+        dataJSON = { 'Input': CleanXML(dataxml), 'LUN': nodossier + '-' + nofactext}
+        headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
+        r = requests.post(uri + '/api/InsuranceWebApi/PostSaveTransaction', json=dataJSON, headers=headers)
+
+        resp = r.json()
+        if r.status_code != 200:
+            message = {'outcome' : 'error', 'message': resp["message"] }
+        else:           
+            message = {'outcome' : 'success', 'message': resp["message"] }
+
+        print json.dumps(message)
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+
+
+if (tx == "SendUpdateToVisionR"):   
+    try:
+        #read parameters from request
+        clinicId = form['clinicId'].value
+        nodossier = form['nodossier'].value
+        patientId = form['patientId'].value
+        nofactext = form['nofact'].value
+        dataJson = json.loads(form['json'].value)
+        dataxml = dataJson["xml"] 
+        datacas = dataJson["cas"] 
+
+        #read the bill
+        json_data = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'r')
+        data = json.load(json_data)
+        json_data.close()
+
+        #to replace backlash for xml
+        if data["amq"] is not None :
+            if data["amq"]["resp"] is not None:
+                data["amq"]["resp"] = data["amq"]["resp"].replace("\"", "\\\"")
+
+        #save cash info
+        data["cas"] = {'req': datacas, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'status' : 2, 'nofact' : nofactext}
+        logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
+        logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
+        logFile.close()
+
         #send the request to WebApi that calls RAMQ server
         dataJSON = { 'Input': CleanXML(dataxml), 'LUN': nodossier + '-' + nofactext}
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts

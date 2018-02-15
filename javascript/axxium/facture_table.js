@@ -466,6 +466,7 @@ function emptyTable (option){
   surf_type='';
   checkDentType();
   //IMP! call Dent_type Modal again for selection in Main FactTabl
+  
   $("#factTableBody tr").remove();
 
   if(option=='newTbl')

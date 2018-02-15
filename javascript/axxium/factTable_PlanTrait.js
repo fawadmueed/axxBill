@@ -157,3 +157,20 @@ function getAllTrData_planTrait(){
 $(document).ready(function(){
 newRecordFact_planTrait();
 });
+
+function emptyTable_planTrait(){
+  //Empty Existing Table and Initialize all parameters of Table
+
+  fact_tbl_row_id_planTrait=0;
+  arrGrilleDeFacturation_planTrait=[];
+  
+  
+  //IMP! call Dent_type Modal again for selection in Main FactTabl
+  
+  $("#factTableBody_planTrait tr").remove();
+
+  
+      newRecordFact_planTrait();
+  
+
+}

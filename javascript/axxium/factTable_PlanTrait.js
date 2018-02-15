@@ -1,6 +1,21 @@
 var arrGrilleDeFacturation_planTrait=[];
 
+$(document).ready(function(){
+$(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeRole']", function(e) {
 
+          if(e.which == 13) {
+                newRecordFact_planTrait();
+                
+
+                $(this).closest('tr').next().find('td[data-target=Date]').focus();
+                 e.preventDefault();
+// trigger an artificial keydown event with keyCode 64
+          
+            }
+
+            return e.which!=13;
+              });
+});
 
 function newRecordFact_planTrait(){
 
@@ -91,16 +106,21 @@ function newRecordFact_planTrait(){
 
 
               tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i])
-              .bind('keypress', function (e)
-              {
-                  if (e.which == 13) {
-                  newRecordFact_planTrait();
+     //          .bind('keypress', function (e)
+     //          {
+     //              if (e.which == 13) {
                  
+     //              newRecordFact_planTrait();
 
-                };
-                return e.which!=13;
 
-              })
+     //              var e = jQuery.Event("keyup");
+					// e.which = 9; // # Some key code value
+					// e.keyCode = 9
+					// $("input").delay(800).trigger(e);
+     //            };
+     //            return e.which!=13;
+
+     //          })
              tblData.appendTo(tblRow);
 
           break;
@@ -171,6 +191,4 @@ function emptyTable_planTrait(){
 
   
       newRecordFact_planTrait();
-  
-
 }

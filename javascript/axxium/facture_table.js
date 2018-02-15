@@ -10,7 +10,14 @@ $(document).ready(function(){
 
           if(e.which == 13) {
                 newRecordFact();
+                console.log($(this));
+
+                $(this).closest('tr').next().find('td[data-target=Type]').focus();
+                 e.preventDefault();
+// trigger an artificial keydown event with keyCode 64
+          
             }
+
             return e.which!=13;
               });
 
@@ -39,6 +46,8 @@ $(document).ready(function(){
    });
 
 function newRecordFact(){
+
+
 
     var tblBody=$('#factTableBody');
     fact_tbl_row_id=fact_tbl_row_id+1;
@@ -146,21 +155,30 @@ function newRecordFact(){
           case 'codeRole':
 
 
-              tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i])
-              .bind('keypress', function (e)
-              {
-                  if (e.which == 13) {
-                  newRecordFact();
-                  //Rob Function : call this when change the current row
-                 var code_s=$(this).siblings("td[data-target='Code']").text();
-                 var dent_s=$(this).siblings("td[data-target='Dent']").text();
+              tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
+              // .bind('keypress', function (e)
+              // {
+              //     if (e.which == 13) {
+                    
 
-                  traiter_valeur_de_base(code_s, dent_s);
+              //     newRecordFact();
 
-                };
-                return e.which!=13;
+                  
+              //     //Rob Function : call this when change the current row
+              //    var code_s=$(this).siblings("td[data-target='Code']").text();
+              //    var dent_s=$(this).siblings("td[data-target='Dent']").text();
 
-              })
+              //     traiter_valeur_de_base(code_s, dent_s);
+
+              //   };
+              //   e.which=9;
+              //   e.keyCode=9;
+
+              //   $('this').trigger(e);
+              //   console.log(e.which);
+              //   return e.which!=13;
+
+              // })
              tblData.appendTo(tblRow);
 
           break;
@@ -466,7 +484,7 @@ function emptyTable (option){
   surf_type='';
   checkDentType();
   //IMP! call Dent_type Modal again for selection in Main FactTabl
-  
+
   $("#factTableBody tr").remove();
 
   if(option=='newTbl')

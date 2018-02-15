@@ -540,7 +540,11 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         var transCode = '';
         var noSeq = '';
         var objInputData = pTransactions[i];
-        strResponse = objInputData.resp.split(',').slice(3).toString(); // extract string after 3th comma;
+        if (objInputData.resp)
+        {
+            strResponse = objInputData.resp.split(',').slice(3).toString(); // extract string after 3th comma;
+        }
+        
         
         var transactionString = (objInputData.transaction)? objInputData.transaction:'';
         versionNumber = transactionString.substring(18, 20);

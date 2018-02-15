@@ -319,47 +319,7 @@
 										Your browser does not support the HTML5 canvas tag.
 								</canvas>
 							</div>
-                            <div class="ui right aligned column">
-                                <div class="ui grid">
-                                    <div class="eight wide column">
-                                        <div class="ui form segment">
-                                            <div class="grouped fields">
-                                                <!--<h4 class="ui horizontal divider header">Tarif Selection</h4>-->
-                                                <b><label>Sélection du tarif</label></b>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
-                                                        <label>Tarif régulier</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact" value="2" class="type_rate">
-                                                        <label>Tarif spécial</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui slider checkbox">
-                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate">
-                                                        <label>Régie</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="thirteen wide field">
-                                                <select class="ui dropdown fluid selection">
-                                                    <option selected="selected" disabled="disabled">Cas hospitalier</option>
-                                                    <option>Anesthésie locale</option>
-                                                    <option>Anesthésie générale</option>
-                                                    <option>Non applicable</option>
-                                                </select>
-                                            </div>
-                                            <div class="field">
-                                                <!--<button class="ui axxium button" onclick="RamqCreateNewGlobalBill()">OK</button>-->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="ui negative message hidden" id="wrn_msg_fact_tbl">
@@ -493,13 +453,8 @@
                                 </table>
                                 <div class="ui axxium tiny button" onclick="PlnTrSavePlan()">Enregistrer</div>
                                 <button class="ui axxium tiny button" onclick="PlnTrSendPlan()">Soumettre</button>
-                                <!-- <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div> -->
-                                <!-- getAllTrData(); -->
-                                <!--<div class="ui axxium tiny button" onclick="robData();">RobData</div>-->
-                                <!--  <div class="ui axxium tiny button" onclick="modPaimnt();">PamntMOdalTEst</div> -->
-                                <!-- <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div> -->
-                                <!-- <div class="ui axxium tiny button" onclick="printRAMQ()">Imprimer</div> -->
-                                <!--<div class="ui axxium tiny button" onclick="modToCAS()">TEST-MODAL</div>-->
+                                <!-- <button class="ui axxium tiny button" onclick="emptyTable_planTrait()">Test</button> -->
+                                
                             </div>
                         </div>
                     </div>
@@ -977,6 +932,54 @@
             </div>
         </div>
     </div>-->
+     <div class="ui basic tarifSelection mini modal">
+    
+    
+      
+    <div class="header" style="padding-left:300px;padding-bottom:50px"><i class="add circle icon" ></i>Sélectionnez un type de tarif</div>
+    <div class="ui centered grid">
+    <div class="tarifSelection content " >
+    <div class="ui axxium form">
+
+                                            <div class="ui compact segment" style="padding:30px">
+                                             <div class=" ui left floated   field"">
+                                                    <div class="ui  toggle checkbox">
+                                                        <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
+                                                        <label>Tarif régulier</label>    
+                                                    </div>
+
+                                                </div> <br>
+                                                <div class=" ui left floated   field"">
+                                                    <div class="ui  toggle checkbox">
+                                                        <input type="radio" name="tarif_fact" value="2" class="type_rate">
+                                                        <label>Tarif spécial</label>
+                                                    </div>
+                                                </div><br>
+                                                <div class=" ui left floated   field"">
+                                                    <div class="ui  toggle checkbox" style="padding-right:40px">
+                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate">
+                                                        <label>Régie</label>
+                                                    </div>
+                                                </div><br>
+                                            
+      
+                                            <div class="field">
+                                                <select class="ui dropdown fluid selection">
+                                                    <option selected="selected" >Cas hospitalier</option>
+                                                    <option>Anesthésie locale</option>
+                                                    <option>Anesthésie générale</option>
+                                                    <option>Non applicable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                            <button class="ui positive button save">OK</button>
+                                        </div>
+                                        
+    </div>
+  </div>
+</div>
+
+
 
 
     <div class="ui modalSign0 modal">
@@ -4567,6 +4570,20 @@
             <script>
                 $(document).ready(function() {
 
+                    $('.ui.basic.tarifSelection.mini.modal').modal('setting', 'closable', false)
+                    .modal('setting', 'transition', 'horizontal flip')
+                      .modal('show')
+
+                      .modal({
+                        onApprove : function() {
+                        },
+                        selector: {
+                                       close: '.close, .actions .deny',
+                                       approve: '.save',
+                                       deny: '.actions .negative, .actions .deny, .actions .cancel'
+                                   }
+                      });
+
                     //Default Language French
                     //changeLang('fr');
 
@@ -5003,7 +5020,7 @@
                 var keyNumPIN = "";
                 var qParams = {};
                 var dent_Type = '';
-                var type_rate_glbl;
+                var type_rate_glbl=1; //By Default its 1
                 var pamnt_trnsfr_modal_stats;
                 var locatn;
                 var surf_modal_btn_val;

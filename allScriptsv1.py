@@ -1325,6 +1325,7 @@ if (tx == "SendPlanTraitement"):
         patientId = form['patientId'].value
         nodossier = form['nodossier'].value
         sendReq = form['sendReq'].value
+        noseq = form.getvalue('noseq','000000')
         lun = form['lun'].value
         dataJson = json.loads(form['json'].value)
         strreq = dataJson["request"]
@@ -1334,20 +1335,19 @@ if (tx == "SendPlanTraitement"):
         if not os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
             os.makedirs('json/PlanTraitement/%s/%s'%(clinicId, patientId))
 
-        #Get the numero sequence
-        noseq = '1'
-        fichiers = []
+        if noseq == '000000':
+            #Get the numero sequence
+            fichiers = []
+            if os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
+                fichiers = os.listdir("json/PlanTraitement/%s/%s"%(clinicId, patientId))
+                fichiers = ['json/PlanTraitement/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
+                fichiers.sort(key=os.path.getmtime)
+                fichiers.reverse()
 
-        if os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
-            fichiers = os.listdir("json/PlanTraitement/%s/%s"%(clinicId, patientId))
-            fichiers = ['json/PlanTraitement/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
-            fichiers.sort(key=os.path.getmtime)
-            fichiers.reverse()
-
-        if len(fichiers) > 0:
-            noseq = str(int(fichiers[0].split('_')[1].split('.')[0]) + 1)
-
-        noseq = noseq.rjust(6,'0')
+            if len(fichiers) > 0:
+                noseq = str(int(fichiers[0].split('_')[1].split('.')[0]) + 1).rjust(6,'0')
+            else:
+                noseq = '000001'
         
         #Send the request to CDANet
         if sendReq.lower() in ("yes", "true", "1"):

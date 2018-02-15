@@ -54,6 +54,7 @@
     <script src="javascript/axxium/cdaComm.js"></script>
     <script src="javascript/axxium/payment.js"></script>
     <script src="javascript/axxium/cash.js"></script>
+    <script src="javascript/axxium/planTraitement.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -303,7 +304,7 @@
             <!-- ===========Tabs 2========= -->
             <div class="ui secondary pointing menu">
                 <a class="active item" data-tab="facturation-sub">Facture</a>
-                <a class=" item" data-tab="PlanTraitement-sub">Plan de traitement</a>
+                <a class=" item" data-tab="PlanTraitement-sub" onclick="PlnTrStart();">Plan de traitement</a>
                 <a class="item" data-tab="Regie-sub">Régie</a>
                 <a class="item" data-tab="cdanEt-sub">CDANET</a>
             </div>
@@ -490,7 +491,8 @@
                                         </tr> -->
                                     </tbody>
                                 </table>
-                                <div class="ui axxium tiny button" onclick="getAllTrData_planTrait()">Enregistrer</div>
+                                <div class="ui axxium tiny button" onclick="PlnTrSavePlan()">Enregistrer</div>
+                                <button class="ui axxium tiny button" onclick="PlnTrSendPlan()">Soumettre</button>
                                 <!-- <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div> -->
                                 <!-- getAllTrData(); -->
                                 <!--<div class="ui axxium tiny button" onclick="robData();">RobData</div>-->
@@ -600,7 +602,7 @@
                                 <div class="row">
                                     <button class="ui axxium tiny right floated button">Nouveau</button>
                                     <button class="ui axxium tiny right floated button">Effacer</button>
-                                    <button class="ui axxium tiny right floated button">Soumettre</button>
+                                    
                                 </div>
                             </div>
                         </div>

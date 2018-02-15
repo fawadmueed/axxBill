@@ -1345,7 +1345,9 @@ if (tx == "SendPlanTraitement"):
             fichiers.reverse()
 
         if len(fichiers) > 0:
-            noseq = fichiers[0].split('_')[1].split('.')[0]
+            noseq = str(int(fichiers[0].split('_')[1].split('.')[0]) + 1)
+
+        noseq = noseq.rjust(6,'0')
         
         #Send the request to CDANet
         if sendReq.lower() in ("yes", "true", "1"):
@@ -1381,3 +1383,74 @@ if (tx == "SendPlanTraitement"):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+
+
+if (tx == "DeletePlanTraitement"):   
+    try:
+        #read parameters from request
+        clinicId = form['clinicId'].value
+        patientId = form['patientId'].value
+        nodossier = form['nodossier'].value
+        noseq = form['noseq'].value
+     
+        #verify if folder exists if not, create it
+        if os.path.exists('json/PlanTraitement/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, noseq)):
+            os.remove('json/PlanTraitement/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, noseq))
+
+        message = {'outcome' : 'success', 'message': 'Operation was successful' }
+        print json.dumps(message)   
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno) 
+
+if tx == "getPlanTraitements":
+    try:
+        patientId = form['patientId'].value
+        clinicId = form['clinicId'].value
+
+        if not os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
+            print '{ "Traitements": [ ] }'
+        else:
+            #In case, the dates are missing
+            try:
+                datefrom = getdate(form['dFrom'].value)
+            except:
+                d = datetime.today().date()
+                datefrom = date(d.year if d.month > 1 else d.year - 1, d.month - 1 if d.month > 1 else 12, 1)
+
+            try:
+                dateto = getdate(form['dTo'].value)  
+            except:
+                dateto = getdate()
+
+            traitements = []
+            jtraitements = {}
+            files = os.listdir("json/PlanTraitement/%s/%s"%(clinicId, patientId))
+            files = ['json/PlanTraitement/%s/%s/'%(clinicId, patientId)+elt for elt in files if elt.endswith(".json")]
+            files.sort(key=os.path.getctime)
+            files.reverse()
+            for filename in files:
+                mdate = os.path.getctime(filename)
+                datefile = datetime.fromtimestamp(mdate).date()
+                if datefile >= datefrom and datefile <= dateto:
+                    #read info
+                    json_data = open(filename, 'r')
+                    data = json.load(json_data)
+                    json_data.close()
+                    
+                    tmp_fact = {}
+                    tmp_fact["numero"] = filename.split('_')[1].split('.')[0]
+                    tmp_fact["info"] = data["info"]
+                    tmp_fact["resp"] = data["resp"]
+                    tmp_fact["req"] = data["req"]
+                    tmp_fact["date"] = data["date"]
+                    tmp_fact["datecreation"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(mdate))
+                    traitements.append(tmp_fact)
+                            
+            jtraitements["Traitements"] = traitements
+            print json.dumps(jtraitements).decode('unicode-escape').encode('utf8')   
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)  

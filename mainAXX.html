@@ -1655,6 +1655,7 @@
                 <div class="ui axxium form segment">
                     <div class="ui three column grid">
                         <div class="seven wide column">
+                            
                             <div class="ui form segment" id="divPaymentInsurance">
                                 <div class="ui horizontal divider"> <strong>Assurance</strong></div>
                                 <p1>Réclamation électronique pour <span id="assurProfName"></span>. Êtes-vous sur de vouloir transmettre la requête?</p1>
@@ -1684,6 +1685,17 @@
                                 </div>-->
                                 <button class="ui axxium button trns_insur" onclick="pamnt_trnsfr_modal_show();" disabled>Transférer à l'assurance</button>
                             </div>
+                      
+                        <script type="text/javascript">
+
+                            
+                             $(document).ready(function(){
+                            $('#divPaymentInsurance').addClass('disabled segment').click(false);
+                            $('#divPaymentRamq').addClass('disabled segment').click(false);
+                             // $( "#divPaymentInsurance" ).click(false);
+                            })
+
+                        </script>
                             <div class="ui form segment" id="divPaymentRamq">
                                 <div class="ui horizontal divider"> <strong>RENSEIGNEMENTS COMPLÉMENTAIRES RÉGIE</strong></div>
                                 <div class="inline fields">

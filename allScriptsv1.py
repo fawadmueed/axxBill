@@ -1324,6 +1324,7 @@ if (tx == "SendPlanTraitement"):
         clinicId = form['clinicId'].value
         patientId = form['patientId'].value
         nodossier = form['nodossier'].value
+        sendReq = form['sendReq'].value
         lun = form['lun'].value
         dataJson = json.loads(form['json'].value)
         strreq = dataJson["request"]
@@ -1333,38 +1334,49 @@ if (tx == "SendPlanTraitement"):
         if not os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
             os.makedirs('json/PlanTraitement/%s/%s'%(clinicId, patientId))
 
-        dataJSON = { 'Input': strreq, 'LUN': lun}
-        headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
-        r = requests.post(uri + '/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
+        #Get the numero sequence
+        noseq = '1'
+        fichiers = []
 
-        if r.status_code != 200:
-            resp = r.json()
-            print '{ "outcome" : "error", "message" : "' + resp["message"] + '" }'
+        if os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
+            fichiers = os.listdir("json/PlanTraitement/%s/%s"%(clinicId, patientId))
+            fichiers = ['json/PlanTraitement/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
+            fichiers.sort(key=os.path.getmtime)
+            fichiers.reverse()
+
+        if len(fichiers) > 0:
+            noseq = fichiers[0].split('_')[1].split('.')[0]
+        
+        #Send the request to CDANet
+        if sendReq.lower() in ("yes", "true", "1"):
+            dataJSON = { 'Input': strreq, 'LUN': lun}
+            headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
+            r = requests.post(uri + '/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
+
+            if r.status_code != 200:
+                resp = r.json()
+                print '{ "outcome" : "error", "message" : "' + resp["message"] + '" }'
+            else:
+                resp = r.json()
+                txtresp = resp["resp"]     
+
+                #Save plan traitement
+                data = {'req': strreq, 'resp' : txtresp, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'info' : datainputs}
+                logFile = open('json/PlanTraitement/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, noseq), 'w')
+                logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
+                logFile.close()
+
+                message = {'outcome' : 'success', 'message': txtresp }
+                print json.dumps(message)
         else:
-            resp = r.json()
-            txtresp = resp["resp"]     
-
-            #Get the numero sequence
-            noseq = '1'
-            fichiers = []
-
-            if os.path.isdir('json/PlanTraitement/%s/%s'%(clinicId, patientId)):
-                fichiers = os.listdir("json/PlanTraitement/%s/%s"%(clinicId, patientId))
-                fichiers = ['json/PlanTraitement/%s/%s/'%(clinicId, patientId)+elt for elt in fichiers if elt.endswith(".json")]
-                fichiers.sort(key=os.path.getmtime)
-                fichiers.reverse()
-
-            if len(fichiers) > 0:
-                noseq = fichiers[0].split('_')[1].split('.')[0]
-                
             #Save plan traitement
-            data = {'req': strreq, 'resp' : txtresp, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'info' : datainputs}
+            data = {'req': strreq, 'resp' : None, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'info' : datainputs}
             logFile = open('json/PlanTraitement/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, noseq), 'w')
             logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
-            logFile.close()
-
-            message = {'outcome' : 'success', 'message': txtresp }
+            logFile.close()           
+            message = {'outcome' : 'success', 'message': 'Operation was successful' }
             print json.dumps(message)
+            
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

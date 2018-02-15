@@ -14,7 +14,7 @@ var msgerror = {}; //JSon objet for message
     msgerror=data;
     
   }
- })
+ });
 
 
 function robValidation(type,code,tooth,age,surface){					
@@ -50,14 +50,13 @@ function robValidation(type,code,tooth,age,surface){
 						if(!prothese(type, code))
 							return false;
 					} 
-
 					else {
 						if(is_dent_anterieur(parseInt(tooth))) {
-							if(code == '' || surface == 'O') {
+							if(code == ' ' || surface == 'O') {
 								warnMsg(msgerror.msg021);
 								return false;
 							} else {
-								if(code == '' || surface == 'I') {
+								if(code == ' ' || surface == 'I') {
 									warnMsg(msgerror.msg21);
 									return false;
 										}

@@ -173,7 +173,6 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface'], #factTableBody_planTrait td[data-target='Surface']", function(){
 
-
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
     var surf_chck=val;
@@ -187,11 +186,13 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     {
       warnMsg('Same procedure already exist. Please change Dent or Surface values');
        $(this).focus();
-      $(this).text('');
+       $(this).text('');
     }
 
     //--------------- suf_dent_code ---------------------------------
+    var age=get_age();
 
+    if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
     // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
     if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
       facture_surf_modal();
@@ -205,7 +206,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       globVarSurfValidation_type_chck=type_chck;
       globVarSurfValidation_code_chck=code_chck;
       globVarSurfValidation_this_row_id=this_row_id;
-
+  }
 
     // STEP # 1   //752 line U_FACTPA
 
@@ -270,7 +271,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     }
     else
     {
-      warnMsg('Invalid value entered in CODE.');
+      warnMsg(msgerr.msg0163.replace("@@", val));
+      $(this).focus();
     }
 
     var sibl=$(this).siblings("td[data-target='Honoraires']");

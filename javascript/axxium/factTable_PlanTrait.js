@@ -192,3 +192,87 @@ function emptyTable_planTrait(){
   
       newRecordFact_planTrait();
 }
+
+function populate_table_fact_planTrait(arrToPopTabl){
+
+  fact_tbl_row_id_planTrait=0;
+  arrGrilleDeFacturation_planTrait=[];
+  $("#factTableBody_planTrait tr").remove();
+  
+  var arrayToPopulate=arrToPopTabl;
+  arrGrilleDeFacturation=arrToPopTabl;
+  
+
+    // arrGrilleDeFacturation_update=arrayToPopulate;
+    // console.log(arrGrilleDeFacturation_update);
+
+
+    var tblBody=$('#factTableBody_planTrait');
+
+          $.each(arrayToPopulate,function(idx,val){
+           
+            tblRow=$('<tr>').attr('id',val.row_id).attr('ramq_id',val.ramq_id);
+
+            var fields=['Date','Dent','Surface','Code','Description','Frais','Honoraires','Total','Prod','codeRole'];
+
+                 for(i=0;i<10;i++)
+                  {
+
+                       switch (i) {
+
+                       case 0: //Type
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Type);
+                       break;
+
+                       case 1:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Dent);
+                       break;
+
+                       case 2:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Surface);
+                       break;
+
+                       case 3:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Code);
+                       break;
+
+                       case 4:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Description);
+                       break;
+
+                       case 5:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Frais);
+                      tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
+                        
+                      break;
+
+                       case 6:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Honoraires);
+                        tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
+                       break;
+
+                       case 7:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Total);
+                        tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
+                       break;
+
+                       case 8:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Prod);
+                       break;
+
+                       case 9:
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.codeRole);
+                       break;
+                      }
+                    tblData.appendTo(tblRow);
+                  }
+                  tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
+       tblData.appendTo(tblRow);
+                 tblRow.appendTo(tblBody);
+        });
+
+}
+

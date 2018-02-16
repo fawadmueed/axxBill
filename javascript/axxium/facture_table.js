@@ -349,19 +349,19 @@ function getAllTrData(){
           if(!(arrGrilleDeFacturation_Insurance.length>0))                  
             
           {
-              $('#divPaymentInsurance').addClass('disabled');
+              $('#divPaymentInsurance').addClass('disabled').die();
           }
           else
           {
-              $('#divPaymentInsurance').removeClass('disabled ');
+              $('#divPaymentInsurance').removeClass('disabled ').bind();
           }
           if(!(arrGrilleDeFacturation_Amq.length>0))
           {                  
-              $('#divPaymentRamq').addClass('disabled');
+              $('#divPaymentRamq').addClass('disabled').unbind();
           }
           else
           {
-              $('#divPaymentRamq').removeClass('disabled ');
+              $('#divPaymentRamq').removeClass('disabled ').bind();
           }
           
 
@@ -529,10 +529,10 @@ function emptyTable (option){
  arrGrilleDeFacturation_Amq=[];
 
 
-  dent_Type='';
+  // dent_Type='';
   init_code='';
   surf_type='';
-  checkDentType();
+  // checkDentType();
   //IMP! call Dent_type Modal again for selection in Main FactTabl
 
   $("#factTableBody tr").remove();
@@ -696,12 +696,15 @@ function robData(){
 
 function populate_tbl_from(arrayForm,arrayTbl)
 {
+  
   emptyTable('populate');
   arrGrilleDeFacturation=arrayTbl;
   arrGrilleDeFacturation_forms=arrayForm;
   arrGrilleDeFacturation_forms_update=arrayForm;
   populate_table_fact(arrGrilleDeFacturation);
 }
+
+
 
 function populate_table_fact(arrToPopTabl){
 
@@ -750,15 +753,22 @@ function populate_table_fact(arrToPopTabl){
                        break;
 
                        case 5:
-                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Frais+' $');
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Frais);
+                      tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
+                        
                       break;
 
                        case 6:
-                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Honoraires+' $');
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Honoraires);
+                        tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
                        break;
 
                        case 7:
-                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Total+' $');
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).attr('class','mont').text(val.Total);
+                        tblData.appendTo(tblRow);
+                      tblData=$('<td>').attr('class','dol').text('$');
                        break;
 
                        case 8:
@@ -780,3 +790,9 @@ function populate_table_fact(arrToPopTabl){
 
 }
 
+// Populate-Fact-Table-Guide
+// Call populate_tbl_from(testForm,testArray) with Form-Array & TableData
+//--TEST DATA--
+// testArray=[{row_id:'1',Type:"SSQ",Dent:"ASD",Surface:"hello",Code:"01200",Description:'XYZZZ SJHXL SL',Frais:'123',Honoraires:'222',Total:'111',Prod:'1'}];
+// testForm=[[{name: "row_id", value: "1"},{name: "no_autor_proth_acryl_denti", value: "ASD"},{name: "liste_med_consm_denti", value: "A"},{name: "liste_elm_contx_denti", value: "38"}, 
+// {name: "liste_elm_mesur_denti", value: "/153"}]];

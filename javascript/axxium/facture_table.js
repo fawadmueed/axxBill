@@ -264,6 +264,7 @@ function getAllTrData(){
 
   arrGrilleDeFacturation=[] // For All Bills
   arrGrilleDeFacturation_Insurance=[]; // For Just Insurance Bills
+   arrGrilleDeFacturation_Amq=[]; // For AMQ Bills
 
   var mytrs=$('#factTableBody tr');
 // console.log(mytrs);
@@ -289,6 +290,8 @@ function getAllTrData(){
         var ramqId='ramq_id';
         var valID=ramq_id;
         myObjects[ramqId]=valID;
+
+        amq_bills_flag=1;
       }
 
       if(key=='Type'&&((!(value=='AMQ'||value=='BES'||value=='HOP'))&&(!(value=='CAS')) )) {
@@ -310,6 +313,12 @@ function getAllTrData(){
         arrGrilleDeFacturation_Insurance.push(myObjects);
         insur_bills_flag=0;
       }
+       if(amq_bills_flag==1)
+      { 
+        // Array containing Just Insurance Bills 
+        arrGrilleDeFacturation_Amq.push(myObjects);
+        amq_bills_flag=0;
+      }
 });
 
 
@@ -321,6 +330,7 @@ function getAllTrData(){
 
     console.log(arrGrilleDeFacturation);
     console.log(arrGrilleDeFacturation_Insurance);
+    console.log(arrGrilleDeFacturation_Amq);
     console.log(arrGrilleDeFacturation_forms);
 
     arrGrilleDeFacturation_update=arrGrilleDeFacturation;
@@ -333,6 +343,29 @@ function getAllTrData(){
     //modPayment(); AK modPayment should be called separetely.
     // getMoreInfo();
    }
+
+   
+
+          if(!(arrGrilleDeFacturation_Insurance.length>0))                  
+            
+          {
+              $('#divPaymentInsurance').addClass('disabled');
+          }
+          else
+          {
+              $('#divPaymentInsurance').removeClass('disabled ');
+          }
+          if(!(arrGrilleDeFacturation_Amq.length>0))
+          {                  
+              $('#divPaymentRamq').addClass('disabled');
+          }
+          else
+          {
+              $('#divPaymentRamq').removeClass('disabled ');
+          }
+          
+
+                        
 
 
 }
@@ -492,6 +525,10 @@ function emptyTable (option){
   fact_tbl_row_id=0;
   arrGrilleDeFacturation=[];
   arrGrilleDeFacturation_forms=[];
+  arrGrilleDeFacturation_Insurance=[];
+ arrGrilleDeFacturation_Amq=[];
+
+
   dent_Type='';
   init_code='';
   surf_type='';

@@ -6,6 +6,20 @@ $(document).ready(function(){
 
     //newRecordFact(); AK this function is called after getting data from Ramq (RamqGetVisionRData() ramq.js)
 
+   $(document.body).on("keypress","#factTableBody tr td" , function(e) {
+
+          if(e.which == 13) {
+               
+
+                
+                 e.preventDefault();
+                 return false;
+// trigger an artificial keydown event with keyCode 64
+          
+            }
+
+            return e.which!=13;
+              }).not(':last');
   $(document.body).on("keypress","#factTableBody tr td[data-target='codeRole']", function(e) {
 
           if(e.which == 13) {

@@ -1965,11 +1965,18 @@ function RamqUpdateGlobalBill()
         arrRamqData[1] = RamqGetRamqDataFromGrille();
         arrRamqData[2] = arrGrilleDeFacturation_forms;
 
+        var totalRamq = RamqCalculateTotalRamq(arrRamqData[1]);
+        $('#amq_total').val(totalRamq.toFixed(2));
+
         //Insurance
         var arrInsData = RamqGetInsDataFromGrille();
+        var totalIns = RamqCalculateTotalIns(arrInsData);
+        $('#ass_total').val(totalIns.toFixed(2));
 
         //Cash
         var arrCasData = RamqGetCasDataFromGrille();
+        var totalCas = RamqCalculateTotalCas(arrCasData);
+        $('#pers_total').val(totalCas.toFixed(2));
 
         var inputXMl = {
             "ins": arrInsData,
@@ -2094,6 +2101,40 @@ function RamqCreateXmlForVisionR(pPaymentType, pServiceDate, pInsurTotal, pPatie
             '<total_fact>'+pBillTotal+'</total_fact>'+//<!--Total-->
            '</fact_info>';
     return res;
+}
+
+function RamqCalculateTotalIns(pArrInsData) {
+    var total = 0;
+    for (var i = 0; i < pArrInsData.length; i++)
+    {
+        var t = parseFloat(pArrInsData[i].Total);
+        if (!isNaN(t)) {
+            total += t;
+        }
+    }
+    return total;
+}
+
+function RamqCalculateTotalCas(pArrCasData) {
+    var total = 0;
+    for (var i = 0; i < pArrCasData.length; i++) {
+        var t = parseFloat(pArrCasData[i].Total);
+        if (!isNaN(t)) {
+            total += t;
+        }
+    }
+    return total;
+}
+
+function RamqCalculateTotalRamq(pArrRamqData) {
+    var total = 0;
+    for (var i = 0; i < pArrRamqData.length; i++) {
+        var t = parseFloat(pArrRamqData[i].Total);
+        if (!isNaN(t)) {
+            total += t;
+        }
+    }
+    return total;
 }
 
 

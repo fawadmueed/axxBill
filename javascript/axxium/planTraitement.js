@@ -12,7 +12,6 @@ $(document).ready(function () {
             null,
             null,
             null,
-            null,
             null
         ],
         //dom: 'Bfrtip',
@@ -88,6 +87,7 @@ function PlnTrSavePlan()
 function PlnTrSendPlan()
 {
     getAllTrData_planTrait();
+    PlnTrSendToCdaNet();
 }
 
 function PlnTrCreateNew() {
@@ -144,6 +144,7 @@ function PlnTrGetDataForTransHistTable(pTraitements) {
         objOutputData.Reclamation = (objResponse && objResponse.g04) ? (objResponse.g04).toString().trim() : '0.00';
         objOutputData.Deductible = (objResponse && objResponse.g29) ? (objResponse.g29).toString().trim() : '0.00';
         objOutputData.Remboursement = (objResponse && objResponse.g28) ? (objResponse.g28).toString().trim() : '0.00';
+        objOutputData.Hello = 'HelloThere';//JSON.stringify(objInputData.info.grid); //arrGrilleDeFacturation_planTrait
 
         arrData.push(objOutputData);
     }
@@ -197,4 +198,17 @@ function PlnTrSendToCdaNet() {
     else if (globCdaVersion === '4') {
         modCdan2();
     }
+}
+
+function PlnTrTransferToBill(){
+    //Swich tabs
+    $("#tabFacture").addClass("active");
+    $("#tabPlnTr").removeClass("active");
+    $("#divFacturationSub").addClass("active");
+    $("#divPlnTrSub").removeClass("active");
+
+}
+
+function PlnTrModify() {
+    populate_table_fact_planTrait(globPlnTrHistSelectedData);
 }

@@ -303,13 +303,13 @@
         <div id="context3">
             <!-- ===========Tabs 2========= -->
             <div class="ui secondary pointing menu">
-                <a class="active item" data-tab="facturation-sub">Facture</a>
-                <a class=" item" data-tab="PlanTraitement-sub" onclick="PlnTrStart();">Plan de traitement</a>
+                <a class="active item" data-tab="facturation-sub" id="tabFacture">Facture</a>
+                <a class=" item" data-tab="PlanTraitement-sub" id="tabPlnTr" onclick="PlnTrStart();">Plan de traitement</a>
                 <a class="item" data-tab="Regie-sub">Régie</a>
                 <a class="item" data-tab="cdanEt-sub">CDANET</a>
             </div>
             <!-- ================ -->
-            <div class="ui tab segment active" data-tab="facturation-sub">
+            <div class="ui tab segment active" data-tab="facturation-sub" id="divFacturationSub">
                 <div class="ui hidden divider"></div>
                 <div class="ui form">
                     <div class="ui two column grid">
@@ -387,7 +387,7 @@
             </div>
 
 <!-- <<<<<<< HEAD -->
-             <div class="ui tab segment " data-tab="PlanTraitement-sub">
+             <div class="ui tab segment " data-tab="PlanTraitement-sub" id="divPlnTrSub">
                 <div class="ui hidden divider"></div>
                 <div class="ui form">
                     <div class="ui two column grid">
@@ -459,15 +459,19 @@
                                 </table>
                                 <div class="ui axxium tiny button" onclick="PlnTrSavePlan()">Enregistrer</div>
                                 <button class="ui axxium tiny button" onclick="PlnTrSendPlan()">Soumettre</button>
+
+                                <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
+                                <!-- <button class="ui axxium tiny button" onclick="emptyTable_planTrait()">Test</button> -->
+
                                 <!-- <button class="ui axxium tiny button" onclick="populate_table_fact_planTrait(testArray)">Test</button> -->
+
                                 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-<!-- =======
->>>>>>> Insurance-Print -->
+
 
 
             <div class="ui tab segment " data-tab="cdanEt-sub">
@@ -1193,6 +1197,7 @@
                                         <th>Réclamation</th>
                                         <th>Déductible</th>
                                         <th>Remboursement</th>
+                                        <!--<th>Hello</th>-->
                                     </tr>
                                 </thead>
                                 <tbody id="cdan_table_soum_body_modal">
@@ -1202,7 +1207,8 @@
                                 <div class="row">
                                     <button class="ui axxium tiny right floated button" onclick="PlnTrCreateNew();">Nouveau</button>
                                     <button class="ui axxium tiny right floated button" onclick="PlnTrDelete();">Effacer</button>
-                                    <button class="ui axxium tiny right floated button" onclick="PlnTrSendToCdaNet();">Soumettre</button>
+                                    <button class="ui axxium tiny right floated button" onclick="PlnTrModify();">Modifier</button>
+                                    <!--<button class="ui axxium tiny right floated button" onclick="PlnTrSendToCdaNet();">Soumettre</button>-->
                                 </div>
                             </div>
                         

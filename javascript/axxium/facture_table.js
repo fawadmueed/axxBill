@@ -349,19 +349,19 @@ function getAllTrData(){
           if(!(arrGrilleDeFacturation_Insurance.length>0))                  
             
           {
-              $('#divPaymentInsurance').addClass('disabled');
+              $('#divPaymentInsurance').addClass('disabled').die();
           }
           else
           {
-              $('#divPaymentInsurance').removeClass('disabled ');
+              $('#divPaymentInsurance').removeClass('disabled ').bind();
           }
           if(!(arrGrilleDeFacturation_Amq.length>0))
           {                  
-              $('#divPaymentRamq').addClass('disabled');
+              $('#divPaymentRamq').addClass('disabled').unbind();
           }
           else
           {
-              $('#divPaymentRamq').removeClass('disabled ');
+              $('#divPaymentRamq').removeClass('disabled ').bind();
           }
           
 

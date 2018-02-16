@@ -245,11 +245,13 @@ function CdaV4CreatePredeterminationRequest() {
     }
     res += req.f02 + req.f15 + req.f04 + req.f18 + req.f19 + req.f05 + req.f20 + req.f21;
 
-    //Extracted Teeth Count //TODO: check if convertion required.
-    //TODO: check if have to loop through array.
-    if (req.f22 > 0)
+    //Extracted Teeth Count 
+
+    if (req.f22 > 0) //Extracted Teeth Count //TODO: check if convertion required.
     {
-        res += req.f23[0] + req.f24[0];
+        for (var i = 0; i < req.f22; i++) {
+            res += req.f23[i] + req.f24[i]; //Extracted Tooth Number, Extraction Date
+        }
     }
 
     res += req.g46 + req.g47;
@@ -744,7 +746,9 @@ function PopulatePredeterminationObj() {
     var obj = {};
     var transactionType = "Predetermination";
     var objDataFromDB = globCdaDataFromDB;
-    var objDataFromUI = CdaV4GetDataFromUI();
+    //var objDataFromUI = CdaV4GetDataFromUI();
+    var procLineNumber = arrGrilleDeFacturation_planTrait.length;
+    obj.f23 = []; obj.f24 = []; obj.f07 = []; obj.f08 = []; obj.f09 = []; obj.f10 = []; obj.f11 = []; obj.f12 = []; obj.f13 = []; obj.f34 = []; obj.f35 = []; obj.f36 = [];
 
     //A Transaction Header
     obj.a01 = CDAV4FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
@@ -803,7 +807,8 @@ function PopulatePredeterminationObj() {
     //F Procedure Information
     obj.f06 = CDAV4FormatField(CdaV4GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
     obj.f22 = CDAV4FormatField(objDataFromDB.f22, 'N', 2); //Extracted Teeth Count //TODO: where from get this data?
-    obj.f25 = CDAV4FormatField(objDataFromDB.f25, 'N', 1);//Orthodontic Record Flag
+    //obj.f25 = CDAV4FormatField(objDataFromDB.f25, 'N', 1);//Orthodontic Record Flag
+    obj.f25 = CDAV4FormatField('0', 'N', 1); //This value is hardcoded as in VisionR
 
     //If E20 = 1 then the following Secondary Carrier fields would appear (E19 to E07)
     if (obj.e20 == 1) {
@@ -851,37 +856,95 @@ function PopulatePredeterminationObj() {
 
     if (obj.f25 == 1)
     {
-        obj.f37 = CDAV4FormatField(objDataFromUI.f37, 'N', 8);//Estimated Treatment Starting Date
-        obj.f26 = CDAV4FormatField(objDataFromUI.f26, 'D', 6);//First Examination Fee
-        obj.f27 = CDAV4FormatField(objDataFromUI.f27, 'D', 6);//Diagnostic Phase Fee
-        obj.f28 = CDAV4FormatField(objDataFromUI.f28, 'D', 6);//Initial Payment
-        obj.f29 = CDAV4FormatField(objDataFromUI.f29, 'N', 1);//Payment Mode
-        obj.f30 = CDAV4FormatField(objDataFromUI.f30, 'N', 2);//Treatment Duration
-        obj.f31 = CDAV4FormatField(objDataFromUI.f31, 'N', 2);//Number of Anticipated Payments
-        obj.f32 = CDAV4FormatField(objDataFromUI.f32, 'D', 6);//Anticipated Payment Amount
+        // This part wasn't implemented in VisionR
+        //obj.f37 = CDAV4FormatField(objDataFromUI.f37, 'N', 8);//Estimated Treatment Starting Date
+        //obj.f26 = CDAV4FormatField(objDataFromUI.f26, 'D', 6);//First Examination Fee
+        //obj.f27 = CDAV4FormatField(objDataFromUI.f27, 'D', 6);//Diagnostic Phase Fee
+        //obj.f28 = CDAV4FormatField(objDataFromUI.f28, 'D', 6);//Initial Payment
+        //obj.f29 = CDAV4FormatField(objDataFromUI.f29, 'N', 1);//Payment Mode
+        //obj.f30 = CDAV4FormatField(objDataFromUI.f30, 'N', 2);//Treatment Duration
+        //obj.f31 = CDAV4FormatField(objDataFromUI.f31, 'N', 2);//Number of Anticipated Payments
+        //obj.f32 = CDAV4FormatField(objDataFromUI.f32, 'D', 6);//Anticipated Payment Amount
 
     }
 
-    for (var i = 0; i < arrGrilleDeFacturation.length; i++) {
-        var lineCount = 1;
-        if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP') {
-            obj.f07[i] = CDAV4FormatField(lineCount, 'N', 1); //Procedure Line Number
-            obj.f08[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Code, 'AN', 5); //Procedure Code
-            //obj.f09[i] = CDAV4FormatField(CDAV4GetCurrentDate(), 'N', 8); //Date of Service
-            obj.f10[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Dent, 'N', 2); //International Tooth, Sextant, Quad or Arch
-            obj.f11[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Surface, 'A', 5); //Tooth Surface
+    obj.f16 = []; obj.f17 = [];
+    var lineCount = 1;
+    for (var i = 0; i < arrGrilleDeFacturation_planTrait.length; i++) {
 
-            obj.f12[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
-            obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1  //TODO:
-            obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
-            obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 //TODO:
-            obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 //TODO:
-            obj.f16[i] = CDAV4FormatField('', 'A', 5); //Procedure Type Codes
-            obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
+        obj.f07[i] = CDAV4FormatField(lineCount, 'N', 1); //Procedure Line Number
+        obj.f08[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i].Code, 'AN', 5); //Procedure Code
+        //obj.f09[i] = CDAV4FormatField(CDAV4GetCurrentDate(), 'N', 8); //Date of Service
+        obj.f10[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i].Dent, 'N', 2); //International Tooth, Sextant, Quad or Arch
+        obj.f11[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i].Surface, 'A', 5); //Tooth Surface
 
-            lineCount++;
+        obj.f12[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
+        obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1. Initilite it with spaces.
+        obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i].Frais, 'D', 6); //Lab Procedure Fee # 1
+
+        obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 initialisation
+        obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 initialisation
+
+        obj.f17 = CDAV4FormatField('00', 'N', 2); //Remarks Code. Hardcoded in VisonR
+
+        var honoraire = 0.00;
+        if (lineCount + 1 <= procLineNumber && arrGrilleDeFacturation_planTrait[i + 1]) //if there is at least one line after
+
+        {
+            if (!CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code)) {
+                obj.f34 = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i + 1].Code, 'AN', 5); //new -Lab Proc code 1
+
+
+                if (arrGrilleDeFacturation_planTrait[i + 1].Code.trim() == '99111') {
+                    honoraire = parseFloat(arrGrilleDeFacturation_planTrait[i + 1].Honoraires) + parseFloat(arrGrilleDeFacturation_planTrait[i + 1].Frais);
+                }
+                else {
+                    honoraire = parseFloat(arrGrilleDeFacturation_planTrait[i + 1].Honoraires);
+                }
+                obj.f13[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 1
+            }
         }
+
+
+        if (lineCount + 2 <= procLineNumber && arrGrilleDeFacturation_planTrait[i + 2]) {
+            honoraire = 0.00;
+            if (!CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 1].Type) && !CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 2].Type) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 2].Code)) {
+                obj.f35[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i + 2].Code, 'AN', 5); //Lab Procedure Code # 2 
+                if (arrGrilleDeFacturation_planTrait[i + 2].Code == '99111') {
+                    honoraire = parseFloat(arrGrilleDeFacturation_planTrait[i + 2].Honoraires) + parseFloat(arrGrilleDeFacturation_planTrait[i + 2].Frais);
+                }
+                else {
+                    honoraire = parseFloat(arrGrilleDeFacturation_planTrait[i + 2].Honoraires);
+                }
+                obj.f36[i] = CDAV4FormatField(honoraire, 'D', 6); //Lab Procedure Fee # 2 
+            }
+        }
+
+        obj.f16[i] = CDAV4FormatField('X', 'A', 5); //Procedure Type Codes
+        obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
+
+        lineCount++;
     }
+    //for (var i = 0; i < arrGrilleDeFacturation.length; i++) {
+    //    var lineCount = 1;
+    //    if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP') {
+    //        obj.f07[i] = CDAV4FormatField(lineCount, 'N', 1); //Procedure Line Number
+    //        obj.f08[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Code, 'AN', 5); //Procedure Code
+    //        //obj.f09[i] = CDAV4FormatField(CDAV4GetCurrentDate(), 'N', 8); //Date of Service
+    //        obj.f10[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Dent, 'N', 2); //International Tooth, Sextant, Quad or Arch
+    //        obj.f11[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Surface, 'A', 5); //Tooth Surface
+
+    //        obj.f12[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
+    //        obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1  //TODO:
+    //        obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
+    //        obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 //TODO:
+    //        obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 //TODO:
+    //        obj.f16[i] = CDAV4FormatField('', 'A', 5); //Procedure Type Codes
+    //        obj.f17[i] = CDAV4FormatField(00, 'N', 2); //Remarks Code
+
+    //        lineCount++;
+    //    }
+    //}
     if (obj.c18 == 1)
         obj.c19 = CDAV4FormatField(objDataFromDB.c19, 'AN', 30); //Plan Record
 

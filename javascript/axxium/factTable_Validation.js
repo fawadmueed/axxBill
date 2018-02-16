@@ -116,9 +116,11 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
       {
         $(this).siblings("td[data-target='codeRole']").text('1');
+        $(this).closest('tr').find('.plus').addClass('disabled');
       }
     else{
-        $(this).siblings("td[data-target='codeRole']").text('');
+        $(this).siblings("td").text('');
+        $(this).closest('tr').find('.plus').removeClass('disabled');
       }
 
     if(!valid){

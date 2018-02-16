@@ -221,7 +221,7 @@ function populate_table_fact_planTrait(arrToPopTabl){
                        switch (i) {
 
                        case 0: //Type
-                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Type);
+                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(val.Date);
                        break;
 
                        case 1:

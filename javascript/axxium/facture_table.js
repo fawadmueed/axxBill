@@ -201,7 +201,7 @@ function newRecordFact(){
 
 
     }
-           tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="modFactTableMore(this);" >Plus</div><div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
+           tblData=$('<td>').append('<div class="ui axxium tiny button plus" onclick="modFactTableMore(this);" >Plus</div><div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
        tblData.appendTo(tblRow);
 
         tblRow.appendTo(tblBody);

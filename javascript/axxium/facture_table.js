@@ -696,7 +696,7 @@ function robData(){
 
 function populate_tbl_from(arrayForm,arrayTbl)
 {
-  console.log(arrayForm);
+  
   emptyTable('populate');
   arrGrilleDeFacturation=arrayTbl;
   arrGrilleDeFacturation_forms=arrayForm;

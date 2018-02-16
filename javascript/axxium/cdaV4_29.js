@@ -891,7 +891,7 @@ function PopulatePredeterminationObj() {
         if (lineCount + 1 <= procLineNumber && arrGrilleDeFacturation_planTrait[i + 1]) //if there is at least one line after
 
         {
-            if (!CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code)) {
+            if (CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code)) {
                 obj.f34 = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i + 1].Code, 'AN', 5); //new -Lab Proc code 1
 
 
@@ -908,7 +908,7 @@ function PopulatePredeterminationObj() {
 
         if (lineCount + 2 <= procLineNumber && arrGrilleDeFacturation_planTrait[i + 2]) {
             honoraire = 0.00;
-            if (!CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 1].Type) && !CdaCommIsRamqCode(arrGrilleDeFacturation_planTrait[i + 2].Type) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 2].Code)) {
+            if (CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation_planTrait[i + 2].Code)) {
                 obj.f35[i] = CDAV4FormatField(arrGrilleDeFacturation_planTrait[i + 2].Code, 'AN', 5); //Lab Procedure Code # 2 
                 if (arrGrilleDeFacturation_planTrait[i + 2].Code == '99111') {
                     honoraire = parseFloat(arrGrilleDeFacturation_planTrait[i + 2].Honoraires) + parseFloat(arrGrilleDeFacturation_planTrait[i + 2].Frais);
@@ -2486,12 +2486,16 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     switch (globCdanetTranscode) {
                         case '1'://Claim
                         case '2'://Claim reversial
-                        case '3'://Predetermination
                             {
                                 globCdaDataFromDB = result;
                                 CdaV4CallCDAService('');
                             }
                             break;
+                        case '3'://Predetermination
+                            {
+                                globCdaDataFromDB = result;
+                                PlnTrSendToCdaNet();
+                            }
                     }
 
                     //console.log(result);

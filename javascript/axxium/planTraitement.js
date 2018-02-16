@@ -12,7 +12,9 @@ $(document).ready(function () {
             null,
             null,
             null,
-            null
+            null,
+            null,
+            { "visible": false }
         ],
         //dom: 'Bfrtip',
         searching: false
@@ -62,16 +64,18 @@ function PlnTrPopulateDetails()
 
 function PlnTrSavePlan()
 {
-    getAllTrData_planTrait();
+
+    getAllTrData_planTrait(); //Save data from grid into global array.
+    var seqNum = (globPlnTrHistSelectedData) ? globPlnTrHistSelectedData[0] : null;
     var cdaNetRequest = '';
-    var plnTrInfo = {grid:arrGrilleDeFacturation_planTrait, facture: false};
+    var plnTrInfo = {grid:arrGrilleDeFacturation_planTrait, facturer: false};
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     var inputXMl = {
         "request": cdaNetRequest, //request to send
         "inputs": plnTrInfo // JSON data
     };
 
-    $.post("allScriptsv1.py", { tx: "SendPlanTraitement", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, lun: randomNum, json: JSON.stringify(inputXMl), sendReq: false },
+    $.post("allScriptsv1.py", { tx: "SendPlanTraitement", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, lun: randomNum, json: JSON.stringify(inputXMl), sendReq: false, noseq: seqNum },
         function (result) {
             if (result.outcome == 'error')
             {
@@ -87,11 +91,21 @@ function PlnTrSavePlan()
 function PlnTrSendPlan()
 {
     getAllTrData_planTrait();
-    PlnTrSendToCdaNet();
+    globCdanetTranscode = '3'; //Predetermination Transaction
+
+    // open modal CDA NET 1 or 2 depending on Version of insurance
+    if (globCdaVersion === '2') {
+        modCdan1();
+    }
+    else if (globCdaVersion === '4') {
+        modCdan2();
+    }
+    
 }
 
 function PlnTrCreateNew() {
     emptyTable_planTrait();
+    globPlnTrHistSelectedData = null;
     $('.PlanTrait').modal('hide');
 }
 
@@ -137,14 +151,14 @@ function PlnTrGetDataForTransHistTable(pTraitements) {
             description = CdaV4GetTransactionName(transCode);
         }
         objOutputData.Numero = objInputData.numero;
-        objOutputData.Facturer = (objInputData.info.facture)?'OUI':'NON';
+        objOutputData.Facturer = (objInputData.info.facturer)?'OUI':'NON';
         objOutputData.Reference = (objResponse && objResponse.g01) ? (objResponse.g01).toString().trim() : '';
         objOutputData.Confirmation = (objResponse && objResponse.g30) ? (objResponse.g30).toString().trim() : '';
         objOutputData.Date = objInputData.date;
         objOutputData.Reclamation = (objResponse && objResponse.g04) ? (objResponse.g04).toString().trim() : '0.00';
         objOutputData.Deductible = (objResponse && objResponse.g29) ? (objResponse.g29).toString().trim() : '0.00';
         objOutputData.Remboursement = (objResponse && objResponse.g28) ? (objResponse.g28).toString().trim() : '0.00';
-        objOutputData.Hello = 'HelloThere';//JSON.stringify(objInputData.info.grid); //arrGrilleDeFacturation_planTrait
+        objOutputData.GridInfo = JSON.stringify(objInputData.info.grid); //arrGrilleDeFacturation_planTrait
 
         arrData.push(objOutputData);
     }
@@ -164,6 +178,7 @@ function PlnTrUpdateTransHistTable() {
         arr.push(globPlnTrHistListData[i].Reclamation);
         arr.push(globPlnTrHistListData[i].Deductible);
         arr.push(globPlnTrHistListData[i].Remboursement);
+        arr.push(globPlnTrHistListData[i].GridInfo);
 
         arrData.push(arr);
     }
@@ -189,15 +204,41 @@ function PlnTrDelete() {
 }
 
 function PlnTrSendToCdaNet() {
-    globCdanetTranscode = '3'; //Predetermination Transaction
 
-    // open modal CDA NET 1 or 2 depending on Version of insurance
-    if (globCdaVersion === '2') {
-        modCdan1();
-    }
-    else if (globCdaVersion === '4') {
-        modCdan2();
-    }
+    var cdaNetRequest = CdaV4CreateRequestString();//TODO: check version
+    var plnTrInfo = { grid: arrGrilleDeFacturation_planTrait, facturer: false };
+    var randomNum = CdaCommCreateRandomNumber(1, 999);
+    var seqNum = (globPlnTrHistSelectedData) ? globPlnTrHistSelectedData[0] : null;
+    var inputXMl = {
+        "request": cdaNetRequest, //request to send
+        "inputs": plnTrInfo // JSON data
+    };
+
+    $.post("allScriptsv1.py", { tx: "SendPlanTraitement", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, lun: randomNum, json: JSON.stringify(inputXMl), sendReq: true, noseq: '000001' },
+        function (result) {
+            if (result.outcome == 'error') {
+                alert(result.message);
+            }
+            else { //TODO: check version
+                var responseLine = result.message;
+                var communicationResult = CdaCommGetCommStatus(responseLine);
+                if (communicationResult == 0)// No errors
+                {
+                    var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
+
+                    globCdaRespObj = CdaV4ReadResponse(transactionLine);
+                    var respMessage = '';
+                    if (globCdaRespObj) {
+                        respMessage = CdaV4CreateRespMessage(globCdaRespObj, transactionLine);
+                    }
+                    else {
+                        respMessage = 'Parsing CdaNet response failed.'
+                    }
+
+                    CdaCommShowResp(respMessage);
+                }
+            }
+        });
 }
 
 function PlnTrTransferToBill(){
@@ -207,8 +248,22 @@ function PlnTrTransferToBill(){
     $("#divFacturationSub").addClass("active");
     $("#divPlnTrSub").removeClass("active");
 
+    getAllTrData_planTrait();
+    var type = globVisionRData.InsTypeList[0];
+    for (var i = 0; i < arrGrilleDeFacturation_planTrait.length; i++)
+    {
+        arrGrilleDeFacturation_planTrait[i].Type = type;
+    }
+    populate_tbl_from([], arrGrilleDeFacturation_planTrait);
+
 }
 
 function PlnTrModify() {
-    populate_table_fact_planTrait(globPlnTrHistSelectedData);
+    if (globPlnTrHistSelectedData)
+    {
+        populate_table_fact_planTrait(JSON.parse(globPlnTrHistSelectedData[8]));
+        $('.PlanTrait').modal('hide');
+    }
+    
 }
+

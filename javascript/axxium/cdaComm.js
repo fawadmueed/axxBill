@@ -496,11 +496,17 @@ function CdaCommGetVersion(pCode)
 
 function CdaCommIsRamqCode(pCode)
 {
-    pCode = pCode.trim();
-    var result = false;
-    if (pCode == 'AMQ' || pCode == 'BES' || pCode == 'HOP')
-        result = true;
-    return result;
+    if (pCode) {
+        pCode = pCode.trim();
+        var result = false;
+        if (pCode == 'AMQ' || pCode == 'BES' || pCode == 'HOP')
+            result = true;
+        return result;
+    }
+    else {
+        return false;
+    }
+    
 }
 
 //===================================== Historique des transaction =====================================

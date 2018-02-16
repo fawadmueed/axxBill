@@ -187,6 +187,7 @@ function RamqGetVisionRData() {
                   success: function (result) {
                       //alert(result.Result);
                       globVisionRData = RamqPopulateVisionRDataObj(result);
+                      globCdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
                       newRecordFact(); //facture_table.js
 
                       $('#pamnt_no_prof').val(globVisionRData.IdProf);

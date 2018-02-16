@@ -1943,7 +1943,7 @@ function RamqCreateNewGlobalBill()
                 else {
                     globBillNumber = result.nofact;
                     globIsBillCreated = true;
-                    alert("Facture #" + globBillNumber + " a été créée.")
+                    //alert("Facture #" + globBillNumber + " a été créée.")
                     RamqUpdateGlobalBill()
                 }
             });
@@ -1995,23 +1995,26 @@ function RamqUpdateGlobalBill()
                         $("#asur_2_non").prop("checked", true);
                     }
 
-                    //check cda verson
-                    globCdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
-                    if (globCdaVersion === '2') {
-                        //$('#insr_cdan_version_1').prop('checked', true);
-                        getAllTrData();//Save data from facturation grid in global array
-                        modPayment();//Open Payment form
-                    }
-                    else if (globCdaVersion == '4') {
-                        //$('#insr_cdan_version_4').prop('checked', true);
-                        getAllTrData();//Save data from facturation grid in global array
-                        modPayment();//Open Payment form
-                    }
-                    else {
-                        //alert("Cda version is not correct!");
-                        getAllTrData();//Save data from facturation grid in global array
-                        modPayment();//Open Payment form
-                    }
+                    ////check cda verson
+                    ////globCdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
+                    //if (globCdaVersion === '2') {
+                    //    //$('#insr_cdan_version_1').prop('checked', true);
+                    //    getAllTrData();//Save data from facturation grid in global array
+                    //    modPayment();//Open Payment form
+                    //}
+                    //else if (globCdaVersion == '4') {
+                    //    //$('#insr_cdan_version_4').prop('checked', true);
+                    //    getAllTrData();//Save data from facturation grid in global array
+                    //    modPayment();//Open Payment form
+                    //}
+                    //else {
+                    //    //alert("Cda version is not correct!");
+                    //    getAllTrData();//Save data from facturation grid in global array
+                    //    modPayment();//Open Payment form
+                    //}
+
+                    getAllTrData();//Save data from facturation grid in global array
+                    modPayment();//Open Payment form
                 }
             });
     }

@@ -65,7 +65,7 @@ function PlnTrSavePlan()
 {
     getAllTrData_planTrait();
     var cdaNetRequest = '';
-    var plnTrInfo = arrGrilleDeFacturation_planTrait;
+    var plnTrInfo = {grid:arrGrilleDeFacturation_planTrait, facture: false};
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     var inputXMl = {
         "request": cdaNetRequest, //request to send
@@ -91,7 +91,7 @@ function PlnTrSendPlan()
 }
 
 function PlnTrCreateNew() {
-    //$("#factTableBody_planTrait").empty();
+    emptyTable_planTrait();
     $('.PlanTrait').modal('hide');
 }
 
@@ -136,30 +136,14 @@ function PlnTrGetDataForTransHistTable(pTraitements) {
             objResponse = CdaV4ReadResponse(strResponse);
             description = CdaV4GetTransactionName(transCode);
         }
-        objOutputData.Numero = '';
-        objOutputData.Facturer = '';
-        objOutputData.Reference = '';
-        objOutputData.Confirmation = '';
-        objOutputData.Date = '';
-        objOutputData.Reclamation = '';
-        objOutputData.Deductible = '';
-        objOutputData.Remboursement = '';
-
-
-        //objOutputData.NoSeq = noSeq;
-        //objOutputData.Description = description;
-        //objOutputData.NoDossier = (objInputData.nodossier) ? objInputData.nodossier : '';
-        //objOutputData.Prenom = (objInputData.info && objInputData.info.Prenom) ? objInputData.info.Prenom : '';
-        //objOutputData.Nom = (objInputData.info && objInputData.info.Nom) ? objInputData.info.Nom : '';
-        //objOutputData.Assur = (objInputData.info && objInputData.info.Ass) ? objInputData.info.Ass : '';
-        //objOutputData.Couver = '';
-        //objOutputData.Date = (objInputData.datetransaction) ? objInputData.datetransaction : '';
-        //objOutputData.NoRef = (objResponse && objResponse.g01) ? (objResponse.g01).toString().trim() : '';
-        //objOutputData.Status = (objInputData.status) ? objInputData.status : '';
-        //objOutputData.VersionNumber = versionNumber;
-        //objOutputData.NoFacture = (objInputData.facture) ? objInputData.facture : '';
-        //objOutputData.Resp = (objInputData.resp) ? objInputData.resp : '';
-        //objOutputData.Transaction = (objInputData.transaction) ? objInputData.transaction : '';
+        objOutputData.Numero = objInputData.numero;
+        objOutputData.Facturer = (objInputData.info.facture)?'OUI':'NON';
+        objOutputData.Reference = (objResponse && objResponse.g01) ? (objResponse.g01).toString().trim() : '';
+        objOutputData.Confirmation = (objResponse && objResponse.g30) ? (objResponse.g30).toString().trim() : '';
+        objOutputData.Date = objInputData.date;
+        objOutputData.Reclamation = (objResponse && objResponse.g04) ? (objResponse.g04).toString().trim() : '0.00';
+        objOutputData.Deductible = (objResponse && objResponse.g29) ? (objResponse.g29).toString().trim() : '0.00';
+        objOutputData.Remboursement = (objResponse && objResponse.g28) ? (objResponse.g28).toString().trim() : '0.00';
 
         arrData.push(objOutputData);
     }
@@ -186,4 +170,31 @@ function PlnTrUpdateTransHistTable() {
     globPlnTrHistTable.clear().draw();
     globPlnTrHistTable.rows.add(arrData); // Add new data
     globPlnTrHistTable.columns.adjust().draw();
+}
+
+function PlnTrDelete() {
+    var number = globPlnTrHistSelectedData[0];
+
+    $.post("allScriptsv1.py", { tx: "DeletePlanTraitement", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, noseq: number },
+        function (result) {
+            if (result.outcome == 'error') {
+                alert(result.message);
+            }
+            else {
+                displayRamqAnswer("Plan de traitement.", 'Les données ont été envoyées avec succès');
+                emptyTable_planTrait();
+            }
+        });
+}
+
+function PlnTrSendToCdaNet() {
+    globCdanetTranscode = '3'; //Predetermination Transaction
+
+    // open modal CDA NET 1 or 2 depending on Version of insurance
+    if (globCdaVersion === '2') {
+        modCdan1();
+    }
+    else if (globCdaVersion === '4') {
+        modCdan2();
+    }
 }

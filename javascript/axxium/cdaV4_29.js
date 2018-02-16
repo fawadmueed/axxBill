@@ -5,6 +5,7 @@ var globCdaV4g01 = '';
 
 function CdaV4SendRequestToCdaNet() {
 
+    //TODO: functionality with 2 insurance is not implemented
     //Check if patient has two insurance
     if ($('#asur_2_oui').is(':checked')) {
         //Check if patient has two same insurance
@@ -101,7 +102,7 @@ function CdaV4CreateRequestString() {
                 strRequest = CdaV4CreateClaimReversalRequest();
             }
             break;
-        case "Predetermination":
+        case "3"://Predetermination
             {
                 strRequest = CdaV4CreatePredeterminationRequest();
             }
@@ -508,20 +509,13 @@ function CdaV4PopulateClaimObj()
             obj.f34[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 1. Initilite it with spaces.
             obj.f13[i] = CDAV4FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
 
-//<<<<<<< HEAD
-//            obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 Initialisation
-//            obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 Initialisation
-
-//            var honoraire = 0.00;
-//            if (lineCount + 1 <= procLineNumber) //if there is at least one line after
-//=======
             obj.f35[i] = CDAV4FormatField('', 'AN', 5); //Lab Procedure Code # 2 initialisation
             obj.f36[i] = CDAV4FormatField('', 'D', 6); //Lab Procedure Fee # 2 initialisation
 
 
             var honoraire = 0.00;
             if (lineCount + 1 <= procLineNumber && arrGrilleDeFacturation[i + 1]) //if there is at least one line after
-//>>>>>>> cdaFixingBugs
+
             {
                 if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code))
                 {
@@ -540,12 +534,9 @@ function CdaV4PopulateClaimObj()
                 }
             }
 
-//<<<<<<< HEAD
-//            //Lab Procedure #2
-//            if (lineCount + 2 <= procLineNumber)
-//=======
+
             if (lineCount + 2 <= procLineNumber && arrGrilleDeFacturation[i + 2])
-//>>>>>>> cdaFixingBugs
+
             {
                 honoraire = 0.00;
                 if (!CdaCommIsRamqCode(arrGrilleDeFacturation[i + 1].Type) && !CdaCommIsRamqCode(arrGrilleDeFacturation[i + 2].Type) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 1].Code) && CdaV4IsLabProc(arrGrilleDeFacturation[i + 2].Code))
@@ -844,9 +835,9 @@ function PopulatePredeterminationObj() {
     //obj.f03 = CDAV4FormatField(objDataFromDB.f03, 'AN', 14); //Predetermination Number
     obj.f15 = CDAV4FormatField($("#cdan_placmnt_maxl").val(), 'A', 1); //Initial Placement Upper
     obj.f04 = CDAV4FormatField($("#cdan_date_plcmnt_maxl").val(), 'N', 8); //Date of Initial Placement Upper
-    obj.f18 = CDAV4FormatField(objDataFromDB.f18, 'A', 1); //Initial Placement Lower
-    obj.f19 = CDAV4FormatField(objDataFromDB.f19, 'N', 8); //Date of Initial Placement Lower
-    obj.f05 = CDAV4FormatField($('#q2_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes
+    obj.f18 = CDAV4FormatField($("#cdan_placmnt_mand").val(), 'A', 1); //Initial Placement Lower
+    obj.f19 = CDAV4FormatField($("#cdan_date_plcmnt_mand").val(), 'N', 8); //Date of Initial Placement Lower
+    obj.f05 = CDAV4FormatField($('#q2_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes 
     obj.f20 = CDAV4FormatField(objDataFromDB.f20, 'N', 1); //Maxillary Prosthesis Material
     obj.f21 = CDAV4FormatField(objDataFromDB.f21, 'N', 1); //Mandibular Prosthesis Material
 
@@ -854,6 +845,9 @@ function PopulatePredeterminationObj() {
         obj.f23[i] = CDAV4FormatField(objDataFromDB.f23[i], 'N', 2); //Extracted Tooth Number
         obj.f24[i] = CDAV4FormatField(objDataFromDB.f24[i], 'N', 8); //Extraction Date
     }
+
+    obj.g46 = CDAV4FormatField('1', 'N', 1); //Current Predetermination Page Number
+    obj.g47 = CDAV4FormatField('1', 'N', 1); //Last Predetermination Page Number
 
     if (obj.f25 == 1)
     {
@@ -2418,7 +2412,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
         return res;
     }
 
-    function CdaV4GetDataFromDB(pRrequestType) {
+    function CdaV4GetDataFromDB() {
         $.ajax(
             {
                 url: globCdaNetAPIuri + "PostGenerTransaction",
@@ -2429,6 +2423,7 @@ function CdaV4GetResponseListForEligibility(pResp) {
                     switch (globCdanetTranscode) {
                         case '1'://Claim
                         case '2'://Claim reversial
+                        case '3'://Predetermination
                             {
                                 globCdaDataFromDB = result;
                                 CdaV4CallCDAService('');

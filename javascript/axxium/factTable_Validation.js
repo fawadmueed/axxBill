@@ -119,8 +119,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         $(this).closest('tr').find('.plus').addClass('disabled');
       }
     else{
-        $(this).siblings("td").text('');
-        $(this).closest('tr').find('.plus').removeClass('disabled');
+        $(this).siblings("td[data-target='codeRole']").text('');
       }
 
     if(!valid){

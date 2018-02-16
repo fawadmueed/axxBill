@@ -112,16 +112,22 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var valid;
     var val=$(this).text();
     valid=validation('Type',val);
-    console.log(valid);
+    
+
     if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
       {
         $(this).siblings("td[data-target='codeRole']").text('1');
         $(this).closest('tr').find('.plus').addClass('disabled');
       }
+      else if(val=="CAS")
+      {
+        $(this).closest('tr').find('.plus').addClass('disabled'); 
+      }
     else{
+       $(this).closest('tr').find('.plus').removeClass('disabled')
         $(this).siblings("td[data-target='codeRole']").text('');
       }
-
+      
     if(!valid){
       $(this).focus();
       $(this).text('');
@@ -141,6 +147,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     if(!chckDentSurf){
           warnMsg('Same procedure already exist. Please change Dent or Surface values');
+          $(this).focus();
+           $(this).text('');
       }
 
   else{
@@ -163,6 +171,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
        if(!valid){
             valid=true;
             alert('Wrong Range! Please Enter Correct value.');
+            
             $(this).text('');
 
           }
@@ -743,7 +752,7 @@ function chckDentSurfExistTbl(dent,surf)
 
     });
 
-     if((dentFound>=2) && (surfFound>=2)){
+     if((dentFound>=2)||((dentFound>=2) && (surfFound>=2))) {
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
       // console.log('this match Already Exist! Sorry');
       return false;

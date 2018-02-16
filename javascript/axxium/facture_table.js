@@ -349,19 +349,19 @@ function getAllTrData(){
           if(!(arrGrilleDeFacturation_Insurance.length>0))                  
             
           {
-              $('#divPaymentInsurance').addClass('disabled').die();
+              $('#divPaymentInsurance').addClass('disabled');
           }
           else
           {
-              $('#divPaymentInsurance').removeClass('disabled ').bind();
+              $('#divPaymentInsurance').removeClass('disabled ');
           }
           if(!(arrGrilleDeFacturation_Amq.length>0))
           {                  
-              $('#divPaymentRamq').addClass('disabled').unbind();
+              $('#divPaymentRamq').addClass('disabled');
           }
           else
           {
-              $('#divPaymentRamq').removeClass('disabled ').bind();
+              $('#divPaymentRamq').removeClass('disabled ');
           }
           
 
@@ -550,11 +550,19 @@ function emptyTable (option){
 
 function deleteRow(x){
 
+  getAllTrData();
+  var lengthTblArray=arrGrilleDeFacturation.length;
+
   var row_id_Del=$(x).closest('tr').attr('id');
   var row=$(x).closest('tr').remove();
   //remove this Row's Form too
   var deleteThisIdForm=deleteFromArray('delete','row_id',row_id_Del);
   if(deleteThisIdForm){ console.log('Deleted Success'); };
+  
+  if(lengthTblArray==1)
+  {
+    newRecordFact();
+  }
 
 }
 

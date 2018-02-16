@@ -87,13 +87,13 @@ $(document).ready(function(){
 //    	$(this).text('CAS');
 //     });
 
-$(document.body).on('focusin', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent']", function(){
-    	$(this).text('');
-     });
+// $(document.body).on('focusin', "#factTableBody td[data-target='Dent'],#factTableBody_regie td[data-target='Dent']", function(){
+//     	$(this).text('');
+//      });
 
-$(document.body).on('focusin', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
-    	$(this).text('');
-     });
+// $(document.body).on('focusin', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
+//     	$(this).text('');
+//      });
 
 //$(document.body).on('focusin', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code']", function(){
 //    	$(this).text('');

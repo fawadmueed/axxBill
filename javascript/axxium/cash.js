@@ -217,6 +217,7 @@ function CashCreateXmlForVisionR(pObjCash)
 
     var xml = '';
     xml += '<fact_info>' +
+                '<dentist>' + globDentist + '</dentist>' +
                 '<no_traitement>' + globBillNumber + '</no_traitement>' +  //Numéro de traitements (Bill Number)
                 '<no_dossier>' + globNoDossier + '</no_dossier>' + //Numéro de dossier
                 '<dat_serv>' + new Date().toISOString().slice(0, 10) + '</dat_serv>' + //Date

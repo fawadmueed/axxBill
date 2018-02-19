@@ -116,7 +116,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
       {
-        $(this).siblings("td[data-target='codeRole']").text('1');
+        $(this).siblings("td[data-target='codeRole']");
         $(this).closest('tr').find('.plus').addClass('disabled');
       }
       else if(val=="CAS")
@@ -329,6 +329,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         var valFrais=$(this).text();
         $(this).text(parseFloat(valFrais).toFixed(2));
 
+        // check_charcount("factTableBody td[data-target='Frais' ", 4, e);
+
      if(valFrais=="")
           {
             valFrais=0;
@@ -525,7 +527,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
                     return true;
                   }
 
-                  $(this).siblings("td[data-target='Code']").text(1);
+                  $(this).siblings("td[data-target='Code']");
             }
 
         else{

@@ -161,7 +161,7 @@ function newRecordFact(){
 
           case 'Prod':
 
-              tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(1);
+              tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
              tblData.appendTo(tblRow);
 
           break;

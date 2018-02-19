@@ -421,11 +421,10 @@ else {
 		   	{
 		   		case '1':
 		   	 			init_code='2121'+surf_length;
-		   	 	break;
-
+		   	 		break;
 		   	 	case '9':
 		   	 		init_code='2130'+surf_length;
-		   	 	break;
+		   	 		break;
 		   	 	case '2':
 		   	 			if(val==97)
 		   	 			{
@@ -445,56 +444,52 @@ else {
 		   	 					}
 		   	 				}
 		   	 			}
-		   	 	break;
+		   	 			break;
 
 		   	 	case '3':
-		   	 		if(surf_length<=3)
-		   	 		{
-		   	 			init_code='25'+surf_length+'00';
-		   	 		}
-		   	 	break;
+						if(surf_length<=3)
+						{
+							init_code='25'+surf_length+'00';
+						}
+						break;
 
 		   	 	case '4':
-		   	 		if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2512'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25123';
-		   	 		}
-		   	 	break;
+						if(surf_length<=2)
+						{
+							init_code='2512'+surf_length;
+						}
+						if(surf_length>=3)
+						{
+							init_code='25123';
+						}
+						break;
 
 		   	 	case 'A':
-		   	 		if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2522'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25223';
-		   	 		}
-		   	 	break;
+						if(surf_length<=2)
+						{
+							init_code='2522'+surf_length;
+						}
+						if(surf_length>=3)
+						{
+							init_code='25223';
+						}
+						break;
 		   	 	case 'B':
 
 		   	 			init_code='25221';
-		   	 	break;
+		   	 			break;
 		   	 	case '5':
 
 		   	 			init_code='25500';
-		   	 	break;
+		   	 			break;
 		   	 	case '6':
-
-		   	 			init_code='2123'+surf_length;
-		   	 	break;
 		   	 	case '7':
-
-		   	 		init_code='2123'+surf_length;
-		   	 	break;
+		   	 			init_code='2123'+surf_length;
+		   	 			break;
 		   	 	case '8':
 
 		   	 		init_code='2312'+surf_length;
-		   	 	break;
+		   	 		break;
 		   	 	case '0':
 		   	 			//FALSE
 		   	 	break;
@@ -502,8 +497,6 @@ else {
 		   	 	case 'X':
 		   	 		// TRUE
 		   	 	break;
-
-
 		   	}
 		   }
 
@@ -512,72 +505,55 @@ else {
 		   	switch (surf_modal_btn_val)
 		   	{
 		   		case '1':
-		   	 		init_code='2121'+surf_length;
-		   	 	break;
-
+						init_code='2121'+surf_length;
+						break;
 		   	 	case '9':
-		   	 		init_code='2130'+surf_length;
-		   	 	break;
+						init_code='2130'+surf_length;
+						break;					
 		   	 	case '2':
-		   	 			init_code='25'+surf_length+'00';
-		   	 	break;
-
+		   	 			init_code='2321'+surf_length;
+		   	 			break;
 		   	 	case '3':
-
-		   	 		if(surf_length<=3)
-		   	 		{
-		   	 			init_code='25'+surf_length+'00';
-		   	 		}
-
-		   	 	break;
+						if(surf_length<=3) {
+							init_code='25'+surf_length+'00';
+						}
+						break;
 		   	 	case '4':
-		   	 		if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2512'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25123';
-		   	 		}
-		   	 	break;
-
+						if(surf_length<=2) {
+							init_code='2512'+surf_length;
+						}
+						if(surf_length>=3) {
+							init_code='25123';
+						}
+						break;
 		   	 	case 'A':
-		   	 		if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2522'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25223';
-		   	 		}
-		   	 		break;
+						if(surf_length<=2) {
+							init_code='2522'+surf_length;
+						}
+						if(surf_length>=3) {
+							init_code='25223';
+						}
+						break;
 				case 'B':
-		   	 		init_code='25221';
-
-		   	 	break;
+		   	 			init_code='25221';
+		   	 			break;
 		   	 	case '5':
-		   	 		init_code='25500';
-		   	 	break;
+		   	 			init_code='25500';
+		   	 			break;
 
 		   	 	case '6':
-		   	 		init_code='2123'+surf_length;
-		   	 	break;
 		   	 	case '7':
-		   	 		init_code='2123'+surf_length;
-		   	 	break;
-
+		   	 			init_code='2123'+surf_length;
+		   	 			break;
 		   	 	case '8':
+						if((val.indexOf('O') > 0)||(val.indexOf('B') > 0)||(val.indexOf('L') > 0)) {
+							init_code='23210';
+						}
+						else {
+							init_code='2331'+surf_length;
+						}
 
-		   	 		if((val.indexOf('O') > 0)||(val.indexOf('B') > 0)||(val.indexOf('L') > 0))
-					{
-						init_code='23210';
-		   	 		}
-		   	 		else
-		   	 		{
-		   	 			init_code='2331'+surf_length;
-		   	 		}
-
-		   	 	break;
+		   	 			break;
 		   	 	case '0':
 		   	 			//FALSE
 		   	 	break;
@@ -594,57 +570,54 @@ else {
 		   	{
 		   		case '1':
 		   	 			init_code='2122'+surf_length;
-		   	 	break;
+		   	 			break;
 
 		   	 	case '9':
 		   	 			init_code='2130'+surf_length;
-		   	 	break;
+		   	 			break;
 		   	 	case '2':
 		   	 			init_code='2322'+surf_length;
-		   	 	break;
+		   	 			break;
 
 		   	 	case '3':
 		   	 			if(surf_length<=3)
 		   	 			{
 		   	 				init_code='25'+surf_length+'00';
 		   	 			}
-		   	 	break;
+		   	 			break;
 		   	 	case '4':
 		   	 			if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2512'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25123';
-		   	 		}
-		   	 	break;
+						{
+							init_code='2512'+surf_length;
+						}
+						if(surf_length>=3)
+						{
+							init_code='25123';
+						}
+						break;
 
 		   	 	case 'A':
-		   	 		if(surf_length<=2)
-		   	 		{
-		   	 			init_code='2522'+surf_length;
-		   	 		}
-		   	 		if(surf_length>=3)
-		   	 		{
-		   	 			init_code='25223';
-		   	 		}
-		   	 	break;
+						if(surf_length<=2)
+						{
+							init_code='2522'+surf_length;
+						}
+						if(surf_length>=3)
+						{
+							init_code='25223';
+						}
+						break;
 
 		   	 	case 'B':
 		   	 		init_code='25521';
-		   	 	break;
+		   	 		break;
 
 		   	 	case '5':
 		   	 		init_code='25500';
-		   	 	break;
+		   	 		break;
 		   	 	case '6':
-		   	 			init_code='2124'+surf_length;
-		   	 	break;
-
 		   	 	case '7':
 		   	 		init_code='2124'+surf_length;
-		   	 	break;
+		   	 		break;
 		   	 	case '8':
 		   	 		if((val.indexOf('O') > 0)||(val.indexOf('B') > 0)||(val.indexOf('L') > 0))
 					{

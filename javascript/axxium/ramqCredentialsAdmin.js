@@ -45,32 +45,28 @@ $(document).ready(function () {
     globDentist = RamqGetParamFromUrl("dentist");
     globLang = RamqGetParamFromUrl('lng');
 
-    var linkAdmin = document.getElementById("linkAdmin");
-    var adminUrl = 'admin.html?clinicId=' + globClinicId;
-    linkAdmin.setAttribute('href', adminUrl);
+    ////Change language
+    //if (globLang === 'en') {
+    //    changeLang('en');
+    //}
+    //else {
+    //    globLang = 'fr'; //French by default
+    //    changeLang('fr');
+    //}
 
-    //Change language
-    if (globLang === 'en') {
-        changeLang('en');
-    }
-    else {
-        globLang = 'fr'; //French by default
-        changeLang('fr');
-    }
+  //$.ajax({
+  //	type:'GET',
+  //	url:"json/params/codtar"+globDentist+".json",
+  //	//url:"json/params/codes6.json",
+  //	async:false,
+  //	dataType: 'json',
+  //	success: function (data) {
+  //  	dataJson_Code=data;
+  //	}
+  //})
 
-  $.ajax({
-  	type:'GET',
-  	url:"json/params/codtar"+globDentist+".json",
-  	//url:"json/params/codes6.json",
-  	async:false,
-  	dataType: 'json',
-  	success: function (data) {
-    	dataJson_Code=data;
-  	}
-  })
-
-    RamqCheckCredentials();
-    RamqGetVisionRData();
+  //  RamqCheckCredentials();
+  //  RamqGetVisionRData();
 });
 
 function RamqCheckCredentials()
@@ -94,7 +90,7 @@ function RamqGetCredentials(pClinicId)
             if (data && data.outcome && data.outcome === 'error') //means file doesn't exist
             {
                 //open a popup "Demande d’un identifiant machine"
-                $('#message_ramq_credential_alert').html("Vous n'avez pas de mot de passe. Veuillez s.v.p. vous créer un nouveau mot de passe dans le module Admin.");
+                $('#message_ramq_credential_alert').html("You have not credentials. Please create new Credentials in Admin panel.");
                 ramqCredentialAlert();
             }
             else if (data && data.CreationDate)
@@ -117,12 +113,12 @@ function RamqCheckIfMachineIdExpired()
             var numberDaysUntilExpiration = 30 - dayDiff;
             if (numberDaysUntilExpiration > 0) {
                 //open a popup "Credentials expired"
-                $('#message_ramq_credential_alert').html("Le mot de passe utilisé pour envoyer les factures à la RAMQ va expirer bientôt, voulez-vous le changer maintenant?");
+                $('#message_ramq_credential_alert').html("Your Credentials will be expired soon. Do you want to update it?");
                 ramqCredentialAlert();
             }
             else {
                 //open a popup "Credentials expired"
-                $('#message_ramq_credential_alert').html("Votre mot de passe est expiré. Veuillez le mettre à jour.");
+                $('#message_ramq_credential_alert').html("Your Credentials is expired. Please update it.");
                 ramqCredentialAlert();
             }
         }
@@ -132,12 +128,16 @@ function RamqCheckIfMachineIdExpired()
 
 //Call this function when the button OK is clicked on the module UpdateMachineId.
 function RamqUpdateMachineId() {
+    //Show progress
+    document.getElementById("loaderAdminMain").setAttribute("class", "ui active inverted dimmer");
     $.post("allScriptsv1.py", { tx: "ChangePassword", clinicId: globClinicId },
             function (result) {
+                //Hide progress
+                document.getElementById("loaderAdminMain").setAttribute("class", "ui inverted dimmer");
                 if (result.outcome === 'error')
                     alert(result.message);
                 else
-                    alert("Votre mot de passe a été mis à jour avec succès.");
+                    alert("Credentials were updated successfully.");
             });
 }
 
@@ -198,9 +198,7 @@ function RamqGetVisionRData() {
 
                       //Display Patient name
                       var patName = globVisionRData.PrePers + ' ' + globVisionRData.NomPers;
-                      var pat_Age=get_age();
-                      $('#patNameSub').html(patName +' '+ pat_Age);
-                      // $('#patAge').html(pat_Age);
+                      $('#patNameSub').html(patName);
 
                     //   //Show prof name on Payment -> Assurances
                     //   document.getElementById("assurProfName").innerHTML = globVisionRData.ProfName;

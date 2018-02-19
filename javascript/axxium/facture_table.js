@@ -812,6 +812,20 @@ function populate_table_fact(arrToPopTabl){
 
 }
 
+function ReInitialize_fact_tbls()
+{
+  // To Re-Initialize all three Tables - FactureTable / PlanTraitement / Regie Table
+
+  //Facture-Table Re-Initialize
+  emptyTable(newTbl); 
+
+  //PlanTrait
+  emptyTable_planTrait();
+
+  //Regie
+
+}
+
 // Populate-Fact-Table-Guide
 // Call populate_tbl_from(testForm,testArray) with Form-Array & TableData
 //--TEST DATA--

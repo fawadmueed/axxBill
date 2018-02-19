@@ -182,6 +182,10 @@ function CashSaveBill()
             else
                 displayRamqAnswer("VisionR", 'Les données ont été envoyées à VisionR avec succès');
         });
+
+    //Re-Initialize all tables
+    ReInitialize_fact_tbls();
+
 }
 
 function CashGetCashData()

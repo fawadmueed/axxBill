@@ -567,6 +567,7 @@
     // document.getElementById("Ebirth").value = birth;
     var topPat = '<h3 class="ui center aligned header">' + curInitials + aPat + ' - ' + curName + ', ' + birth + '</h3>';
     document.getElementById("patName").innerHTML = topPat;
+    
 
     // Only show name at the top for now
     // var topPatSub;

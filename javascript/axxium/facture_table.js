@@ -546,6 +546,7 @@ function emptyTable (option){
   // dent_Type='';
   init_code='';
   surf_type='';
+
   // checkDentType();
   //IMP! call Dent_type Modal again for selection in Main FactTabl
 
@@ -809,6 +810,20 @@ function populate_table_fact(arrToPopTabl){
 
                 tblRow.appendTo(tblBody);
         });
+
+}
+
+function ReInitialize_fact_tbls()
+{
+  // To Re-Initialize all three Tables - FactureTable / PlanTraitement / Regie Table
+
+  //Facture-Table Re-Initialize
+  emptyTable('newTbl'); 
+
+  //PlanTrait
+  emptyTable_planTrait();
+
+  //Regie
 
 }
 

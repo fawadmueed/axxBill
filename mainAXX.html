@@ -32,6 +32,7 @@
     <script src="javascript/axxium/modals-facturation.js"></script>
     <script src="javascript/axxium/factTable_validation.js"></script>
     <script src="javascript/axxium/factTable_planTrait.js"></script>
+    <script src="javascript/axxium/form_validation.js"></script>
     <script src="javascript/axxium/code_validation.js"></script>
     <script src="javascript/axxium/code_validation_function.js"></script>
     <script src="javascript/axxium/valid_surface_code_autogen_functions.js"></script>
@@ -199,6 +200,7 @@
         <div id="context1">
             <div class="ui top attached tabular menu active">
                 <div class="item active" data-tab="facturation" id="facturation" onclick="checkDentType();"><i class="dollar circular  blue icon trn" data-trn-key=""></i>Facturation</div>
+
                 <!--<div class="item" id="" data-tab="plans"><i class="list circular blue icon trn" data-trn-key=""></i>Plan RDV</div>-->
             </div>
         </div>
@@ -319,7 +321,10 @@
 										Your browser does not support the HTML5 canvas tag.
 								</canvas>
 							</div>
-                            
+                            <div class="ui right aligned column">
+                                
+                                <!-- <div class="ui right floated button">Tarif List</div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="ui negative message hidden" id="wrn_msg_fact_tbl">
@@ -957,20 +962,20 @@
                                              <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
                                                         <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
-                                                        <label>Tarif régulier</label>    
+                                                        <label style="font-weight: bold">Tarif régulier</label>    
                                                     </div>
 
                                                 </div> <br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
                                                         <input type="radio" name="tarif_fact" value="2" class="type_rate">
-                                                        <label>Tarif spécial</label>
+                                                        <label style="font-weight: bold">Tarif spécial</label>
                                                     </div>
                                                 </div><br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox" style="padding-right:40px">
                                                         <input type="radio" name="tarif_fact" value="3" class="type_rate">
-                                                        <label>Régie</label>
+                                                        <label style="font-weight: bold">Régie</label>
                                                     </div>
                                                 </div><br>
                                             

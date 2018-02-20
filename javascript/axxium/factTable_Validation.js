@@ -183,6 +183,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface'], #factTableBody_planTrait td[data-target='Surface']", function(){
 
+    init_code = '';
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
     var surf_chck=val;

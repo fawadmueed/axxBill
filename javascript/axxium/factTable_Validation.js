@@ -117,15 +117,16 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     if(valid && (val=="AMQ" || val=="BES" || val=="HOP"))
       {
         $(this).siblings("td[data-target='codeRole']");
-        $(this).closest('tr').find('.plus').addClass('disabled');
+        $(this).closest('tr').find('.plus').removeClass('disabled');
       }
       else if(val=="CAS")
       {
         $(this).closest('tr').find('.plus').addClass('disabled'); 
       }
     else{
-       $(this).closest('tr').find('.plus').removeClass('disabled')
+       
         $(this).siblings("td[data-target='codeRole']").text('');
+        $(this).closest('tr').find('.plus').addClass('disabled'); 
       }
       
     if(!valid){

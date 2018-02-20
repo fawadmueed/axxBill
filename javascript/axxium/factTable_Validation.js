@@ -146,9 +146,9 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
 
     if(!chckDentSurf){
-          warnMsg('La même procédure existe déjà. Veuilles s.v.p. changer la valeur de la dent ou de la surface.');
+          warnMsg(msgerr.msg0164);
           $(this).focus();
-           $(this).text('');
+          $(this).text('');
       }
 
   else{
@@ -167,13 +167,11 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
             valid=validation('Dent',val);
           }
 
-
        if(!valid){
             valid=true;
-            alert('Wrong Range! Please Enter Correct value.');
-            
+            warnMsg(msgerr.msg013);          
             $(this).text('');
-
+            $(this).focus();
           }
 
       }
@@ -195,7 +193,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
     if(!chckDentSurf)
     {
-      warnMsg('Same procedure already exist. Please change Dent or Surface values');
+      warnMsg(msgerr.msg041);
        $(this).focus();
        $(this).text('');
     }

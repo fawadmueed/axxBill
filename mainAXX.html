@@ -481,7 +481,7 @@
                                         </tr> -->
                                     </tbody>
                                 </table>
-                                <div class="ui axxium tiny button" onclick="PlnTrSavePlan()">Enregistrer</div>
+                                <div class="ui axxium tiny button" onclick="PlnTrSavePlan(false)">Enregistrer</div>
                                 <button class="ui axxium tiny button" onclick="PlnTrSendPlan()">Soumettre</button>
 
                                 <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
@@ -1772,11 +1772,11 @@
                                 <div class="inline fields">
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
-                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" >
+                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked">
                                         <label>Oui</label>
                                     </div>
                                     <div class="field">
-                                        <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked">
+                                        <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" >
                                         <label>Non</label>
                                     </div>
                                 </div>
@@ -2482,6 +2482,9 @@
     </div>
 
     <div class="ui modalCdan1 modal">
+        <div id="loaderModalCdan1" class="ui inverted dimmer">
+            <div class="ui text loader">...</div>
+        </div> 
         <i class="close icon"></i>
         <div class="header">
             <i class="user icon"></i>CDANET Modal - 2
@@ -2580,6 +2583,9 @@
         </div>
     </div>
     <div class="ui modalCdan2 modal">
+        <div id="loaderModalCdan2" class="ui inverted dimmer">
+            <div class="ui text loader">...</div>
+        </div>
         <i class="close icon"></i>
         <div class="header">
             <i class="user icon"></i>CDANET Modal - 4

@@ -62,13 +62,12 @@ function PlnTrPopulateDetails()
 
 }
 
-function PlnTrSavePlan()
+function PlnTrSavePlan(pIsFacturer)
 {
-
     getAllTrData_planTrait(); //Save data from grid into global array.
     var seqNum = (globPlnTrHistSelectedData) ? globPlnTrHistSelectedData[0] : null;
     var cdaNetRequest = '';
-    var plnTrInfo = {grid:arrGrilleDeFacturation_planTrait, facturer: false};
+    var plnTrInfo = { grid: arrGrilleDeFacturation_planTrait, facturer: pIsFacturer };
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     var inputXMl = {
         "request": cdaNetRequest, //request to send
@@ -204,8 +203,16 @@ function PlnTrDelete() {
 }
 
 function PlnTrSendToCdaNet() {
-
-    var cdaNetRequest = CdaV4CreateRequestString();//TODO: check version
+    var cdaNetRequest = '';
+    if (globCdaVersion === '4')
+    {
+        cdaNetRequest = CdaV4CreateRequestString();
+    }
+    else if (globCdaVersion === '2')
+    {
+        cdaNetRequest = CdaV2CreateRequestString();
+    }
+    
     var plnTrInfo = { grid: arrGrilleDeFacturation_planTrait, facturer: false };
     var randomNum = CdaCommCreateRandomNumber(1, 999);
     var seqNum = (globPlnTrHistSelectedData) ? globPlnTrHistSelectedData[0] : null;
@@ -213,9 +220,18 @@ function PlnTrSendToCdaNet() {
         "request": cdaNetRequest, //request to send
         "inputs": plnTrInfo // JSON data
     };
+    //Show loader
+    document.getElementById("loaderModalCdan1").setAttribute("class", "ui active inverted dimmer");
+    document.getElementById("loaderModalCdan2").setAttribute("class", "ui active inverted dimmer");
 
     $.post("allScriptsv1.py", { tx: "SendPlanTraitement", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, lun: randomNum, json: JSON.stringify(inputXMl), sendReq: true, noseq: '000001' },
         function (result) {
+            //Hide loader
+            document.getElementById("loaderModalCdan1").setAttribute("class", "ui inverted dimmer");
+            document.getElementById("loaderModalCdan2").setAttribute("class", "ui inverted dimmer");
+            //For test
+            result.outcome = 'success';
+            result.message = "14781,0,002,11321111    014781041300007900161N0521807004150              R01                                                                           0045200F00000006110061";
             if (result.outcome == 'error') {
                 alert(result.message);
             }
@@ -225,23 +241,41 @@ function PlnTrSendToCdaNet() {
                 if (communicationResult == 0)// No errors
                 {
                     var transactionLine = responseLine.split(',').slice(3); // extract string after 3th comma
-
-                    globCdaRespObj = CdaV4ReadResponse(transactionLine);
-                    var respMessage = '';
-                    if (globCdaRespObj) {
-                        respMessage = CdaV4CreateRespMessage(globCdaRespObj, transactionLine);
+                    var version = transactionLine[0].substring(18,20);
+                    if (version === '04')
+                    {
+                        globCdaRespObj = CdaV4ReadResponse(transactionLine);
+                        var respMessage = '';
+                        if (globCdaRespObj) {
+                            respMessage = CdaV4CreateRespMessage(globCdaRespObj, transactionLine);
+                        }
+                        else {
+                            respMessage = 'Parsing CdaNet response failed.'
+                        }
                     }
-                    else {
-                        respMessage = 'Parsing CdaNet response failed.'
+                    else if (version === '02')
+                    {
+                        globCdaRespObj = CdaV2ReadResponse(transactionLine);
+                        var respMessage = '';
+                        if (globCdaRespObj) {
+                            respMessage = CdaV2CreateRespMessage(globCdaRespObj, transactionLine);
+                        }
+                        else {
+                            respMessage = 'Parsing CdaNet response failed.'
+                        }
                     }
 
-                    CdaCommShowResp(respMessage);
+                    PlnTrShowResp(respMessage);
+                    
                 }
             }
         });
 }
 
-function PlnTrTransferToBill(){
+function PlnTrTransferToBill() {
+    //Update is Facturer to true
+    PlnTrSavePlan(true);
+
     //Swich tabs
     $("#tabFacture").addClass("active");
     $("#tabPlnTr").removeClass("active");
@@ -265,5 +299,14 @@ function PlnTrModify() {
         $('.PlanTrait').modal('hide');
     }
     
+}
+
+function PlnTrShowResp(pRespMessage) {
+    var message = pRespMessage.replace(/\n/g, '<br/>');
+    var div = document.getElementById('cdanet_predeterm_response_div');
+
+    div.innerHTML = '<p>' + message + '</p>';
+    //Show modal
+    $('.modalResponseCDANETPredeterm').modal('show');
 }
 

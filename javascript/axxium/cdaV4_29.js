@@ -2028,7 +2028,7 @@ function CdaV4GetResponseListForEOBPredet(pResp)
     var nNotes = pResp.g11;
     var noteTxt;
     for (var i = 0; i < nNotes; i++) {
-        noteTxt = g45[i] + ' ' + g26[i];
+        noteTxt = pResp.g45[i] + ' ' + pResp.g26[i];
         noteTxt = CdaCommFrompage850(noteTxt);
         ResponseList += noteTxt + '\n';
     }
@@ -2126,15 +2126,15 @@ function CdaV4GetResponseListForPredeterm(pResp)
     ResponseList += CdaCommFrompage850(disposition) + '\n';
 
     var gTransfer = pResp.g01;
-    ResponseList += 'No de Référence: ' + gTransref + '\n';
+    ResponseList += 'No de Référence: ' + gTransfer + '\n';
 
     var totalAmount = (isNaN(pResp.g04 / 100)) ? '0' : (pResp.g04 / 100).toFixed(2);
     ResponseList += 'Montant réclamé : ' + totalAmount + '\n';
 
     var errorCodeNum = pResp.g06;
-    ResponseList +='Nombre d\'erreurs : ' + errorCodes + '\n';
+    ResponseList += 'Nombre d\'erreurs : ' + errorCodeNum + '\n';
     
-    for (var i = 0; i < errorCodes; i++) {
+    for (var i = 0; i < errorCodeNum; i++) {
         var procLineNum = pResp.f07[i];
         var errorCode = pResp.g08[i];
         if (procLineNum > 0)

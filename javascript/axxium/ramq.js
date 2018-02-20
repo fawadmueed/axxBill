@@ -1553,11 +1553,11 @@ function RamqGetConstAppData()
 function RamqPopulateVisionRDataObj(pData) {
     var res = {};
     res.DemdrTypIdIntvn = '1';//const
-    res.DemdrIdIntvn = pData.DemdrIdIntvn;//'299801';//? looks like Idprof
+    res.DemdrIdIntvn = pData.DemdrIdIntvn;//(pData.DemdrIdIntvn) ? pData.DemdrIdIntvn : '299801';//'299801';//? looks like Idprof
     res.ExpedTypIdIntvn = '3';//const
     res.ExpedIdIntvn = pData.ExpedIdIntvn;//'18011';//?
     res.TypIdProf = '1';//const 1 : Numéro dispensateur RAMQ
-    res.IdProf = pData.IdProf;//'299801';//
+    res.IdProf = pData.DemdrIdIntvn;//(pData.IdProf) ? pData.IdProf : '299801';//'299801';//
     res.ProfName = pData.ProfName;//'Dr Pierre Laberge';//
     //res.TypIdLieuPhys = '1';//1 : Lieu physique, reconnu et codifié à la Régie (établissement SSS, Cabinet, etc.)
     //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?

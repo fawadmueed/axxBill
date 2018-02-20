@@ -1718,13 +1718,23 @@
                                 <div class="ui horizontal divider"> <strong>Assurance</strong></div>
                                 <p1>Réclamation électronique pour <span id="assurProfName"></span>. Êtes-vous sur de vouloir transmettre la requête?</p1>
                                 <div class="eight fields">
-                                    <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_1" id="asur_1_oui"><label>Oui</label></div>
-                                    <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_1" id="asur_1_non" checked="checked"><label>Non</label></div>
+                                    <div class="inline field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" class="paiemnt_question" name="asur_1" id="asur_1_oui"><label>Oui</label></div>
+                                        </div>
+                                    <div class="inline field">
+                                        <div class="ui radio checkbox"><input type="radio" class="paiemnt_question" name="asur_1" id="asur_1_non" checked="checked"><label>Non</label></div></div>
                                 </div>
                                 <p1>Le patient est-il courvert par une deuxième assurance ? </p1>
                                 <div class="eight fields">
-                                    <div class="inline field"><input type="radio" class="paiemnt_question" name="asur_2" id="asur_2_oui" disabled><label>Oui</label></div>
-                                    <div class="inline field"><input type="radio" class="paiemnt_question disabled" name="asur_2" id="asur_2_non" checked="checked" disabled><label>Non</label></div>
+                                    <div class="inline field">
+                                            <div class="ui radio checkbox">
+                                        <input type="radio" class="paiemnt_question" name="asur_2" id="asur_2_oui" disabled><label>Oui</label></div>
+                                    </div>
+                                    <div class="inline field">
+                                            <div class="ui radio checkbox">
+                                        <input type="radio" class="paiemnt_question disabled" name="asur_2" id="asur_2_non" checked="checked" disabled><label>Non</label>
+                                    </div></div>
                                 </div>
                                 <!-- <div class="field">
                           <label>Insurance Version Select</label>
@@ -1750,34 +1760,41 @@
                                 <div class="inline fields">
                                     <label>Carte d'assurance-maladie</label>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="carte_as_malad_oui" name="cart_malad" checked="checked">
-                                        <label>Oui</label>
+                                        <label>Oui</label></div>
                                     </div>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="carte_as_malad_non" name="cart_malad">
-                                        <label>Non</label>
+                                        <label>Non</label></div>
                                     </div>
                                 </div>
                                 <div class="inline fields">
                                     <label>Remboursement demandé par Patient</label>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="remb_dem_oui" name="rem_dem" checked="checked">
-                                        <label>Oui</label>
+                                        <label>Oui</label></div>
                                     </div>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="remb_dem_non" name="rem_dem">
-                                        <label>Non</label>
+                                        <label>Non</label></div>
                                     </div>
                                 </div>
-                                <div class="inline fields">
+                                <div class=" inline fields">
+
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" >
-                                        <label>Oui</label>
+                                        <label>Oui</label></div>
                                     </div>
                                     <div class="field">
+                                        <div class="ui radio checkbox">
                                         <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked">
-                                        <label>Non</label>
+                                        <label>Non</label></div>
                                     </div>
                                 </div>
                                 <div class="ui grid">
@@ -1792,14 +1809,16 @@
                                                 <label>No du groupe</label>
                                                 <input type="text" name="" id="pamnt_no_grp">
                                             </div>
-                                            <div class="inline field">
+                                            <div class=" field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" class="optRegiePa_radio" name="fact_paimn_radio" id="optRegiePaimentComptePers" checked="checked">
                                                 <label>Compte Personnel</label>
-                                            </div>
-                                            <div class="inline field">
+                                            </div></div>
+                                            <div class=" field">
+                                                <div class="ui radio checkbox">
                                                 <input class="optRegiePa_radio" type="radio" name="fact_paimn_radio" id="optRegiePaimentCompteAdmin">
                                                 <label>Compte Administratif</label>
-                                            </div>
+                                            </div></div>
                                             <div class="txtRegiPa" style="display: none">
                                                 <div class="field">
                                                     <label>Numero de compte administratif</label>
@@ -1810,14 +1829,16 @@
                                         <div class="ui form segment">
                                             <div class="ui horizontal divider"> <strong>Lieu de dispensation</strong></div>
                                             <strong>Identification du lieu</strong>
-                                            <div class="inline field">
+                                            <div class=" field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" class="lieu" name="lieu_codifie" id="lieu_codifie">
                                                 <label>Lieu codifié á la Régie</label>
-                                            </div>
-                                            <div class="inline field">
+                                            </div></div>
+                                            <div class=" field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" class="lieu" name="lieu_codifie" id="lieu_codifie_non">
                                                 <label>Lieu non codifié</label>
-                                            </div>
+                                            </div></div>
                                             <div class="codif_selection_lieu" style="display: none;">
                                                 <div class="field">
                                                     <label>Numéro du lieu</label>
@@ -1874,35 +1895,41 @@
                                             </script>
                                             <label>Type de lieu</label>
                                             <div class="inline field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" name="type_lieu_pamnt" id="type_lieu_cab">
                                                 <label>Cabinet</label>
-                                            </div>
+                                            </div></div>
                                             <div class="inline field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" name="type_lieu_pamnt" id="type_lieu_dom">
                                                 <label>Domicile</label>
-                                            </div>
+                                            </div></div>
                                             <div class="inline field">
+                                                <div class="ui radio checkbox">
                                                 <input type="radio" name="type_lieu_pamnt" id="type_lieu_aut">
                                                 <label>Autre</label>
-                                            </div>
+                                            </div></div>
                                         </div>
                                     </div>
                                     <div class="eight wide column">
                                         <div class="ui form segment">
                                             <div class="ui horizontal divider"> <strong>Code diagnostic</strong></div>
                                             <div class="ui form segment">
-                                                <div class="inline field">
+                                                <div class=" field">
+                                                        <div class="ui radio checkbox">
                                                     <input type="radio" name="cod_diag" id="code_diag_carie_dent" value="5210">
                                                     <label>Carie dentaire</label>
-                                                </div>
-                                                <div class="inline field">
+                                                </div></div>
+                                                <div class=" field">
+                                                    <div class="ui radio checkbox">
                                                     <input type="radio" name="cod_diag" id="code_diag_etat_norm" value="V909">
                                                     <label>État normal</label>
-                                                </div>
-                                                <div class="inline field">
+                                                </div></div>
+                                                <div class=" field">
+                                                    <div class="ui radio checkbox">
                                                     <input type="radio" name="cod_diag" id="code_diag_autre_radio" value="">
                                                     <label>Autre</label>
-                                                </div>
+                                                </div></div>
                                                 <div class="four wide field">
                                                     <input type="text" name="cod_diag" id="code_diag_autre_field">
                                                 </div>
@@ -1952,39 +1979,70 @@
                                     <div class="ui two column grid">
                                         <div class="column">
                                             <div class="ui segment">
-                                                <strong>Solde Actuel</strong>
-                                                <div class="field">
+                                                <div class="ui horizontal divider">
+                                                    <strong>Solde Actuel</strong>
+                                                </div>
+                                                <div class="nine wide field">
                                                     <label>PERS</label>
-                                                    <input type="text" name="" id="pers_solde">
+                                                    <div class="ui icon input">
+                                                        <input type="number" name="" id="pers_solde" class="mont">
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="field">
+                                                <div class="nine wide field">
                                                     <label>AMQ</label>
-                                                    <input type="text" name="" id="amq_solde">
+                                                    <div class="ui icon input">
+                                                    <input type="number" name="" id="amq_solde" class="mont">
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                    
                                                 </div>
-                                                <div class="field">
+                                                <div class="nine wide field">
                                                     <label>ASS</label>
-                                                    <input type="text" name="" id="ass_solde">
+                                                    <div class="ui icon input">
+                                                    <input type="number" name="" id="ass_solde" class="mont">
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                    
                                                 </div>
-                                                <div class="field">
+                                                <div class="nine wide field">
                                                     <label>POST-DATÉS</label>
-                                                    <input type="text" name="" id=post_solde>
+                                                    <div class="ui icon input">
+                                                    <input type="number" name="" id="post_solde" class="mont" >
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="column">
                                             <div class="ui segment">
+                                                <div class="ui horizontal divider">
                                                 <strong>Total Facture</strong>
-                                                <div class="field">
+                                            </div>
+                                                <div class="nine wide field">
                                                     <label>PERS</label>
-                                                    <input type="text" name="" id="pers_total">
+                                                    <div class="ui icon input">
+                                                    <input type="text" name="" id="pers_total" class="mont">
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                
                                                 </div>
-                                                <div class="field">
+                                                <div class="nine wide field">
                                                     <label>AMQ</label>
-                                                    <input type="text" name="" id="amq_total">
+                                                   <div class="ui icon input">
+                                                    <input type="text" name="" id="amq_total" class="mont">
+                                                        <i class="ui dollar icon"></i>
+                                                    </div> 
+
                                                 </div>
-                                                <div class="field">
+                                                <div class="nine wide field">
                                                     <label>ASS</label>
-                                                    <input type="text" name="" id="ass_total">
+                                                    <div class="ui icon input">
+                                                    <input type="text" name="" id="ass_total" class="mont">
+                                                        <i class="ui dollar icon"></i>
+                                                    </div> 
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -1993,31 +2051,56 @@
                                 <div class="ui form segment">
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"> <strong>COMPTANT</strong></div>
-                                        <div class="two fields">
-                                            <div class="inline field cashComponent"><label>ARGENT</label> <input type="text" name="" id="argnt_pamnt"></div>
-                                            <div class="inline field cashComponent"><label>DÉBIT </label> <input type="text" name="" id="debit_pamnt"></div>
+                                        <div class="fields">
+                                            <div class="field cashComponent ">
+                                                <label>ARGENT</label> 
+                                                 <div class="ui icon input ">
+                                                    <input type="number" name="" id="argnt_pamnt" class="mont">
+
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                </div>
+                                            <div class=" field cashComponent ">
+                                                <label>DÉBIT </label>
+                                            <div class="ui icon input ">
+                                                     <input type="number" name="" id="debit_pamnt" class="mont">
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
                                         </div>
                                     </div>
+                                </div>
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"><label>CRÉDIT</label></div>
-                                        <div class="three fields">
-                                            <div class="inline field"><input type="radio" name="payment-credit" id="visa_crdt_rad"><label>VISA</label></div>
-                                            <div class="inline field"><input type="radio" name="payment-credit" id="amex_crdt"><label>AMEX</label></div>
-                                            <div class="inline field"><input type="radio" name="payment-credit" id="mstr_crdt"><label>Master Card</label></div>
+                                        <div class=" fields">
+                                            <div class=" field"><div class="ui radio checkbox"><input type="radio" name="payment-credit" id="visa_crdt_rad"><label>VISA</label></div></div>
+                                            <div class=" field"><div class="ui radio checkbox"><input type="radio" name="payment-credit" id="amex_crdt"><label>AMEX</label></div></div>
+                                            <div class=" field"><div class="ui radio checkbox"><input type="radio" name="payment-credit" id="mstr_crdt"><label>Master Card</label></div></div>
                                         </div>
                                         <div class="field">
-                                            <div class="inline field cashComponent"> <input type="text" name="" id="visa_crdt_inpt"> </div>
+                                            <div class="inline field cashComponent"> 
+                                                <div class="ui icon input ">
+                                                     <input type="text" name="" id="visa_crdt_inpt" class="mont"> 
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="ui form segment">
                                         <div class="ui horizontal divider"><label>POST-DATÉS</label></div>
                                         <div class="two fields">
-                                            <div class="three wide field"> <label>No</label> <input type="text" name="" id="pst_dat_no" value="1"></div>
-                                            <div class=" field"> <label>Montant</label> <input type="text" class="cashComponent" name="" id="pst_dat_mnt"></div>
+                                            <div class="two wide field"> <label>No</label> <input type="text" name="" id="pst_dat_no" value="1"></div>
+                                            <div class="six wide field"> <label>Montant</label> 
+                                                <div class="ui icon input ">
+                                                <input type="text" class="cashComponent mont" name="" id="pst_dat_mnt" >
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+
+                                            </div>
                                         </div>
                                         <div class="two fields">
-                                            <div class="ten wide field"> <label>Date</label> <input type="date" name="" id="pst_dat" onchange="CashPostDateOnChange();"></div>
-                                            <div class="field"> <label>Nb</label> <input type="text" name="" id="pst_nb"></div>
+                                            <div class="six wide field"> <label>Date</label> <input type="date" name="" id="pst_dat" onchange="CashPostDateOnChange();"></div>
+                                            <div class="two wide field"> <label>Nb</label> <input type="text" name="" id="pst_nb"></div>
                                         </div>
                                         <div class="ui two column grid">
                                             <div class="row">
@@ -2043,10 +2126,15 @@
                                         <input type="checkbox" name="" id="fract_pmnt_check" onclick="CashDisplayFractPayment();">
                                         <label>Fractioner les paiements</label>
                                     </div>
-                                    <div class="inline field">
+                                    <div class="ui divider"></div>
+                                    <div class="six wide field">
                                         <label style="color: RED">Total paiement</label>
-                                        <input type="text" name="" id="total_pamnt">
-                                        <label>$</label>
+                                        <div class="ui icon input">
+                                                    <input type="text" name="" id="total_pamnt" class='mont'>
+                                                            <i class="ui dollar icon"></i>
+                                                    </div>
+                                        
+                                        
                                     </div>
                                         
                                 </div>
@@ -2054,7 +2142,7 @@
                             </div>
                             
                             <button class="ui right floated axxium button" onclick="CashSaveBill();">Sauvegarder Facture</button>
-                            <button class="ui right floated axxium button " onclick="tesTVal()" >Retourner à la facturation</button>
+                            <button class="ui right floated axxium button close"  >Retourner à la facturation</button>
                         </div>
                         <script type="text/javascript">
       //                       function tesTVal()

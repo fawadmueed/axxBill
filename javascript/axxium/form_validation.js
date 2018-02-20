@@ -12,7 +12,8 @@ $(document).ready(function(){
       })
 
 
-      $(document.body).on('change','#total_pamnt',function(){
+      // All fields with .mont class are Montant ( Amount / Bills in DOllars). Validation is to restrict it to 2 decimal places and Float.
+      $(document.body).on('change','#total_pamnt, .mont ',function(){
 
         var thisAmount=$(this).val();
         $(this).val(parseFloat(thisAmount).toFixed(2));
@@ -61,7 +62,7 @@ $(document).ready(function(){
     
                     }
                   }
-              }
+               }
 
               if(valid_type=='alphaNumeric')
               {

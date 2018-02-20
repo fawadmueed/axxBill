@@ -2022,6 +2022,7 @@
                                         <div class="ui two column grid">
                                             <div class="row">
                                                 <div class="column">
+                                                    <div class="field">
                                                     <label>Type</label>
                                                     <select id="pst_type">
                                                         <option selected="selected">Chéque</option>
@@ -2031,6 +2032,7 @@
                                                         <option>Financement</option>
                                                     </select>
                                                 </div>
+                                                    </div>
                                                 <div class="column">
                                                     <button class="ui right floated button axxium " onclick="CashCreateDataForPostDateTable();">Details</button>
                                                 </div>
@@ -2042,20 +2044,28 @@
                                         <label>Fractioner les paiements</label>
                                     </div>
                                     <div class="inline field">
-                                        <label style="color: RED">Total Facture</label>
+                                        <label style="color: RED">Total paiement</label>
                                         <input type="text" name="" id="total_pamnt">
                                         <label>$</label>
                                     </div>
                                         
                                 </div>
-                                <div class="five wide field"> <label>Lab %</label><input type="text" name="" id="lab_prcnt"></div>
+                                <div class="five wide inline field"> <label>Lab % </label><input type="text" name="" id="lab_prcnt"></div>
                             </div>
+                            
                             <button class="ui right floated axxium button" onclick="CashSaveBill();">Sauvegarder Facture</button>
+                            <button class="ui right floated axxium button " onclick="tesTVal()" >Retourner à la facturation</button>
                         </div>
                         <script type="text/javascript">
+      //                       function tesTVal()
+      // {
+      //   $('#total_pamnt').val(19);
+      //   alert('val changes to 19');
+      // }
                             $(document).ready(function() {
 
-                                //$('.fact_rec_check').click(function() {
+                              
+        //$('.fact_rec_check').click(function() {
 
                                 //    if ($('.fact_rec_check').is(':checked')) {
 
@@ -4748,7 +4758,14 @@
 
 
                 function modPayment() {
-                    $('.modalPayment.modal').modal('show');
+                    $('.modalPayment.modal').modal('show')
+                    .modal({
+                        onApprove : function() { },
+                        selector: {
+                                       close: '.close, .actions .deny',
+                                       deny: '.actions .negative, .actions .deny, .actions .cancel'
+                                   }
+                          });
                 }
 
 

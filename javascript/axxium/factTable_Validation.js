@@ -146,9 +146,9 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
 
     if(!chckDentSurf){
-          warnMsg('La même procédure existe déjà. Veuilles s.v.p. changer la valeur de la dent ou de la surface.');
+          warnMsg(msgerr.msg041);
           $(this).focus();
-           $(this).text('');
+          $(this).text('');
       }
 
   else{
@@ -167,13 +167,11 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
             valid=validation('Dent',val);
           }
 
-
        if(!valid){
             valid=true;
-            alert('Wrong Range! Please Enter Correct value.');
-            
+            warnMsg(msgerr.msg013);          
             $(this).text('');
-
+            $(this).focus();
           }
 
       }
@@ -195,20 +193,20 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
     if(!chckDentSurf)
     {
-      warnMsg('Same procedure already exist. Please change Dent or Surface values');
+      warnMsg(msgerr.msg041);
        $(this).focus();
        $(this).text('');
     }
+    else {
+      //--------------- suf_dent_code ---------------------------------
+      var age=get_age();
 
-    //--------------- suf_dent_code ---------------------------------
-    var age=get_age();
-
-    if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
-    // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
-    if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
-      facture_surf_modal();
+      if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
+      // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
+      if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
+        facture_surf_modal();
+      }
     }
-
 
   //-- Set global variable for  surf_code_dent_gen_validation function 
       globVarSurfValidation_val=val;
@@ -234,7 +232,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       var surf_s=$(this).siblings("td[data-target='Surface']").text();
       var code_s=$(this).text();
       
-      if((init_code === undefined || init_code == '') && code_s == '')
+      if(code_s == '')
         return;
 
       // if(surf_focusout_finish)
@@ -256,9 +254,10 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       //var surfValid=surface_validation(type_s,dent_s,surf_s,code_s);
 
       // console.log("var SurfValid is T/F : " + surfValid );
-
-    //if(surfValid)
-    //{
+    
+    var surfValid=chckDentCodeExistTbl(dent_s,init_code);
+    if(surfValid)
+    {
     var valid;
     var val=$(this).text();
     var popData=$(this).parent();
@@ -317,7 +316,12 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
       var total=$(this).siblings("td[data-target='Total']");
         $(total).text(totalVal);
-      //}
+      }
+      else {
+        warnMsg(msgerr.msg041);
+        $(this).focus();
+        $(this).text('');
+      }
 
 
 
@@ -726,6 +730,49 @@ function getCodeData(codeVal){
   
 }
 
+function chckDentCodeExistTbl(dent,code)
+  {
+
+    // console.log('new function Dent :' + dent);
+    // console.log('new function Dent :' + surf);
+    var trs=$('#factTableBody tr ');
+    var dentFound=0;
+    var codeFound=0;
+
+    $.each(trs, function(id,val){
+
+      var cur_Dent= $(val).find('td[data-target=Dent]').text();
+      var cur_Code= $(val).find('td[data-target=Code]').text();
+        // cur_Surf
+
+    if(dent==cur_Dent){
+      dentFound=dentFound+1;
+      console.log('same dent :' + dent + cur_Dent);
+
+    }
+
+    var concatStr=code+cur_Code;
+    checkReptCharc=checkRepeatChrcInString(concatStr);
+    // console.log('repeat string checkrep result: ' + checkReptCharc);
+
+    if(checkReptCharc>=1){
+      codeFound=codeFound+1;
+    }
+
+    });
+
+     if((dentFound>=2) && (codeFound>=2)) {
+      console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
+      // console.log('this match Already Exist! Sorry');
+      return false;
+
+    }
+    else{
+    return true;
+  }
+
+}
+
 function chckDentSurfExistTbl(dent,surf)
   {
 
@@ -737,27 +784,27 @@ function chckDentSurfExistTbl(dent,surf)
 
     $.each(trs, function(id,val){
 
-     var cur_Dent= $(val).find('td[data-target=Dent]').text();
+      var cur_Dent= $(val).find('td[data-target=Dent]').text();
       var cur_Surf= $(val).find('td[data-target=Surface]').text();
-      // cur_Surf
+        // cur_Surf
 
-  if(dent==cur_Dent){
-    dentFound=dentFound+1;
-    console.log('same dent :' + dent + cur_Dent);
+    if(dent==cur_Dent){
+      dentFound=dentFound+1;
+      console.log('same dent :' + dent + cur_Dent);
 
-  }
+    }
 
-  var concatStr=surf+cur_Surf;
-  checkReptCharc=checkRepeatChrcInString(concatStr);
-  // console.log('repeat string checkrep result: ' + checkReptCharc);
+    var concatStr=surf+cur_Surf;
+    checkReptCharc=checkRepeatChrcInString(concatStr);
+    // console.log('repeat string checkrep result: ' + checkReptCharc);
 
-  if(checkReptCharc>=1){
-    surfFound=surfFound+1;
-  }
+    if(checkReptCharc>=1){
+      surfFound=surfFound+1;
+    }
 
     });
 
-     if((dentFound>=2)||((dentFound>=2) && (surfFound>=2))) {
+     if((dentFound>=2) && (surfFound>=2)) {
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
       // console.log('this match Already Exist! Sorry');
       return false;

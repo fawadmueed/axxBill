@@ -325,11 +325,24 @@
 								</canvas>
 							</div>
                             <div class="ui right aligned column">
+
+                                    
                                 
-                                <!-- <div class="ui right floated button">Tarif List</div> -->
+                                
+                                    
+                                </div>
                             </div>
                         </div>
+                    
                     </div>
+                       <div class="ui grid">
+                                <div class="fourteen wide column"></div>
+                                  <div class="two wide column">
+                                    <button class="ui axxium button" onclick="fact_tarif_list()">Tarif List</button>
+                                </div>
+                                </div>
+                            </div>
+
                     <div class="ui negative message hidden" id="wrn_msg_fact_tbl">
                         <i class="close icon"></i>
                         <div style="display:inline;"> <i class="warning icon"></i></div>
@@ -337,8 +350,11 @@
                         </div>
                     </div>
                     <div class="ui grid">
+
                         <div class="sixteen wide column">
+
                             <div class="ui teal form raised segment">
+
                                 <table id="factureTable" class="ui striped compact table segment" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
@@ -4645,6 +4661,10 @@
                     $(this).text($(this).text().toUpperCase());
                 })
 
+                $(document.body).on('focusout', "#factTableBody_planTrait td ", function() {
+                    $(this).text($(this).text().toUpperCase());
+                })                
+
                 $('.reg_fact_chck').change(function() {
                     RamqBillUpdateMessageTable();
                 });
@@ -4733,6 +4753,11 @@
 
                 }
 
+
+                function fact_tarif_list()
+                {
+
+                }
 
 
                 function facture_surf_modal() {

@@ -146,7 +146,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
 
     if(!chckDentSurf){
-          warnMsg('Same procedure already exist. Please change Dent or Surface values');
+          warnMsg('La même procédure existe déjà. Veuilles s.v.p. changer la valeur de la dent ou de la surface.');
           $(this).focus();
            $(this).text('');
       }
@@ -335,6 +335,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           {
             valFrais=0;
             rvalFrais=valFrais.toFixed(2);
+            $(this).text('');
           }
       else{
             valFrais=parseFloat(valFrais);
@@ -371,6 +372,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           {
             valHono=0;
             rvalHono=valHono.toFixed(2);
+            $(this).text('');
           }
           else{
             valHono= parseFloat(valHono);

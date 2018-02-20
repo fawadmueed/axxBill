@@ -199,7 +199,7 @@ function RamqGetVisionRData() {
                       //Display Patient name
                       var patName = globVisionRData.PrePers + ' ' + globVisionRData.NomPers;
                       var pat_Age=get_age();
-                      $('#patNameSub').html(patName +' '+ pat_Age);
+                      $('#patNameSub').html(patName +' - '+ pat_Age+' ans');
                       // $('#patAge').html(pat_Age);
 
                     //   //Show prof name on Payment -> Assurances

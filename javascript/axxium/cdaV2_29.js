@@ -82,7 +82,7 @@ function CdaV2CreateRequestString() {
                 strRequest = CdaV2CreateClaimReversalRequest();
             }
             break;
-        case "Predetermination":
+        case "3":
             {
                 strRequest = CdaV2CreatePredeterminationRequest();
             }
@@ -148,7 +148,7 @@ function CdaV2CreatePredeterminationRequest() {
     res += req.c01 + req.c11 + req.c02 + req.c03 + req.c04 + req.c05 + req.c06 + req.c07 + req.c08 + req.c09 + req.c10;
     res += req.d01 + req.d02 + req.d03 + req.d04 + req.d05 + req.d06 + req.d07 + req.d08 + req.d09 + req.d10;
     res += req.e01 + req.e02 + req.e05 + req.e03 + req.e04;
-    res += req.f02 + req.f15 + req.f04 + req.f06;
+    res += req.f02 + req.f15 + req.f04 + req.f05 +req.f06;
 
     for (var i = 0; i < req.f06; i++) {
         res += req.f07[i] + req.f08[i] + req.f10[i] + req.f11[i] + req.f12[i] + req.f13[i] +req.f14[i];
@@ -323,7 +323,9 @@ function CdaV2PopulatePredeterminationObj() {
     var obj = {};
     var transactionType = "Predetermination";
     var objDataFromDB = globCdaDataFromDB;
-    var objDataFromUI = CdaV2GetDataFromUI();
+    //var objDataFromUI = CdaV2GetDataFromUI();
+
+    obj.f07 = []; obj.f08=[]; obj.f10=[]; obj.f11=[]; obj.f12=[]; obj.f13=[]; obj.f14=[];
 
     //A Transaction Header
     obj.a01 = CdaV2FormatField(objDataFromDB.a01, 'AN', 12); //Transaction Prefix
@@ -345,7 +347,7 @@ function CdaV2PopulatePredeterminationObj() {
     obj.c02 = CdaV2FormatField(objDataFromDB.c02, 'AN', 11); //Subscriber Identification Number
     obj.c03 = CdaV2FormatField(objDataFromDB.c03, 'N', 1); //Relationship Code
     obj.c04 = CdaV2FormatField(objDataFromDB.c04, 'A', 1); //Patient's Sex
-    obj.c05 = CdaV2FormatField(objDataFromDB.c05, 'N', 8); //Patient's Birthday
+    obj.c05 = CdaV2FormatField(CdaCommGetDateOfBirthFromRamq(globVisionRData.IdPers), 'N', 8); //Patient's Birthday
     obj.c06 = CdaV2FormatField(objDataFromDB.c06, 'A', 25); //Patient's Last Name
     obj.c07 = CdaV2FormatField(objDataFromDB.c07, 'A', 15); //Patient's First Name
     obj.c08 = CdaV2FormatField(objDataFromDB.c08, 'A', 1); //Patient's Middle Initial
@@ -378,20 +380,18 @@ function CdaV2PopulatePredeterminationObj() {
     obj.f05 = CdaV2FormatField($('#q1_orthodon_oui').is(':checked') ? 'Y' : 'N', 'A', 1); //Treatment Required for Orthodontic Purposes
     obj.f06 = CdaV2FormatField(CdaV2GGetNumProcedures(), 'N', 1); //Number of Procedures Performed 
 
-    for (var i = 0; i < arrGrilleDeFacturation.length; i++) {
+    for (var i = 0; i < arrGrilleDeFacturation_planTrait.length; i++) {
         var lineCount = 1;
-        if (arrGrilleDeFacturation[i].Type != 'AMQ' && arrGrilleDeFacturation[i].Type != 'BES' && arrGrilleDeFacturation[i].Type != 'HOP') {
-            obj.f07[i] = CdaV2FormatField(lineCount, 'N', 1); //Procedure Line Number
-            obj.f08[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Code, 'N', 5); //Procedure Code
-            //obj.f09[i] = CdaV2FormatField(CdaV2GetCurrentDate(), 'N', 8); //Date of Service
-            obj.f10[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Dent, 'N', 2); //International Tooth, Sextant, Quad or Arch
-            obj.f11[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Surface, 'A', 5); //Tooth Surface
+        obj.f07[i] = CdaV2FormatField(lineCount, 'N', 1); //Procedure Line Number
+        obj.f08[i] = CdaV2FormatField(arrGrilleDeFacturation_planTrait[i].Code, 'N', 5); //Procedure Code
+        //obj.f09[i] = CdaV2FormatField(CdaV2GetCurrentDate(), 'N', 8); //Date of Service
+        obj.f10[i] = CdaV2FormatField(arrGrilleDeFacturation_planTrait[i].Dent, 'N', 2); //International Tooth, Sextant, Quad or Arch
+        obj.f11[i] = CdaV2FormatField(arrGrilleDeFacturation_planTrait[i].Surface, 'A', 5); //Tooth Surface
 
-            obj.f12[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
-            obj.f13[i] = CdaV2FormatField(arrGrilleDeFacturation[i].Frais, 'D', 6); //Lab Procedure Fee # 1
-            obj.f14[i] = '0000';
-            lineCount++;
-        }
+        obj.f12[i] = CdaV2FormatField(arrGrilleDeFacturation_planTrait[i].Honoraires, 'D', 6); //Dentist's Fee Claimed
+        obj.f13[i] = CdaV2FormatField(arrGrilleDeFacturation_planTrait[i].Frais, 'D', 6); //Lab Procedure Fee # 1
+        obj.f14[i] = '0000';
+        lineCount++;
     }
     return obj;
 }
@@ -804,7 +804,12 @@ function CdaV2GetDataFromDB() {
                             globCdaDataFromDB = result;
                             CdaV2CallCDAService();
                         }
-                    break;
+                        break;
+                    case '3'://Predetermination
+                        {
+                            globCdaDataFromDB = result;
+                            PlnTrSendToCdaNet();
+                        }
                 }
 
                 //console.log(result);

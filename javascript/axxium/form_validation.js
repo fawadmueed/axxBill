@@ -10,6 +10,14 @@ $(document).ready(function(){
         
        check_charcount(this,0,e,'alphaNumeric');    
       })
+
+
+      $(document.body).on('change','#total_pamnt',function(){
+
+        var thisAmount=$(this).val();
+        $(this).val(parseFloat(thisAmount).toFixed(2));
+
+      })
     
   	   function check_charcount(content_id, max, e,valid_type)
       {   
@@ -57,7 +65,7 @@ $(document).ready(function(){
 
               if(valid_type=='alphaNumeric')
               {
-                if (!((e.keyCode == 8) || (e.keyCode == 32) || (e.keyCode == 46) || (e.keyCode >= 35 && e.keyCode <= 40) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 48 && e.keyCode <= 57)) || (e.keyCode==16) ) 
+                if (!((e.keyCode == 8)||(e.keyCode == 9) || (e.keyCode == 32) || (e.keyCode == 46) || (e.keyCode >= 35 && e.keyCode <= 40) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 48 && e.keyCode <= 57)) || (e.keyCode==16) ) 
                     {
                         e.preventDefault();
                     }

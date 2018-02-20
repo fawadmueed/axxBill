@@ -1,9 +1,9 @@
 
 $(document).ready(function(){
 
-      $(document.body).on('keydown', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais'], #factTableBody_planTrait td[data-target='Frais'],#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires'], #factTableBody_planTrait td[data-target='Honoraires'],#factTableBody td[data-target='Total'],#factTableBody_regie td[data-target='Total', #factTableBody_planTrait td[data-target='Total']", function(e){
+      $(document.body).on('keydown', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais'], #factTableBody_planTrait td[data-target='Frais'],#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires'], #factTableBody_planTrait td[data-target='Honoraires'],#factTableBody td[data-target='Total'],#factTableBody_regie td[data-target='Total'], #factTableBody_planTrait td[data-target='Total']", function(e){
       	
-  	   check_charcount(this,6, e);		
+  	   check_charcount(this,6, e,'numbers');		
       })
 
       $(document.body).on('keydown', "#factTableBody td[data-target='Prod'],#factTableBody_regie td[data-target='Prod'], #factTableBody_planTrait td[data-target='Prod']", function(e){
@@ -14,7 +14,12 @@ $(document).ready(function(){
   	   function check_charcount(content_id, max, e,valid_type)
       {   
     
-  		    // Allow: backspace, delete, tab, escape, enter and .
+            
+              if(valid_type=='numbers')
+              {
+
+
+          // Allow: backspace, delete, tab, escape, enter and .
               if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
                   // Allow: Ctrl+A, Command+A
                   (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
@@ -23,9 +28,6 @@ $(document).ready(function(){
                       // let it happen, don't do anything
                       return;
               }
-            
-              if(valid_type=='numbers')
-              {
                   // Ensure that it is a number and stop the keypress
                     if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) 
                     {
@@ -55,7 +57,7 @@ $(document).ready(function(){
 
               if(valid_type=='alphaNumeric')
               {
-                if (!((e.keyCode == 8) || (e.keyCode == 32) || (e.keyCode == 46) || (e.keyCode >= 35 && e.keyCode <= 40) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105))) 
+                if (!((e.keyCode == 8) || (e.keyCode == 32) || (e.keyCode == 46) || (e.keyCode >= 35 && e.keyCode <= 40) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 48 && e.keyCode <= 57)) || (e.keyCode==16) ) 
                     {
                         e.preventDefault();
                     }

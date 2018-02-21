@@ -576,7 +576,7 @@ function CdaCommGetDataForTransHistTable(pTransactions) {
         objOutputData.Couver = '';
         objOutputData.Date = (objInputData.datetransaction)?objInputData.datetransaction:'';
         objOutputData.NoRef = (objResponse&&objResponse.g01) ? (objResponse.g01).toString().trim() : '';
-        objOutputData.Status = (objInputData.status)?objInputData.status:'';
+        objOutputData.Status = objInputData.status;
         objOutputData.VersionNumber = versionNumber;
         objOutputData.NoFacture = (objInputData.facture)?objInputData.facture:'';
         objOutputData.Resp = (objInputData.resp)?objInputData.resp:'';

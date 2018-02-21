@@ -1217,7 +1217,12 @@ if (tx == "sendInsurance"):
         headers = {'content-type': 'application/json; charset=utf-8'} # set what your server accepts
         r = requests.post(uri + '/api/InsuranceWebApi/PostSendTransaction', json=dataJSON, headers=headers)
 
-        if r.status_code != 200:
+        if r.status_code != 200:            
+            data["ins"] = {'req': data["ins"]["req"], 'resp' : None, 'date' : datetime.today().strftime("%Y-%m-%d %H:%M:%S"), 'status' : 0, 'nofact' : nofactext, 'transaction': strreq, 'info' : datainputs}
+            logFile = open('json/facturation/%s/%s/%s_%s.json'%(clinicId, patientId, nodossier, nofactext), 'w')
+            logFile.write(json.dumps(data).decode('unicode-escape').encode('utf8'))
+            logFile.close()
+
             resp = r.json()
             print '{ "outcome" : "error", "message" : "' + resp["message"] + '" }'
         else:

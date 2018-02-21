@@ -1961,11 +1961,18 @@ function RamqUpdateGlobalBill()
         getAllTrData();//Save data from facturation grid in global array
         //RAMQ
         var arrRamqData = [];
-        arrRamqData[0] = [];
-        arrRamqData[1] = RamqGetRamqDataFromGrille();
-        arrRamqData[2] = arrGrilleDeFacturation_forms;
+        var arrRamqDataFromGrille = RamqGetRamqDataFromGrille();
+        if (arrRamqDataFromGrille && arrRamqDataFromGrille.length > 0) {
+            arrRamqData[0] = [];
+            arrRamqData[1] = arrRamqDataFromGrille;
+            arrRamqData[2] = arrGrilleDeFacturation_forms;
+        }
+        else {
+            arrRamqData = null;
+        }
+        
 
-        var totalRamq = RamqCalculateTotalRamq(arrRamqData[1]);
+        var totalRamq = RamqCalculateTotalRamq(arrRamqDataFromGrille);
         $('#amq_total').val(totalRamq.toFixed(2));
 
         //Insurance

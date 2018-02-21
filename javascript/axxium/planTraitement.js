@@ -149,12 +149,17 @@ function PlnTrGetDataForTransHistTable(pTraitements) {
             objResponse = CdaV4ReadResponse(strResponse);
             description = CdaV4GetTransactionName(transCode);
         }
+        // Calculate reclamation from grid
+        var reclamationFromGrid = PlnTrCalcReclamation(objInputData.info.grid).toFixed(2); 
+
+
+
         objOutputData.Numero = objInputData.numero;
         objOutputData.Facturer = (objInputData.info.facturer)?'OUI':'NON';
         objOutputData.Reference = (objResponse && objResponse.g01) ? (objResponse.g01).toString().trim() : '';
         objOutputData.Confirmation = (objResponse && objResponse.g30) ? (objResponse.g30).toString().trim() : '';
         objOutputData.Date = objInputData.date;
-        objOutputData.Reclamation = (objResponse && objResponse.g04) ? (objResponse.g04).toString().trim() : '0.00';
+        objOutputData.Reclamation = (objResponse && objResponse.g04) ? (objResponse.g04).toString().trim() : reclamationFromGrid;
         objOutputData.Deductible = (objResponse && objResponse.g29) ? (objResponse.g29).toString().trim() : '0.00';
         objOutputData.Remboursement = (objResponse && objResponse.g28) ? (objResponse.g28).toString().trim() : '0.00';
         objOutputData.GridInfo = JSON.stringify(objInputData.info.grid); //arrGrilleDeFacturation_planTrait
@@ -162,6 +167,21 @@ function PlnTrGetDataForTransHistTable(pTraitements) {
         arrData.push(objOutputData);
     }
     return arrData;
+}
+
+function PlnTrCalcReclamation(pGridInfo) {
+    var recl = 0.00;
+    if(pGridInfo && pGridInfo.length>0)
+    {
+        for (var i = 0; i < pGridInfo.length; i++) {
+            var r = parseFloat(pGridInfo[i].Honoraires);
+            if (!isNaN(parseFloat(r)))
+            {
+                recl += r;
+            }
+        }
+    }
+    return recl;
 }
 
 function PlnTrUpdateTransHistTable() {
@@ -229,13 +249,18 @@ function PlnTrSendToCdaNet() {
             //Hide loader
             document.getElementById("loaderModalCdan1").setAttribute("class", "ui inverted dimmer");
             document.getElementById("loaderModalCdan2").setAttribute("class", "ui inverted dimmer");
-            //For test
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //TODO:For test Only!!! Remove for production
             result.outcome = 'success';
-            result.message = "14781,0,002,11321111    014781041300007900161N0521807004150              R01                                                                           0045200F00000006110061";
+            //result.message = "14781,0,002,11321111    014781041300007900161N0521807004150              R01                                                                           0045200F00000006110061";
+            result.message = "100561,0,067,HD*         100561041112345600195Y5301234011234              R10*WARNING* NO MATCHING RESPONSE FOUND FOR YOUR TRANSAC. simtr v2.0 15-APR-0100000002000000020044010300120013001400150016001701300025";
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             if (result.outcome == 'error') {
                 alert(result.message);
             }
-            else { //TODO: check version
+            else {
                 var responseLine = result.message;
                 var communicationResult = CdaCommGetCommStatus(responseLine);
                 if (communicationResult == 0)// No errors

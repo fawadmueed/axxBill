@@ -686,6 +686,8 @@ else{
 
   }
 
+  
+
   function check_ramq_exp(){
 
     var formD=$('#ramq_exp').val()

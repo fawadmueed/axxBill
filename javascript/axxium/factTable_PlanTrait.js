@@ -19,6 +19,8 @@ $(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeR
 
 function newRecordFact_planTrait(){
 
+    var current_date=get_date();
+
     var tblBody=$('#factureTable_planTrait');
     fact_tbl_row_id_planTrait=fact_tbl_row_id_planTrait+1;
     tblRow=$('<tr>').attr('id',fact_tbl_row_id_planTrait);
@@ -30,7 +32,7 @@ function newRecordFact_planTrait(){
         switch(fields[i]){
           case 'Date':
 
-            tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
+            tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(current_date);
              tblData.appendTo(tblRow);
 
           break;

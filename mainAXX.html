@@ -32,6 +32,7 @@
     <script src="javascript/axxium/modals-facturation.js"></script>
     <script src="javascript/axxium/factTable_validation.js"></script>
     <script src="javascript/axxium/factTable_planTrait.js"></script>
+    
     <script src="javascript/axxium/form_validation.js"></script>
     <script src="javascript/axxium/code_validation.js"></script>
     <script src="javascript/axxium/code_validation_function.js"></script>
@@ -86,6 +87,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css">
+    <script src="javascript/axxium/tarif_list_tbl.js"></script>
     <script>
         function getLang() {
             // alert('getLang function');
@@ -1258,6 +1260,42 @@
                         
         </div>
     </div>
+
+    <div class="ui fact_tarif_list modal">
+     <i class="close icon"></i>
+        <div class="header">
+            <i class="user icon"></i>Tarif List
+        </div>   
+        <div class="content">
+            <div class="ui axxium form segment">
+                <div class="row">
+                    <div class="column">
+
+                <table class="ui striped compact table segment tarif_list_table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Code Régie</th>
+                            <th>Description</th>
+                            <th>Prix S</th>
+                            <th>Prix R</th>
+                            <th>Prix A</th>
+                            <th>Fr. Add.</th>
+                            <th>Fr. Lab</th>
+                            <th>Unit.</th>
+                            <th>Prod</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tarif_list_table_body">
+                    </tbody>
+                    
+                </table>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
     <div class="ui large modalInsuranceAddForm modal">
         <i class="close icon"></i>
@@ -4894,10 +4932,7 @@
                 }
 
 
-                function fact_tarif_list()
-                {
-
-                }
+                
 
 
                 function facture_surf_modal() {
@@ -5519,7 +5554,26 @@
             <script type="text/javascript">
                 $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1 ').removeClass('trn');
                 $('table th, table td,label,h4,h3,select option,a,div .item,div .button,div .header,strong ,div .divider,div i,h4 i,p1').addClass('trn');
-            </script>
+       
+
+            function get_date(){
+                //Returns yy-mm-dd format STANDARD 
+
+                var d1=new Date();
+                var curMonth=d1.getMonth()+1;
+                // var curYear=d1.getYear()+1900;
+                var day=d1.getDate();
+                var year=d1.getFullYear();
+
+                var fullDate=year+'-'+curMonth+'-'+day;
+                return fullDate;
+
+            }
+
+            
+
+
+        </script>
 </body>
 
 </html>

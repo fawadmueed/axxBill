@@ -150,9 +150,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           warnMsg(msgerr.msg041);
           $(this).focus();
           $(this).text('');
-      }
-
-  else{
+    }
+    else{
 
         valid=validation('Dent',val);
 
@@ -183,6 +182,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface'], #factTableBody_planTrait td[data-target='Surface']", function(){
 
     init_code = '';
+    globVarMessageErrorValidation = '';
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
     var surf_chck=val;
@@ -228,6 +228,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
 
+      globVarMessageErrorValidation = '';
       var type_s=$(this).siblings("td[data-target='Type']").text();
       var dent_s=$(this).siblings("td[data-target='Dent']").text();
       var surf_s=$(this).siblings("td[data-target='Surface']").text();
@@ -246,86 +247,81 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       // }
 
       var age=get_age();
-
-      //var robertoValidation=robValidation(type_s,code_s,dent_s,age,surf_s);
-
-      //console.log('rob function return val : ');
-      //console.log(robertoValidation);
-
-      //var surfValid=surface_validation(type_s,dent_s,surf_s,code_s);
-
-      // console.log("var SurfValid is T/F : " + surfValid );
-    
-    var surfValid=chckDentCodeExistTbl(dent_s,init_code);
-    if(surfValid)
-    {
-    var valid;
-    var val=$(this).text();
-    var popData=$(this).parent();
-    var code_data=getCodeData(val);
-
-    if(code_data && val!="")
-    {  
-      //1 = Tarif Regulier , 2 = Tarif Special , 3 is Regie  
-      $(popData).children("td[data-target='Description']").text(code_data.descrf);
-      $(popData).children("td[data-target='Prod']").text(code_data.producer);
-      $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
-      if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
-        $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixa).toFixed(2));
-      }
-      else {
-        if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
-          $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
-        else
-          $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixs).toFixed(2));      
-      }
-    }
-    else
-    {
-      warnMsg(msgerr.msg0163.replace("@@", val));
-      $(this).focus();
-    }
-
-    var sibl=$(this).siblings("td[data-target='Honoraires']");
-    var hono;
-    if($(sibl).text()=="")
-          {
-            hono=0;
-            rhono=hono.toFixed(2);
-          }
-          else{
-            hono= parseFloat($(sibl).text());
-            rhono=hono.toFixed(2);
-
-          }
-
-     var sibl=$(this).siblings("td[data-target='Frais']");
-
-     if($(sibl).text()=="")
-          {
-            frais=0;
-            rfrais=frais.toFixed(2);
-          }
-          else{
-            frais= parseFloat($(sibl).text());
-            rfrais=frais.toFixed(2);
-          }
-
-          // console.log(hono);
-          // console.log(frais);
-      var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
-
-      var total=$(this).siblings("td[data-target='Total']");
-        $(total).text(totalVal);
-      }
-      else {
-        warnMsg(msgerr.msg041);
+      var codeValid=robValidation(type_s,code_s,dent_s,age,surf_s);
+      if(!codeValid) {
+        warnMsg(globVarMessageErrorValidation);
         $(this).focus();
-        $(this).text('');
+        $(this).text('');       
       }
+      else {
+        var surfValid=chckDentCodeExistTbl(dent_s,code_s);
+        if(surfValid)
+        {
+        var valid;
+        var val=$(this).text();
+        var popData=$(this).parent();
+        var code_data=getCodeData(val);
 
+        if(code_data && val!="")
+        {  
+          //1 = Tarif Regulier , 2 = Tarif Special , 3 is Regie  
+          $(popData).children("td[data-target='Description']").text(code_data.descrf);
+          $(popData).children("td[data-target='Prod']").text(code_data.producer);
+          $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
+          if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
+            $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixa).toFixed(2));
+          }
+          else {
+            if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
+              $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
+            else
+              $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixs).toFixed(2));      
+          }
+        }
+        else
+        {
+          warnMsg(msgerr.msg0163.replace("@@", val));
+          $(this).focus();
+        }
 
+        var sibl=$(this).siblings("td[data-target='Honoraires']");
+        var hono;
+        if($(sibl).text()=="")
+              {
+                hono=0;
+                rhono=hono.toFixed(2);
+              }
+              else{
+                hono= parseFloat($(sibl).text());
+                rhono=hono.toFixed(2);
 
+              }
+
+        var sibl=$(this).siblings("td[data-target='Frais']");
+
+        if($(sibl).text()=="")
+              {
+                frais=0;
+                rfrais=frais.toFixed(2);
+              }
+              else{
+                frais= parseFloat($(sibl).text());
+                rfrais=frais.toFixed(2);
+              }
+
+              // console.log(hono);
+              // console.log(frais);
+          var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
+
+          var total=$(this).siblings("td[data-target='Total']");
+            $(total).text(totalVal);
+          }
+          else {
+            warnMsg(msgerr.msg041);
+            $(this).focus();
+            $(this).text('');
+          }
+      }
      });
 
 
@@ -468,16 +464,13 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
  function warnMsg(msg)
  {
-
-
-
     // $('#wrn_msg_fact_tbl').removeClass('hidden');
     $('#wrn_msg_fact_tbl').finish();
     $('#warn_msg_fact_content').text(msg);
     $('#wrn_msg_fact_tbl').addClass('visible').fadeIn("fast").delay(3000).fadeOut("slow",function(){
       $('#wrn_msg_fact_tbl').removeClass('visible');
       $('#wrn_msg_fact_tbl').addClass('hidden');
-       });
+    });
 
  }
 
@@ -499,48 +492,47 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       //Condition 3: If AMQ BEs HOP check RAMQ Card Number & Expiry
       if(val=="AMQ" || val=="BES" || val=="HOP"){
 
-                  if(!($('#optRegiIndFactAssosDrNo').is(':checked')))
-                  {
-                    // If ramq_no field equal 1 , Bypass both Validation AMQ and Expiry
-                      //var ramq_field=$('#ramq_no').val();
-                      var ramq_field = 1;// Bypass validation
-                    if(ramq_field==1)
-                      {
-                        return true;
-                      }
+          if(!($('#optRegiIndFactAssosDrNo').is(':checked')))
+          {
+            // If ramq_no field equal 1 , Bypass both Validation AMQ and Expiry
+              //var ramq_field=$('#ramq_no').val();
+              var ramq_field = 1;// Bypass validation
+            if(ramq_field==1)
+              {
+                return true;
+              }
 
-                      var valid_ramq=check_Ramq_Num();
+              var valid_ramq=check_Ramq_Num();
 
-                      if(!valid_ramq)
-                      {
-                      // alert('Invalid RAMQ Card Number : Please check Ramq Card Number');
-                      warnMsg('Invalid RAMQ card number. Please check RAMQ card number.');
-                      return false;
+              if(!valid_ramq)
+              {
+              // alert('Invalid RAMQ Card Number : Please check Ramq Card Number');
+              warnMsg('Invalid RAMQ card number. Please check RAMQ card number.');
+              return false;
 
-                      }
-                      else
-                      {
-                        warnMsg('Checking expiry Now');
-                        var check_exp=check_ramq_exp();
-                        if(!check_exp){
-                          warnMsg('RAMQ card expired. Please put valid RAMQ card.')
-                          return false;
-                        }
-                        return true;
+              }
+              else
+              {
+                warnMsg('Checking expiry Now');
+                var check_exp=check_ramq_exp();
+                if(!check_exp){
+                  warnMsg('RAMQ card expired. Please put valid RAMQ card.')
+                  return false;
+                }
+                return true;
 
-                      }
-                  }
-              else{
-                  // console.log('RAMQ NO empty, ByPass Validation')
-                    return true;
-                  }
-
-                  $(this).siblings("td[data-target='Code']");
-            }
-
-        else{
+              }
+          }
+      else{
+          // console.log('RAMQ NO empty, ByPass Validation')
             return true;
-            }
+          }
+
+          $(this).siblings("td[data-target='Code']");
+    }
+    else{
+        return true;
+        }
 
   }
   // =========== DENT VALIDATION==============
@@ -682,8 +674,6 @@ else{
 
     // }
 
-
-
   }
 
   function check_ramq_exp(){
@@ -730,12 +720,27 @@ function getCodeData(codeVal){
   return dataJson_Code[codeVal];
   
 }
+function chckCodeException(code) {
 
+  var trs=$('#factTableBody tr ');
+  var codeFound=0;
+
+  $.each(trs, function(id,val){
+    var cur_Code= $(val).find('td[data-target=Code]').text();
+    if(code==cur_Code && (is_ablation_code(code))){
+      codeFound=codeFound+1;
+    }
+  });
+
+  if(codeFound>=2) {
+    return false;
+  }
+  else{
+    return true;
+  }
+}
 function chckDentCodeExistTbl(dent,code)
   {
-
-    // console.log('new function Dent :' + dent);
-    // console.log('new function Dent :' + surf);
     var trs=$('#factTableBody tr ');
     var dentFound=0;
     var codeFound=0;
@@ -752,30 +757,27 @@ function chckDentCodeExistTbl(dent,code)
 
     }
 
-    var concatStr=code+cur_Code;
-    checkReptCharc=checkRepeatChrcInString(concatStr);
-    // console.log('repeat string checkrep result: ' + checkReptCharc);
-
-    if(checkReptCharc>=1){
+    if(code==cur_Code){
       codeFound=codeFound+1;
     }
 
     });
 
-     if((dentFound>=2) && (codeFound>=2)) {
+    if((dentFound>=2) && (codeFound>=2)) {
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
       // console.log('this match Already Exist! Sorry');
       return false;
-
     }
     else{
-    return true;
-  }
+      return true;
+    }
 
 }
 
 function chckDentSurfExistTbl(dent,surf)
   {
+    if(surf == ''|| dent == '')
+      return true;
 
     // console.log('new function Dent :' + dent);
     // console.log('new function Dent :' + surf);
@@ -789,20 +791,23 @@ function chckDentSurfExistTbl(dent,surf)
       var cur_Surf= $(val).find('td[data-target=Surface]').text();
         // cur_Surf
 
-    if(dent==cur_Dent){
-      dentFound=dentFound+1;
-      console.log('same dent :' + dent + cur_Dent);
+      if(dent==cur_Dent){
+        dentFound=dentFound+1;
+        console.log('same dent :' + dent + cur_Dent);
 
-    }
+      }
 
-    var concatStr=surf+cur_Surf;
-    checkReptCharc=checkRepeatChrcInString(concatStr);
-    // console.log('repeat string checkrep result: ' + checkReptCharc);
+      //var concatStr=surf+cur_Surf;
+      //checkReptCharc=checkRepeatChrcInString(concatStr);
+      // console.log('repeat string checkrep result: ' + checkReptCharc);
 
-    if(checkReptCharc>=1){
-      surfFound=surfFound+1;
-    }
-
+      //if(checkReptCharc>=1){
+      //  surfFound=surfFound+1;
+      //}
+      if(cur_Surf.trim()==surf.trim())
+      {
+        surfFound=surfFound+1;
+      }
     });
 
      if((dentFound>=2) && (surfFound>=2)) {

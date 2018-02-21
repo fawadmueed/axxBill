@@ -4,6 +4,21 @@ function fact_tarif_list()
 	}
 
 $(document).ready(function(){
-	$('.tarif_list_table').DataTable();
+	console.log(dataJson_Code);
+	$('.tarif_list_table').DataTable({
+
+		"data":dataJson_Code[21225]
+
+		// "columns":[
+		// {"data":"prix"},
+		// {"data":"ramq"},
+		// {"data":"insurance"},
+		// {"data":"special"},
+		// {"data":"fr"},
+		// {"data":"unites"},
+		// {"data":"frais"},
+		// ]
+
+	});
 })
 

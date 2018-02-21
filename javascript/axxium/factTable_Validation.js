@@ -79,6 +79,18 @@
     insuranceData=data;
    }
  });
+
+
+var codesData;
+  $.ajax({
+    type:'GET',
+    url:"json/params/codes.json",
+    async:false,
+    dataType:'json',
+    success: function(data){
+      codesData=data;
+    }
+  })
      // console.log(insuranceData);
 
 $(document).ready(function(){

@@ -162,7 +162,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
   function printITEM(doc,topX,topY,des,cod,den,sur,hon)
   {
-	doc.setFontSize(7);
+	doc.setFontSize(6);
 	doc.setFontType("normal");
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);
@@ -281,11 +281,14 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{
   		honoraires=parseInt(honoraires)+parseInt(valx.Honoraires);
+  		honoraires=parseInt(honoraires) || 0;
   	})
   	
   	var totalOwe=parseInt(previousBal)+parseInt(honoraires);
+  	totalOwe=parseInt(totalOwe) || 0;
   	var balanceDue=parseInt(totalOwe)-parseInt(amount_cash);
   	balanceDue=parseInt(balanceDue)-parseInt(amount_insur);
+  	balanceDue=parseInt(balanceDue) || 0;
 
 
 	//alert("Start print RAMQ");
@@ -310,12 +313,12 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printAMT(doc,2,130,"","Cheques post-dates","Post-dated checks","");
 	printGRID(doc,84,69);
 	printMESS(doc,84,130);
+	
 	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","","37.00");
-	var coy = 82;
-
+	var coy = 84;
 	$.each(arrGrilleDeFacturation,function(idx,val){
 			printITEM(doc,84,coy,val.Description,val.Code,val.Dent,val.Surface,val.Honoraires);
-			coy = coy + 4;
+			coy = coy + 3;
 		
 	})
 	//printITEM(doc,84,82,"COMPOSITE, PREMOLAIRE, TROIS SURFACES","23213","15","DMO","190.00");

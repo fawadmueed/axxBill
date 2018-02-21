@@ -219,7 +219,7 @@ function getPrevRowCode(idPrev){
   prevCode=$(val).find('td[data-target=Code]').text();
 
 
-  })
+  });
 
   return prevCode;
 
@@ -378,10 +378,6 @@ function getAllTrData(){
               $('#divPaymentRamq').removeClass('disabled ');
           }
           
-
-                        
-
-
 }
 
 function submitForm(thisForm){
@@ -394,10 +390,6 @@ function submitForm(thisForm){
 
 
     }
-
-
-
-
 
 }
 

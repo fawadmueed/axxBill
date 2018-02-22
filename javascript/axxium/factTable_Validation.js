@@ -202,6 +202,15 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var dent_chck=$(this).siblings("td[data-target='Dent']").text();
     var code_chck=$(this).siblings("td[data-target='Code']").text();
 
+    //-- Set global variable for  surf_code_dent_gen_validation function 
+    globVarSurfValidation_val=val;
+    globVarSurfValidation_surf_chck=surf_chck;
+    globVarSurfValidation_dent_check=dent_chck;
+    globVarSurfValidation_type_chck=type_chck;
+    globVarSurfValidation_code_chck=code_chck;
+    globVarSurfValidation_this_row_id=this_row_id;
+
+
     console.log($(this).siblings("td[data-target='Code']"));
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
     if(!chckDentSurf)
@@ -213,21 +222,34 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     else {
       //--------------- suf_dent_code ---------------------------------
       var age=get_age();
-
-      if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
-      // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
-      if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
-        facture_surf_modal();
+      var type_surf=get_type_surf(val);
+      if(type_surf == 1) {
+        surf_code_dent_gen_validation();
+      } else 
+      {
+        if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
+          // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
+          if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
+            facture_surf_modal();
+          }
+        }
+  
       }
-    }
+
+      //if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
+      //  // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
+      // if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
+      //    facture_surf_modal();
+      //  }
+      //}
 
   //-- Set global variable for  surf_code_dent_gen_validation function 
-      globVarSurfValidation_val=val;
-      globVarSurfValidation_surf_chck=surf_chck;
-      globVarSurfValidation_dent_check=dent_chck;
-      globVarSurfValidation_type_chck=type_chck;
-      globVarSurfValidation_code_chck=code_chck;
-      globVarSurfValidation_this_row_id=this_row_id;
+      //globVarSurfValidation_val=val;
+      //globVarSurfValidation_surf_chck=surf_chck;
+      //globVarSurfValidation_dent_check=dent_chck;
+      //globVarSurfValidation_type_chck=type_chck;
+      //globVarSurfValidation_code_chck=code_chck;
+      //globVarSurfValidation_this_row_id=this_row_id;
   }
 
     // STEP # 1   //752 line U_FACTPA
@@ -269,70 +291,66 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         var surfValid=chckDentCodeExistTbl(dent_s,code_s);
         if(surfValid)
         {
-        var valid;
-        var val=$(this).text();
-        var popData=$(this).parent();
-        var code_data=getCodeData(val);
+          var valid;
+          var val=$(this).text();
+          var popData=$(this).parent();
+          var code_data=getCodeData(val);
 
-        if(code_data && val!="")
-        {  
-          //1 = Tarif Regulier , 2 = Tarif Special , 3 is Regie  
-          $(popData).children("td[data-target='Description']").text(code_data.descrf);
-          $(popData).children("td[data-target='Prod']").text(code_data.producer);
-          $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
-          if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
-            $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixa).toFixed(2));
+          if(code_data && val!="")
+          {  
+            //1 = Tarif Regulier , 2 = Tarif Special , 3 is Regie  
+            $(popData).children("td[data-target='Description']").text(code_data.descrf);
+            $(popData).children("td[data-target='Prod']").text(code_data.producer);
+            $(popData).children("td[data-target='Frais']").text(parseFloat(code_data.frais_lab).toFixed(2));
+            if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
+              $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixa).toFixed(2));
+            }
+            else {
+              if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
+                $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
+              else
+                $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixs).toFixed(2));      
+            }
           }
-          else {
-            if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
-              $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixr).toFixed(2));
-            else
-              $(popData).children("td[data-target='Honoraires']").text(parseFloat(code_data.prixs).toFixed(2));      
-          }
-        }
-        else
-        {
-          warnMsg(msgerr.msg0163.replace("@@", val));
-          $(this).focus();
-        }
-
-        var sibl=$(this).siblings("td[data-target='Honoraires']");
-        var hono;
-        if($(sibl).text()=="")
-              {
-                hono=0;
-                rhono=hono.toFixed(2);
-              }
-              else{
-                hono= parseFloat($(sibl).text());
-                rhono=hono.toFixed(2);
-
-              }
-
-        var sibl=$(this).siblings("td[data-target='Frais']");
-
-        if($(sibl).text()=="")
-              {
-                frais=0;
-                rfrais=frais.toFixed(2);
-              }
-              else{
-                frais= parseFloat($(sibl).text());
-                rfrais=frais.toFixed(2);
-              }
-
-              // console.log(hono);
-              // console.log(frais);
-          var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
-
-          var total=$(this).siblings("td[data-target='Total']");
-            $(total).text(totalVal);
-          }
-          else {
-            warnMsg(msgerr.msg041);
+          else
+          {
+            warnMsg(msgerr.msg0163.replace("@@", val));
             $(this).focus();
-            $(this).text('');
           }
+
+          var sibl=$(this).siblings("td[data-target='Honoraires']");
+          var hono;
+          if($(sibl).text()=="")
+          {
+            hono=0;
+            rhono=hono.toFixed(2);
+          }
+          else{
+            hono= parseFloat($(sibl).text());
+            rhono=hono.toFixed(2);
+          }
+
+          var sibl=$(this).siblings("td[data-target='Frais']");
+
+          if($(sibl).text()=="")
+          {
+            frais=0;
+            rfrais=frais.toFixed(2);
+          }
+          else{
+            frais= parseFloat($(sibl).text());
+            rfrais=frais.toFixed(2);
+          }
+
+          var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
+          var total=$(this).siblings("td[data-target='Total']");
+          $(total).text(totalVal);
+        }
+        else {
+          warnMsg(msgerr.msg041);
+          $(this).focus();
+          $(this).text('');
+        }
       }
      });
 
@@ -911,123 +929,127 @@ function surf_code_dent_gen_validation() {
         }
 
     }
+    else {
+      if (dent_Type == 'Dentiste' || dent_Type == 'Chirurgiens') {
 
-    if (dent_Type == 'Dentiste' || dent_Type == 'Chirurgiens') {
+          if (dent_chck == '99') {
+              surf_dent_code = true;
+          }
 
-        if (dent_chck == '99') {
-            surf_dent_code = true;
-        }
+      }
 
-    }
+      // STEP # 2   ----- LINE 804 U_FACTPA typ_surf := read_surface;
+      var type_surf = get_type_surf(val);
+      console.log('Type_Surf Value is : ' + type_surf);
 
+      // STEP # 3  4015 line u_fact2 switch cases
 
-    // STEP # 2   ----- LINE 804 U_FACTPA typ_surf := read_surface;
-    var type_surf = get_type_surf(val);
-    console.log('Type_Surf Value is : ' + type_surf);
+      switch (type_surf) {
 
-    // STEP # 3  4015 line u_fact2 switch cases
+          case 1:
+              console.log('In type surf case 1 ');
 
-    switch (type_surf) {
+              if ((type_chck == 'AMQ') || (type_chck == 'BES')) {
+                  warnMsg(msgerr.msg018);
+              }
+              if (dent_chck == '') {
+                  warnMsg(msgerr.msg019);
+              }
+              
+              if (dent_Type != 'Denturologiste') {
+                surf_classe(dent_chck, surf_chck);
+                //Show popup.... take surface DLBO...
+                //Change surface value numeric vs letter
+              }
+              console.log(init_code);
+              break;
 
-        case 1:
-            console.log('In type surf case 1 ');
+          case 2:
 
-            if ((type_chck == 'AMQ') || (type_chck == 'BES')) {
-                warnMsg(msgerr.msg018);
-            }
-            if (dent_chck == '') {
-                warnMsg(msgerr.msg019);
-            }
+              console.log('In type surf case 2 ');
+              if ((type_chck == 'AMQ') || (type_chck == 'BES')) {
+                  warnMsg(msgerr.msg018);
+              }
 
-            console.log(init_code);
-            break;
+              // New Window Condition have to put later !
+              console.log(init_code);
+              break;
 
-        case 2:
+          case 3:
+          case 5:
 
-            console.log('In type surf case 2 ');
-            if ((type_chck == 'AMQ') || (type_chck == 'BES')) {
-                warnMsg(msgerr.msg018);
-            }
+              console.log('In type surf case 3 ');
 
-            // New Window Condition have to put later !
-            console.log(init_code);
-            break;
+              if (dent_chck.length == 0) {
+                  warnMsg(msgerr.msg019);
+              }
 
-        case 3:
-        case 5:
+              if (type_chck == 'AMQ' || type_chck == 'BES' || type_chck == 'HOP') {
+                  // 4118 in u_fac2
+                  var generate_code = gene_amq(dent_chck, val);
+                  console.log('gene_amq status is : ' + generate_code);
+                  if (generate_code) {
 
-            console.log('In type surf case 3 ');
+                      //checkcode in Code JSON File
+                      var check_init_code = '';
+                      check_init_code = getCodeData(init_code);
+                      console.log('Case 3, Verifying Generate Code in JSON FILE');
+                      console.log('Sent code :' + init_code + ': received data if :' + check_init_code);
+                      if (check_init_code != '') {
+                          console.log('The Generated code from CASE 3 , found in JSON FILE');
 
-            if (dent_chck.length == 0) {
-                warnMsg(msgerr.msg019);
-            }
+                      }
 
-            if (type_chck == 'AMQ' || type_chck == 'BES' || type_chck == 'HOP') {
-                // 4118 in u_fac2
-                var generate_code = gene_amq(dent_chck, val);
-                console.log('gene_amq status is : ' + generate_code);
-                if (generate_code) {
+                      //find generated code in AMQ_Codes
+                      var check = $.inArray(init_code, regiecodes);
+                      if (check == -1) {
+                          // FALSE VALIDATION VALUE
+                          //-1 if not found
+                          console.log('Generated Code NOT FOUND in Regie Codes!' + init_code);
+                          warnMsg('Le code ' + init_code.Tostring() + 'n\'est pas un code RAMQ');
+                      } else {
+                          console.log('Generated Code FOUND in Regie Codes!' + init_code);
 
-                    //checkcode in Code JSON File
-                    var check_init_code = '';
-                    check_init_code = getCodeData(init_code);
-                    console.log('Case 3, Verifying Generate Code in JSON FILE');
-                    console.log('Sent code :' + init_code + ': received data if :' + check_init_code);
-                    if (check_init_code != '') {
-                        console.log('The Generated code from CASE 3 , found in JSON FILE');
+                      }
 
-                    }
+                  }
 
-                    //find generated code in AMQ_Codes
-                    var check = $.inArray(init_code, regiecodes);
-                    if (check == -1) {
-                        // FALSE VALIDATION VALUE
-                        //-1 if not found
-                        console.log('Generated Code NOT FOUND in Regie Codes!' + init_code);
-                        warnMsg('Le code ' + init_code.Tostring() + 'n\'est pas un code RAMQ');
-                    } else {
-                        console.log('Generated Code FOUND in Regie Codes!' + init_code);
+              } else if (is_dent_anterieur(dent_chck)) {
+                  if ((code_chck == ' ') || (surf_chck == 'O')) {
+                      // FALSE
+                      warnMsg(msgerr.msg021);
+                  }
 
-                    }
+              } else {
+                  if ((code_chck == ' ') || (surf_chck == 'I')) {
+                      //FALSE
+                      warnMsg(msgerr.msg021);
+                  }
 
-                }
+              }
 
-            } else if (is_dent_anterieur(dent_chck)) {
-                if ((code_chck == ' ') || (surf_chck == 'O')) {
-                    // FALSE
-                    warnMsg(msgerr.msg021);
-                }
+              console.log('init code b4 surf alpha fn :' + init_code);
+              var surf_alpha = surf_alpha_fn(val, dent_chck);
+              console.log('Done with function surf_alpha, Init code is :' + init_code);
 
-            } else {
-                if ((code_chck == ' ') || (surf_chck == 'I')) {
-                    //FALSE
-                    warnMsg(msgerr.msg021);
-                }
+              var check_init_code = '';
+              check_init_code = getCodeData(init_code);
+              console.log('Case 3, Verifying Generate Code in JSON FILE');
+              console.log('Sent code :' + init_code + ': received data if :' + check_init_code);
+              if (check_init_code != '') {
+                  console.log('The Generated code from CASE 3 , found in JSON FILE');
 
-            }
+              }
 
-            console.log('init code b4 surf alpha fn :' + init_code);
-            var surf_alpha = surf_alpha_fn(val, dent_chck);
-            console.log('Done with function surf_alpha, Init code is :' + init_code);
+              console.log(init_code);
+              break;
 
-            var check_init_code = '';
-            check_init_code = getCodeData(init_code);
-            console.log('Case 3, Verifying Generate Code in JSON FILE');
-            console.log('Sent code :' + init_code + ': received data if :' + check_init_code);
-            if (check_init_code != '') {
-                console.log('The Generated code from CASE 3 , found in JSON FILE');
+          case 4:
 
-            }
+              break;
+      }
 
-            console.log(init_code);
-            break;
-
-        case 4:
-
-            break;
-    }
-
-
+  }
     surf_focusout_finish = true;
     var this_code_val = $('#factTableBody tr[id=' + this_row_id + '],#factTableBody_regie tr[id=' + this_row_id + ']').children("td[data-target='Code']").text(init_code);
 

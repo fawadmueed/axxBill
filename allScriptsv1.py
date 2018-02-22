@@ -1,6 +1,7 @@
 #!C:\Python27\python.exe -u
 # -*- coding: utf-8 -*-
 
+import smtplib
 import cgi
 import glob
 import os, sys
@@ -1458,4 +1459,18 @@ if tx == "getPlanTraitements":
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)  
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+if tx == "sendEmail":
+    try:
+		tree = ET.parse('VisionxReports.exe.Config')
+		root = tree.getroot()
+		for a in root.iter('add'):
+			k = a.get('key').encode('utf-8')
+			v = a.get('value').encode('utf-8')
+			print k, v
+
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)

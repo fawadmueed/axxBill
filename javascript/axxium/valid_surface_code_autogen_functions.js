@@ -4,77 +4,78 @@
 
  function get_type_surf(val){
 
-        // LINE 1525 u_fact2
-      var type_surf;
-      type_surf=3;
-      // Condition 1
-        if(val==''){
+    // LINE 1525 u_fact2
+    var type_surf;
+	type_surf=3;
+	
+	// Condition 1
+	if(val==''){
 		type_surf=4;
-          console.log('Surface empty Type is :' + type_surf);
-        }
+		console.log('Surface empty Type is :' + type_surf);
+		return type_surf;
+	}
 
-        if(val.length>5){
+	if(val.length>5){
+		type_surf=0;
+		console.log('Surface length greater than 5, TYpe is :' + type_surf);
+		return type_surf;
+	}
 
-          type_surf=0;
-          console.log('Surface length greater than 5, TYpe is :' + type_surf);
-        }
+	//Condition 3
+	if(!isNaN(parseFloat(val)) && isFinite(val)) //if((!(isNaN(val)))&&(val.length!=''))
+	{
+		//isNAN Not-A-Number Function , If NOT A NUMBER : TRUE , IF NUMBER - FALSE
+		//in loop when NOT TRUE - isNAN
+		console.log('Surface is number : ' + isNaN(val));
 
-        //Condition 3
-        if((!(isNaN(val)))&&(val.length!=''))
-        {
-          //isNAN Not-A-Number Function , If NOT A NUMBER : TRUE , IF NUMBER - FALSE
-          //in loop when NOT TRUE - isNAN
-          console.log('Surface is number : ' + isNaN(val));
+		if(val=='97'||val=='87') { //tested
+			type_surf=5;
+			console.log('97 or 87 surface val,Type is :' + type_surf);
+		}
+		else if(!((val.charAt(0) >= 1) && (val.charAt(0) <= 6)))
+		{
+			console.log('if not surf[1] (greater than 1 less than 6)');
+			type_surf=0;
+		}
+		else {
+			// isNAN is TRUE
+			type_surf=1;
+		}
+		return type_surf;
+	}
 
-            if(val=='97'||val=='87')
-            { //tested
-              type_surf=5;
-               console.log('97 or 87 surface val,Type is :' + type_surf);
-            }
+	var surf_sextant=surface_validation_sextant(val);
 
-            else if(!((val.charAt(0) >= 1) && (val.charAt(0) <= 6)))
-            {
-              console.log('if not surf[1] (greater than 1 less than 6)');
-              type_surf=0;
-            }
-        else{
-                // isNAN is TRUE
-                type_surf=1;
-              }
+	//Condition 4
+	if(surf_sextant)
+	{
+		type_surf=2; //tested
+		return type_surf;
+	}
 
-        }
+	var string_surface="IMOBDL";
+	var concatStr2=val+string_surface;
+	console.log('Sendng str to check repeat' + concatStr2);
+	var ifExistInString=checkRepeatChrcInString(concatStr2);
 
-        var surf_sextant=surface_validation_sextant(val);
+	//Condition 5
+	if(val.length!=0)
+	{
+		if(ifExistInString<1){
+			// means User did not Input I,M,O,B,D,L
+			console.log('TYPE 0 because string did not present in IMOBDL');
+			type_surf=0;
+			return type_surf;
+		}
 
-        //Condition 4
-        if(surf_sextant)
-        {
-          type_surf=2; //tested
-        }
+		//if (type_surf==0)
+		//{
+		//  warnMsg('Cette surface est invalide');
+		//}
+	}
 
-        var string_surface="IMOBDL";
-        var concatStr2=val+string_surface;
-        console.log('Sendng str to check repeat' + concatStr2);
-        var ifExistInString=checkRepeatChrcInString(concatStr2);
-
-        //Condition 5
-        if(val.length!=0)
-        {
-	        if(ifExistInString<1){
-	          // means User did not Input I,M,O,B,D,L
-	          console.log('TYPE 0 because string did not present in IMOBDL');
-	          type_surf=0;
-	        }
-
-	        if (type_surf==0)
-
-	        {
-	          warnMsg('Cette surface est invalide');
-	        }
-	    }
-
-        return type_surf;
-    }
+	return type_surf;
+}
 
 
  function surface_validation_sextant(val){
@@ -312,6 +313,64 @@
 		//	return false;
 		//}
  	}
+ }
+
+ function surf_classe(dent, surface) {
+	if((dent>=51 && dent<=53)||(dent>=61 && dent<=63)||(dent>=71 && dent<=73)||(dent>=81 && dent<=83))
+	{
+		switch (surface){
+
+			case '1':
+			case '5':
+			case '6':
+				if(locatn=='Quebec')
+				{
+					init_code='23311';
+				}
+				else
+				{
+					init_code='23411';
+				}
+				break;
+			case '3':
+				if(locatn=='Quebec')
+				{
+					init_code='23312';
+				}
+				else
+				{
+					init_code='23412';
+				}
+				break;
+			case '4':
+				if(locatn=='Quebec')
+				{
+					init_code='23314';
+				}
+				else
+				{
+					init_code='23414';
+				}
+				break;
+		}
+	}
+	else if(((dent>=1 && dent<=6)||(dent>=11 && dent<=13)||(dent>=21 && dent<=23)||(dent>=31 && dent<=33)||(dent>=41 && dent<=43))||dent==99)
+	{
+		switch (surface){
+			case '1':
+			case '5':
+			case '6':
+				init_code='23111';
+				break;
+			case '3':
+				init_code='23112';
+				break;
+			case '4':
+				init_code='23114';
+				break;
+		}
+	}
+
  }
 
  function surf_alpha_fn(val,dent){
@@ -643,8 +702,6 @@ else {
 	 }
 
    }
-
-
 
  }
 }

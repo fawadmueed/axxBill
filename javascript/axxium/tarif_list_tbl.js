@@ -1,5 +1,32 @@
-function fact_tarif_list()
+$(document).ready(function(){
+	
+
+ 
+	$('.tarif_list_table').on('click','tr',function()
 	{
+		var tarif_row_data=tarifTbl_datTbl.row(this).data() ;
+		
+		console.log(tarif_row_data.value.regiecode);
+		$('#factTableBody tr[id='+globVarSurfValidation_this_row_id+']').children("td[data-target='Code']").text(tarif_row_data.value.regiecode);
+		$("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");	
+
+		$('.fact_tarif_list.modal').modal('hide');
+	})
+
+	$('.searchTarif').click(function(){
+		var srch='\\b'+$(this).val();
+		console.log(srch);
+		tarifTbl_datTbl.column(0).search(srch,true,false).draw();
+		
+	})
+})
+
+function fact_tarif_list(x)
+	{
+
+		var this_row_id=$(x).parent('tr').attr('id');
+		globVarSurfValidation_this_row_id=this_row_id;
+
 		$.fn.dataTable.ext.errMode = 'none';
 		// Getting data for the Modal, Mapping it from JSON to ARRAY
 		var arr = $.map(dataJson_Code, function(val,key) { return {code:key,value:val} });
@@ -23,8 +50,12 @@ function fact_tarif_list()
 			descrLn='descrf';
 		}
 
-	$('.tarif_list_table').DataTable({
-
+tarifTbl_datTbl=$('.tarif_list_table').DataTable({
+		
+		"search":{
+			"smart":false,
+			"regex":true
+		},
 		"data":arr,
 		
         "columns": [    // Assign KEY Values to COLUMNS

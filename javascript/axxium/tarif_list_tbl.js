@@ -52,10 +52,7 @@ function fact_tarif_list(x)
 
 tarifTbl_datTbl=$('.tarif_list_table').DataTable({
 		
-		"search":{
-			"smart":false,
-			"regex":true
-		},
+		
 		"data":arr,
 		
         "columns": [    // Assign KEY Values to COLUMNS

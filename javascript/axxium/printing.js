@@ -266,7 +266,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	//!-3e Partie
   }
 
-  function printRAMQ()
+  function printRAMQ(toDo)
   {
   	
 	var doc = new jsPDF(); 
@@ -323,8 +323,18 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	})
 	//printITEM(doc,84,82,"COMPOSITE, PREMOLAIRE, TROIS SURFACES","23213","15","DMO","190.00");
 	//printITEM(doc,84,86,"COMPOSITE, PREMOLAIRE, UNE SURFACE","23211","45","O","103.00");
+	if(toDo=='print')
+	{
+  		doc.save('doc.pdf'); //print
+  	}
+	else
+   {
+   		
+	  	return doc.output('datauri'); //saving in url
 
-  	doc.save('doc.pdf');
+	}
+
+  	
 
   	//nam = qPAT.patients[curPatRow].NAM;
 	//var string = doc.output('datauristring');

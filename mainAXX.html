@@ -364,6 +364,7 @@
                                             <th>Dent</th>
                                             <th>Surface</th>
                                             <th>Code</th>
+                                            <th></th>
                                             <th>Description</th>
                                             <th class="mont">Frais Lab.</th>
                                             <th></th>
@@ -1267,12 +1268,29 @@
             <i class="search plus icon"></i>Liste des codes et tarifs
         </div>   
         <div class="content">
+        <div class="ui form segment">
+            
+        <div class="five fields">
+            <div class="field"><button class="ui inverted green button searchTarif" value="0">0-Diagnostic</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="1">1-Prévention</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="2">2-Restauration</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="3">3-Endodontie</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="4">4-Périodontie</button></div>
+        </div>
+        <div class="five fields">
+            <div class="field"><button class="ui inverted green button searchTarif" value="5">5-Proth. Amov.</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="6">6-Proth. fixe</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="7">7-Chirur. Buss.</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="8">8-Orthodontie</button></div>
+            <div class="field"><button class="ui inverted green button searchTarif" value="9">9-Divers</button></div>
+        </div>
+        </div>
             
 
                 <table class="ui stackable compact selectable  celled table tarif_list_table" width="100%">
                     <thead>
                         <tr>
-                            <th>Code</th>
+                            <th class="searchTarifCol">Code</th>
                             <th>Code Régie</th>
                             <th>Description</th>
                             <th>Prix S</th>
@@ -5269,6 +5287,7 @@
                 var globVarSurfValidation_code_chck  ;
                 var globVarSurfValidation_this_row_id;
                 var globVarMessageErrorValidation;
+                var tarifTbl_datTbl;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

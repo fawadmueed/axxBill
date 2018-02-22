@@ -889,6 +889,7 @@ function checkInsuranceExist(compny){
 }
 
 function surf_code_dent_gen_validation() {
+  
     var val = globVarSurfValidation_val;
     var surf_chck = globVarSurfValidation_surf_chck;
     var dent_chck = globVarSurfValidation_dent_check;

@@ -81,6 +81,8 @@ function newRecordFact(){
                 //tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text('CAS');
                 // globVisionRData.InsTypeList[0]  TYPE from VisionR
                 tblData.appendTo(tblRow);
+                
+                
                 //draw odonto
                 odonto = {"id":"1","date":"2018/01/01","exist":[]};
                 drawOdonFact("odonto2");
@@ -119,6 +121,8 @@ function newRecordFact(){
 
 
             tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
+             tblData.appendTo(tblRow);
+             tblData=$('<td>').attr('class','dol').append('<div class="circular ui icon button" onclick="fact_tarif_list($(this).parent())"><i class="icon info"></i></div>');
              tblData.appendTo(tblRow);
 
 
@@ -203,11 +207,13 @@ function newRecordFact(){
     }
            tblData=$('<td>').append('<div class="ui axxium tiny button plus" onclick="modFactTableMore(this);" >Plus</div><div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
        tblData.appendTo(tblRow);
+       tblRow.appendTo(tblBody);
 
-        tblRow.appendTo(tblBody);
-
-
-
+        //When type set automatically, To Run Validation : 
+        if(fact_tbl_row_id==1)
+        {
+          $("#factTableBody td[data-target='Type']").trigger("focusout");
+        }
 }
 
 function getPrevRowCode(idPrev){

@@ -1,6 +1,7 @@
 #!C:\Python27\python.exe -u
 # -*- coding: utf-8 -*-
 
+import smtplib
 import cgi
 import glob
 import os, sys
@@ -13,6 +14,11 @@ import requests
 import html
 import xml.etree.ElementTree as ET
 import base64
+
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from email.MIMEBase import MIMEBase
+from email import Encoders
 
 print 'Content-type: text/json; charset=utf-8\n\n'
 
@@ -1458,4 +1464,93 @@ if tx == "getPlanTraitements":
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)  
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+if tx == "sendEmail":
+    try:
+        email_body = ''
+        email_from_display_name  = ''
+        email_port = ''
+        email_host = ''
+        email_ssl = ''
+        email_subject = ''
+        email_cc = ''
+        email_from = ''
+        #get parameters from setting file.
+        tree = ET.parse('VisionxReports.exe.Config')
+        root = tree.getroot()
+        for elem in tree.iterfind('appSettings'):
+            for a in elem.iter('add'):
+                k = a.get('key').encode('utf-8')
+                v = a.get('value').encode('utf-8')
+                if k == 'EmailBody':
+                   email_body = v
+                elif k == 'EmailFromDisplayName':
+                    email_from_display_name = v
+                elif k == 'EmailPort':
+                    email_port = v
+                elif k == 'Host':
+                    email_host = v
+                elif k == 'Ssl':
+                    email_ssl = v
+                elif k == 'EmailSubject':
+                    email_subject = v
+                elif k == 'EmailCC':
+                    email_cc = v
+                elif k == 'EmailFrom':
+                    email_from = v
+                
+        #print '{"email_body" : "%s" , "email_from_display_name" : "%s" , "email_port" : "%s" , "email_host" : "%s", "email_ssl" : "%s", "email_subject" : "%s", "email_cc" : "%s", "email_from" : "%s" }'%(email_body, email_from_display_name, email_port, email_host, email_ssl, email_subject, email_cc, email_from)
+        #fs = cgi.FieldStorage()
+
+        #sys.stdout.write("Content-Type: application/json")
+
+        #sys.stdout.write("\n")
+        #sys.stdout.write("\n")
+
+        fromaddr = 'alexey.v.kryukov@gmail.com'
+        toaddr = 'akryukov@semiosis.com'
+        username = "alexey.v.kryukov@gmail.com"
+        password = "Zaz968M.gmail"
+
+        msg = MIMEMultipart()
+        msg['From'] = fromaddr
+        msg['To'] = toaddr
+        msg['Subject'] = 'Clinique facture...'
+
+        body = 'Voici votre facture : '
+        msg.attach(MIMEText(body, 'plain'))
+
+        filename = "AttachmentExample.txt"
+        attachment = open("AttachmentExample.txt",'rb')
+
+        part = MIMEBase('application','octet-stream')
+        part.set_payload((attachment).read())
+        Encoders.encode_base64(part)
+        part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+
+        msg.attach(part)
+
+
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.starttls()
+        server.login(username,password)
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        server.quit()
+
+
+        
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+if tx == "sendPdf":
+    try:
+        pdfString = form['pdfString'].value
+        print pdfString
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)

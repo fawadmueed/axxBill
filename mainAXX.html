@@ -57,6 +57,7 @@
     <script src="javascript/axxium/payment.js"></script>
     <script src="javascript/axxium/cash.js"></script>
     <script src="javascript/axxium/planTraitement.js"></script>
+    <script src="javascript/axxium/sendEmail.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -1868,7 +1869,7 @@
 
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
-<<<<<<< HEAD
+
                                         <div class="ui radio checkbox">
                                         <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" >
                                         <label>Oui</label></div>
@@ -1877,14 +1878,14 @@
                                         <div class="ui radio checkbox">
                                         <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked">
                                         <label>Non</label></div>
-=======
+
                                         <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked">
                                         <label>Oui</label>
                                     </div>
                                     <div class="field">
                                         <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" >
                                         <label>Non</label>
->>>>>>> d11c1aa25347ed8c37b70076ae8970059d9722de
+
                                     </div>
                                 </div>
                                 <div class="ui grid">
@@ -2055,8 +2056,13 @@
                                 <div class="ui grid">
                                     <div class="row">
                                         <div class="column">
-                                            <div class="ui axxium right floated button" >Envoyer par courriel</div>
+
+                                            <!--<div class="ui axxium right floated button" onclick="SendEmail();">Envoyer par courriel</div>
+                                            <div class="ui axxium right floated button" onclick="printRAMQ()">Imprimer</div>-->
+
+                                            <div class="ui axxium right floated button" onclick="SendEmail();">Envoyer par courriel</div>
                                             <div class="ui axxium right floated button" onclick="printRAMQ('print')">Imprimer</div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -2298,10 +2304,12 @@
                                 if (pamnt_trnsfr_modal_stats == 2) {
                                     // open modal CDA NET 1 or 2 depending on Version of insurance
 
-                                    if (globCdaVersion ==='2') {
+                                    if (globCdaVersion === '2') {
+                                        $('#cdan1_req').val(globVisionRData.ProfName);
                                         modCdan1();
                                     }
                                     else if (globCdaVersion === '4') {
+                                        $('#cdan2_req').val(globVisionRData.ProfName);
                                         modCdan2();
                                     }
                                 }

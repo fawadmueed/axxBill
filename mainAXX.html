@@ -2939,22 +2939,25 @@
     <div class="ui small modalResponseCDANET modal">
         <i class="close icon"></i>
         <div class="header">
-            <i class="user icon"></i>Résponse CDANET
+            <i class="user icon"></i>Réponse CDANET
         </div>
         <div class="content ">
             <div class="ui axxium form segment">
-                <div class="" id="cdanet_response_div">
+                <div class="ui segment" id="cdanet_response_div">
 
                 </div>
+                <!--<div class="ui axxium right floated button" onclick="SendEmail();">Envoyer par courriel</div>-->
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui axxium right floated button">Imprimer</div>
+                            <div class="ui axxium right floated disabled button" onclick="CdaCommSendToSecondIns()">Transférer assurance 2</div>
+                            <div class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="three fields">
-                <button class="ui axxium right floated button">Imprimer</button>
-                <button class="ui axxium right floated button" onclick="CdaCommSendToSecondIns()" disabled>Transférer assurance 2</button>
-                <button class="ui axxium right floated button" onclick="CdaCommOpenCASPopup()">Transférer à CAS</button>
-            </div>
-
         </div>
-    </div>
 
     <div class="ui small modalCdaClaimReversConfirm modal">
         <i class="close icon"></i>

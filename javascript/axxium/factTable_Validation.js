@@ -211,6 +211,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     globVarSurfValidation_this_row_id=this_row_id;
 
 
+
     console.log($(this).siblings("td[data-target='Code']"));
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
     if(!chckDentSurf)
@@ -269,7 +270,10 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       var code_s=$(this).text();
       
       if(code_s == '')
+      {
+
         return;
+      }
 
       // if(surf_focusout_finish)
       // {
@@ -949,6 +953,8 @@ function surf_code_dent_gen_validation() {
 
           case 1:
               console.log('In type surf case 1 ');
+              var row_id_case1;
+              row_id_case1=this_row_id;
 
               if ((type_chck == 'AMQ') || (type_chck == 'BES')) {
                   warnMsg(msgerr.msg018);
@@ -959,22 +965,29 @@ function surf_code_dent_gen_validation() {
               
               if (dent_Type != 'Denturologiste') {
                 surf_classe(dent_chck, surf_chck);
-                //Show popup.... take surface DLBO...
-                //Change surface value numeric vs letter
-                //   Show popup.... take surface DLBO...
-                // Change surface value numeric vs letter
+              
+              if(init_code!='')
+              {
                 $('.surfNumModal').modal('show');
-                $('.surfNumSel').click(function(){
-                  surf_chck=$(this).text();
-                  // alert(surf_chck);
-                  globVarSurfValidation_surf_chck=surf_chck;
+                
+                $('.surfNumSel').click( function(){
+                  
+                  row_id_case1=globVarSurfValidation_this_row_id;
+                  var surf_chck_new =$(this).text();
                   $('.surfNumModal').modal('hide');
-                  surf_focusout_finish = true;
-                  var this_code_val = $('#factTableBody tr[id=' + this_row_id + '],#factTableBody_regie tr[id=' + this_row_id + ']').children("td[data-target='Code']").text(init_code);
-                  $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");
+                  
+                  var this_code_val = $('#factTableBody tr[id='+row_id_case1+']').children("td[data-target='Code']").text(init_code);
+                  var this_code_val = $('#factTableBody tr[id=' +row_id_case1+']').children("td[data-target='Surface']").text(surf_chck_new);
+                  $("#factTableBody td[data-target='Code'],#factTableBody_regie tr[id='" + row_id_case1 + "'] td[data-target='Code").trigger("focusout");
                 })
 
               }
+              else
+              {
+                $(this).focus();
+                warnMsg(msgerr.msg021);
+              }
+            }
               console.log(init_code);
               break;
 
@@ -1064,11 +1077,11 @@ function surf_code_dent_gen_validation() {
       }
 
   }
-    // if(type_surf!=1)
-    // {
+    if(type_surf!=1)
+    {
       surf_focusout_finish = true;
       var this_code_val = $('#factTableBody tr[id=' + this_row_id + '],#factTableBody_regie tr[id=' + this_row_id + ']').children("td[data-target='Code']").text(init_code);
 
       $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");
-    // }
+    }
 }

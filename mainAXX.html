@@ -2304,10 +2304,12 @@
                                 if (pamnt_trnsfr_modal_stats == 2) {
                                     // open modal CDA NET 1 or 2 depending on Version of insurance
 
-                                    if (globCdaVersion ==='2') {
+                                    if (globCdaVersion === '2') {
+                                        $('#cdan1_req').val(globVisionRData.ProfName);
                                         modCdan1();
                                     }
                                     else if (globCdaVersion === '4') {
+                                        $('#cdan2_req').val(globVisionRData.ProfName);
                                         modCdan2();
                                     }
                                 }

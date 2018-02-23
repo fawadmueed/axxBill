@@ -45,6 +45,8 @@ function CdaV4CallCDAService(pReqString) {
             //Hide progress
             document.getElementById("loaderCdan4Form").setAttribute("class", "ui inverted dimmer");
             document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
+            
+
             if (result.outcome === 'error')
                 alert(result.message);
             else {

@@ -1750,9 +1750,19 @@
             </div>
         </div>
         <div class="ui facture_response modal">
-            <div class="ui header"></div>
-            <div class="content"></div>
-            <div class="ui axxium tiny button" onclick="factureResponseClose();">OK</div>
+            <div class="ui header" id="divFactureResponseHeader"></div>
+            <div class="content">
+                <div class="ui" id="divFactureResponseContent">
+
+                </div>
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui axxium tiny right floated button" onclick="factureResponseClose();">OK</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="ui modalFacture fullscreen modal">
             <i class="close icon"></i>
@@ -1869,24 +1879,25 @@
 
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
-
                                         <div class="ui radio checkbox">
-                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" >
-                                        <label>Oui</label></div>
+                                            <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked" >
+                                            <label>Oui</label>
+                                        </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                        <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked">
-                                        <label>Non</label></div>
+                                            <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" >
+                                            <label>Non</label>
+                                        </div>
 
-                                        <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked">
-                                        <label>Oui</label>
+                                        <!--<input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked">
+                                        <label>Oui</label>-->
                                     </div>
-                                    <div class="field">
+                                    <!--<div class="field">
                                         <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" >
                                         <label>Non</label>
 
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="ui grid">
                                     <div class="eight wide column">
@@ -2946,7 +2957,6 @@
                 <div class="ui segment" id="cdanet_response_div">
 
                 </div>
-                <!--<div class="ui axxium right floated button" onclick="SendEmail();">Envoyer par courriel</div>-->
                 <div class="ui grid">
                     <div class="row">
                         <div class="column">

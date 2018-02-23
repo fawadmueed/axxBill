@@ -1,28 +1,13 @@
 function SendEmail() {
-    //$.post("allScriptsv1.py", { tx: "sendEmail"},
-    //        function (result) {
-    //            alert(result.message);
-    //        });
 
     var pdfStr = printRAMQ('email');
-    $.post("allScriptsv1.py", { tx: "sendPdf", pdfString: pdfStr },
+    var objInput = { "pdfBase64": pdfStr };
+    var patientEmail = 'akryukov@semiosis.com';//TODO: get email from glob variable.
+    $.post("allScriptsv1.py", { tx: "sendPdf", input: JSON.stringify(objInput), email: patientEmail },
             function (result) {
-                console.log(result);
+                if (result.outcome === 'success')
+                {
+                    displayRamqAnswer("Email", 'Les données ont été envoyées avec succès');
+                }
             });
-
-
 }
-
-//$.post("allScriptsv1.py", { tx: "getPatientFactures", clinicId: globClinicId, patientId: globPatientId, dFrom: dateFrom, dTo: dateTo },
-//            function (result) {
-//                if (result.message !== undefined)
-//                    alert(result.message);
-//                else {
-//                    if (result.factures.length > 0) {
-//                        // put result to global variable for further using in report.
-//                        //qFACT = result.factures;
-//                        var arrDataForTable = RamqBillGetDataForTable(result.factures);
-//                        RamqBillPopulateTable(arrDataForTable);
-//                    }
-//                }
-//            });

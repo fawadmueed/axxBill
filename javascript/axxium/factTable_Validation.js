@@ -1080,8 +1080,8 @@ function surf_code_dent_gen_validation() {
     if(type_surf!=1)
     {
       surf_focusout_finish = true;
-      var this_code_val = $('#factTableBody tr[id=' + this_row_id + '],#factTableBody_regie tr[id=' + this_row_id + ']').children("td[data-target='Code']").text(init_code);
+      var this_code_val = $('#factTableBody tr[id='+this_row_id+'] td[data-target="Code"]').text(init_code).trigger("focusout");
 
-      $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");
+      // $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");
     }
 }

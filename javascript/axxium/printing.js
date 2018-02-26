@@ -301,11 +301,17 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	var doc = new jsPDF(); 
 	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
 
-	var amount_cash=$('#pers_total').val();
-  	var amount_insur=$('#ass_total').val();
-  	var amount_amq=$('#amq_total').val();
+	var amount_cash=$('#pers_total').val();//Amount to be given by Patient
+
+  	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
+  	amount_insur=parseInt(amount_insur) || 0;
+
+  	var amount_amq=$('#amq_total').val();//Amount paid by AMQ
+
   	var previousBal=37;
   	var honoraires=0;
+  	
+  	var amount_paid_patient=0;
 
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{
@@ -315,8 +321,8 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	
   	var totalOwe=parseInt(previousBal)+parseInt(honoraires);
   	totalOwe=parseInt(totalOwe) || 0;
-  	var balanceDue=parseInt(totalOwe)-parseInt(amount_cash);
-  	balanceDue=parseInt(balanceDue)-parseInt(amount_insur);
+  	
+  	var balanceDue=parseInt(totalOwe)-parseInt(amount_insur)-parseInt(amount_paid_patient);
   	balanceDue=parseInt(balanceDue) || 0;
 
 
@@ -336,7 +342,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printAMT(doc,2,89,"+","Honoraires","Fees",honoraires.toString());
 
 	printAMT(doc,2,97,"=","Vous devez ce montant","You owe this amount",totalOwe.toString());
-	printAMT(doc,2,105,"-","Montant paye par patient","Amount paid by patient",amount_cash.toString());
+	printAMT(doc,2,105,"-","Montant paye par patient","Amount paid by patient",amount_paid_patient.toString());
 	printAMT(doc,2,113,"-","Montant paye par l'assurance","Amount paid by insurance",amount_insur.toString());
 	printAMT(doc,2,121,"=","Solde a payer","Balance due",balanceDue.toString());
 	printAMT(doc,2,130,"","Cheques post-dates","Post-dated checks","");

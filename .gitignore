@@ -20,3 +20,4 @@ json/signatures/*.json
 json/traitements/*.json
 json/params/codtar*.json
 json/PlanTraitement/**/**/*.json
+PDF/**

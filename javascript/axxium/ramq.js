@@ -1588,6 +1588,10 @@ function RamqPopulateVisionRDataObj(pData) {
     res.Tel=pData.Tel;
     //$('#pamnt_no_prof').val(res.IdProf);
 
+    res.Email = pData.Email;
+    res.NoDentiste = pData.NoDentiste;
+    res.NoGroup = pData.NoGroup;
+
     return res;
 }
 

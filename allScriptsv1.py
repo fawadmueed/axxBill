@@ -1554,3 +1554,15 @@ if tx == "sendPdf":
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+if tx == "deletePdf":
+	folder = 'PDF'
+	for the_file in os.listdir(folder):
+		file_path = os.path.join(folder, the_file)
+		try:
+			if os.path.isfile(file_path):
+				os.unlink(file_path)
+		except:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)

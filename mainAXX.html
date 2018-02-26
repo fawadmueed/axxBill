@@ -403,7 +403,7 @@
                                 <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
 <!-- <<<<<<< HEAD -->
                                 <!-- <div class="ui axxium tiny button" onclick="modPlanTraitTable()">Imprimer</div> -->
-<!-- ======= -->                <div class="ui axxium tiny button " onclick="">Test</div>
+<!-- ======= -->                <div class="ui axxium tiny button " onclick="printASS()">Test</div>
                                 <!-- <div class="ui axxium tiny button" onclick="printASS()">Imprimer Ass</div> -->
                                 <!-- <div class="ui axxium tiny button" onclick="populate_tbl_from(testForm,testArray)">Test</div> -->
 <!-- >>>>>>> Insurance-Print -->
@@ -976,7 +976,7 @@
     
     
       
-    <div class="header" style="padding-left:300px;padding-bottom:50px"><i class="add circle icon" ></i>Sélectionnez un type de tarif</div>
+    <div class="header" style="padding-left:315px;padding-bottom:50px"><i class="add circle icon" ></i>Sélectionnez un type de tarif</div>
     <div class="ui centered grid">
     <div class="tarifSelection content " >
     <div class="ui axxium form">
@@ -996,21 +996,12 @@
                                                     </div>
                                                 </div><br>
                                                 <div class=" ui left floated   field"">
-                                                    <div class="ui  toggle checkbox" style="padding-right:40px">
+                                                    <div class="ui  toggle checkbox" style="padding-left:20px">
                                                         <input type="radio" name="tarif_fact" value="3" class="type_rate">
-                                                        <label style="font-weight: bold">Régie</label>
+                                                        <label style="font-weight: bold">Cas hospitalier</label>
                                                     </div>
-                                                </div><br>
+                                                </div>
                                             
-      
-                                            <div class="field">
-                                                <select class="ui dropdown fluid selection">
-                                                    <option selected="selected" >Cas hospitalier</option>
-                                                    <option>Anesthésie locale</option>
-                                                    <option>Anesthésie générale</option>
-                                                    <option>Non applicable</option>
-                                                </select>
-                                            </div>
                                         </div>
                                             <button class="ui positive button save">OK</button>
                                         </div>
@@ -5327,6 +5318,7 @@
                 var globVarSurfValidation_this_row_id;
                 var globVarMessageErrorValidation;
                 var tarifTbl_datTbl;
+                var globInsuranceData;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

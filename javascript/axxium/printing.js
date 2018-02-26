@@ -7,7 +7,7 @@
 
  //Data for Printing 
  $(document).ready(function(){
-
+ 
  var nodossier = $("#nodossier").val();
  var dentiste = $("#dentiste").val();
  var uri='http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/'
@@ -16,9 +16,9 @@
                    url: uri + "PostGenerIndemnisation",
                    type: "POST",
                    contentType: "application/json",
-                   data: JSON.stringify({ NoDossier: 004707, Dentiste: 'AR' }),
+                   data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist }),
                    success: function (result) {
-                       alert(result);
+                       globInsuranceData=result;
                    },
                    error: function (xhr, ajaxOptions, thrownError) {
                        alert(xhr.statusText);
@@ -198,24 +198,26 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
   function print1Part(doc)
   {
+  	var pDate;
+  	pDate=get_date();
 	  	//Unique Number
-	doc.text(8, 38, '1222222222');	
+	doc.text(8, 38, globInsuranceData.noUnique);	
 
 	//Numero Patient
-	doc.text(95, 38, '1');	
+	doc.text(95, 38, globNoDossier);	
 
 	//AMQ
-	doc.text(128, 38, 'BLE1123');	
+	doc.text(128, 38, globVisionRData.IdPers);	
 
 	//Patient Details	
-	doc.text(10, 46, 'Patient First'+" "+'Patient Last');
-	doc.text(10, 51, 'Address , Montreal Quebec 1234');
-	doc.text(10, 56, '5147924783');
+	doc.text(10, 46, globInsuranceData.firstName+" "+globInsuranceData.lastName);
+	doc.text(10, 51, globVisionRData.AdrPersPatnt);
+	doc.text(10, 56, '? 5147924783');
 
 	//Dentiste Details
-	doc.text(84, 46, 'Dentiste First'+" "+'Dentiste Last');
-	doc.text(84, 51, 'Dentiste Address , Montreal Quebec 1234');
-	doc.text(84, 56, '5147924783');
+	doc.text(84, 46, globVisionRData.ProfName);
+	doc.text(84, 51, '? Dentiste Address , Montreal Quebec 1234');
+	doc.text(84, 56, '? 5147924783');
 
 	//$193
 	doc.setFontSize(8);
@@ -223,8 +225,8 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	//VERIFICATION Dentiste Name
 	doc.setFontSize(8);
-	doc.text(130, 95, 'Dentiste Name ');	
-	doc.text(170, 95, '18/08/2012 ');	
+	doc.text(130, 95, globInsuranceData.firstName+" "+globInsuranceData.lastName);	
+	doc.text(170, 95, pDate);	
 
 	//===Bills 
 	//date
@@ -235,7 +237,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	yAxis=yAxis+4;	
 
-	doc.text(6, yAxis, 'Date');
+	doc.text(6, yAxis, pDate);
 	doc.text(25, yAxis, val.Code);
 	doc.text(52, yAxis, val.Honoraires);
 	doc.text(68, yAxis, val.Frais);
@@ -244,10 +246,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	})
 
 	//Total Rembourse Montant
-	doc.text(68, 163, 'Total 0.00');
+	doc.text(68, 163, '? Total 0.00');
 
 	//Total Montant
-	doc.text(115, 163, 'Total 193');
+	doc.text(115, 163, '? Total 193');
 
   }
 
@@ -256,21 +258,22 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	// === 2e Partie === 
 
 	//Numero Regime ass
-	doc.text(40, 172, 'Num 12345555');
+	doc.text(40, 172, '? Num 1`2345555');
 
 	// NOM En Lettres
-	doc.text(148, 172, 'Nom BLEAU JOE');
+	doc.text(148, 172, "? Insurance company name");
 
 	// Identification Lassureur
-	doc.text(48, 181, 'La Capitale');
+	doc.text(48, 181, globInsuranceData.Insurance1);
 
 	//Numero certificat 
-	doc.text(154, 180, '4321');
+	doc.text(154, 180, globInsuranceData.noCertificat);
 
-	//Date naissance 
-	doc.text(135, 185, 'Year');
-	doc.text(147, 185, 'Month');
-	doc.text(158, 185, 'Day');
+	// //Date naissance 
+	// doc.text(135, 185, 'Year');
+	// doc.text(147, 185, 'Month');
+	// doc.text(158, 185, 'Day');
+	doc.text(135,185, globVisionRData.DatNaissPers);
 	// !-- 2e Partie
 
   }
@@ -280,11 +283,14 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	  	// 3e Patie ===== 
 
 	//Patient lien parente
-	doc.text(52, 198, 'Titulaire');
-	//Date naissance 
-	doc.text(38, 202, '2012');
-	doc.text(46, 202, '12');
-	doc.text(51, 202, '06');
+	doc.text(52, 198, globInsuranceData.firstName+" "+globInsuranceData.lastName);
+
+	// //Date naissance 
+	doc.text(38,202, globVisionRData.DatNaissPers);
+	// doc.text(38, 202, '2012');
+	// doc.text(46, 202, '12');
+	// doc.text(51, 202, '06');
+	doc.text(80,237,globInsuranceData.noPolice1);
 
 	//!-3e Partie
   }

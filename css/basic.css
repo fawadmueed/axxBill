@@ -49,5 +49,5 @@ caption {margin: 0 0 .5em; font-weight: bold; }*/
 
 #factureTable td{
   
-    outline-color:  rgba(0,0,0,.05) !important;
+    outline-color:rgba(255,255,255,.5) !important;
 }

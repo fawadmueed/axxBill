@@ -76,8 +76,16 @@ function newRecordFact(){
 
             if(fact_tbl_row_id==1)
                 {
-                 // Get First Value in TYPE from AMQ
-                tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                  if(type_rate_glbl==3)
+                  {
+                     tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text('HOP');
+                  }
+                  else
+                  {
+                        // Get First Value in TYPE from AMQ
+                    tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                  }
+                 
                 //tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text('CAS');
                 // globVisionRData.InsTypeList[0]  TYPE from VisionR
                 tblData.appendTo(tblRow);

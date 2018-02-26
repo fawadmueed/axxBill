@@ -1466,8 +1466,21 @@ if tx == "getPlanTraitements":
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
 
-if tx == "sendEmail":
+
+if tx == "sendPdf":
     try:
+        #convert and save pdf file.
+        pdfString = form['input'].value
+        toaddr = form['email'].value
+        dirName = 'PDF'
+        fileName = str(int(round(time.time() * 1000))) + '.pdf'
+        pdfFilePath = dirName + '/' + fileName
+
+        code = pdfString.split(',')[1].decode('base64')
+        with open(pdfFilePath, 'wb') as fout:
+            fout.write(code)
+        
+        # Get credentials from config file
         email_body = ''
         email_from_display_name  = ''
         email_port = ''
@@ -1476,7 +1489,9 @@ if tx == "sendEmail":
         email_subject = ''
         email_cc = ''
         email_from = ''
-        #get parameters from setting file.
+        email_user = ''
+        email_password = ''
+
         tree = ET.parse('VisionxReports.exe.Config')
         root = tree.getroot()
         for elem in tree.iterfind('appSettings'):
@@ -1499,57 +1514,42 @@ if tx == "sendEmail":
                     email_cc = v
                 elif k == 'EmailFrom':
                     email_from = v
-                
-        #print '{"email_body" : "%s" , "email_from_display_name" : "%s" , "email_port" : "%s" , "email_host" : "%s", "email_ssl" : "%s", "email_subject" : "%s", "email_cc" : "%s", "email_from" : "%s" }'%(email_body, email_from_display_name, email_port, email_host, email_ssl, email_subject, email_cc, email_from)
-        #fs = cgi.FieldStorage()
+                elif k == 'User':
+                    email_user = v
+                elif k == 'Password':
+                    email_password =v
 
-        #sys.stdout.write("Content-Type: application/json")
-
-        #sys.stdout.write("\n")
-        #sys.stdout.write("\n")
-
-        fromaddr = 'alexey.v.kryukov@gmail.com'
-        toaddr = 'akryukov@semiosis.com'
-        username = "alexey.v.kryukov@gmail.com"
-        password = "Zaz968M.gmail"
+        # Send email with attachment
 
         msg = MIMEMultipart()
-        msg['From'] = fromaddr
+        msg['From'] = email_from
         msg['To'] = toaddr
-        msg['Subject'] = 'Clinique facture...'
+        msg['Subject'] = email_subject
 
-        body = 'Voici votre facture : '
+        body = email_body
         msg.attach(MIMEText(body, 'plain'))
 
-        filename = "AttachmentExample.txt"
-        attachment = open("AttachmentExample.txt",'rb')
+        attachFn = "Facture.pdf"
+        attachment = open(pdfFilePath,'rb')
 
         part = MIMEBase('application','octet-stream')
         part.set_payload((attachment).read())
         Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-
+        part.add_header('Content-Disposition', "attachment; filename= %s" % attachFn)
         msg.attach(part)
 
-
-        server = smtplib.SMTP('smtp.gmail.com:587')
+        server = smtplib.SMTP(email_host + ':' + email_port )
         server.starttls()
-        server.login(username,password)
+        server.login(email_user,email_password)
         text = msg.as_string()
-        server.sendmail(fromaddr, toaddr, text)
+        server.sendmail(email_from, toaddr, text)
         server.quit()
 
-
         
-    except:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+        #if os.path.exists(pdfFilePath):
+            #os.remove(pdfFilePath)
 
-if tx == "sendPdf":
-    try:
-        pdfString = form['pdfString'].value
-        print pdfString
+        print '{ "outcome":"success"}'
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

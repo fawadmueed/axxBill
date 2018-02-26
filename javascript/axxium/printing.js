@@ -4,6 +4,29 @@
  * that we end the line with a drawn segment and don't
  * overflow.
  */
+
+ //Data for Printing 
+ $(document).ready(function(){
+
+ var nodossier = $("#nodossier").val();
+ var dentiste = $("#dentiste").val();
+ var uri='http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/'
+           $.ajax(
+               {
+                   url: uri + "PostGenerIndemnisation",
+                   type: "POST",
+                   contentType: "application/json",
+                   data: JSON.stringify({ NoDossier: 004707, Dentiste: 'AR' }),
+                   success: function (result) {
+                       alert(result);
+                   },
+                   error: function (xhr, ajaxOptions, thrownError) {
+                       alert(xhr.statusText);
+                   }
+               });
+           })
+
+
 function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 {
     // Calculate line length (c)
@@ -329,8 +352,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	}
 	else
    {
-   		
-	  	return doc.output('datauri'); //saving in url
+
+   		var pdfData;
+   		pdfData=doc.output('datauristring');
+   		return pdfData; //saving in url
 
 	}
 

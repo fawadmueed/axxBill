@@ -11,6 +11,19 @@ $(document).ready(function(){
        check_charcount(this,0,e,'alphaNumeric');    
       })
 
+      $(document.body).on('keydown', "#factTableBody td[data-target='Surface']", function(e){
+        
+       check_charcount(this,4,e,'alphaNumeric');    
+      })
+      $(document.body).on('keydown', "#factTableBody td[data-target='Dent']", function(e){
+        
+       check_charcount(this,1,e,'numbers');    
+      })
+      $(document.body).on('keydown', "#factTableBody td[data-target='Code']", function(e){
+        
+       check_charcount(this,4,e,'numbers');    
+      })
+
 
       // All fields with .mont class are Montant ( Amount / Bills in DOllars). Validation is to restrict it to 2 decimal places and Float.
       $(document.body).on('change','#total_pamnt, .mont ',function(){

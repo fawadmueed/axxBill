@@ -46,3 +46,8 @@ caption {margin: 0 0 .5em; font-weight: bold; }*/
      padding-left: 0px !important;
      padding-right: 0px !important;
   }
+
+#factureTable td{
+  
+    outline-color:rgba(255,255,255,.5) !important;
+}

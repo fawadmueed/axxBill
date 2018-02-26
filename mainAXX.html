@@ -5336,6 +5336,13 @@
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {
                         type_rate_glbl = $(this).val();
+
+                    if(type_rate_glbl==3)
+                  {
+                     $("#factureTable tr[id='1'] td[data-target='Type']").text('HOP');
+
+                  }
+
                     }
                 })
 

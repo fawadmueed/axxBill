@@ -2308,10 +2308,13 @@
 
                                     if (globCdaVersion === '2') {
                                         $('#cdan1_req').val(globVisionRData.ProfName);
+
                                         modCdan1();
                                     }
                                     else if (globCdaVersion === '4') {
                                         $('#cdan2_req').val(globVisionRData.ProfName);
+                                        $('#txtCdan4NoDentist').val(globVisionRData.NoDentiste);
+                                        $('#txtCdan4Groupe').val(globVisionRData.NoGroup);
                                         modCdan2();
                                     }
                                 }
@@ -2871,11 +2874,11 @@
                             <div class="two fields">
                                 <div class="field">
                                     <label>No CDANET du dentist</label>
-                                    <input type="text" name="">
+                                    <input type="text" name="" id="txtCdan4NoDentist">
                                 </div>
                                 <div class="field">
                                     <label>Groupe CDANET</label>
-                                    <input type="text" name="" id="">
+                                    <input type="text" name="" id="txtCdan4Groupe">
                                 </div>
                             </div>
                             <div class="field">

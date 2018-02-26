@@ -278,6 +278,7 @@ function CashCreateListLigneFactXml()
                     '<honoraires>'+arrGrilleDeFacturation[i].Honoraires+'</honoraires>'+
                     '<ligne_total>'+arrGrilleDeFacturation[i].Total+'</ligne_total>'+//<!--Sum frais_lab and honoraires-->
                     '<cod_role>' + arrGrilleDeFacturation[i].codeRole + '</cod_role>' +
+                    '<description>' + arrGrilleDeFacturation[i].Description + '</description>' +
                 '</ligne_fact>';
     }
     return xml;

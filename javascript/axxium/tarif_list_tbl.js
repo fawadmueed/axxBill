@@ -28,6 +28,7 @@ function fact_tarif_list(x)
 		globVarSurfValidation_this_row_id=this_row_id;
 
 		$.fn.dataTable.ext.errMode = 'none';
+		$.fn.dataTable.render.number( '.', ',', 2, '' );
 		// Getting data for the Modal, Mapping it from JSON to ARRAY
 		var arr = $.map(dataJson_Code, function(val,key) { return {code:key,value:val} });
 		//Popup Modal
@@ -60,7 +61,9 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
     { "data": "value.regiecode" },
     { "data": "value."+descrLn },
     { "data": "value.prixs" },
-    { "data": "value.prixr" },
+    { "data": "value.prixr",
+    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+    },
     { "data": "value.prixa" },
     { "data": "value.frais_lab" },
     { "data": "value.frais_lab" },

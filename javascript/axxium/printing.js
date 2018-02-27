@@ -200,6 +200,18 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   {
   	var pDate;
   	pDate=get_date();
+
+  	var honoraires_ins=0;
+	$.each(arrGrilleDeFacturation,function(idx,valx)
+  	{
+  		if(!((valx.Type == 'AMQ' )||(valx.Type == 'BES') || (valx.Type =='HOP') || (valx.Type =='CAS')))
+  		{
+	  		honoraires_ins=parseInt(honoraires_ins)+parseInt(valx.Honoraires);
+	  		honoraires_ins=parseInt(honoraires_ins) || 0;
+  		}
+  		
+  	})
+
 	  	//Unique Number
 	doc.text(8, 38, globInsuranceData.noUnique);	
 
@@ -212,16 +224,19 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	//Patient Details	
 	doc.text(10, 46, globInsuranceData.firstName+" "+globInsuranceData.lastName);
 	doc.text(10, 51, globVisionRData.AdrPersPatnt);
-	doc.text(10, 56, '? 5147924783');
+
+	doc.text(10, 56, globVisionRData.Tel);
 
 	//Dentiste Details
 	doc.text(84, 46, globVisionRData.ProfName);
-	doc.text(84, 51, '? Dentiste Address , Montreal Quebec 1234');
-	doc.text(84, 56, '? 5147924783');
+	doc.text(84, 51, qParams["adr"]);
+	doc.text(84, 56, qParams["tel"]);
+
+
 
 	//$193
 	doc.setFontSize(8);
-	doc.text(158, 77, '193');	
+	doc.text(158, 77, honoraires_ins.toString());	
 
 	//VERIFICATION Dentiste Name
 	doc.setFontSize(8);
@@ -246,10 +261,13 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	})
 
 	//Total Rembourse Montant
-	doc.text(68, 163, '? Total 0.00');
+	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
+
+	doc.text(68, 163, amount_insur.toString());
 
 	//Total Montant
-	doc.text(115, 163, '? Total 193');
+
+	doc.text(115, 163, honoraires_ins.toString());
 
   }
 
@@ -258,10 +276,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	// === 2e Partie === 
 
 	//Numero Regime ass
-	doc.text(40, 172, '? Num 1`2345555');
+	doc.text(40, 172, '? Num Regime');
 
 	// NOM En Lettres
-	doc.text(148, 172, "? Insurance company name");
+	doc.text(148, 172, "? NAME (Insurance company ?) ");
 
 	// Identification Lassureur
 	doc.text(48, 181, globInsuranceData.Insurance1);
@@ -321,7 +339,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	
   	var totalOwe=parseInt(previousBal)+parseInt(honoraires);
   	totalOwe=parseInt(totalOwe) || 0;
-  	
+
   	var balanceDue=parseInt(totalOwe)-parseInt(amount_insur)-parseInt(amount_paid_patient);
   	balanceDue=parseInt(balanceDue) || 0;
 

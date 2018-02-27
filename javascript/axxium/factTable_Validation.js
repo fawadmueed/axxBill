@@ -289,7 +289,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       if(!codeValid) {
         warnMsg(globVarMessageErrorValidation);
         $(this).focus();
-        $(this).text('');       
+        $(this).text('');
+        $(this).siblings('td[data-target="Description"],[data-target="Frais"],[data-target="Honoraires"],[data-target="Total"]').text('');
       }
       else {
         var surfValid=chckDentCodeExistTbl(dent_s,code_s);

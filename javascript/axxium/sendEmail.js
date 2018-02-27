@@ -7,7 +7,7 @@ function SendEmail() {
     var patientEmail = 'alexey.v.kryukov@gmail.com';
 
     if (patientEmail) {
-        $.post("allScriptsv1.py", { tx: "sendPdf", input: pdfStr, email: patientEmail },
+        $.post("allScriptsv1.py", { tx: "sendPdf2", input: pdfStr, email: patientEmail, clinicId: globClinicId },
             function (result) {
                 if (result.outcome === 'success') {
                     displayRamqAnswer("Email", 'Les données ont été envoyées avec succès');

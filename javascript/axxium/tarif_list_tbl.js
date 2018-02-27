@@ -60,13 +60,21 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
     { "data": "code" },
     { "data": "value.regiecode" },
     { "data": "value."+descrLn },
-    { "data": "value.prixs" },
-    { "data": "value.prixr",
+    { "data": "value.prixs",
     	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+    	 },
+    { "data": "value.prixr",
+    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 	
     },
-    { "data": "value.prixa" },
-    { "data": "value.frais_lab" },
-    { "data": "value.frais_lab" },
+    { "data": "value.prixa" ,
+	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+	},
+    { "data": "value.frais_lab", 
+	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+	},
+    { "data": "value.frais_lab" ,
+	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+	},
     { "data": "value.lab" },
     { "data": "value.producer" },
     ]

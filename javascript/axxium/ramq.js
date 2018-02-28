@@ -69,6 +69,68 @@ function SoumissionDemandesPaiement()
     }
 }
 
+function SoumissionDemandesPaiementNode() {
+    globRamqOperationType = "New";
+    var objSoumissionDemandesPaiementData = RamqSoumissionDemandesPaiementGetData();
+    var jsonData = JSON.stringify(objSoumissionDemandesPaiementData);
+    
+    $.ajax
+    ({
+        type: "POST",
+        //the url where you want to sent the userName and password to
+        url: 'http://localhost:3000/SoumissionDemandesPaiement',
+        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "0`sxJ0FCX!3", globBillNumber: '34', globRamqOperationType: "New" }),
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        async: false,
+        success: function (result) {
+            console.log("Node Answer: " + JSON.stringify(result));
+        }
+    })
+    //RamqBillClearFormFactures();
+    //globRamqOperationType = "New";
+    //var objSoumissionDemandesPaiementData = RamqSoumissionDemandesPaiementGetData();
+    //if (objSoumissionDemandesPaiementData != null && objSoumissionDemandesPaiementData[1].length != 0) {
+    //    var operationName = "Paiement";
+    //    var inputXMl = RamqGetXmlToSend(operationName, objSoumissionDemandesPaiementData); //This data is used to send to RAMQ.
+
+    //    var jsonXML = {
+    //        "request": inputXMl,
+    //        "info": objSoumissionDemandesPaiementData //this data is used to store bill info on the server
+    //    }
+
+    //    var strJsonXML = JSON.stringify(jsonXML)
+    //    //Show progress
+    //    document.getElementById("loaderPaimentForm").setAttribute("class", "ui active inverted dimmer");
+
+    //    $.post("allScriptsv1.py", { tx: "getRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: strJsonXML },
+    //                function (result) {
+    //                    //Hide progress
+    //                    document.getElementById("loaderPaimentForm").setAttribute("class", "ui inverted dimmer");
+    //                    if (result.outcome === 'error')//Display python Error
+    //                    {
+    //                        alert(result.message);
+    //                    }
+    //                    else if (result.message != null && result.message.substring(0, 5) == 'Error') {
+    //                        displayRamqAnswer("RAMQ", result.message);
+    //                    }
+    //                    else if (result.message != null && result.message.substring(0, 5) != 'Error') {
+    //                        var objResponse = parseRAMQResponsePaiment(result.message);
+    //                        displayResponsePaiment(objResponse);
+    //                    }
+    //                    else {
+    //                        displayRamqAnswer("RAMQ", "SoumissionDemandesPaiement Error");
+    //                    }
+    //                })
+    //        .fail(function () {
+    //            alert("Ramq SoumissionDemandesPaiement Error.");
+    //        });
+    //}
+    //else {
+    //    alert("There is nothing to send.")
+    //}
+}
+
 function RamqSoumissionDemandesModification()
 {
     RamqBillClearFormFactures();

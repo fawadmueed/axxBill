@@ -89,48 +89,7 @@ function SoumissionDemandesPaiementNode() {
             alert(errorThrown);
         }
     })
-    //RamqBillClearFormFactures();
-    //globRamqOperationType = "New";
-    //var objSoumissionDemandesPaiementData = RamqSoumissionDemandesPaiementGetData();
-    //if (objSoumissionDemandesPaiementData != null && objSoumissionDemandesPaiementData[1].length != 0) {
-    //    var operationName = "Paiement";
-    //    var inputXMl = RamqGetXmlToSend(operationName, objSoumissionDemandesPaiementData); //This data is used to send to RAMQ.
-
-    //    var jsonXML = {
-    //        "request": inputXMl,
-    //        "info": objSoumissionDemandesPaiementData //this data is used to store bill info on the server
-    //    }
-
-    //    var strJsonXML = JSON.stringify(jsonXML)
-    //    //Show progress
-    //    document.getElementById("loaderPaimentForm").setAttribute("class", "ui active inverted dimmer");
-
-    //    $.post("allScriptsv1.py", { tx: "getRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: strJsonXML },
-    //                function (result) {
-    //                    //Hide progress
-    //                    document.getElementById("loaderPaimentForm").setAttribute("class", "ui inverted dimmer");
-    //                    if (result.outcome === 'error')//Display python Error
-    //                    {
-    //                        alert(result.message);
-    //                    }
-    //                    else if (result.message != null && result.message.substring(0, 5) == 'Error') {
-    //                        displayRamqAnswer("RAMQ", result.message);
-    //                    }
-    //                    else if (result.message != null && result.message.substring(0, 5) != 'Error') {
-    //                        var objResponse = parseRAMQResponsePaiment(result.message);
-    //                        displayResponsePaiment(objResponse);
-    //                    }
-    //                    else {
-    //                        displayRamqAnswer("RAMQ", "SoumissionDemandesPaiement Error");
-    //                    }
-    //                })
-    //        .fail(function () {
-    //            alert("Ramq SoumissionDemandesPaiement Error.");
-    //        });
-    //}
-    //else {
-    //    alert("There is nothing to send.")
-    //}
+    
 }
 
 function RamqSoumissionDemandesModification()
@@ -212,41 +171,59 @@ function RamqSoumissionDemandedAnnulation() {
 }
 
 function RamqSoumissionDemandedAnnulationNode() {
-    RamqBillClearFormFactures();
-    var objSoumissionDemandesAnnulationData = RamqSoumissionDemandesAnnulationGetData();
-    if (objSoumissionDemandesAnnulationData != null) {
-        var operationName = "Annulation";
-        var inputXMl = RamqGetXmlToSend(operationName, objSoumissionDemandesAnnulationData); //This data is used to send to RAMQ.
+    globRamqOperationType = "New";
+    var objSoumissionDemandesPaiementData = RamqSoumissionDemandesPaiementGetData();
+    var jsonData = JSON.stringify(objSoumissionDemandesPaiementData);
 
-        var jsonXML = {
-            "request": inputXMl,
-            "info": objSoumissionDemandesAnnulationData //this data is used to store bill info on the server
+    $.ajax
+    ({
+        type: "POST",
+        //the url where you want to sent the userName and password to
+        url: 'http://localhost:3000/SoumissionDemandesAnnulation',
+        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "0`sxJ0FCX!3", globBillNumber: '34', globRamqOperationType: "New", globRamqNoFactRamq: globRamqNoFactRamq, globRamqJetonComm: globRamqJetonComm }),
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (result) {
+            console.log("Node Answer: " + JSON.stringify(result));
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            alert(errorThrown);
         }
+    })
+    //var objSoumissionDemandesAnnulationData = RamqSoumissionDemandesAnnulationGetData();
+    //if (objSoumissionDemandesAnnulationData != null) {
+    //    var operationName = "Annulation";
+    //    var inputXMl = RamqGetXmlToSend(operationName, objSoumissionDemandesAnnulationData); //This data is used to send to RAMQ.
 
-        $.post("allScriptsv1.py", { tx: "cancelRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(jsonXML) },
-                    function (result) {
-                        if (result.outcome === 'error')//Display python Error
-                        {
-                            alert(result.message);
-                        }
-                        else if (result.message != null && result.message.substring(0, 5) == 'Error') {
-                            displayRamqAnswer("RAMQ", result.message);
-                        }
-                        else if (result.message != null && result.message.substring(0, 5) != 'Error') {
-                            var objResponse = parseRAMQResponseAnnulation(result.message);
-                            displayResponseAnnulation(objResponse);
-                        }
-                        else {
-                            displayRamqAnswer("RAMQ", "RamqSoumissionDemandesAnnulation Error");
-                        }
-                    })
-            .fail(function () {
-                alert("Ramq RamqSoumissionDemandesAnnulation Error.");
-            });
-    }
-    else {
-        alert("There is nothing to send.")
-    }
+    //    var jsonXML = {
+    //        "request": inputXMl,
+    //        "info": objSoumissionDemandesAnnulationData //this data is used to store bill info on the server
+    //    }
+
+    //    $.post("allScriptsv1.py", { tx: "cancelRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(jsonXML) },
+    //                function (result) {
+    //                    if (result.outcome === 'error')//Display python Error
+    //                    {
+    //                        alert(result.message);
+    //                    }
+    //                    else if (result.message != null && result.message.substring(0, 5) == 'Error') {
+    //                        displayRamqAnswer("RAMQ", result.message);
+    //                    }
+    //                    else if (result.message != null && result.message.substring(0, 5) != 'Error') {
+    //                        var objResponse = parseRAMQResponseAnnulation(result.message);
+    //                        displayResponseAnnulation(objResponse);
+    //                    }
+    //                    else {
+    //                        displayRamqAnswer("RAMQ", "RamqSoumissionDemandesAnnulation Error");
+    //                    }
+    //                })
+    //        .fail(function () {
+    //            alert("Ramq RamqSoumissionDemandesAnnulation Error.");
+    //        });
+    //}
+    //else {
+    //    alert("There is nothing to send.")
+    //}
 }
 
 
@@ -1671,7 +1648,7 @@ function RamqPopulateVisionRDataObj(pData) {
     //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?
     res.TypSituConsi = pData.TypSituConsi;//'1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = 'LAPM05580415';//pData.IdPers; //'LAPM05580415';//NAM
+    res.IdPers = pData.IdPers; //'LAPM05580415';//NAM
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4

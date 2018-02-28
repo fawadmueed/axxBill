@@ -11,6 +11,7 @@ app.use(cors());
 var globBillNumber;
 var globRamqOperationType;
 var objSoumissionDemandesPaiementData;
+var objSoumissionDemandesAnnulationData;
 var globRamqTotal = 0.00;
 var uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium';
 
@@ -19,6 +20,7 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
     var UserPass = req.body.UserPass;
     globBillNumber = req.body.globBillNumber;
     globRamqOperationType = req.body.globRamqOperationType;
+
     objSoumissionDemandesPaiementData = JSON.parse(req.body.dataFromUI);
 
     var operationName = "Paiement";
@@ -70,12 +72,64 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
         response.send(jsonResp);
     });
 
-    //response.send(ramqAns);
+});
 
-    //response.send(request.body);
-    //response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    //response.write('OK', "utf-8");
-    //response.end();
+app.post('/SoumissionDemandesAnnulation', function (req, response) {
+    var UserId = req.body.UserId;
+    var UserPass = req.body.UserPass;
+    globBillNumber = req.body.globBillNumber;
+    globRamqOperationType = req.body.globRamqOperationType;
+    globRamqNoFactRamq = req.body.globRamqNoFactRamq;
+    globRamqJetonComm = req.body.globRamqJetonComm;
+
+    objSoumissionDemandesAnnulationData = JSON.parse(req.body.dataFromUI);
+
+    var operationName = "Annulation";
+    var xmlToSend = RamqGetXmlToSend(operationName, objSoumissionDemandesAnnulationData); //This data is used to send to RAMQ.
+
+    //send the request to WebApi that calls RAMQ server
+    xmlToSend = xmlToSend.replace(/\\"/g, '"');
+    //console.log("xmlTosend: " + xmlToSend);
+    var json = {
+        "UserId": UserId,
+        "UserPass": UserPass,
+        "XmlToSend": xmlToSend
+    };
+
+    var options = {
+        url: uri + '/api/RamqWebApi/PostPaymentRequest',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json; charset=utf-8'
+        },
+        json: json
+    };
+
+    request(options, function (err, res, body) {
+        //console.log(res.statusCode);
+        if (res && (res.statusCode === 200 || res.statusCode === 201)) {
+            var resp;
+            var ramqAns = CleanXML(body);
+
+            if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
+                resp == ramqAns;
+            }
+            else if (ramqAns != null && ramqAns.substring(0, 5) != 'Error') {
+                var objResponse = parseRAMQResponseAnnulation(ramqAns);
+                resp = displayResponseAnnulation(objResponse);
+            }
+            var res = { result: ramqAns }
+
+        }
+        else {
+            resp = 'Communication Error'
+        }
+        var jsonResp = { response: resp, amount: globRamqTotal };
+
+        console.log(jsonResp);
+        response.send(jsonResp);
+    });
+
 });
 app.listen(3000);
 console.log('Running on port 3000...');
@@ -896,9 +950,7 @@ function RamqGetCurrentDate() {
 
 
 function parseRAMQResponsePaiment(strXml) {
-    //var parser = new DOMParser();
     var xml = strXml.replace(/\\"/g, '"');
-    //var xmlDoc = parser.parseFromString(xml, "text/xml");
     var response = {};
     parseString(xml, function (err, result) {
         var xmlDoc = result;//json object
@@ -1035,9 +1087,10 @@ function parseRAMQResponseModification(strXml) {
 }
 
 function parseRAMQResponseAnnulation(strXml) {
-    var parser = new DOMParser();
     var xml = strXml.replace(/\\"/g, '"');
-    var xmlDoc = parser.parseFromString(xml, "text/xml");
+    var response = {};
+    parseString(xml, function (err, result) {
+        var xmlDoc = result;//json object
 
     var response = {};
 
@@ -1066,6 +1119,7 @@ function parseRAMQResponseAnnulation(strXml) {
             }
         }
     }
+    });
     return response;
 }
 

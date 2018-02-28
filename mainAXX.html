@@ -2052,7 +2052,7 @@
                                             <input type="text" name="" id="txtRamqSpecialNams">
                                         </div>
                                         <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiement();">Transférer à la Règie</button>
-                                        <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiementNode();">Send to Regie via Node</button>
+                                        <!--<button class="ui right floated axxium button" onclick="SoumissionDemandesPaiementNode();">Send to Regie via Node</button>-->
                                     </div>
                                 </div>
                             </div>
@@ -2677,8 +2677,9 @@
                             <div class="nine wide column">
                                 <button class="ui axxium tiny button" id="btn_anuler_fact" onclick="RamqSoumissionDemandedAnnulation()">Annuler fact. à la Régie</button>
                                 <button class="ui axxium tiny button" id="btn_detail_trnsfr_regi" onclick="RamqBillReSendToRamq()">Transférer à la Régie</button>
-                                <div class="ui axxium tiny button" onclick="">Quitter</div>
+                                <div class="ui axxium tiny button" onclick="$('.modal_regie_fact_modal.modal').modal('hide');">Quitter</div>
                                 <div class="ui axxium tiny button" onclick="printRAMQ()">Imprimmer</div>
+                                <div class="ui axxium tiny button" onclick="RamqSoumissionDemandedAnnulationNode()">NodeCancel</div>
                             </div>
                         </div>
                     </div>

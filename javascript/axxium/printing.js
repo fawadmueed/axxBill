@@ -5,12 +5,32 @@
  * overflow.
  */
 
- //Data for Printing 
- $(document).ready(function(){
+ var getUrl=window.location.search;
+ 	console.log(getUrl);
+
+ 	var urlParams;
+	(window.onpopstate = function () {
+		//Get URL Parameters
+    	var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+	    urlParams = {};
+	    while (match = search.exec(query))
+       	urlParams[decode(match[1])] = decode(match[2]);
+})();
+
  
+ $(document).ready(function(){
+
  var nodossier = $("#nodossier").val();
  var dentiste = $("#dentiste").val();
  var uri='http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/'
+
+		 if(!(urlParams.ass=='CAS'))
+		 {
            $.ajax(
                {
                    url: uri + "PostGenerIndemnisation",
@@ -24,7 +44,8 @@
                        alert(xhr.statusText);
                    }
                });
-           })
+      		}
+         })
 
 
 function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
@@ -526,5 +547,5 @@ doc.setFontSize(8);
   }
 
   function printing(){
-  	
+
   }

@@ -6,9 +6,9 @@ $(document).ready(function(){
   	   check_charcount(this,6, e,'numbers');		
       })
 
-      $(document.body).on('keydown', "#factTableBody td[data-target='Prod'], #factTableBody_planTrait td[data-target='Prod'],#factTableBody td[data-target='codeRole'], #factTableBody_planTrait td[data-target='codeRole']", function(e){
+      $(document.body).on('keydown', "#factTableBody td[data-target='Prod'], #factTableBody_planTrait td[data-target='Prod']", function(e){
               
-       check_charcount(this,0,e,'alphaNumeric');    
+       check_charcount(this,0,e,'alphaNumeric');
       })
 
       $(document.body).on('keydown', "#factTableBody td[data-target='Surface'],#factTableBody_planTrait td[data-target='Surface']", function(e){
@@ -37,7 +37,12 @@ $(document).ready(function(){
 
       })
     
-  	   function check_charcount(content_id, max, e,valid_type)
+  	   
+
+})
+
+
+function check_charcount(content_id, max, e,valid_type)
       {   
     
             
@@ -74,8 +79,8 @@ $(document).ready(function(){
                       }
                       else
                       {
-           		           e.preventDefault();
-       		           }
+                         e.preventDefault();
+                     }
     
                     }
                   }
@@ -136,5 +141,3 @@ $(document).ready(function(){
                   }
               }
     }
-
-})

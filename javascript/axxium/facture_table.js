@@ -29,7 +29,10 @@ $(document).ready(function(){
                 $(this).closest('tr').next().find('td[data-target=Type]').focus();
                  e.preventDefault();
 // trigger an artificial keydown event with keyCode 64
-          
+            }
+            else
+            {
+              check_charcount(this,0,e,'alphaNumeric');    
             }
 
             return e.which!=13;
@@ -83,7 +86,15 @@ function newRecordFact(){
                   else
                   {
                         // Get First Value in TYPE from AMQ
-                    tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                        if(globVisionRData.InsTypeList.length!=0)
+                        { 
+                          //Check if Insurance companies exist with Patient
+                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                        }
+                        else
+                        { //If not exist take from url
+                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(urlParams.ass);
+                        }
                   }
                  
                 //tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text('CAS');

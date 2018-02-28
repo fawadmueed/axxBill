@@ -546,6 +546,16 @@ doc.setFontSize(8);
   	//x.document.location=string;
   }
 
-  function printing(){
+  function printing()
+  {
+
+  	if($(formlr_asur_check).is(":checked"))
+  	{
+  		printASS();
+  	}
+  	else
+  	{
+  		printRAMQ("print");
+  	}
 
   }

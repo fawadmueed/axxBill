@@ -874,18 +874,30 @@ function checkRepeatChrcInString(str){
 
 function get_age(){
 
-  var curr_year;
-  var patnt_year;
 
-    //var formD=$('#Ebirth').val();
+  var curr_date=get_date();
+  var curr_date_arr=curr_date.split('-');
+
+  var curr_year=curr_date_arr[0];
+  var curr_month=curr_date_arr[1];
+  var curr_day=curr_date_arr[2];
+
   var formD = globVisionRData.DatNaissPers;
   formD=formD.split('-');
-  patnt_year=formD[0];
 
-  var d1 = new Date();
-  var curYear=d1.getYear()+1900;
+  var patnt_year=formD[0];
+  var patnt_month=formD[1];
+  var patnt_day=formD[2];
 
-  var age= parseInt(curYear)-parseInt(patnt_year);
+
+  // var d1 = new Date();
+  // var curYear=d1.getYear()+1900;
+
+  var age= parseInt(curr_year)-parseInt(patnt_year);
+  if(parseInt(patnt_month)>parseInt(curr_month))
+  {
+    age=parseInt(age)-1;
+  }
   return age;
 }
 

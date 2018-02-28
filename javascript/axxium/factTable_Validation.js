@@ -224,8 +224,9 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       //--------------- suf_dent_code ---------------------------------
       var age=get_age();
       var type_surf=get_type_surf(val);
-      if(type_surf == 1) {
+      if(type_surf == 1 || surf_chck == 'TI') {
         surf_code_dent_gen_validation();
+        if(surf_chck == 'TI') {$(this).text('97');}
       } else 
       {
         if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
@@ -233,8 +234,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
             facture_surf_modal();
           }
-        }
-  
+        }  
       }
 
       //if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
@@ -924,7 +924,7 @@ function checkInsuranceExist(compny){
 }
 
 function surf_code_dent_gen_validation() {
-  
+    var type_surf;
     var val = globVarSurfValidation_val;
     var surf_chck = globVarSurfValidation_surf_chck;
     var dent_chck = globVarSurfValidation_dent_check;
@@ -948,16 +948,16 @@ function surf_code_dent_gen_validation() {
 
     }
     else {
-      if (dent_Type == 'Dentiste' || dent_Type == 'Chirurgiens') {
-
-          if (dent_chck == '99') {
-              surf_dent_code = true;
-          }
+      if (dent_chck == '99') {
 
       }
-
+      else 
+      {
+        if(val == 'TI') {
+          globVarSurfValidation_val = surf_chck = globVarSurfValidation_surf_chck = val = '97';
+        }
       // STEP # 2   ----- LINE 804 U_FACTPA typ_surf := read_surface;
-      var type_surf = get_type_surf(val);
+      type_surf = get_type_surf(val);
       console.log('Type_Surf Value is : ' + type_surf);
 
       // STEP # 3  4015 line u_fact2 switch cases
@@ -992,7 +992,7 @@ function surf_code_dent_gen_validation() {
                   var this_code_val = $('#factTableBody tr[id='+row_id_case1+']').children("td[data-target='Code']").text(init_code);
                   var this_code_val = $('#factTableBody tr[id=' +row_id_case1+']').children("td[data-target='Surface']").text(surf_chck_new);
                   $("#factTableBody td[data-target='Code'],#factTableBody_regie tr[id='" + row_id_case1 + "'] td[data-target='Code").trigger("focusout");
-                })
+                });
 
               }
               else
@@ -1088,7 +1088,7 @@ function surf_code_dent_gen_validation() {
 
               break;
       }
-
+    }
   }
     if(type_surf!=1)
     {

@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var request = require('request');
+var parseString = require('xml2js').parseString;
 
 var app = express();
 app.use(bodyParser.json());
@@ -10,31 +11,67 @@ app.use(cors());
 var globBillNumber;
 var globRamqOperationType;
 var objSoumissionDemandesPaiementData;
+var globRamqTotal = 0.00;
 var uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium';
 
-app.post('/SoumissionDemandesPaiement', function (request, response) {
-    var UserId = request.body.UserId;
-    var UserPass = request.body.UserPass;
-    globBillNumber = request.body.globBillNumber;
-    globRamqOperationType = request.body.globRamqOperationType;
-
-    objSoumissionDemandesPaiementData = JSON.parse(request.body.dataFromUI);
-
-    //console.log('UserId: ' + UserId + ', ' + 'UserPass: ' + UserPass +', ObjData: '+objSoumissionDemandesPaiementData);
+app.post('/SoumissionDemandesPaiement', function (req, response) {
+    var UserId = req.body.UserId;
+    var UserPass = req.body.UserPass;
+    globBillNumber = req.body.globBillNumber;
+    globRamqOperationType = req.body.globRamqOperationType;
+    objSoumissionDemandesPaiementData = JSON.parse(req.body.dataFromUI);
 
     var operationName = "Paiement";
     var xmlToSend = RamqGetXmlToSend(operationName, objSoumissionDemandesPaiementData); //This data is used to send to RAMQ.
-
    
     //send the request to WebApi that calls RAMQ server
-    var ramqAns = SendRequestToAPI(UserId, UserPass, xmlToSend);
-    //var dataJSON = { 'UserId': UserId, 'UserPass': UserPass, 'XmlToSend': xmlToSend };
+    //var ramqAns = SendRequestToAPI(UserId, UserPass, xmlToSend);
+    xmlToSend = xmlToSend.replace(/\\"/g, '"');
+    //console.log("xmlTosend: " + xmlToSend);
+    var json = {
+        "UserId": UserId,
+        "UserPass": UserPass,
+        "XmlToSend": xmlToSend
+    };
+    
+    var options = {
+        url: uri + '/api/RamqWebApi/PostPaymentRequest',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json; charset=utf-8'
+        },
+        json: json
+    };
 
+    request(options, function (err, res, body) {
+        //console.log(res.statusCode);
+        if (res && (res.statusCode === 200 || res.statusCode === 201)) {
+            var resp;
+            var ramqAns = CleanXML(body);
 
+            if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
+                resp == ramqAns;
+            }
+            else if (ramqAns != null && ramqAns.substring(0, 5) != 'Error') {
+                var objResponse = parseRAMQResponsePaiment(ramqAns);
+                resp = displayResponsePaiment(objResponse);
+                
+            }
+            var res = { result: ramqAns }
+            //console.log(res);
+            
+        }
+        else {
+            resp = 'Communication Error'
+        }
+        var jsonResp = { response: resp, amount: globRamqTotal };
 
+        console.log(jsonResp);
+        response.send(jsonResp);
+    });
 
-    //var ramqAns = JSON.stringify({ amount: 300, isAccespted: true });
-    response.send(ramqAns);
+    //response.send(ramqAns);
+
     //response.send(request.body);
     //response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     //response.write('OK', "utf-8");
@@ -43,14 +80,28 @@ app.post('/SoumissionDemandesPaiement', function (request, response) {
 app.listen(3000);
 console.log('Running on port 3000...');
 
+function CleanXML(s){
+    s = s.replace(/\r?\n|\r/g, "");
+    s = s.replace(/> *</g, "><");
+    //s = s.replace(/\\r\\n/g, "");
+    //s = s.replace(/\\r/g, "");
+    //s = s.replace(/\"</g, "<");
+    //s = s.replace(/>\"/g, ">");
+    //s = s.replace(/ /g, "");
+    //s = s.replace(/\\\"/g, "\"");
+
+    return s;
+}
+
+
 function SendRequestToAPI(pUserId, pUserPass, pXmlToSend)
 {
+    var xmlToSend = pXmlToSend.replace(/\\"/g, '"');
     var json = {
         "UserId": pUserId,
         "UserPass": pUserPass,
-        "XmlToSend": pXmlToSend
+        "XmlToSend": xmlToSend
     };
-    console.log('uri: ' + uri + ' param: ' + JSON.stringify(json));
     var options = {
         url: uri + '/api/RamqWebApi/PostPaymentRequest',
         
@@ -62,10 +113,7 @@ function SendRequestToAPI(pUserId, pUserPass, pXmlToSend)
     };
 
     request(options, function (err, res, body) {
-        console.log(res.statusCode);
         if (res && (res.statusCode === 200 || res.statusCode === 201)) {
-            console.log(body);
-            console.log(err);
             return(body);
         }
     });
@@ -848,77 +896,84 @@ function RamqGetCurrentDate() {
 
 
 function parseRAMQResponsePaiment(strXml) {
-    var parser = new DOMParser();
+    //var parser = new DOMParser();
     var xml = strXml.replace(/\\"/g, '"');
-    var xmlDoc = parser.parseFromString(xml, "text/xml");
-
+    //var xmlDoc = parser.parseFromString(xml, "text/xml");
     var response = {};
-
-    //Global info
-    response.GlobalNoDemExt = (xmlDoc.getElementsByTagName("no_dem_ext")[0] != null) ? xmlDoc.getElementsByTagName("no_dem_ext")[0].childNodes[0].nodeValue : null;
-    response.GlobalStaRecev = (xmlDoc.getElementsByTagName("sta_recev")[0] != null) ? xmlDoc.getElementsByTagName("sta_recev")[0].childNodes[0].nodeValue : null;
-    response.GlobalArrListeMsgExplRecev = [];
-    if (response.GlobalStaRecev == "2") {
-        var GlobalArrListeMsgExplRecev = (xmlDoc.getElementsByTagName('liste_msg_expl_recev')[0] != null) ? xmlDoc.getElementsByTagName('liste_msg_expl_recev')[0].children : null;
-        if (GlobalArrListeMsgExplRecev) {
-            for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
-                var msgExplRecev = {};
-                msgExplRecev.code = GlobalArrListeMsgExplRecev[i].children[0].innerHTML;
-                msgExplRecev.text = GlobalArrListeMsgExplRecev[i].children[1].innerHTML;
-                response.GlobalArrListeMsgExplRecev.push(msgExplRecev);
-            }
-        }
-    }
-
-
-    //liste_fact_recev
-    response.arrListeFactRecev = [];
-
-    var arrFactRecev = xmlDoc.getElementsByTagName("liste_fact_recev")[0].children;
-
-    for (var j = 0; j < arrFactRecev.length; j++) {
-        var objFactRecev = {};
-        objFactRecev.NoFactExt = arrFactRecev[j].getElementsByTagName("no_fact_ext")[0].innerHTML;
-        objFactRecev.StaRecev = arrFactRecev[j].getElementsByTagName("sta_recev")[0].innerHTML;
-
-        objFactRecev.ListMsgExplRecev = [];
-        if (objFactRecev.StaRecev == '2') {
-            //liste_msg_expl_recev
-            var arrListMsgExplRecev = arrFactRecev[j].getElementsByTagName('liste_msg_expl_recev')[0].children;
-            for (var k = 0; k < arrListMsgExplRecev.length; k++) {
-                var msgExplRecev = {};
-                msgExplRecev.code = arrListMsgExplRecev[k].children[0].innerHTML;
-                msgExplRecev.text = arrListMsgExplRecev[k].children[1].innerHTML;
-                objFactRecev.ListMsgExplRecev.push(msgExplRecev);
-            }
-        }
-
-        //liste_ligne_fact_recev
-        objFactRecev.ListeLigneFactRecev = [];
-        var arrListeLigneFactRecev = arrFactRecev[j].getElementsByTagName('liste_ligne_fact_recev')[0].children;
-        for (var l = 0; l < arrListeLigneFactRecev.length; l++) {
-            var LigneFactRecev = {};
-            LigneFactRecev.NoLigneFact = arrListeLigneFactRecev[l].children[0].innerHTML;
-            LigneFactRecev.StaRecev = arrListeLigneFactRecev[l].children[1].innerHTML;
-
-            if (LigneFactRecev.StaRecev == "1") {
-                LigneFactRecev.MntPrel = (arrListeLigneFactRecev[l].children[2]) ? arrListeLigneFactRecev[l].children[2].innerHTML : '';
-                LigneFactRecev.FormuExpl = (arrListeLigneFactRecev[l].children[3]) ? arrListeLigneFactRecev[l].children[3].innerHTML : '';
-            }
-            else if (LigneFactRecev.StaRecev == "2") {
-                LigneFactRecev.LigneMsgExplRecev = []
-                var arrListMsgExplRecev = arrListeLigneFactRecev[l].getElementsByTagName('liste_msg_expl_recev')[0].children;
-                for (var m = 0; m < arrListMsgExplRecev.length; m++) {
+    parseString(xml, function (err, result) {
+        var xmlDoc = result;//json object
+        
+        //Global info
+        response.GlobalNoDemExt = (xmlDoc.dem_paimt_recev.no_dem_ext[0])? xmlDoc.dem_paimt_recev.no_dem_ext[0]: null;
+        response.GlobalStaRecev = (xmlDoc.dem_paimt_recev.sta_recev[0]) ? xmlDoc.dem_paimt_recev.sta_recev[0] : null;
+        response.GlobalArrListeMsgExplRecev = [];
+        if (response.GlobalStaRecev == "2") {
+            var GlobalArrListeMsgExplRecev = (xmlDoc.dem_paimt_recev.liste_msg_expl_recev[0].msg_expl_recev != null) ? xmlDoc.dem_paimt_recev.liste_msg_expl_recev[0].msg_expl_recev : null;
+            if (GlobalArrListeMsgExplRecev) {
+                for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
                     var msgExplRecev = {};
-                    msgExplRecev.code = arrListMsgExplRecev[m].children[0].innerHTML;
-                    msgExplRecev.text = arrListMsgExplRecev[m].children[1].innerHTML;
-                    LigneFactRecev.LigneMsgExplRecev.push(msgExplRecev);
+                    msgExplRecev.code = (GlobalArrListeMsgExplRecev[i].cod_msg_expl_recev[0])?GlobalArrListeMsgExplRecev[i].cod_msg_expl_recev[0]:null;
+                    msgExplRecev.text = (GlobalArrListeMsgExplRecev[i].txt_msg_expl_recev[0])?GlobalArrListeMsgExplRecev[i].txt_msg_expl_recev[0]:null;
+                    response.GlobalArrListeMsgExplRecev.push(msgExplRecev);
                 }
             }
-            objFactRecev.ListeLigneFactRecev.push(LigneFactRecev);
         }
-        response.arrListeFactRecev.push(objFactRecev);
-    }
+
+        //liste_fact_recev
+        response.arrListeFactRecev = [];
+
+        var arrFactRecev = xmlDoc.dem_paimt_recev.liste_fact_recev[0].fact_recev;
+
+        for (var j = 0; j < arrFactRecev.length; j++) {
+            var objFactRecev = {};
+            objFactRecev.NoFactExt = (arrFactRecev[j].no_fact_ext[0])?arrFactRecev[j].no_fact_ext[0]:null;
+
+            objFactRecev.StaRecev = (arrFactRecev[j].sta_recev[0]) ? arrFactRecev[j].sta_recev[0] : null;
+
+            objFactRecev.ListMsgExplRecev = [];
+            if (objFactRecev.StaRecev == '2') {
+                //liste_msg_expl_recev
+                var arrListMsgExplRecev = (arrFactRecev[j].liste_msg_expl_recev[0].msg_expl_recev) ? arrFactRecev[j].liste_msg_expl_recev[0].msg_expl_recev : null;
+               
+                for (var k = 0; k < arrListMsgExplRecev.length; k++) {
+                    var msgExplRecev = {};
+                    msgExplRecev.code = (arrListMsgExplRecev[k].cod_msg_expl_recev[0])? arrListMsgExplRecev[k].cod_msg_expl_recev[0]:null;
+                    msgExplRecev.text = (arrListMsgExplRecev[k].txt_msg_expl_recev[0])? arrListMsgExplRecev[k].txt_msg_expl_recev[0]:null;
+                    objFactRecev.ListMsgExplRecev.push(msgExplRecev);
+                }
+            }
+
+            //liste_ligne_fact_recev
+            objFactRecev.ListeLigneFactRecev = [];
+            var arrListeLigneFactRecev = arrFactRecev[j].liste_ligne_fact_recev[0].ligne_fact_recev;
+            if (arrListeLigneFactRecev)
+            {
+                for (var l = 0; l < arrListeLigneFactRecev.length; l++) {
+                    var LigneFactRecev = {};
+                    LigneFactRecev.NoLigneFact = arrListeLigneFactRecev[l].no_ligne_fact[0];
+                    LigneFactRecev.StaRecev = arrListeLigneFactRecev[l].sta_recev[0];
+
+                    if (LigneFactRecev.StaRecev == "1") {
+                        LigneFactRecev.MntPrel = (arrListeLigneFactRecev[l].mnt_prel[0]) ? arrListeLigneFactRecev[l].mnt_prel[0] : '';
+                        LigneFactRecev.FormuExpl = (arrListeLigneFactRecev[l].formu_expl[0]) ? arrListeLigneFactRecev[l].formu_expl[0] : '';
+                    }
+                    else if (LigneFactRecev.StaRecev == "2") {
+                        LigneFactRecev.LigneMsgExplRecev = []
+                        var arrListMsgExplRecev = arrListeLigneFactRecev[l].liste_msg_expl_recev[0].msg_expl_recev;
+                        for (var m = 0; m < arrListMsgExplRecev.length; m++) {
+                            var msgExplRecev = {};
+                            msgExplRecev.code = arrListMsgExplRecev[m].cod_msg_expl_recev[0];
+                            msgExplRecev.text = arrListMsgExplRecev[m].txt_msg_expl_recev[0];
+                            LigneFactRecev.LigneMsgExplRecev.push(msgExplRecev);
+                        }
+                    }
+                    objFactRecev.ListeLigneFactRecev.push(LigneFactRecev);
+                }
+            }
+            
+            response.arrListeFactRecev.push(objFactRecev);
+        }
+    });
     return response;
 }
 
@@ -1020,11 +1075,11 @@ function displayResponsePaiment(_response) {
     var globalStaRecev = _response.GlobalStaRecev;
     if (globalStaRecev == "2") //Error message.
     {
-        globRamqTotal = -2; //Uses as a flag to send data to VisionR
+        //globRamqTotal = -2; //Uses as a flag to send data to VisionR
         var GlobalArrListeMsgExplRecev = _response.GlobalArrListeMsgExplRecev;
         if (GlobalArrListeMsgExplRecev != null) {
             for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
-                msg += '<p>' + GlobalArrListeMsgExplRecev[i].code + ': ' + GlobalArrListeMsgExplRecev[i].text + '</p>';
+                msg +=  GlobalArrListeMsgExplRecev[i].code + ': ' + GlobalArrListeMsgExplRecev[i].text + '\n';
             }
         }
         var arrListeFactRecev = _response.arrListeFactRecev;
@@ -1033,7 +1088,7 @@ function displayResponsePaiment(_response) {
                 var arrMsgExplRecev = arrListeFactRecev[j].ListMsgExplRecev;
                 if (arrMsgExplRecev != null) {
                     for (var k = 0; k < arrMsgExplRecev.length; k++) {
-                        msg += '<p>' + arrMsgExplRecev[k].code + ': ' + arrMsgExplRecev[k].text + '</p>';
+                        msg += arrMsgExplRecev[k].code + ': ' + arrMsgExplRecev[k].text + '\n';
                     }
                 }
 
@@ -1045,12 +1100,12 @@ function displayResponsePaiment(_response) {
                             var arrLigneMsgExplRecev = arrLigneFactRecev[m].LigneMsgExplRecev;
                             if (arrLigneMsgExplRecev != null) {
                                 for (var l = 0; l < arrLigneMsgExplRecev.length; l++) {
-                                    msg += '<p><font color="red">Ligne ' + ligneFactRecev.NoLigneFact + ': ' + arrLigneMsgExplRecev[l].code + ' ' + arrLigneMsgExplRecev[l].text + '</font></p>';
+                                    msg += 'Ligne ' + ligneFactRecev.NoLigneFact + ': ' + arrLigneMsgExplRecev[l].code + ' ' + arrLigneMsgExplRecev[l].text + '\n';
                                 }
                             }
                         }
                         else if (ligneFactRecev.StaRecev == '1') {
-                            msg += '<p>Ligne ' + ligneFactRecev.NoLigneFact + ': OK</p>';
+                            msg += 'Ligne ' + ligneFactRecev.NoLigneFact + ': OK\n';
                         }
                     }
                 }
@@ -1067,25 +1122,17 @@ function displayResponsePaiment(_response) {
                     for (var p = 0; p < arrLigneFactRecev.length; p++) {
                         var ligneFactRecev = arrLigneFactRecev[p];
                         sumMntPrel += Number(ligneFactRecev.MntPrel);
-                        msg += '<p>' + 'Ligne ' + ligneFactRecev.NoLigneFact + ': ' + removeCDATA(ligneFactRecev.FormuExpl) + '</p>';
+                        msg += 'Ligne ' + ligneFactRecev.NoLigneFact + ': ' + removeCDATA(ligneFactRecev.FormuExpl) + '\n';
                     }
 
-                    msg += '<p>Montant preliminaire total: ' + sumMntPrel + '$</p>';
-                    $('#amq_total').val(sumMntPrel);
+                    msg += 'Montant preliminaire total: ' + sumMntPrel + '$\n';
+                    //$('#amq_total').val(sumMntPrel);
                     globRamqTotal = sumMntPrel;
                 }
             }
         }
     }
-    displayRamqAnswer("RAMQ", msg);
-
-    //if (_response.liste_fact_recev[0].id_fact_ramq_recev != null)
-    //{
-    //    $('#jeton_comm').val(_response.liste_fact_recev[0].id_fact_ramq_recev.jeton_comm);
-    //    $('#no_fact_ramq').val(_response.liste_fact_recev[0].id_fact_ramq_recev.no_fact_ramq);
-    //}
-
-    //TODO:
+    return msg;
 }
 
 function displayResponseModification(_response) {

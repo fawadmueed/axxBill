@@ -25,11 +25,9 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
 
     var operationName = "Paiement";
     var xmlToSend = RamqGetXmlToSend(operationName, objSoumissionDemandesPaiementData); //This data is used to send to RAMQ.
-   
-    //send the request to WebApi that calls RAMQ server
-    //var ramqAns = SendRequestToAPI(UserId, UserPass, xmlToSend);
     xmlToSend = xmlToSend.replace(/\\"/g, '"');
-    //console.log("xmlTosend: " + xmlToSend);
+
+    //send the request to WebApi that calls RAMQ server
     var json = {
         "UserId": UserId,
         "UserPass": UserPass,
@@ -46,7 +44,6 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
     };
 
     request(options, function (err, res, body) {
-        //console.log(res.statusCode);
         if (res && (res.statusCode === 200 || res.statusCode === 201)) {
             var resp;
             var ramqAns = CleanXML(body);
@@ -57,21 +54,14 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
             else if (ramqAns != null && ramqAns.substring(0, 5) != 'Error') {
                 var objResponse = parseRAMQResponsePaiment(ramqAns);
                 resp = displayResponsePaiment(objResponse);
-                
             }
-            var res = { result: ramqAns }
-            //console.log(res);
-            
         }
         else {
             resp = 'Communication Error'
         }
-        var jsonResp = { response: resp, amount: globRamqTotal };
-
-        console.log(jsonResp);
+        var jsonResp = { response: resp.toString('utf8'), amount: globRamqTotal };
         response.send(jsonResp);
     });
-
 });
 
 app.post('/SoumissionDemandesAnnulation', function (req, response) {
@@ -86,10 +76,8 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
 
     var operationName = "Annulation";
     var xmlToSend = RamqGetXmlToSend(operationName, objSoumissionDemandesAnnulationData); //This data is used to send to RAMQ.
-
     //send the request to WebApi that calls RAMQ server
     xmlToSend = xmlToSend.replace(/\\"/g, '"');
-    //console.log("xmlTosend: " + xmlToSend);
     var json = {
         "UserId": UserId,
         "UserPass": UserPass,
@@ -106,11 +94,9 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
     };
 
     request(options, function (err, res, body) {
-        //console.log(res.statusCode);
         if (res && (res.statusCode === 200 || res.statusCode === 201)) {
             var resp;
             var ramqAns = CleanXML(body);
-
             if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
                 resp == ramqAns;
             }
@@ -118,15 +104,13 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
                 var objResponse = parseRAMQResponseAnnulation(ramqAns);
                 resp = displayResponseAnnulation(objResponse);
             }
-            var res = { result: ramqAns }
-
         }
         else {
             resp = 'Communication Error'
         }
-        var jsonResp = { response: resp, amount: globRamqTotal };
+        
+        var jsonResp = { response: resp.toString('utf8'), amount: globRamqTotal };
 
-        console.log(jsonResp);
         response.send(jsonResp);
     });
 
@@ -137,12 +121,6 @@ console.log('Running on port 3000...');
 function CleanXML(s){
     s = s.replace(/\r?\n|\r/g, "");
     s = s.replace(/> *</g, "><");
-    //s = s.replace(/\\r\\n/g, "");
-    //s = s.replace(/\\r/g, "");
-    //s = s.replace(/\"</g, "<");
-    //s = s.replace(/>\"/g, ">");
-    //s = s.replace(/ /g, "");
-    //s = s.replace(/\\\"/g, "\"");
 
     return s;
 }
@@ -1092,34 +1070,34 @@ function parseRAMQResponseAnnulation(strXml) {
     parseString(xml, function (err, result) {
         var xmlDoc = result;//json object
 
-    var response = {};
-
     //Global info
-    response.GlobalNoDemExt = (xmlDoc.getElementsByTagName("no_dem_ext")[0] != null) ? xmlDoc.getElementsByTagName("no_dem_ext")[0].childNodes[0].nodeValue : null;
-    response.GlobalStaRecev = (xmlDoc.getElementsByTagName("sta_recev")[0] != null) ? xmlDoc.getElementsByTagName("sta_recev")[0].childNodes[0].nodeValue : null;
+    response.GlobalNoDemExt = (xmlDoc.dem_annu_recev.no_dem_ext[0]) ? xmlDoc.dem_annu_recev.no_dem_ext[0] : null;
+    response.GlobalStaRecev = (xmlDoc.dem_annu_recev.sta_recev[0]) ? xmlDoc.dem_annu_recev.sta_recev[0] : null;
     response.GlobalArrListeMsgExplRecev = [];
     if (response.GlobalStaRecev == "2") {
-        var GlobalArrListeMsgExplRecev = (xmlDoc.getElementsByTagName('liste_msg_expl_recev')[0] != null) ? xmlDoc.getElementsByTagName('liste_msg_expl_recev')[0].children : null;
-        var GlobalArrListeMsgExplRecev2 = (xmlDoc.getElementsByTagName('liste_msg_expl_recev')[1] != null) ? xmlDoc.getElementsByTagName('liste_msg_expl_recev')[1].children : null;
+        var GlobalArrListeMsgExplRecev = (xmlDoc.dem_annu_recev.liste_msg_expl_recev[0].msg_expl_recev != null) ? xmlDoc.dem_annu_recev.liste_msg_expl_recev[0].msg_expl_recev : null;
+    //    var GlobalArrListeMsgExplRecev2 = (xmlDoc.getElementsByTagName('liste_msg_expl_recev')[1] != null) ? xmlDoc.getElementsByTagName('liste_msg_expl_recev')[1].children : null;
         if (GlobalArrListeMsgExplRecev) {
             for (var i = 0; i < GlobalArrListeMsgExplRecev.length; i++) {
                 var msgExplRecev = {};
-                msgExplRecev.code = GlobalArrListeMsgExplRecev[i].children[0].innerHTML;
-                msgExplRecev.text = GlobalArrListeMsgExplRecev[i].children[1].innerHTML;
+                msgExplRecev.code = (GlobalArrListeMsgExplRecev[i].cod_msg_expl_recev[0]) ? GlobalArrListeMsgExplRecev[i].cod_msg_expl_recev[0] : null;
+                msgExplRecev.text = (GlobalArrListeMsgExplRecev[i].txt_msg_expl_recev[0]) ? GlobalArrListeMsgExplRecev[i].txt_msg_expl_recev[0] : null;
                 response.GlobalArrListeMsgExplRecev.push(msgExplRecev);
             }
         }
-        response.GlobalArrListeMsgExplRecev2 = [];
-        if (GlobalArrListeMsgExplRecev2) {
-            for (var i = 0; i < GlobalArrListeMsgExplRecev2.length; i++) {
-                var msgExplRecev = {};
-                msgExplRecev.code = GlobalArrListeMsgExplRecev2[i].children[0].innerHTML;
-                msgExplRecev.text = GlobalArrListeMsgExplRecev2[i].children[1].innerHTML;
-                response.GlobalArrListeMsgExplRecev2.push(msgExplRecev);
-            }
-        }
+    //    response.GlobalArrListeMsgExplRecev2 = [];
+    //    if (GlobalArrListeMsgExplRecev2) {
+    //        for (var i = 0; i < GlobalArrListeMsgExplRecev2.length; i++) {
+    //            var msgExplRecev = {};
+    //            msgExplRecev.code = GlobalArrListeMsgExplRecev2[i].children[0].innerHTML;
+    //            msgExplRecev.text = GlobalArrListeMsgExplRecev2[i].children[1].innerHTML;
+    //            response.GlobalArrListeMsgExplRecev2.push(msgExplRecev);
+    //        }
+    //    }
     }
     });
+
+
     return response;
 }
 
@@ -1237,7 +1215,8 @@ function displayResponseAnnulation(_response) {
     var errormsg = '';
     if (_response.GlobalStaRecev == '1') {
         globRamqTotal = -1; //Send to VisionR -1 means bill was canceled
-        displayRamqAnswer("RAMQ", "La facture a été annulé avec succès.");
+        //displayRamqAnswer("RAMQ", "La facture a été annulé avec succès.");
+        errormsg = "La facture a été annulé avec succès.";
     }
     else if (_response.GlobalStaRecev == '2') {
         if (_response.GlobalArrListeMsgExplRecev) {
@@ -1251,9 +1230,10 @@ function displayResponseAnnulation(_response) {
                 errormsg += _response.GlobalArrListeMsgExplRecev2[i].code + ': ' + _response.GlobalArrListeMsgExplRecev2[i].text + '\n';
             }
         }
-        globRamqTotal = -2;
-        displayRamqAnswer("RAMQ", errormsg);
+        //globRamqTotal = -2;
+        //displayRamqAnswer("RAMQ", errormsg);
     }
+    return errormsg;
 }
 
 function removeCDATA(str) {

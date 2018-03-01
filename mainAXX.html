@@ -1274,6 +1274,19 @@
             </div>
             <div class="sixteen wide column ">
                 <div class="ui segment">
+                    <div class="ui grid form">
+                        <div class="five wide column">
+                            <div class="inline field">
+                                <label>Descrip:</label>
+                                <input type="text" name="" id="search_desc">
+                            </div>
+                        </div>
+                        <div class="five wide column">
+                            <div class="inline field">
+                                <label>Code:</label>
+                                <input type="text" name="" id="search_code">
+                            </div>
+                        </div>
                 <table class="ui stackable compact selectable  celled table tarif_list_table" width="100%">
                     <thead>
                         <tr>
@@ -5351,6 +5364,7 @@
                 var globVarMessageErrorValidation;
                 var tarifTbl_datTbl;
                 var globInsuranceData;
+                var code_to_prod_flag=0;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

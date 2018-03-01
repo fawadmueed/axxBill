@@ -259,6 +259,19 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
 });
 
+    $(document.body).on('focusin', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
+    
+    if(code_to_prod_flag==1)
+    {
+      if($(this).text()!='')
+      {
+        code_to_prod_flag=0;
+        $(this).siblings("td[data-target='Prod']").focus();
+
+      }
+    }
+
+  })
 
 
     $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
@@ -271,8 +284,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       
       if(code_s == '')
       {
-
-        return;
+       return;
       }
 
       // if(surf_focusout_finish)
@@ -286,7 +298,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
       var age=get_age();
       var codeValid=robValidation(type_s,code_s,dent_s,age,surf_s);
-      if(!codeValid) {
+      if(!codeValid) 
+      {
         warnMsg(globVarMessageErrorValidation);
         $(this).focus();
         $(this).text('');
@@ -294,6 +307,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       }
       else {
         var surfValid=chckDentCodeExistTbl(dent_s,code_s);
+
         if(surfValid)
         {
           var valid;
@@ -350,12 +364,16 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           var totalVal=parseFloat(parseFloat(rhono)+parseFloat(rfrais)).toFixed(2);
           var total=$(this).siblings("td[data-target='Total']");
           $(total).text(totalVal);
+
+          $(this).siblings("td[data-target='Prod']").focus();
+
         }
         else {
           warnMsg(msgerr.msg041);
           $(this).focus();
           $(this).text('');
         }
+
       }
      });
 
@@ -894,9 +912,13 @@ function get_age(){
   // var curYear=d1.getYear()+1900;
 
   var age= parseInt(curr_year)-parseInt(patnt_year);
-  if(parseInt(patnt_month)>parseInt(curr_month))
+
+  if(parseInt(patnt_month)>=parseInt(curr_month))
   {
-    age=parseInt(age)-1;
+    if(parseInt(patnt_day)>parseInt(curr_day))
+      {
+        age=parseInt(age)-1;
+      }
   }
   return age;
 }
@@ -1093,8 +1115,11 @@ function surf_code_dent_gen_validation() {
     if(type_surf!=1)
     {
       surf_focusout_finish = true;
+      code_to_prod_flag=1;
       var this_code_val = $('#factTableBody tr[id='+this_row_id+'] td[data-target="Code"]').text(init_code).trigger("focusout");
+      
 
       // $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");
     }
+
 }

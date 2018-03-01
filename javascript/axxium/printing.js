@@ -25,6 +25,7 @@
  
  $(document).ready(function(){
 
+   
  var nodossier = $("#nodossier").val();
  var dentiste = $("#dentiste").val();
  var uri='http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium/api/InsuranceWebApi/'

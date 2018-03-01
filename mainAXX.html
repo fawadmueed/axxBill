@@ -2052,7 +2052,7 @@
                             <div class="ui form segment">
 
                                 <div class="field"><label>Cocher les cases appropriées</label></div>
-                                <div class="inline field">
+                                <div class="inline field insur_print_check">
                                     <input type="checkbox" name="asurnce_check" id="formlr_asur_check">
                                     <label>Formulaire d'assurance</label>
                                 </div>
@@ -4970,6 +4970,16 @@
 
 
                 function modPayment() {
+                     if(globVisionRData.InsTypeList.length==0)
+                            {
+                                $('.insur_print_check').addClass('disabled');
+                            }
+                            else
+                            {
+                                $('.insur_print_check').removeClass('disabled');
+                            }
+
+
                     $('.modalPayment.modal').modal('show')
                     .modal({
                         onApprove : function() { },
@@ -5636,6 +5646,10 @@
                     thisData2 = {
                         'Dictionar': thisData
                     };
+
+
+                
+
                 });
             </script>
             <script type="text/javascript">
@@ -5656,6 +5670,8 @@
                 return fullDate;
 
             }
+
+
 
             
 

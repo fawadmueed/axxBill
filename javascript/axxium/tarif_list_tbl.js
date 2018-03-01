@@ -1,10 +1,3 @@
- 
-
-$(document.body).on('keyup','.dataTables_filter ui input',function()
-{
-	console.log('hi');
-}
-)
 
 
 $(document).ready(function(){
@@ -91,7 +84,8 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
     { "data": "value.lab" },
     { "data": "value.producer" },
 
-    ]
+    ],
+    // dom: 'lrtip'
 
 })
 
@@ -110,42 +104,50 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
 //    tarifTbl_datTbl.draw();   
 //    $.fn.dataTable.ext.search.pop()
 // })
-$('.dataTables_filter input').off().on('keyup',function()
+$('.dataTables_filter input').on('keyup',function()
 	{
 		var valHere=this.value;
 
 		if(isNaN(valHere))
 		{
 			tarifTbl_datTbl
-        .columns( 3 )
+        .columns( 2 )
         .search('\\b'+this.value,true, false)
         .draw();
 		}
 		else
 		{
 			tarifTbl_datTbl
-        .columns( 1 )
+        .columns( 0 )
         .search('\\b'+this.value,true, false)
         .draw();
 		}
 		if(valHere=='')
 		{
-			tarifTbl_datTbl.draw();
+			tarifTbl_datTbl.Update();
 		}
  	   // tarifTbl_datTbl.search('\\b'+this.value, true, false).draw();
  	});  
 
 $('#search_desc').on('keyup', function () {
+	var valHere=this.value;
+
+		if(isNaN(valHere))
+		{
     tarifTbl_datTbl
         .columns( 2 )
         .search('\\b'+this.value,true, false)
         .draw();
-} );
-$('#search_code').on('keyup', function () {
-    tarifTbl_datTbl
+    	}
+    	else
+    	{
+    		tarifTbl_datTbl
         .columns( 0 )
         .search('\\b'+this.value,true, false)
         .draw();
+    	}
+
+
 } );
 
 }

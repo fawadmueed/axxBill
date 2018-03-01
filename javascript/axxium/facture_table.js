@@ -363,7 +363,7 @@ function getAllTrData(){
 
    if((count_ramq>=10)||(count_insur>=7))
    {
-    alert('Limit Exceeded! Allow Limit : RamQ Bill = 10 Lines , Insurance Bill = 7 Lines. Delete few entries to proceed');
+    alert("Limite dépassée! Limite autorisée: Bill RamQ = 10 lignes, facture d'assurance = 7 lignes. Supprimer quelques entrées pour continuer");
    }
    else{
 

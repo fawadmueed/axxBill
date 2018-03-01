@@ -479,7 +479,7 @@
                                     </tbody>
                                 </table>
                                 <div class="ui axxium tiny button" onclick="PlnTrSavePlan(false)">Enregistrer</div>
-                                <button class="ui axxium tiny button" onclick="PlnTrSendPlan()">Soumettre</button>
+                                <button class="ui axxium tiny button" onclick="PlnTrSendPlan()" id="btnPlnTrSoumettre">Soumettre</button>
 
                                 <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
                                 <!-- <button class="ui axxium tiny button" onclick="emptyTable_planTrait()">Test</button> -->
@@ -558,7 +558,7 @@
                                 </div>-->
                                 <div class="row">
                                     <button class="ui axxium tiny right floated button" onclick="CdaCommReSendClaimRequest()">Retransmission réclamation</button>
-                                    <button class="ui axxium tiny right floated button">Interroger réclamation en suspens</button>
+                                    <button class="ui axxium tiny right floated button" id="btnReqOutstTransSend">Interroger réclamation en suspens</button>
                                     <button class="ui axxium tiny right floated button" onclick="CdaCommOpenClaimReversPopup()">Annuler réclamation</button>
                                     <button class="ui axxium tiny right floated button">Imprimer</button>
                                 </div>
@@ -617,7 +617,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="ui axxium tiny button">OK</button>
+                                <button class="ui axxium tiny button" id="btnEligibilityTransSend" >OK</button>
                             </div>
                         </div>
                     </div>

@@ -485,6 +485,19 @@ function CdaCommGetVersion(pCode)
             for (var i = 0; i < data.length; i++) {
                 if (data[i].code == pCode) {
                     version = data[i].cdaVersion;
+                    if (data[i].AcceptPredeterm === 'N')
+                    {
+                        $('#btnPlnTrSoumettre').attr('disabled', 'disabled');
+                    }
+                    if (data[i].AcceptOutstanding === 'N')
+                    {
+                        $('#btnReqOutstTransSend').attr('disabled', 'disabled');
+                    }
+                    if (data[i].AcceptEligibility === 'N')
+                    {
+                        $('#btnEligibilityTransSend').attr('disabled', 'disabled');
+                    }
+
                     break;
                 }
             }

@@ -549,13 +549,19 @@ doc.setFontSize(8);
   function printing()
   {
 
-  	if($(formlr_asur_check).is(":checked"))
+  	if(($('#formlr_asur_check').is(":checked")) && (!($('.fact_rec_check').is(":checked"))))
   	{
   		printASS();
   	}
-  	else
+  	else if(($('.fact_rec_check').is(":checked")) && (!($('#formlr_asur_check').is(":checked"))))
   	{
   		printRAMQ("print");
+  	}
+  	else 
+  	{
+  		printASS();
+  		printRAMQ("print");
+
   	}
 
   }

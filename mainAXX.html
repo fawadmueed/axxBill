@@ -2050,9 +2050,19 @@
                                 </div>
                             </div>
                             <div class="ui form segment">
-                                <label>Cocher les cases appropriées</label>
-                                <div class="inline field"><input type="checkbox" name="" id="formlr_asur_check"><label>Formulaire d'assurance</label></div>
-                                <div class="inline field"><input type="checkbox" name="" class="fact_rec_check"><label>Facture ou un reçu</label></div>
+
+                                <div class="field"><label>Cocher les cases appropriées</label></div>
+                                <div class="inline field">
+                                    <input type="checkbox" name="asurnce_check" id="formlr_asur_check">
+                                    <label>Formulaire d'assurance</label>
+                                </div>
+
+                                <div class="inline field">
+                                    <input type="checkbox" name="fact_rec_checkNam" class="fact_rec_check">
+                                    <label>Facture ou un reçu</label>
+                                </div>
+
+
                                 <div class="ui grid">
                                     <div class="row">
                                         <div class="column">
@@ -2218,7 +2228,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="inline field">
+                                    <div class="ui checkbox">
                                         <input type="checkbox" name="" id="fract_pmnt_check" onclick="CashDisplayFractPayment();">
                                         <label>Fractioner les paiements</label>
                                     </div>

@@ -3,10 +3,14 @@
 function RamqECDownloadNew()
 {
     if (globClinicId !== '') {
+        //Show progress
+        document.getElementById("loaderMain").setAttribute("class", "ui active inverted dimmer");
         $.post("allScriptsv1.py", { tx: "getEtatCompte", clinicId: globClinicId, TypEntIntvnEchgs: 'NT' },
             function (result) {
+                // Hide progress
+                document.getElementById("loaderMain").setAttribute("class", "ui inverted dimmer");
                 if (result.outcome === 'error')
-                    alert(RamqECParseErrorMessage(result.message));
+                    displayAlert("RAMQ", RamqECParseErrorMessage(result.message));
                 else
                 {
                     RamqECDownloadFromServer(result.message);
@@ -14,7 +18,7 @@ function RamqECDownloadNew()
             });
     }
     else {
-        alert("Clinic Id is not defined.");
+        displayAlert("RAMQ", "Clinic Id is not defined.");
     }
 }
 
@@ -24,10 +28,13 @@ function RamqECGetList()
     var startDate = $('#date_entre_etat_compte').val();
     var endDate = $('#date_entre_etat_compte2').val();
     
+    
     $.post("allScriptsv1.py", { tx: "getECFiles", clinicId: globClinicId, dFrom: startDate, dTo: endDate },
             function (result) {
-                if (result.message !== undefined)
-                    alert(result.message);
+                
+                if (result.message !== undefined){
+                    displayRamqAnswer("RAMQ", result.message);
+                }
                 else {
                     $('#etat_compte_table tbody').empty();
                     var tableContent = "";

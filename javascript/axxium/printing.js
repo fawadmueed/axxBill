@@ -569,7 +569,8 @@ doc.setFontSize(8);
   		}
   		else
   		{
-  			printASS('email');
+  			var emAs=printASS('email');
+  			return emAs;
   		}
   	}
   	else if(($('.fact_rec_check').is(":checked")) && (!($('#formlr_asur_check').is(":checked"))))
@@ -581,7 +582,9 @@ doc.setFontSize(8);
   		}
   		else
   		{
-  			printRAMQ("email");
+  			var emRam=printRAMQ("email");
+  			return emRam;
+
   		}
   	}
   	else 
@@ -594,10 +597,15 @@ doc.setFontSize(8);
   		}
   		else
   		{
-  			printRAMQ("email");
-  			printASS('email');
+  			var emAs_emRam=[]
+  			emAs_emRam[0]=printRAMQ("email");
+  			emAs_emRam[1]=printASS('email');
+  			return emAs_emRam;
+
   		}
 
   	}
 
   }
+
+ 

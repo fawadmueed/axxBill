@@ -108,23 +108,23 @@ $('.dataTables_filter input').on('keyup',function()
 	{
 		var valHere=this.value;
 
-		if(isNaN(valHere))
-		{
-			tarifTbl_datTbl
-        .columns( 2 )
-        .search('\\b'+this.value,true, false)
-        .draw();
-		}
-		else
-		{
-			tarifTbl_datTbl
+		// if(isNaN(valHere))
+		// {
+		//  tarifTbl_datTbl
+  //       .columns(2)
+  //       .search('\\b'+this.value,true, false)
+  //       .draw();
+		// }
+		// else
+		// {
+		 tarifTbl_datTbl
         .columns( 0 )
         .search('\\b'+this.value,true, false)
         .draw();
-		}
+		// }
 		if(valHere=='')
 		{
-			tarifTbl_datTbl.Update();
+			tarifTbl_datTbl.state.clear().draw();
 		}
  	   // tarifTbl_datTbl.search('\\b'+this.value, true, false).draw();
  	});  
@@ -132,20 +132,25 @@ $('.dataTables_filter input').on('keyup',function()
 $('#search_desc').on('keyup', function () {
 	var valHere=this.value;
 
-		if(isNaN(valHere))
-		{
-    tarifTbl_datTbl
+		// if(isNaN(valHere))
+		// {
+   		 tarifTbl_datTbl
         .columns( 2 )
-        .search('\\b'+this.value,true, false)
+        .search('\\b'+this.value,true, true)
         .draw();
-    	}
-    	else
-    	{
-    		tarifTbl_datTbl
-        .columns( 0 )
-        .search('\\b'+this.value,true, false)
-        .draw();
-    	}
+  //   	}
+  //   	else if(!((isNaN(valHere))))
+  //   	{
+  //   	tarifTbl_datTbl
+  //       .columns( 0 )
+  //       .search('\\b'+this.value,true, true)
+  //       .draw();
+  //   	}
+  //   	if(valHere=='')
+		// {
+		// 	tarifTbl_datTbl.clear();
+		// 	tarifTbl_datTbl.draw();
+		// }
 
 
 } );

@@ -401,15 +401,16 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{
-  		honoraires=parseFloat(honoraires)+parseFloat(valx.Honoraires);
-  		honoraires=parseFloat(honoraires) || 0;
+  		// Taking value of Total = honoraires + Frais Lab
+  		honoraires=parseFloat(honoraires)+parseFloat(valx.Total);
+  		honoraires=parseFloat(honoraires).toFixed(2) || 0;
   	})
   	
   	var totalOwe=parseFloat(previousBal)+parseFloat(honoraires);
-  	totalOwe=parseFloat(totalOwe) || 0;
+  	totalOwe=parseFloat(totalOwe).toFixed(2) || 0;
 
   	var balanceDue=parseFloat(totalOwe)-parseFloat(amount_insur)-parseFloat(amount_paid_patient);
-  	balanceDue=parseFloat(balanceDue) || 0;
+  	balanceDue=parseFloat(balanceDue).toFixed(2) || 0;
 
 
 	//alert("Start print RAMQ");
@@ -435,7 +436,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printGRID(doc,84,69);
 	printMESS(doc,84,130);
 	
-	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","",previousBal);
+	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","",previousBal.toString());
 	var coy = 84;
 	$.each(arrGrilleDeFacturation,function(idx,val){
 			printITEM(doc,84,coy,val.Description,val.Code,val.Dent,val.Surface,val.Honoraires);
@@ -589,6 +590,10 @@ doc.setFontSize(8);
 
   		}
   	}
+  		else if((!($('.fact_rec_check').is(":checked"))) && (!($('#formlr_asur_check').is(":checked"))))
+  		{
+  			return false;
+  		}
   	else 
   	{
   	

@@ -5,6 +5,7 @@ var globPlnTrHistSelectedData;
 $(document).ready(function () {
     //Plan Traitements history table
     globPlnTrHistTable = $('#cdan_table_soum_modal').DataTable({
+        "oLanguage": CdaCommTranslateDataTable(),
         "columns": [
             null,
             null,

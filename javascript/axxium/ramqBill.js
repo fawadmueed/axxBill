@@ -17,6 +17,7 @@ var qFACT;
 $(document).ready(function () {
     //Payment table
     globRamqBillPaymentTable = $('#tblRamqPaiments').DataTable({
+        "oLanguage": CdaCommTranslateDataTable(),
         "columns": [
             null,
             null,
@@ -48,7 +49,8 @@ $(document).ready(function () {
     });
 
     //Message Table
-     globRamqBillMessageTable = $('#reg_msg_tbl').DataTable({
+    globRamqBillMessageTable = $('#reg_msg_tbl').DataTable({
+        "oLanguage": CdaCommTranslateDataTable(),
         "columns": [
             { "width": "20%" },
             { "width": "10%" },

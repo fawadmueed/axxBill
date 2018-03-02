@@ -466,7 +466,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	//x.document.location=string;
   }
 
-  function printASS()
+  function printASS(toDo)
   {
   	
 	
@@ -501,7 +501,18 @@ doc.setFontSize(8);
 
 
 
-  	doc.save('Ass.pdf');
+  	if(toDo=='print')
+	{
+  		doc.save('Asrnce.pdf'); //print
+  	}
+	else
+   {
+
+   		var pdfData;
+   		pdfData=doc.output('datauristring');
+   		return pdfData; //saving in url
+
+	}
 
   	//nam = qPAT.patients[curPatRow].NAM;
 	//var string = doc.output('datauristring');
@@ -547,21 +558,45 @@ doc.setFontSize(8);
   	//x.document.location=string;
   }
 
-  function printing()
+  function printing(toDo)
   {
 
   	if(($('#formlr_asur_check').is(":checked")) && (!($('.fact_rec_check').is(":checked"))))
   	{
-  		printASS();
+  		if(toDo=='print')
+  		{
+  			printASS('print');
+  		}
+  		else
+  		{
+  			printASS('email');
+  		}
   	}
   	else if(($('.fact_rec_check').is(":checked")) && (!($('#formlr_asur_check').is(":checked"))))
   	{
-  		printRAMQ("print");
+  		
+  		if(toDo=='print')
+  		{
+  			printRAMQ("print");
+  		}
+  		else
+  		{
+  			printRAMQ("email");
+  		}
   	}
   	else 
   	{
-  		printASS();
-  		printRAMQ("print");
+  	
+  		if(toDo=='print')
+  		{
+  			printRAMQ("print");
+  			printASS('print');
+  		}
+  		else
+  		{
+  			printRAMQ("email");
+  			printASS('email');
+  		}
 
   	}
 

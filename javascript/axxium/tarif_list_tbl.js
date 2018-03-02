@@ -98,7 +98,7 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
 //    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
 //       for (var i=0;i<data.length;i++) {
 //          if (data[i].toLowerCase() == searchTerm) return true
-//       }
+//       }	
 //       return false
 //    })
 //    tarifTbl_datTbl.draw();   

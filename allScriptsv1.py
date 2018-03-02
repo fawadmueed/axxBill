@@ -1567,6 +1567,7 @@ if tx == "deletePdf":
 			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
 			print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
 
+#send email with one attachment
 if tx == "sendPdf2":
     try:
         #convert and save pdf file.
@@ -1638,6 +1639,101 @@ if tx == "sendPdf2":
 
 
         print '{ "outcome":"success"}'
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+#send email with multiple attachment
+if tx == "sendPdf3":
+    try:
+        #convert and save pdf file.
+        #pdfString = form['input'].value
+        jsonArrPdfFiles = form['json'].value
+        toaddr = form['email'].value
+        clinicId = form['clinicId'].value
+        dirName = 'PDF'
+       
+        dataArrPdfFiles = json.loads(jsonArrPdfFiles)
+        dataArr = dataArrPdfFiles['pdfFiles']
+
+        
+		
+       
+        # Get credentials from config file
+        email_body = ''
+        email_from_display_name  = ''
+        email_port = ''
+        email_host = ''
+        email_ssl = ''
+        email_subject = ''
+        email_cc = ''
+        email_from = ''
+        email_user = ''
+        email_password = ''
+		
+		#read the parameters for credentials
+        json_data = open('json/ramqCredentials/'+clinicId+'.json', 'r')
+        data = json.load(json_data)
+        json_data.close()
+
+        email_body = data["emailBody"].encode('utf-8')
+        email_from_display_name  = data["emailFromDisplayName"].encode('utf-8')
+        email_port = data["emailPort"].encode('utf-8')
+        email_host = data["emailHost"].encode('utf-8')
+        email_ssl = data["emailSsl"].encode('utf-8')
+        email_subject = data["emailSubject"].encode('utf-8')
+        email_cc = data["emailCC"].encode('utf-8')
+        email_from = data["emailFrom"].encode('utf-8')
+        email_user = data["emailUser"].encode('utf-8')
+        email_password = data["emailPassword"].encode('utf-8')
+
+        if(email_user and email_password):
+             # Send email with attachment
+            msg = MIMEMultipart()
+            msg['From'] = email_from
+            msg['To'] = toaddr
+            msg['Subject'] = email_subject
+
+            body = email_body
+            msg.attach(MIMEText(body, 'plain'))
+
+           # Create pdf files from base64
+            fileNum = 1
+            for pdfFile in dataArr:
+                try:
+                    fileName = str(fileNum) + '.pdf'
+                    pdfFilePath = dirName + '/' + fileName
+                    code = pdfFile.split(',')[1].decode('base64')
+                    with open(pdfFilePath, 'wb') as fout:
+                        fout.write(code)
+
+                    part = MIMEBase('application','octet-stream')
+                    part.set_payload((open(pdfFilePath,'rb')).read())
+                    Encoders.encode_base64(part)
+                    part.add_header('Content-Disposition', "attachment; filename= Facture%s.pdf" %str(fileNum))
+                    msg.attach(part)
+                    
+                    fileNum = fileNum + 1
+                except:
+                    print '{ "outcome" : "error", "message" : "Could not attache file." }'
+
+
+            server = smtplib.SMTP(email_host + ':' + email_port )
+            server.starttls()
+            server.login(email_user,email_password)
+            text = msg.as_string()
+            server.sendmail(email_from, toaddr, text)
+            server.quit()
+
+
+            print '{ "outcome":"success"}'
+        else:
+            print '{ "outcome" : "error", "message" : "Les informations d\'identification sont manquantes." }'
+            
+        
+
+        
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

@@ -405,14 +405,20 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	{
   		// Taking value of Total = honoraires + Frais Lab
   		honoraires=parseFloat(honoraires)+parseFloat(valx.Total);
-  		honoraires=parseFloat(honoraires).toFixed(2) || 0;
+  		honoraires=parseFloat(honoraires)|| 0;
   	})
+  	honoraires=honoraires.toFixed(2);
   	
   	var totalOwe=parseFloat(previousBal)+parseFloat(honoraires);
-  	totalOwe=parseFloat(totalOwe).toFixed(2) || 0;
+  	totalOwe=parseFloat(totalOwe) || 0;
+  	totalOwe=totalOwe.toFixed(2);
 
   	var balanceDue=parseFloat(totalOwe)-parseFloat(amount_insur)-parseFloat(amount_paid_patient);
-  	balanceDue=parseFloat(balanceDue).toFixed(2) || 0;
+  	balanceDue=parseFloat(balanceDue)|| 0;
+  	balanceDue=balanceDue.toFixed(2);
+
+  	previousBal=previousBal.toFixed(2);
+
 
 
 	//alert("Start print RAMQ");
@@ -427,7 +433,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printDATE(doc,2,45);
 	printPERS(doc,2,51);
 	printPAT(doc,2,68);
-	printAMT(doc,2,81,"","Solde anterieur","Previous balance",previousBal.toFixed(2).toString());
+	printAMT(doc,2,81,"","Solde anterieur","Previous balance",previousBal.toString());
 	printAMT(doc,2,89,"+","Honoraires","Fees",honoraires.toString());
 
 	printAMT(doc,2,97,"=","Vous devez ce montant","You owe this amount",totalOwe.toString());

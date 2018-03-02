@@ -24,7 +24,6 @@ $(document).ready(function(){
 
           if(e.which == 13) {
                 newRecordFact();
-                console.log($(this));
 
                 $(this).closest('tr').next().find('td[data-target=Type]').focus();
                  e.preventDefault();
@@ -283,13 +282,18 @@ function getPrevRowSurf(idPrev){
 function getPrevRowType(idPrev){
 
 
-  var factBody=$('#factTableBody tr[id='+idPrev+']');
-  var prevType;
-  $.each(factBody,function(id,val){
-  prevType=$(val).find('td[data-target=Type]').text();
+  // var factBody=$('#factTableBody tr[id='+idPrev+']');
+  // var prevType;
+  // $.each(factBody,function(id,val){
+  // prevType=$(val).find('td[data-target=Type]').text();
+
+  // if(prevType=='')
+  // {
+    prevType=$('#factTableBody tr:last td[data-target=Type]').text();
+  // }
 
 
-  })
+  // })
 
   return prevType;
 

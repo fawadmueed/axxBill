@@ -1771,6 +1771,22 @@
                 </div>
             </div>
         </div>
+
+        <div class="ui alert_modal small modal">
+            <div class="ui header" id="divAlertHeader"></div>
+            <div class="content">
+                <div class="ui" id="divAlertContent">
+
+                </div>
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui axxium tiny right floated button" onclick="$('.alert_modal').modal('hide');">OK</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui modalFacture fullscreen modal">
             <i class="close icon"></i>
             <div class="ui header">
@@ -5177,6 +5193,10 @@
                     $('.facture_response').modal('show');
                 }
 
+                function modAlert() {
+                    $('.alert_modal').modal('show');
+                }
+
                 function modPaimnt() {
                     $('.modalPaiementRegie').modal('show');
                 }
@@ -5283,6 +5303,15 @@
                         $('.modalMontant.modal').modal('hide');
                     }
                 });
+
+                function displayAlert(_header, _content) {
+                    var modalDiv = document.getElementsByClassName('ui alert_modal modal');
+                    var header = document.getElementById('divAlertHeader');
+                    var content = document.getElementById('divAlertContent');
+                    header.innerHTML = _header;
+                    content.innerHTML = _content;
+                    modAlert();
+                }
             </script>
             <script>
                 var fact_tbl_row_id = 0;

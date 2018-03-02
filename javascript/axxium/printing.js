@@ -394,10 +394,10 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
   	var amount_amq=$('#amq_total').val();//Amount paid by AMQ
 
-  	var previousBal=37;
+  	var previousBal=0;
   	var honoraires=0;
   	
-  	var amount_paid_patient=0;
+  	var amount_paid_patient=$('#pers_total').val();
 
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{

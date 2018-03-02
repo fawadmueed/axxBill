@@ -390,7 +390,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	var amount_cash=$('#pers_total').val();//Amount to be given by Patient
 
   	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
-  	amount_insur=parseFloat(amount_insur) || 0;
+  	amount_insur=parseFloat(amount_insur).toFixed(2) || 0;
 
   	var amount_amq=$('#amq_total').val();//Amount paid by AMQ
 
@@ -425,7 +425,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printDATE(doc,2,45);
 	printPERS(doc,2,51);
 	printPAT(doc,2,68);
-	printAMT(doc,2,81,"","Solde anterieur","Previous balance",previousBal.toString());
+	printAMT(doc,2,81,"","Solde anterieur","Previous balance",previousBal.toFixed(2).toString());
 	printAMT(doc,2,89,"+","Honoraires","Fees",honoraires.toString());
 
 	printAMT(doc,2,97,"=","Vous devez ce montant","You owe this amount",totalOwe.toString());

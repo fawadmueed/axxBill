@@ -121,7 +121,7 @@ $('#search_desc').on('keyup', function () {
 		var valHere=this.value;
    		 tarifTbl_datTbl
         .columns( 2 )
-        .search('\\b'+this.value,true, true)
+        .search('^\s*(['+this.value+']+)',true, false)
         .draw();
 
 

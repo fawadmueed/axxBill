@@ -1011,9 +1011,9 @@ function surf_code_dent_gen_validation() {
                   var surf_chck_new =$(this).text();
                   $('.surfNumModal').modal('hide');
                   
-                  var this_code_val = $('#factTableBody tr[id='+row_id_case1+']').children("td[data-target='Code']").text(init_code);
-                  var this_code_val = $('#factTableBody tr[id=' +row_id_case1+']').children("td[data-target='Surface']").text(surf_chck_new);
-                  $("#factTableBody td[data-target='Code'],#factTableBody_regie tr[id='" + row_id_case1 + "'] td[data-target='Code").trigger("focusout");
+                  var this_code_val = $("#factTableBody tr[id="+row_id_case1+"] td[data-target='Code']").text(init_code);
+                  var this_code_val = $("#factTableBody tr[id=" +row_id_case1+"] td[data-target='Surface']").text(surf_chck_new);
+                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code'],#factTableBody_regie tr[id='" + row_id_case1 + "'] td[data-target='Code").trigger("focusout");
                 });
 
               }

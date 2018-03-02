@@ -569,7 +569,8 @@ doc.setFontSize(8);
   		}
   		else
   		{
-  			var emAs=printASS('email');
+  			var emAs=[];
+  			emAs[0]=printASS('email');
   			return emAs;
   		}
   	}
@@ -582,7 +583,8 @@ doc.setFontSize(8);
   		}
   		else
   		{
-  			var emRam=printRAMQ("email");
+  			var emRam=[]
+  			emRam[0]=printRAMQ("email");
   			return emRam;
 
   		}
@@ -608,4 +610,3 @@ doc.setFontSize(8);
 
   }
 
- 

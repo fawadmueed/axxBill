@@ -1255,6 +1255,21 @@
         <div class="content">
         <div class="ui grid">
             <div class="sixteen wide column">
+                  <div class="ui grid form">
+                        <div class="ten wide column"></div>
+                        <div class="three wide column">
+                            <div class="field">
+                                <label>Code:</label>
+                                <input type="number" name="" id="search_code" placeholder="Chercher">
+                            </div>
+                        </div>
+                        <div class="three wide column">
+                            <div class="field">
+                                <label>Descripion:</label>
+                                <input type="text" name="" id="search_desc" placeholder="Chercher">
+                            </div>
+                        </div>
+                    </div>
                 <div class="ui segment">
                 <div class="ui mini buttons">
                     <!-- <div class="five fields"> -->
@@ -1270,18 +1285,13 @@
                         <button class="ui  mini button searchTarif" value="9">9-Divers</button>
                     <!-- </div> -->
                 </div>
+
                 </div>
+
             </div>
             <div class="sixteen wide column ">
                 <div class="ui segment">
-                    <div class="ui grid form">
-                        <div class="five wide column">
-                            <div class="inline field">
-                                <label>Search:</label>
-                                <input type="text" name="" id="search_desc">
-                            </div>
-                        </div>
-                    </div>
+                  
                        
                 <table class="ui stackable compact selectable  celled table tarif_list_table" width="100%">
                     <thead>
@@ -2081,7 +2091,7 @@
 
                                             <div class="ui axxium right floated button" onclick="SendEmail();">Envoyer par courriel</div>
                                             <div class="ui axxium right floated button" onclick="printing('print')">Imprimer</div>
-                                            
+
 
                                         </div>
                                     </div>
@@ -2101,14 +2111,14 @@
                                                 <div class="nine wide field">
                                                     <label>PERS</label>
                                                     <div class="ui icon input">
-                                                        <input type="number" name="" id="pers_solde" class="mont">
+                                                        <input type="number" name="" id="pers_solde" class="mont" disabled="">
                                                             <i class="ui dollar icon"></i>
                                                     </div>
                                                 </div>
                                                 <div class="nine wide field">
                                                     <label>AMQ</label>
                                                     <div class="ui icon input">
-                                                    <input type="number" name="" id="amq_solde" class="mont">
+                                                    <input type="number" name="" id="amq_solde" class="mont" disabled="">
                                                             <i class="ui dollar icon"></i>
                                                     </div>
                                                     
@@ -2116,7 +2126,7 @@
                                                 <div class="nine wide field">
                                                     <label>ASS</label>
                                                     <div class="ui icon input">
-                                                    <input type="number" name="" id="ass_solde" class="mont">
+                                                    <input type="number" name="" id="ass_solde" class="mont" disabled="">
                                                             <i class="ui dollar icon"></i>
                                                     </div>
                                                     
@@ -2124,7 +2134,7 @@
                                                 <div class="nine wide field">
                                                     <label>POST-DATÉS</label>
                                                     <div class="ui icon input">
-                                                    <input type="number" name="" id="post_solde" class="mont" >
+                                                    <input type="number" name="" id="post_solde" class="mont" disabled="">
                                                             <i class="ui dollar icon"></i>
                                                     </div>
                                                     
@@ -2139,7 +2149,7 @@
                                                 <div class="nine wide field">
                                                     <label>PERS</label>
                                                     <div class="ui icon input">
-                                                    <input type="text" name="" id="pers_total" class="mont">
+                                                    <input type="text" name="" id="pers_total" class="mont" disabled="">
                                                             <i class="ui dollar icon"></i>
                                                     </div>
                                                 
@@ -2147,7 +2157,7 @@
                                                 <div class="nine wide field">
                                                     <label>AMQ</label>
                                                    <div class="ui icon input">
-                                                    <input type="text" name="" id="amq_total" class="mont">
+                                                    <input type="text" name="" id="amq_total" class="mont" disabled="">
                                                         <i class="ui dollar icon"></i>
                                                     </div> 
 
@@ -2155,7 +2165,7 @@
                                                 <div class="nine wide field">
                                                     <label>ASS</label>
                                                     <div class="ui icon input">
-                                                    <input type="text" name="" id="ass_total" class="mont">
+                                                    <input type="text" name="" id="ass_total" class="mont" disabled="">
                                                         <i class="ui dollar icon"></i>
                                                     </div> 
                                                     
@@ -4866,8 +4876,60 @@
                     </div>
                 </div>
             </div>
+            
             <script>
                 $(document).ready(function() {
+
+                    $(".fact_surface").keyup(function(event) {
+
+                        switch (event.keyCode){
+
+                            case 49:
+                                surf_btn_val('1');
+                                break;
+
+                            case 50:
+                            surf_btn_val('2');
+                                break;
+                            
+                            case 51:
+                            surf_btn_val('3');
+                                break;
+                            
+                            case 52:
+                            surf_btn_val('4');
+                                break;
+                            
+                            case 53:
+                            surf_btn_val('5');
+                                break;
+                            
+                            case 54:
+                            surf_btn_val('6');
+                                break;
+                            
+                            case 55:
+                            surf_btn_val('7');
+                                break;
+                            
+                            case 56:
+                            surf_btn_val('8');
+                                break;
+
+                            case 57:
+                            surf_btn_val('9');
+                                break;
+                            default:
+                                alert('Error! Acquiring Key Value');
+                            
+                                
+                        }
+
+                        if (event.keyCode === 49) {
+                            surf_btn_val('1');
+                        }
+                        $(".fact_surface").modal('hide');
+                    });                    
 
                     $('.ui.basic.tarifSelection.mini.modal').modal('setting', 'closable', false)
                     .modal('setting', 'transition', 'horizontal flip')
@@ -4883,8 +4945,6 @@
                                    }
                       });
 
-                    //Default Language French
-                    //changeLang('fr');
 
                     $(document).ready(function() {
 

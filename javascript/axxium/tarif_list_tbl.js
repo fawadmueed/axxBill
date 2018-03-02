@@ -85,7 +85,8 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
     { "data": "value.producer" },
 
     ],
-    // dom: 'lrtip'
+    dom: 'lrtip',
+    stateSave: false
 
 })
 
@@ -104,53 +105,24 @@ tarifTbl_datTbl=$('.tarif_list_table').DataTable({
 //    tarifTbl_datTbl.draw();   
 //    $.fn.dataTable.ext.search.pop()
 // })
-$('.dataTables_filter input').on('keyup',function()
+$('#search_code').on('keyup', function () {
 	{
 		var valHere=this.value;
-
-		// if(isNaN(valHere))
-		// {
-		//  tarifTbl_datTbl
-  //       .columns(2)
-  //       .search('\\b'+this.value,true, false)
-  //       .draw();
-		// }
-		// else
-		// {
 		 tarifTbl_datTbl
         .columns( 0 )
         .search('\\b'+this.value,true, false)
         .draw();
-		// }
-		if(valHere=='')
-		{
-			tarifTbl_datTbl.state.clear().draw();
-		}
- 	   // tarifTbl_datTbl.search('\\b'+this.value, true, false).draw();
+
+ 	}
  	});  
 
 $('#search_desc').on('keyup', function () {
-	var valHere=this.value;
 
-		// if(isNaN(valHere))
-		// {
+		var valHere=this.value;
    		 tarifTbl_datTbl
         .columns( 2 )
         .search('\\b'+this.value,true, true)
         .draw();
-  //   	}
-  //   	else if(!((isNaN(valHere))))
-  //   	{
-  //   	tarifTbl_datTbl
-  //       .columns( 0 )
-  //       .search('\\b'+this.value,true, true)
-  //       .draw();
-  //   	}
-  //   	if(valHere=='')
-		// {
-		// 	tarifTbl_datTbl.clear();
-		// 	tarifTbl_datTbl.draw();
-		// }
 
 
 } );

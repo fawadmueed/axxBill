@@ -390,7 +390,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	var amount_cash=$('#pers_total').val();//Amount to be given by Patient
 
   	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
-  	amount_insur=parseInt(amount_insur) || 0;
+  	amount_insur=parseFloat(amount_insur) || 0;
 
   	var amount_amq=$('#amq_total').val();//Amount paid by AMQ
 
@@ -401,15 +401,15 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{
-  		honoraires=parseInt(honoraires)+parseInt(valx.Honoraires);
-  		honoraires=parseInt(honoraires) || 0;
+  		honoraires=parseFloat(honoraires)+parseFloat(valx.Honoraires);
+  		honoraires=parseFloat(honoraires) || 0;
   	})
   	
-  	var totalOwe=parseInt(previousBal)+parseInt(honoraires);
-  	totalOwe=parseInt(totalOwe) || 0;
+  	var totalOwe=parseFloat(previousBal)+parseFloat(honoraires);
+  	totalOwe=parseFloat(totalOwe) || 0;
 
-  	var balanceDue=parseInt(totalOwe)-parseInt(amount_insur)-parseInt(amount_paid_patient);
-  	balanceDue=parseInt(balanceDue) || 0;
+  	var balanceDue=parseFloat(totalOwe)-parseFloat(amount_insur)-parseFloat(amount_paid_patient);
+  	balanceDue=parseFloat(balanceDue) || 0;
 
 
 	//alert("Start print RAMQ");
@@ -435,7 +435,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	printGRID(doc,84,69);
 	printMESS(doc,84,130);
 	
-	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","","37.00");
+	printITEM(doc,84,81,"SOLDE ANTERIEUR","","","",previousBal);
 	var coy = 84;
 	$.each(arrGrilleDeFacturation,function(idx,val){
 			printITEM(doc,84,coy,val.Description,val.Code,val.Dent,val.Surface,val.Honoraires);

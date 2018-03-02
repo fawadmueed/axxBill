@@ -131,10 +131,12 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setFillColor(0,0,0);
 	doc.rect(topX+1, topY, 80, 16);
   	doc.text(topX+5, topY+3.5, "Personne responsable / Party responsible ");
+  	doc.setFontSize(8.5);
 	doc.text(topX+2, topY+7, globVisionRData.NomPers+", "+globVisionRData.PrePers);
   	doc.text(topX+2, topY+11, globVisionRData.AdrPersPatnt);
   	// doc.text(topX+2, topY+15);
 	doc.rect(topX+82, topY, 118, 16);
+	doc.setFontSize(10);
   	doc.text(topX+83, topY+4, "# confirmation: ");
   	doc.text(topX+83, topY+7, "   authorization ");
   	doc.text(topX+83, topY+11, "# plan de traitement pre-autorise: ");

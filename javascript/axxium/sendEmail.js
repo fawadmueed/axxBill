@@ -1,11 +1,7 @@
 function SendEmail() {
-    //var pdfStr = printRAMQ('email');
-    //var pdfStr = printing('email');
     var arrPdfFiles = printing('email');
     var jsonArrPdfFiles = { "pdfFiles": arrPdfFiles };
     var patientEmail = globVisionRData.Email;
-
-    var patientEmail = "sdfsdf";
 
     if (patientEmail) {
         if (arrPdfFiles && arrPdfFiles.length > 0)

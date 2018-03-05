@@ -159,6 +159,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
 
     if(!chckDentSurf){
+
           warnMsg(msgerr.msg041);
           $(this).focus();
           $(this).text('');
@@ -306,7 +307,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         $(this).siblings('td[data-target="Description"],[data-target="Frais"],[data-target="Honoraires"],[data-target="Total"]').text('');
       }
       else {
-        var surfValid=chckDentCodeExistTbl(dent_s,code_s);
+        var surfValid=chckDentCodeExistTbl(dent_s,code_s,surf_s);
 
         if(surfValid)
         {
@@ -794,16 +795,18 @@ function chckCodeException(code) {
     return true;
   }
 }
-function chckDentCodeExistTbl(dent,code)
+function chckDentCodeExistTbl(dent,code,surf)
   {
     var trs=$('#factTableBody tr ');
     var dentFound=0;
     var codeFound=0;
+    var surfFound=0;
 
     $.each(trs, function(id,val){
 
       var cur_Dent= $(val).find('td[data-target=Dent]').text();
       var cur_Code= $(val).find('td[data-target=Code]').text();
+      var cur_Surf= $(val).find('td[data-target=Surface]').text();
         // cur_Surf
 
     if(dent==cur_Dent){
@@ -816,9 +819,15 @@ function chckDentCodeExistTbl(dent,code)
       codeFound=codeFound+1;
     }
 
+    if(surf==cur_Surf)
+    {
+      surfFound=surfFound+1;
+    }
+
     });
 
-    if((dentFound>=2) && (codeFound>=2)) {
+    if((dentFound>=2) && (codeFound>=2) && (surfFound>=2)) 
+    {
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
       // console.log('this match Already Exist! Sorry');
       return false;

@@ -22,7 +22,7 @@
 	}
 
 	//Condition 3
-	if(!isNaN(parseFloat(val)) && isFinite(val)) //if((!(isNaN(val)))&&(val.length!=''))
+	if(!(isNaN(parseFloat(val))) && (isFinite(val))) //if((!(isNaN(val)))&&(val.length!=''))
 	{
 		//isNAN Not-A-Number Function , If NOT A NUMBER : TRUE , IF NUMBER - FALSE
 		//in loop when NOT TRUE - isNAN

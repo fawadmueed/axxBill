@@ -89,7 +89,6 @@ function SoumissionDemandesPaiementNode() {
             alert(errorThrown);
         }
     })
-    
 }
 
 function RamqSoumissionDemandesModification()
@@ -190,40 +189,6 @@ function RamqSoumissionDemandedAnnulationNode() {
             alert(errorThrown);
         }
     })
-    //var objSoumissionDemandesAnnulationData = RamqSoumissionDemandesAnnulationGetData();
-    //if (objSoumissionDemandesAnnulationData != null) {
-    //    var operationName = "Annulation";
-    //    var inputXMl = RamqGetXmlToSend(operationName, objSoumissionDemandesAnnulationData); //This data is used to send to RAMQ.
-
-    //    var jsonXML = {
-    //        "request": inputXMl,
-    //        "info": objSoumissionDemandesAnnulationData //this data is used to store bill info on the server
-    //    }
-
-    //    $.post("allScriptsv1.py", { tx: "cancelRamqData", clinicId: globClinicId, patientId: globPatientId, nodossier: globNoDossier, nofact: globBillNumber, json: JSON.stringify(jsonXML) },
-    //                function (result) {
-    //                    if (result.outcome === 'error')//Display python Error
-    //                    {
-    //                        alert(result.message);
-    //                    }
-    //                    else if (result.message != null && result.message.substring(0, 5) == 'Error') {
-    //                        displayRamqAnswer("RAMQ", result.message);
-    //                    }
-    //                    else if (result.message != null && result.message.substring(0, 5) != 'Error') {
-    //                        var objResponse = parseRAMQResponseAnnulation(result.message);
-    //                        displayResponseAnnulation(objResponse);
-    //                    }
-    //                    else {
-    //                        displayRamqAnswer("RAMQ", "RamqSoumissionDemandesAnnulation Error");
-    //                    }
-    //                })
-    //        .fail(function () {
-    //            alert("Ramq RamqSoumissionDemandesAnnulation Error.");
-    //        });
-    //}
-    //else {
-    //    alert("There is nothing to send.")
-    //}
 }
 
 

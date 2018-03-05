@@ -1302,7 +1302,9 @@
     if (xmlhttp2.readyState==4 && xmlhttp2.status==200)
       {
       //alert(xmlhttp2.responseText.length);
-      mapping = JSON.parse(xmlhttp2.responseText);
+        mapping = JSON.parse(xmlhttp2.responseText);
+        //AK display treatment history.
+        TrHistGetDataFromDB();
       }
   }
 

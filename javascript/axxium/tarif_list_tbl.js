@@ -15,16 +15,16 @@ $(document).ready(function(){
 		$('.fact_tarif_list.modal').modal('hide');
 	})
 
-	$('.dataTables_filter input').off().on('keyup', function() {
-    $('#myTable').DataTable().search(this.value.trim(), true, false).draw();
- });   
+	// $('.dataTables_filter input').off().on('keyup', function() {
+ //    $('#myTable').DataTable().search(this.value.trim(), true, false).draw();
+ // });   
 
-	$('.searchTarif').click(function(){
-		var srch='\\b'+$(this).val();
-		console.log(srch);
-		tarifTbl_datTbl.column(0).search(srch,true,false).draw();
+	// $('.searchTarif').click(function(){
+	// 	var srch='\\b'+$(this).val();
+	// 	console.log(srch);
+	// 	tarifTbl_datTbl.column(0).search(srch,true,false).draw();
 		
-	})
+	// })
 })
 
 function fact_tarif_list(x)
@@ -39,7 +39,8 @@ function fact_tarif_list(x)
 		var arr = $.map(dataJson_Code, function(val,key) { return {code:key,value:val} });
 		//Popup Modal
 		popTarifTbl(arr);
-			$('.fact_tarif_list.modal').modal('show');
+		
+		$('.fact_tarif_list.modal').modal('show');
 
 	}
 
@@ -48,47 +49,82 @@ function fact_tarif_list(x)
 		
 		var descrLn;
 
+
 		if(globLang=='en')
 		{
 			descrLn='descra';
+			tarifTbl_datTbl=$('.tarif_list_table').DataTable({
+			"data":arr,
+			"columns": [    // Assign KEY Values to COLUMNS
+
+			    { "data": "code" },
+			    { "data": "value.regiecode" },
+			    { "data": "value."+descrLn },
+			    { "data": "value.prixs",
+			    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+			    	 },
+			    { "data": "value.prixr",
+			    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 	
+			    },
+			    { "data": "value.prixa" ,
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.frais_lab", 
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.frais_lab" ,
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.lab" },
+			    { "data": "value.producer" },
+
+		    ],
+			dom: 'lrtip',
+		    stateSave: false
+
+		})
+
 		}
 		else
 		{
 			descrLn='descrf';
+			languageUrl ='../axxium/translator/dataTablesFrench.json';
+			tarifTbl_datTbl=$('.tarif_list_table').DataTable({
+			"data":arr,
+			"columns": [    // Assign KEY Values to COLUMNS
+
+			    { "data": "code" },
+			    { "data": "value.regiecode" },
+			    { "data": "value."+descrLn },
+			    { "data": "value.prixs",
+			    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+			    	 },
+			    { "data": "value.prixr",
+			    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 	
+			    },
+			    { "data": "value.prixa" ,
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.frais_lab", 
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.frais_lab" ,
+				render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
+				},
+			    { "data": "value.lab" },
+			    { "data": "value.producer" },
+
+		    ],
+			dom: 'lrtip',
+		    stateSave: false,
+		     language: {
+		     	 url: languageUrl
+		    }
+
+		})
 		}
 
-tarifTbl_datTbl=$('.tarif_list_table').DataTable({
 		
-		
-		"data":arr,
-		
-        "columns": [    // Assign KEY Values to COLUMNS
-    { "data": "code" },
-    { "data": "value.regiecode" },
-    { "data": "value."+descrLn },
-    { "data": "value.prixs",
-    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
-    	 },
-    { "data": "value.prixr",
-    	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 	
-    },
-    { "data": "value.prixa" ,
-	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
-	},
-    { "data": "value.frais_lab", 
-	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
-	},
-    { "data": "value.frais_lab" ,
-	render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) 
-	},
-    { "data": "value.lab" },
-    { "data": "value.producer" },
-
-    ],
-    dom: 'lrtip',
-    stateSave: false
-
-})
 
 // $('.dataTables_filter input').bind('keyup', function() {
 //    var searchTerm = this.value.toLowerCase()
@@ -120,9 +156,17 @@ $('#search_desc').on('keyup', function () {
 
 		var valHere=this.value;
    		 tarifTbl_datTbl
-        .columns( 2 )
+        .columns(2)
         .search('^\s*(['+this.value+']+)',true, false)
         .draw();
+
+	        if(valHere=='')
+	        {
+			tarifTbl_datTbl
+	        .columns(2)
+	        .search('[\s\S]*',true, false)
+	        .draw();
+	        }
 
 
 } );

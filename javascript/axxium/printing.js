@@ -46,6 +46,8 @@
                    }
                });
       		}
+
+      		
          })
 
 
@@ -264,7 +266,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	//VERIFICATION Dentiste Name
 	doc.setFontSize(8);
-	doc.text(130, 95, globInsuranceData.firstName+" "+globInsuranceData.lastName);	
+	doc.text(130, 95, globVisionRData.ProfName);	
 	doc.text(170, 95, pDate);	
 
 	//===Bills 
@@ -272,15 +274,18 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	
 	var yAxis=108;
 
-	$.each(arrGrilleDeFacturation_Insurance,function(idx,val){
+	$.each(arrGrilleDeFacturation,function(idx,val){
 
-	yAxis=yAxis+4;	
+		if(val.Type!='AMQ' || val.Type!='BES' || val.Type!='HOP')
+	{		
+			yAxis=yAxis+4;	
 
-	doc.text(6, yAxis, pDate);
-	doc.text(25, yAxis, val.Code);
-	doc.text(52, yAxis, val.Honoraires);
-	doc.text(68, yAxis, val.Frais);
-	doc.text(83, yAxis, val.Total);
+			doc.text(6, yAxis, pDate);
+			doc.text(25, yAxis, val.Code);
+			doc.text(52, yAxis, val.Honoraires);
+			doc.text(68, yAxis, val.Frais);
+			doc.text(83, yAxis, val.Total);
+		}
 
 	})
 

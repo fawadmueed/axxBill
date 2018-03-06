@@ -8,6 +8,7 @@ function TrHistGetDataFromDB() {
             contentType: "application/json",
             data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist }),
             success: function (result) {
+                globTreatHist=result;
                 TrHistDraw(result);
             },
             error: function (xhr, ajaxOptions, thrownError) {

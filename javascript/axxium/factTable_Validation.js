@@ -803,38 +803,21 @@ function chckCodeException(code) {
 function chckDentCodeExistTbl(dent,code,surf)
   {
     var trs=$('#factTableBody tr ');
-    var dentFound=0;
-    var codeFound=0;
-    var surfFound=0;
+    var found=0;
 
     $.each(trs, function(id,val){
 
       var cur_Dent= $(val).find('td[data-target=Dent]').text();
       var cur_Code= $(val).find('td[data-target=Code]').text();
       var cur_Surf= $(val).find('td[data-target=Surface]').text();
-        // cur_Surf
 
-    if(dent==cur_Dent){
-      dentFound=dentFound+1;
-      console.log('same dent :' + dent + cur_Dent);
-
-    }
-
-    if(code==cur_Code){
-      codeFound=codeFound+1;
-    }
-
-    if(surf==cur_Surf)
-    {
-      surfFound=surfFound+1;
-    }
+      if(dent==cur_Dent && code==cur_Code && surf==cur_Surf) {
+        found=found+1;
+      }
 
     });
 
-    if((dentFound>=2) && (codeFound>=2) && (surfFound>=2)) 
-    {
-      console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
-      // console.log('this match Already Exist! Sorry');
+    if((found>=2)) {
       return false;
     }
     else{

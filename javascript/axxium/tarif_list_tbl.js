@@ -33,7 +33,7 @@ function fact_tarif_list(x)
 		var this_row_id=$(x).parent('tr').attr('id');
 		globVarSurfValidation_this_row_id=this_row_id;
 
-		$.fn.dataTable.ext.errMode = 'none';
+		// $.fn.dataTable.ext.errMode = 'none';
 		$.fn.dataTable.render.number( '.', ',', 2, '' );
 		// Getting data for the Modal, Mapping it from JSON to ARRAY
 		var arr = $.map(dataJson_Code, function(val,key) { return {code:key,value:val} });
@@ -157,16 +157,16 @@ $('#search_desc').on('keyup', function () {
 		var valHere=this.value;
    		 tarifTbl_datTbl
         .columns(2)
-        .search('^\s*(['+this.value+']+)',true, false)
-        .draw();
+        .search( '(^|\s)'+valHere+'(\s|)',true,false)
+        .draw().sort();
 
-	        if(valHere=='')
-	        {
-			tarifTbl_datTbl
-	        .columns(2)
-	        .search('[\s\S]*',true, false)
-	        .draw();
-	        }
+	     if(valHere=='')
+	     {
+		  tarifTbl_datTbl
+	     .columns(2)
+	     .search('[\s\S]*',true,false,true)
+	     .draw();
+	     }
 
 
 } );

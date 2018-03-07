@@ -133,7 +133,7 @@ function newRecordFact_planTrait(){
     }
            
 
-        tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
+        tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="deleteRow_planTrait(this);" >Supprimer</div>');
        tblData.appendTo(tblRow);
 
         tblRow.appendTo(tblBody);
@@ -271,10 +271,34 @@ function populate_table_fact_planTrait(arrToPopTabl){
                       }
                     tblData.appendTo(tblRow);
                   }
-                  tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="deleteRow(this);" >Supprimer</div>');
+                  tblData=$('<td>').append('<div class="ui axxium tiny button" onclick="deleteRow_planTrait(this);" >Supprimer</div>');
        tblData.appendTo(tblRow);
                  tblRow.appendTo(tblBody);
         });
+
+}
+
+function deleteRow_planTrait(x)
+{
+
+  getAllTrData_planTrait();
+  var lengthTblArray=arrGrilleDeFacturation_planTrait.length;
+
+  var row_id_Del=$(x).closest('tr').attr('id');
+   var prevRow=$(x).closest('tr').prev('tr');
+   $(prevRow).children('td[data-target="codeRole"]').focus();
+  var row=$(x).closest('tr').remove();
+  
+  if(lengthTblArray==1)
+  {
+    newRecordFact_planTrait();
+  }
+
+  
+
+  // $('#factureTable_planTrait tr[id='+prevRow+'] td[data-target="codeRole"]').focus();
+  // x.parents("tr:last");
+
 
 }
 

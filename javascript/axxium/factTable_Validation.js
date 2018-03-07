@@ -367,15 +367,20 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           $(total).text(totalVal);
 
           $(this).siblings("td[data-target='Prod']").focus();
+          return true;
 
         }
-        else {
+        else 
+        {
           warnMsg(msgerr.msg041);
           $(this).focus();
           $(this).text('');
+          return false;
         }
 
+
       }
+
      });
 
 

@@ -39,7 +39,7 @@ function fact_tarif_list(x)
 		var arr = $.map(dataJson_Code, function(val,key) { return {code:key,value:val} });
 		//Popup Modal
 		popTarifTbl(arr);
-		
+		// resetDataTableFilter();
 		$('.fact_tarif_list.modal').modal({
 			observeChanges: true
 		}).modal('show');
@@ -81,10 +81,11 @@ function fact_tarif_list(x)
 			    { "data": "value.producer" },
 
 		    ],
-			dom: 'lrtip',
-		    stateSave: false
+            dom: 'lrtip'
 
 		})
+			// tarifTbl_datTbl.column(0).search('0',true,false).draw();
+
 
 		}
 		else
@@ -117,13 +118,14 @@ function fact_tarif_list(x)
 			    { "data": "value.producer" },
 
 		    ],
-			dom: 'lrtip',
-		    stateSave: false,
-		     language: {
-		     	 url: languageUrl
-		    }
+            dom: 'lrtip'
+		    
 
 		})
+
+			// $('.tarif_list_table').css( 'display', 'block' );
+			// 	tarifTbl_datTbl.columns.adjust().draw();
+			// tarifTbl_datTbl.column(0).search('0',true,false).draw();
 		}
 
 		
@@ -173,6 +175,11 @@ $('#search_desc').on('keyup', function () {
 
 } );
 
+}
+
+function resetDataTableFilter()
+{
+	$('.tarif_list_table').DataTable().search('0').columns(0).search('0').draw();
 }
 
 

@@ -590,6 +590,8 @@ function deleteRow(x){
   var lengthTblArray=arrGrilleDeFacturation.length;
 
   var row_id_Del=$(x).closest('tr').attr('id');
+  var prevRow=$(x).closest('tr').prev('tr');
+   $(prevRow).children('td[data-target="codeRole"]').focus();
   var row=$(x).closest('tr').remove();
   //remove this Row's Form too
   var deleteThisIdForm=deleteFromArray('delete','row_id',row_id_Del);

@@ -88,11 +88,11 @@ function newRecordFact(){
                         if(globVisionRData.InsTypeList.length!=0)
                         { 
                           //Check if Insurance companies exist with Patient
-                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]);
+                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(globVisionRData.InsTypeList[0]).focus();
                         }
                         else
                         { //If not exist take from url
-                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(urlParams.ass);
+                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(urlParams.ass).focus();
                         }
                   }
                  

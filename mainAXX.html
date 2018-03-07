@@ -997,7 +997,7 @@
                                                 </div>
                                             
                                         </div>
-                                            <button class="ui positive button save">OK</button>
+                                            <button class="ui positive button save" id="initialize">OK</button>
                                         </div>
                                         
     </div>
@@ -5776,6 +5776,13 @@
 
             }
             
+
+            $(document).ready(function(){
+                $('#initialize').click(function(){
+                    $('#factureTable tr td:first').focus();
+                })
+
+            })
 
         </script>
 </body>

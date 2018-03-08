@@ -27,7 +27,7 @@ function robValidation(type,code,tooth,age,surface){
 					return false;
 			}
 
-			if(!code_amq(type,tooth,code,age))
+			if(!code_amq(type,tooth,code,age, surface))
 				return false;
 			
 			if(!code_amq_canal(type, tooth, code, age))

@@ -11,7 +11,9 @@
 				if((dent >= 1 && dent <= 6) || (dent >= 11 && dent <= 18) || (dent >= 21 && dent <= 28)
 				|| (dent >= 31 && dent <= 38) || (dent >= 41 && dent <= 48) || (dent >= 51 && dent <= 55)
 				|| (dent >= 61 && dent <= 65) || (dent >= 71 && dent <= 75) || (dent >= 81 && dent <= 85)) {
-					//Call Depuis function
+					if(!depuis(code, dent, '', 10000, 2, true)) {
+						return false;
+					}
 				}
 			}
 
@@ -172,7 +174,7 @@
 			return true;
 		}
 
-		function code_amq(insurance, tooth, code, age) {
+		function code_amq(insurance, tooth, code, age, surface) {
 			if(code == '01250') {
 				globVarMessageErrorValidation = msgerror.msg213;
 				return false;
@@ -183,7 +185,7 @@
 					globVarMessageErrorValidation = msgerror.msg21;
 					return false;
 				}
-				//return depuis(code, '', '', 365, 1, true);
+				return depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '01130') {
@@ -194,7 +196,7 @@
 					}
 				}
 
-				//return depuis(code, '', '', 365, 1, true);
+				return depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '01300' || code == '93200') {
@@ -214,7 +216,7 @@
 					}
 				}
 
-				//return  depuis(code, '', '', 365, 1, true);
+				return  depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '11200') {
@@ -224,7 +226,7 @@
 						return false;
 					}
 				}
-				//return depuis(code, '', '', 365, 1, true);
+				return depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '43500') {
@@ -232,7 +234,7 @@
 					globVarMessageErrorValidation = msgerror.msg24;
 					return false;
 				}
-				//return depuis(code, '', '', 365, 1, true);
+				return depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '12400') {
@@ -240,11 +242,11 @@
 					globVarMessageErrorValidation = msgerror.msg25;
 					return false;
 				}
-				//return depuis(code, '', '', 365, 1, true);
+				return depuis(code, '', '', 365, 1, true);
 			}
 
 			if(code == '23112' || code == '23301') {
-				//return depuis(code, dentstr, surface, 365, 5, true);
+				return depuis(code, tooth, surface, 365, 5, true);
 			}
 
 			if(code == '23999') {
@@ -255,11 +257,16 @@
 					return false;
 				}
 
-				//return  depuis(code, dentstr, surface, 365, 5, true)
+				if(depuis(tmp_code, dentstr, surface, 365, 5, true)) {
+					return  depuis(code, tooth, surface, 365, 5, true);
+				}
+				else { return false;}
+
 			}
 
 			if(is_obturation_code(code) && is_dent_anterieur(tooth)) {
-				//return depuis(code, dentstr, Surface, 365, 2, true)
+				if(!depuis(code, tooth, surface, 365, 2, true))
+					return false;
 			}
 
 			if(code == '21301' || code == '21302' || code == '21306') {
@@ -279,6 +286,7 @@
 						return false;
 					}
 				}
+				return depuis(code, tooth, '', 180, 2, true);
 			}
 
 			if(code.indexOf("21") > -1) {
@@ -302,6 +310,12 @@
 						globVarMessageErrorValidation = msgerror.msg29;
 						return false;
 					}
+				}
+			}
+			
+			if(dent_Type != 'Denturologiste') {
+				if ((code == '33501') || (code == '33502') || (code == '33503') || (code == '33504')) {
+					return depuis(code, tooth, '', 365, 6, true);
 				}
 			}
 
@@ -366,6 +380,119 @@
 			}
 
 			return false;
+		}
+
+		function veri_age(a, surffound, date, numjour, ll) {
+			if(numjour != 10000) {
+
+			}
+
+			if(dent_Type  == 'Denturologiste') {
+				if(a=="1") {
+
+				}
+				else {
+
+				}
+
+			}
+			else {
+				switch (a)  {
+					case "2":
+						break;
+					case "3":
+						break;
+					case "4":
+						break;
+					case "5":
+						break;
+				}
+				if(ll) {
+
+				}
+			}
+			
+			return false;
+		}
+
+		function depuis(code, dent, surface, numjour, strat, ll){
+
+			if(code =='01130') {
+				var date01120 ='', date01130 ='';
+				for (var i = 0; i < globTreatHist.length; i++)
+				{
+					if(globTreatHist[i].code == '01120') {
+						date01120 = globTreatHist[i].date;
+					}
+					if(globTreatHist[i].code == '01130') {
+						date01130 = globTreatHist[i].date;						
+					}					
+				}
+
+				if(date01120 != '' &&  date01130 != '') {
+					var tmpdate = date01120;
+					if (tmpdate < date01130)
+						tmpdate = date01130;
+					
+					return veri_age('1', ' ', tmpdate, numjour, ll);
+				}
+			}
+			else {
+				for (var i = 0; i < globTreatHist.length; i++)
+				{
+					if(globTreatHist[i].typ =='AMQ')
+					{
+						if(dent_Type == 'Denturologiste') {
+							if(globTreatHist[i].typ == code) {
+								return veri_age(strat, ' ', globTreatHist[i].date, numjour, ll);
+							}
+						}
+						else
+						{
+							switch (strat) {
+								case 1:
+									if(globTreatHist[i].code == code)
+										return veri_age('1', ' ', globTreatHist[i].date, numjour, ll);
+
+									break;
+								case 2:
+									if(globTreatHist[i].code == code && globTreatHist[i].dent == dent) {
+										if(globTreatHist[i].surface == surface) {
+											return veri_age('5', ' ', globTreatHist[i].date, numjour, ll);
+										} else {
+
+										}
+									}
+
+									break;
+								case 3:
+									if(globTreatHist[i].dent == dent) {
+
+									}
+
+									break;
+								case 4:
+									if(globTreatHist[i].code == code)
+										return veri_age('4', ' ', globTreatHist[i].date, numjour, ll);
+
+									break;
+								case 5:
+									if(globTreatHist[i].code == code && globTreatHist[i].dent == dent){
+										if(globTreatHist[i].surface == surface) {
+											return veri_age('4', ' ', globTreatHist[i].date, numjour, ll);
+										} 
+										else {
+
+										}
+									}
+									break;
+							}
+						}
+					}
+				}
+			}
+		
+			return true;
 		}
 
 		function traiter_valeur_de_base(code, tooth) {

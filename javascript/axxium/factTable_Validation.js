@@ -212,22 +212,27 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     globVarSurfValidation_this_row_id=this_row_id;
 
 
-
-    console.log($(this).siblings("td[data-target='Code']"));
     var chckDentSurf=chckDentSurfExistTbl(dent_chck,surf_chck);
+
     if(!chckDentSurf)
     {
       warnMsg(msgerr.msg041);
        $(this).focus();
        $(this).text('');
     }
-    else {
+    else 
+    {
       //--------------- suf_dent_code ---------------------------------
       var age=get_age();
       var type_surf=get_type_surf(val);
-      if(type_surf == 1 || surf_chck == 'TI') {
+
+      if(type_surf == 1 || surf_chck == 'TI') 
+      {
         surf_code_dent_gen_validation();
-        if(surf_chck == 'TI') {$(this).text('97');}
+        if(surf_chck == 'TI') 
+          {
+            $(this).text('97');
+          }
       } else 
       {
         if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {

@@ -836,40 +836,21 @@ function chckDentSurfExistTbl(dent,surf)
     if(surf == ''|| dent == '')
       return true;
 
-    // console.log('new function Dent :' + dent);
-    // console.log('new function Dent :' + surf);
     var trs=$('#factTableBody tr ');
-    var dentFound=0;
-    var surfFound=0;
+    var found=0;
 
     $.each(trs, function(id,val){
 
       var cur_Dent= $(val).find('td[data-target=Dent]').text();
       var cur_Surf= $(val).find('td[data-target=Surface]').text();
-        // cur_Surf
-
-      if(dent==cur_Dent){
-        dentFound=dentFound+1;
-        console.log('same dent :' + dent + cur_Dent);
-
-      }
-
-      //var concatStr=surf+cur_Surf;
-      //checkReptCharc=checkRepeatChrcInString(concatStr);
-      // console.log('repeat string checkrep result: ' + checkReptCharc);
-
-      //if(checkReptCharc>=1){
-      //  surfFound=surfFound+1;
-      //}
-      if(cur_Surf.trim()==surf.trim())
-      {
-        surfFound=surfFound+1;
+      // cur_Surf
+      if(dent==cur_Dent && cur_Surf.trim()==surf.trim()){
+        found=found+1;
       }
     });
 
-     if((dentFound>=2) && (surfFound>=2)) {
+     if(found>=2) {
       console.log('validation false after Surf Dent Occurrence dentfound>=2 surffound>=2');
-      // console.log('this match Already Exist! Sorry');
       return false;
 
     }

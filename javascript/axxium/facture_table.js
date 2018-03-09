@@ -341,7 +341,7 @@ function getAllTrData(){
       if(key=='Type'&&((!(value=='AMQ'||value=='BES'||value=='HOP'))&&(!(value=='CAS')) )) {
         // Count Table Row entries for type Insurance
         count_insur=count_insur+1;
-        console.log('INSUR count'+ count_insur);
+        
         insur_bills_flag=1;
       }
 

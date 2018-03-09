@@ -185,13 +185,14 @@ function RamqGetParamFromUrl(name) {
 function RamqGetVisionRData() {
     $.ajax(
               {
-                  url: globRamqAPIuri + "PostRamqParameterRequired",
+                  url: globRamqAPIuri + "PostRamqParameterRequired", 
                   type: "POST",
                   contentType: "application/json",
                   data: JSON.stringify({ NoDossier: globNoDossier, Dentiste: globDentist }),
                   success: function (result) {
                       //alert(result.Result);
                       globVisionRData = RamqPopulateVisionRDataObj(result);
+                      globVisionRData_print=result;
                       globCdaVersion = CdaCommGetVersion(globVisionRData.InsTypeList[0]);
                       newRecordFact(); //facture_table.js
 

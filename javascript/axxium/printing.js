@@ -87,11 +87,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.text(topX+9, topY+3.5, 'PROCHAIN RENDEZ-VOUS / NEXT APPOINTMENT');
 	doc.rect(topX, topY+6, 100, 20);
 	doc.setTextColor(0,0,0);
-	doc.text(topX+2, topY+12, globVisionRData.ProfName +', '+globVisionRData.TypProf);
+	doc.text(topX+2, topY+12, globVisionRData_print.ProfName +', '+globVisionRData_print.TypProf);
 	doc.setFontType("normal");
-	doc.text(topX+2, topY+18, 'TEL: '+ globVisionRData.Tel +' * '+globVisionRData.NomPers +' '+ globVisionRData.PrePers);
-	doc.text(topX+2, topY+23, 'Avec/With '+globVisionRData.ProfName);
-	// doc.text(topX+2, topY+18, 'TEL: '+qParams["tel"]+' * '+globVisionRData.NomPers+", "+qPAT.patients[curPatRow].first);
+	doc.text(topX+2, topY+18, 'TEL: '+ globVisionRData_print.Tel +' * '+globVisionRData_print.NomPers +' '+ globVisionRData_print.PrePers);
+	doc.text(topX+2, topY+23, 'Avec/With '+globVisionRData_print.ProfName);
+	// doc.text(topX+2, topY+18, 'TEL: '+qParams["tel"]+' * '+globVisionRData_print.NomPers+", "+qPAT.patients[curPatRow].first);
 	
   }
 
@@ -104,7 +104,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	//doc.addImage(qParams["imgD"], qParams["imgT"], topX+1, topY+1, 10, 10);
 	doc.setFontType("bold");
 	doc.text(topX+70, topY+4, qParams["name"]);
-	doc.text(topX+68, topY+9, globVisionRData.ProfName+', '+globVisionRData.TypProf);
+	doc.text(topX+68, topY+9, globVisionRData_print.ProfName+', '+globVisionRData_print.TypProf);
 	doc.setFontType("normal");
 	doc.text(topX+31, topY+13, qParams["adr"]+' TEL: '+qParams["tel"]);
   }
@@ -122,7 +122,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.rect(topX+37, topY, 63, 5);
 	doc.text(topX+38, topY+4, "Reference ");
 	doc.rect(topX+101, topY, 99, 5);
-	doc.text(topX+102, topY+4, globVisionRData.TypProf+" "+globVisionRData.ProfName);
+	doc.text(topX+102, topY+4, globVisionRData_print.TypProf+" "+globVisionRData_print.ProfName);
   }
 
   function printPERS(doc,topX,topY)
@@ -134,8 +134,8 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.rect(topX+1, topY, 80, 16);
   	doc.text(topX+5, topY+3.5, "Personne responsable / Party responsible ");
   	doc.setFontSize(8.5);
-	doc.text(topX+2, topY+7, globVisionRData.NomPers+", "+globVisionRData.PrePers);
-  	doc.text(topX+2, topY+11, globVisionRData.AdrPersPatnt);
+	doc.text(topX+2, topY+7, globVisionRData_print.NomPers+", "+globVisionRData_print.PrePers);
+  	doc.text(topX+2, topY+11, globVisionRData_print.AdrPersPatnt);
   	// doc.text(topX+2, topY+15);
 	doc.rect(topX+82, topY, 118, 16);
 	doc.setFontSize(10);
@@ -152,9 +152,9 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);
 	doc.rect(topX+1, topY, 80, 12);
-  	doc.text(topX+2, topY+4, "Patient "+globVisionRData.NomPers+", "+globVisionRData.PrePers);
+  	doc.text(topX+2, topY+4, "Patient "+globVisionRData_print.NomPers+", "+globVisionRData_print.PrePers);
 	doc.text(topX+2, topY+9, '# dossier:'+globNoDossier);
-	doc.text(topX+30, topY+9, 'Ass. Mal.#:'+globVisionRData.IdPers);
+	doc.text(topX+30, topY+9, 'Ass. Mal.#:'+globVisionRData_print.IdPers);
   }
 
   function printAMT(doc,topX,topY,ope,tfr,ten,amt)
@@ -245,16 +245,16 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.text(95, 38, globNoDossier);	
 
 	//AMQ
-	doc.text(128, 38, globVisionRData.IdPers);	
+	doc.text(128, 38, globVisionRData_print.IdPers);	
 
 	//Patient Details	
 	doc.text(10, 46, globInsuranceData.firstName+" "+globInsuranceData.lastName);
-	doc.text(10, 51, globVisionRData.AdrPersPatnt);
+	doc.text(10, 51, globVisionRData_print.AdrPersPatnt);
 
-	doc.text(10, 56, globVisionRData.Tel);
+	doc.text(10, 56, globVisionRData_print.Tel);
 
 	//Dentiste Details
-	doc.text(84, 46, globVisionRData.ProfName);
+	doc.text(84, 46, globVisionRData_print.ProfName);
 	doc.text(84, 51, qParams["adr"]);
 	doc.text(84, 56, qParams["tel"]);
 
@@ -266,7 +266,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	//VERIFICATION Dentiste Name
 	doc.setFontSize(8);
-	doc.text(130, 95, globVisionRData.ProfName);	
+	doc.text(130, 95, globVisionRData_print.ProfName);	
 	doc.text(170, 95, pDate);	
 
 	//===Bills 
@@ -321,7 +321,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	// doc.text(135, 185, 'Year');
 	// doc.text(147, 185, 'Month');
 	// doc.text(158, 185, 'Day');
-	doc.text(135,185, globVisionRData.DatNaissPers);
+	doc.text(135,185, globVisionRData_print.DatNaissPers);
 	// !-- 2e Partie
 
   }
@@ -379,7 +379,7 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	doc.text(52, 198,lRelationship);
 
 	// //Date naissance 
-	doc.text(38,202, globVisionRData.DatNaissPers);
+	doc.text(38,202, globVisionRData_print.DatNaissPers);
 	// doc.text(38, 202, '2012');
 	// doc.text(46, 202, '12');
 	// doc.text(51, 202, '06');
@@ -392,20 +392,29 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   {
   	
 	var doc = new jsPDF(); 
-	// Using Npm Library jsPDF to create PDF document,A library to generate PDFs in client-side JavaScript.
-
 	var amount_cash=$('#pers_total').val();//Amount to be given by Patient
+	// var amount_insur=$('#ass_total').val();//Amount paid by Insurance
+	var amount_insur=0;
 
-  	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
   	amount_insur=parseFloat(amount_insur).toFixed(2) || 0;
 
   	var amount_amq=$('#amq_total').val();//Amount paid by AMQ
-
+  	
   	var previousBal=0;
+  	var prev_cas=parseFloat($('#pers_solde').val());
+	var prev_insur=parseFloat($('#ass_solde').val());
+	previousBal=prev_cas+prev_insur;
+  	
+  	var amount_paid_patient=0;
+  	var patnt_paid_cas=(parseFloat($('#argnt_pamnt').val()) || 0 ).toFixed(2);
+  	var patnt_paid_debit=(parseFloat( $('#debit_pamnt').val() )  || 0 ).toFixed(2);
+  	var patnt_paid_credit=(parseFloat( $('#visa_crdt_inpt').val() )  || 0 ).toFixed(2);
+  	amount_paid_patient=parseFloat(parseFloat(patnt_paid_cas)+parseFloat(patnt_paid_debit)+parseFloat(patnt_paid_credit)).toFixed(2);
+  	
+
+
   	var honoraires=0;
   	
-  	var amount_paid_patient=$('#pers_total').val();
-
 	$.each(arrGrilleDeFacturation,function(idx,valx)
   	{
   		// Taking value of Total = honoraires + Frais Lab
@@ -543,11 +552,11 @@ doc.setFontSize(8);
 	doc.setDrawColor(0);
 	doc.setFillColor(0,0,0);
   	doc.text(topX+2, topY, "123456789");
-	doc.text(topX+2, topY+7, globVisionRData.NomPers+", "+globVisionRData.PrePers);
+	doc.text(topX+2, topY+7, globVisionRData_print.NomPers+", "+globVisionRData_print.PrePers);
   	doc.text(topX+2, topY+11, "23 RUE DE LA CONCORDE");
   	doc.text(topX+2, topY+15, "LAVAL QC H7N 3K5");
   	doc.text(topX+2, topY+19, "(514) 555-1234");
-	doc.text(topX+68, topY+7, globVisionRData.ProfName+', '+globVisionRData.TypProf);
+	doc.text(topX+68, topY+7, globVisionRData_print.ProfName+', '+globVisionRData_print.TypProf);
 	doc.text(topX+68, topY+11, qParams["adr"]);
 	doc.text(topX+68, topY+15, qParams["tel"]);
   }

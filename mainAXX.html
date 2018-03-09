@@ -5084,6 +5084,10 @@
                     
                     updateTotal_Fact();
                     updateTotal_Fact_planTrait();
+
+                    $('#pers_solde').val((globVisionRData_print.SoldeCas).toFixed(2));
+                    $('#amq_solde').val((globVisionRData_print.SoldeAmq).toFixed(2));
+                    $('#ass_solde').val((globVisionRData_print.SoldeAss).toFixed(2));
                     
 
                      if(globVisionRData.InsTypeList.length==0)
@@ -5483,6 +5487,7 @@
                 var code_to_prod_flag=0;
                 var globTreatHist=[];
                 var fact_total=0;
+                var globVisionRData_print;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {
@@ -5805,9 +5810,12 @@
             
 
             $(document).ready(function(){
-                $('#initialize').click(function(){
+                
+                $('#initialize').click(function()
+                {
                     $('#factureTable tr td:first').focus();
                 })
+
 
             })
 

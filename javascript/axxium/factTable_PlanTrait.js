@@ -4,6 +4,7 @@ $(document).ready(function(){
 $(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeRole']", function(e) {
 
           if(e.which == 13) {
+                updateTotal_Fact_planTrait();
                 newRecordFact_planTrait();
                 
 
@@ -295,10 +296,32 @@ function deleteRow_planTrait(x)
   }
 
   
-
+  updateTotal_Fact_planTrait();
   // $('#factureTable_planTrait tr[id='+prevRow+'] td[data-target="codeRole"]').focus();
   // x.parents("tr:last");
 
 
+}
+
+function updateTotal_Fact_planTrait()
+{
+  // var thisTotalVal=$(x).closest('tr').find('td[data-target="Total"]').text();
+  var allTrs=$('#factTableBody_planTrait tr');
+  var fact_total=0;
+  
+  $.each(allTrs,function(id,val){
+
+    var thisTotalVal=$(val).find('td[data-target="Total"]').text();
+    if(thisTotalVal!='')
+    {
+      fact_total=parseFloat(fact_total)+parseFloat(thisTotalVal);
+    }
+
+  })
+
+  $('.fact_tot_planTrait').val(fact_total);
+
+
+  
 }
 

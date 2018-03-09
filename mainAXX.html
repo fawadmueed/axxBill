@@ -343,7 +343,7 @@
                                 <div class="thirteen wide column"></div>
                                   <div class="three wide column">
                                     <button class="ui axxium button" onclick="fact_tarif_list()">Liste des codes et tarifs</button>
-                                    </div>
+                                  </div>
                         </div>
                 
 
@@ -396,11 +396,21 @@
                                         </tr> -->
                                     </tbody>
                                 </table>
-                                <!--<div class="ui axxium tiny button" onclick="emptyTable( 'newTbl');">Nlle facture</div>-->
-                                <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div>
-                                <!--  <div class="ui axxium tiny button" onclick="modPaimnt();">PamntMOdalTEst</div> -->
-                                <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
-                                <!-- <div class="ui axxium tiny button" onclick="modPlanTraitTable()">Imprimer</div> -->
+                                <div class="ui grid">
+                                    <div class="row">
+                                     <div class="left floated three wide column">
+                                        <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div>
+                                        <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
+                                    </div>
+                                    <div class="right floated three wide column">
+                                         <div class="inline field">
+                                            <label>Total</label>
+                                             <input type="text" name="" class="fact_tot">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                </div>
                                 
                             </div>
                         </div>
@@ -479,10 +489,21 @@
                                         </tr> -->
                                     </tbody>
                                 </table>
-                                <div class="ui axxium tiny button" onclick="PlnTrSavePlan(false)">Enregistrer</div>
-                                <button class="ui axxium tiny button" onclick="PlnTrSendPlan()" id="btnPlnTrSoumettre">Soumettre</button>
-
-                                <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
+                                <div class="ui grid">
+                                    <div class="row">
+                                        <div class="left floated four wide column">
+                                            <div class="ui axxium tiny button" onclick="PlnTrSavePlan(false)">Enregistrer</div>
+                                            <button class="ui axxium tiny button" onclick="PlnTrSendPlan()" id="btnPlnTrSoumettre">Soumettre</button>
+                                            <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
+                                        </div>
+                                  <div class="right floated three wide column">
+                                         <div class="inline field">
+                                            <label>Total</label>
+                                             <input type="text" name="" class="fact_tot_planTrait">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 <!-- <button class="ui axxium tiny button" onclick="emptyTable_planTrait()">Test</button> -->
 
                                 <!-- <button class="ui axxium tiny button" onclick="populate_table_fact_planTrait(testArray)">Test</button> -->
@@ -5060,6 +5081,9 @@
 
 
                 function modPayment() {
+                    updateTotal_Fact();
+                    updateTotal_Fact_planTrait();
+
                      if(globVisionRData.InsTypeList.length==0)
                             {
                                 $('.insur_print_check').addClass('disabled');
@@ -5456,6 +5480,7 @@
                 var globInsuranceData;
                 var code_to_prod_flag=0;
                 var globTreatHist=[];
+                var fact_total=0;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

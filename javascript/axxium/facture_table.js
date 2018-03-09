@@ -20,9 +20,11 @@ $(document).ready(function(){
 
             return e.which!=13;
               }).not(':last');
+
   $(document.body).on("keypress","#factTableBody tr td[data-target='codeRole']", function(e) {
 
           if(e.which == 13) {
+                updateTotal_Fact(this);
                 newRecordFact();
 
                 $(this).closest('tr').next().find('td[data-target=Type]').focus();
@@ -63,7 +65,7 @@ $(document).ready(function(){
 
 function newRecordFact(){
 
-
+  
 
     var tblBody=$('#factTableBody');
     fact_tbl_row_id=fact_tbl_row_id+1;
@@ -587,13 +589,12 @@ function emptyTable (option){
 function deleteRow(x){
 
   getAllTrData();
-  var lengthTblArray=arrGrilleDeFacturation.length;
 
+  var lengthTblArray=arrGrilleDeFacturation.length;
   var row_id_Del=$(x).closest('tr').attr('id');
   var prevRow=$(x).closest('tr').prev('tr');
    $(prevRow).children('td[data-target="codeRole"]').focus();
   var row=$(x).closest('tr').remove();
-  //remove this Row's Form too
   var deleteThisIdForm=deleteFromArray('delete','row_id',row_id_Del);
   if(deleteThisIdForm){ console.log('Deleted Success'); };
   
@@ -601,6 +602,7 @@ function deleteRow(x){
   {
     newRecordFact();
   }
+  updateTotal_Fact();
 
 }
 
@@ -848,6 +850,30 @@ function ReInitialize_fact_tbls()
 
   //Regie
 
+}
+
+function updateTotal_Fact()
+{
+  // var thisTotalVal=$(x).closest('tr').find('td[data-target="Total"]').text();
+  var allTrs=$('#factTableBody tr');
+  var fact_total=0;
+  
+  $.each(allTrs,function(id,val){
+
+    var thisTotalVal=$(val).find('td[data-target="Total"]').text();
+    if(thisTotalVal!='')
+    { 
+      fact_total=parseFloat(fact_total)+parseFloat(thisTotalVal);
+    }
+
+  })
+
+
+  if(fact_total=='NaN'){ fact_total=0};
+
+  $('.fact_tot').val(fact_total);
+
+  
 }
 
 // Populate-Fact-Table-Guide

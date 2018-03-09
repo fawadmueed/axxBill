@@ -398,16 +398,19 @@
                                 </table>
                                 <div class="ui grid">
                                     <div class="row">
-                                     <div class="left floated six wide column">
+                                     <div class="six wide column">
                                         <div class="ui axxium tiny button" onclick="checkIfAnyCodeFieldEmpty('factTableBody')">Générer la facture</div>
                                         <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
                                     </div>
-                                    <div class="right floated three wide column">
-                                         <div class="inline field">
-                                            <label>Total</label>
-                                             <input type="text" name="" class="fact_tot">
-                                        </div>
+                                    <div class="three wide column"></div>
+                                    <div class="three wide column">
+                                          <div class="ui right labeled five wide field input">
+                                      <label for="amount" class="ui basic  label">Total</label>
+                                      <input type="text" placeholder="0.00" class="fact_tot mont">
+                                      <div class="ui axxium basic label">$</div>
                                     </div>
+                                    </div>
+                                  
 
                                 </div>
                                 </div>

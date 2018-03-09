@@ -312,11 +312,10 @@ function getAllTrData(){
    arrGrilleDeFacturation_Amq=[]; // For AMQ Bills
 
   var mytrs=$('#factTableBody tr');
-// console.log(mytrs);
+
   $.each(mytrs, function(idx,val){
 
     var myObjects={};
-    // For each TR
     var mytds=$(val).children();
 
     var key='row_id';
@@ -346,7 +345,9 @@ function getAllTrData(){
         insur_bills_flag=1;
       }
 
-      myObjects[key]=value;
+    
+        myObjects[key]=value;
+    
 
       })
 
@@ -373,20 +374,9 @@ function getAllTrData(){
    }
    else{
 
-    console.log(arrGrilleDeFacturation);
-    console.log(arrGrilleDeFacturation_Insurance);
-    console.log(arrGrilleDeFacturation_Amq);
-    console.log(arrGrilleDeFacturation_forms);
 
     arrGrilleDeFacturation_update=arrGrilleDeFacturation;
-    // arrGrilleDeFacturation_forms_update=arrGrilleDeFacturation_forms;
-
-
-    //
-
-    // console.log(moreInfoArray_glbl  )
-    //modPayment(); AK modPayment should be called separetely.
-    // getMoreInfo();
+   
    }
 
    
@@ -424,18 +414,9 @@ function submitForm(thisForm){
 
 }
 
-// function findTableData(x){
-//   //Get id of the Row Working
-//   var row_id=$(x).closest('tr').attr('id');
-//   modFactTableMore(row_id);
-// }
+
 
 function getMoreInfo(){
-
-  // var anyData={};
-  // anyData['hello']='fawad';
-  // console.log(anyData);
-
 
 }
 
@@ -663,28 +644,6 @@ function updateArray(namR,valR,newArray){
     }
 
 
-    // for(var i=0;i<arrGrilleDeFacturation_forms.length;i++)
-    //     {
-    //       for(var j=0;j<arrGrilleDeFacturation_forms[i].length;j++)
-    //       {
-    //         if((arrGrilleDeFacturation_forms[i][j].name==nameD)&&(arrGrilleDeFacturation_forms[i][j].value==valR))
-    //         {
-
-    //           console.log('Old array :');
-    //           console.log(arrGrilleDeFacturation_forms[i]);
-    //           arrGrilleDeFacturation_forms[i]=newArray;
-    //           console.log('new Array');
-    //           console.log(newArray);
-    //           // return true;
-
-
-
-    //         }
-
-    //       }
-    //     }
-
-
 
 function checkDentType(){
 
@@ -874,6 +833,51 @@ function updateTotal_Fact()
   $('.fact_tot').val(fact_total);
 
   
+}
+
+function checkIfAnyCodeFieldEmpty(tableName)
+{
+  var checkFlag=0;
+  
+      var alltds=$('#'+tableName+' tr td[data-target="Code"]');
+      $.each(alltds,function(id,val){
+        if($(val).text()=='')
+        {
+           checkFlag=1;
+           return false;
+        }
+      })
+
+       if(checkFlag==1)
+        {
+              if(globLang=='en')
+            {
+              alert('Please fill all the Code Fields before proceeding');
+              return false;
+            }
+            else
+            {
+              alert('Veuillez remplir tous les champs de code avant de continuer');
+              return false;
+            }
+        }
+      else
+        {
+          if(tableName=='factTableBody')
+          {
+            RamqUpdateGlobalBill();
+          }
+          else
+          {
+            PlnTrSavePlan(false);
+          }
+      
+
+          checkFlag=0;
+        }
+   
+
+
 }
 
 // Populate-Fact-Table-Guide

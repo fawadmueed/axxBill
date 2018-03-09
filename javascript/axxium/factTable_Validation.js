@@ -531,7 +531,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
     // $('#wrn_msg_fact_tbl').removeClass('hidden');
     $('#wrn_msg_fact_tbl').finish();
     $('#warn_msg_fact_content').text(msg);
-    $('#wrn_msg_fact_tbl').addClass('visible').fadeIn("fast").delay(3000).fadeOut("slow",function(){
+    $('#wrn_msg_fact_tbl').addClass('visible').fadeIn("fast").delay(4000).fadeOut("slow",function(){
       $('#wrn_msg_fact_tbl').removeClass('visible');
       $('#wrn_msg_fact_tbl').addClass('hidden');
     });

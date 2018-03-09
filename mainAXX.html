@@ -399,7 +399,7 @@
                                 <div class="ui grid">
                                     <div class="row">
                                      <div class="left floated three wide column">
-                                        <div class="ui axxium tiny button" onclick="RamqUpdateGlobalBill()">Générer la facture</div>
+                                        <div class="ui axxium tiny button" onclick="checkIfAnyCodeFieldEmpty('factTableBody')">Générer la facture</div>
                                         <div class="ui axxium tiny button ok" onclick="">Facturation anticipée</div>
                                     </div>
                                     <div class="right floated three wide column">
@@ -492,7 +492,7 @@
                                 <div class="ui grid">
                                     <div class="row">
                                         <div class="left floated four wide column">
-                                            <div class="ui axxium tiny button" onclick="PlnTrSavePlan(false)">Enregistrer</div>
+                                            <div class="ui axxium tiny button" onclick="checkIfAnyCodeFieldEmpty('factTableBody_planTrait')">Enregistrer</div>
                                             <button class="ui axxium tiny button" onclick="PlnTrSendPlan()" id="btnPlnTrSoumettre">Soumettre</button>
                                             <button class="ui axxium tiny button" onclick="PlnTrTransferToBill()">Facturer</button>
                                         </div>
@@ -5081,8 +5081,10 @@
 
 
                 function modPayment() {
+                    
                     updateTotal_Fact();
                     updateTotal_Fact_planTrait();
+                    
 
                      if(globVisionRData.InsTypeList.length==0)
                             {

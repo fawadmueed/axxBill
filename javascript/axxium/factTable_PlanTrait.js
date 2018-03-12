@@ -319,6 +319,8 @@ function updateTotal_Fact_planTrait()
 
   })
 
+  if(fact_total=='NaN'){fact_total==0};
+  fact_total=(parseFloat(fact_total)).toFixed(2);
   $('.fact_tot_planTrait').val(fact_total);
 
 

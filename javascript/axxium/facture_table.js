@@ -828,8 +828,8 @@ function updateTotal_Fact()
   })
 
 
-  if(fact_total=='NaN'){ fact_total=0};
-
+  if(fact_total=='NaN'){ fact_total=0.00};
+  fact_total=(parseFloat(fact_total)).toFixed(2);
   $('.fact_tot').val(fact_total);
 
   

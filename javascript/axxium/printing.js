@@ -232,12 +232,13 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
   	{
   		if(!((valx.Type == 'AMQ' )||(valx.Type == 'BES') || (valx.Type =='HOP') || (valx.Type =='CAS')))
   		{
-	  		honoraires_ins=parseInt(honoraires_ins)+parseInt(valx.Honoraires);
-	  		honoraires_ins=parseInt(honoraires_ins) || 0;
+	  		honoraires_ins=parseFloat(honoraires_ins)+parseFloat(valx.Total);
+	  		honoraires_ins=parseFloat(honoraires_ins) || 0;
   		}
   		
   	})
 
+	honoraires_ins=honoraires_ins.toFixed(2);
 	  	//Unique Number
 	doc.text(8, 38, globInsuranceData.noUnique);	
 
@@ -282,6 +283,8 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 			doc.text(6, yAxis, pDate);
 			doc.text(25, yAxis, val.Code);
+			doc.text(34, yAxis, val.Dent);
+			doc.text(40, yAxis, val.Surface);
 			doc.text(52, yAxis, val.Honoraires);
 			doc.text(68, yAxis, val.Frais);
 			doc.text(83, yAxis, val.Total);
@@ -290,12 +293,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 	})
 
 	//Total Rembourse Montant
-	var amount_insur=$('#ass_total').val();//Amount paid by Insurance
+	var amount_insur=0.00;//Amount paid by Insurance
 
 	doc.text(68, 163, amount_insur.toString());
 
 	//Total Montant
-
 	doc.text(115, 163, honoraires_ins.toString());
 
   }

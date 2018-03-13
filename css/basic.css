@@ -52,6 +52,10 @@ caption {margin: 0 0 .5em; font-weight: bold; }*/
     outline-color:rgba(255,255,255,.5) !important;
 }
 
+#factureTable_planTrait td {
+  outline-color:rgba(255,255,255,.5) !important; 
+}
+
 .dataTables_length {
   padding-bottom: 10px !important;
 }

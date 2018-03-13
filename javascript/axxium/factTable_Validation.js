@@ -293,15 +293,6 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
        return;
       }
 
-      // if(surf_focusout_finish)
-      // {
-
-      //   code_s=init_code;
-      //   surf_focusout_finish=false;
-      //   console.log('** value assigned to code***' + code_s);
-      //   $(this).text(init_code);
-      // }
-
       var age=get_age();
       var codeValid=robValidation(type_s,code_s,dent_s,age,surf_s);
       if(!codeValid) 
@@ -372,7 +363,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           $(total).text(totalVal);
 
           $(this).siblings("td[data-target='Prod']").focus();
-          return true;
+          // return true;
 
         }
         else 
@@ -993,10 +984,12 @@ function surf_code_dent_gen_validation() {
                   row_id_case1=globVarSurfValidation_this_row_id;
                   var surf_chck_new =$(this).text();
                   $('.surfNumModal').modal('hide');
-                  
                   var this_code_val = $("#factTableBody tr[id="+row_id_case1+"] td[data-target='Code']").text(init_code);
                   var this_code_val = $("#factTableBody tr[id=" +row_id_case1+"] td[data-target='Surface']").text(surf_chck_new);
-                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code'],#factTableBody_regie tr[id='" + row_id_case1 + "'] td[data-target='Code").trigger("focusout");
+                  // $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']");
+                  
+                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']").trigger("focusout");
+                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Prod']").focus();
                 });
 
               }

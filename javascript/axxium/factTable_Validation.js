@@ -524,12 +524,21 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
  function warnMsg(msg)
  {
+
+  if($('#divFacturationSub').hasClass('active'))
+  {
+    var selector='wrn_msg_fact_tbl';
+  }
+  else if($('#divPlnTrSub').hasClass('active'))
+  {
+    var selector='wrn_msg_fact_tbl_planTrait';
+  }
     // $('#wrn_msg_fact_tbl').removeClass('hidden');
-    $('#wrn_msg_fact_tbl').finish();
-    $('#warn_msg_fact_content').text(msg);
-    $('#wrn_msg_fact_tbl').addClass('visible').fadeIn("fast").delay(4000).fadeOut("slow",function(){
-      $('#wrn_msg_fact_tbl').removeClass('visible');
-      $('#wrn_msg_fact_tbl').addClass('hidden');
+    $('#' + selector).finish();
+    $('#'+selector+' > '+'#warn_msg_fact_content').text(msg);
+    $('#'+selector).addClass('visible').fadeIn("fast").delay(4000).fadeOut("slow",function(){
+      $('#'+selector).removeClass('visible');
+      $('#'+selector).addClass('hidden');
     });
 
  }
@@ -546,7 +555,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         // alert('Error! No type selected');
         // warnMsg('TYPE error. Please enter correct type.')
         // return false;
-        warnMsg('Type not CAS, AMQ or Insurance Company');
+        warnMsg('Type not CAS,AMQ or Insurance Company');
         return false;
       }
       //Condition 3: If AMQ BEs HOP check RAMQ Card Number & Expiry
@@ -801,9 +810,11 @@ function chckCodeException(code) {
     return true;
   }
 }
+
 function chckDentCodeExistTbl(dent,code,surf)
   {
-    var trs=$('#factTableBody tr ');
+    var trs=tables_object.parent().parent().find('tr');
+
     var found=0;
 
     $.each(trs, function(id,val){
@@ -832,7 +843,7 @@ function chckDentSurfExistTbl(dent,surf)
     if(surf == ''|| dent == '')
       return true;
 
-    var trs=$('#factTableBody tr ');
+    var trs=tables_object.parent().parent().find('tr');
     var found=0;
 
     $.each(trs, function(id,val){
@@ -1000,7 +1011,8 @@ function surf_code_dent_gen_validation() {
                   // tables_object.siblings("td[data-target='Prod']").focus();
 
                   tables_object.siblings("td[data-target='Code']").trigger("focusout");
-                  tables_object.siblings("td[data-target='Prod']").focus();
+
+                  // tables_object.siblings("td[data-target='Prod']").focus();
                   
                 });
 

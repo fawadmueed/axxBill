@@ -192,16 +192,20 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 });
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_regie td[data-target='Surface'], #factTableBody_planTrait td[data-target='Surface']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_planTrait td[data-target='Surface']", function(){
 
     init_code = '';
     globVarMessageErrorValidation = '';
+
+    tables_object=$(this);
+
     var val=$(this).text();
     var this_row_id=$(this).parent("tr").attr('id');
     var surf_chck=val;
     var type_chck=$(this).siblings("td[data-target='Type']").text();
     var dent_chck=$(this).siblings("td[data-target='Dent']").text();
     var code_chck=$(this).siblings("td[data-target='Code']").text();
+
 
     //-- Set global variable for  surf_code_dent_gen_validation function 
     globVarSurfValidation_val=val;
@@ -265,7 +269,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
 });
 
-    $(document.body).on('focusin', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
+    $(document.body).on('focusin', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code'], #factTableBody_planTrait td[data-target='Code']", function(){
     
     if(code_to_prod_flag==1)
     {
@@ -280,7 +284,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
   })
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code', #factTableBody_planTrait td[data-target='Code' ]", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_planTrait td[data-target='Code']", function(){
 
       globVarMessageErrorValidation = '';
       var type_s=$(this).siblings("td[data-target='Type']").text();
@@ -295,6 +299,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
       var age=get_age();
       var codeValid=robValidation(type_s,code_s,dent_s,age,surf_s);
+
       if(!codeValid) 
       {
         warnMsg(globVarMessageErrorValidation);
@@ -362,7 +367,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           var total=$(this).siblings("td[data-target='Total']");
           $(total).text(totalVal);
 
-          $(this).siblings("td[data-target='Prod']").focus();
+          tables_object.siblings("td[data-target='Prod']").focus();
           // return true;
 
         }
@@ -920,6 +925,7 @@ function checkInsuranceExist(compny){
 }
 
 function surf_code_dent_gen_validation() {
+
     var type_surf;
     var val = globVarSurfValidation_val;
     var surf_chck = globVarSurfValidation_surf_chck;
@@ -984,12 +990,18 @@ function surf_code_dent_gen_validation() {
                   row_id_case1=globVarSurfValidation_this_row_id;
                   var surf_chck_new =$(this).text();
                   $('.surfNumModal').modal('hide');
-                  var this_code_val = $("#factTableBody tr[id="+row_id_case1+"] td[data-target='Code']").text(init_code);
-                  var this_code_val = $("#factTableBody tr[id=" +row_id_case1+"] td[data-target='Surface']").text(surf_chck_new);
+                  // var this_code_val = $("#factTableBody tr[id="+row_id_case1+"] td[data-target='Code']").text(init_code);
+                  var this_code_val= tables_object.siblings("td[data-target='Code']").text(init_code);
+                  var this_code_val= tables_object.text(surf_chck_new);
+                  // var this_code_val = $("#factTableBody tr[id=" +row_id_case1+"] td[data-target='Surface']").text(surf_chck_new);
                   // $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']");
                   
-                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']").trigger("focusout");
-                  $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Prod']").focus();
+                  // $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']").trigger("focusout");
+                  // tables_object.siblings("td[data-target='Prod']").focus();
+
+                  tables_object.siblings("td[data-target='Code']").trigger("focusout");
+                  tables_object.siblings("td[data-target='Prod']").focus();
+                  
                 });
 
               }
@@ -1092,7 +1104,7 @@ function surf_code_dent_gen_validation() {
     {
       surf_focusout_finish = true;
       code_to_prod_flag=1;
-      var this_code_val = $('#factTableBody tr[id='+this_row_id+'] td[data-target="Code"]').text(init_code).trigger("focusout");
+      var this_code_val =  tables_object.siblings('td[data-target="Code"]').text(init_code).trigger("focusout");
       
 
       // $("#factTableBody td[data-target='Code'],#factTableBody_regie td[data-target='Code").trigger("focusout");

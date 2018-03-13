@@ -57,6 +57,7 @@
     <script src="javascript/axxium/payment.js"></script>
     <script src="javascript/axxium/cash.js"></script>
     <script src="javascript/axxium/planTraitement.js"></script>
+    <script src="javascript/axxium/factTable_PlanTrait_Validation.js"></script>
     <script src="javascript/axxium/sendEmail.js"></script>
     <script src="javascript/axxium/treatmentHist.js"></script>
 
@@ -447,12 +448,13 @@
                     })
                     </script>
 
-                    <div class="ui negative message hidden" id="wrn_msg_fact_tbl_planTrait">
+                    <div class="ui negative message hidden" id="wrn_msg_fact_tbl">
                         <i class="close icon"></i>
                         <div style="display:inline;"> <i class="warning icon"></i></div>
-                        <div class="header" id="warn_msg_fact_content_planTrait" style="display:inline;">
+                        <div class="header" id="warn_msg_fact_content" style="display:inline;">
                         </div>
                     </div>
+
                     <div class="ui grid">
                         <div class="sixteen wide column">
                             <div class="ui teal form raised segment">
@@ -460,6 +462,7 @@
                                     <thead>
                                         <tr>
                                             <th>Date</th>
+                                            <th style="display:none;">Type</th>
                                             <th>Dent</th>
                                             <th>Surface</th>
                                             <th>Code</th>
@@ -5150,6 +5153,7 @@
 
 
                 function facture_surf_modal() {
+
                     $('.fact_surface.mini.modal').modal({
 
                         onDeny: function() {
@@ -5495,6 +5499,7 @@
                 var globTreatHist=[];
                 var fact_total=0;
                 var globVisionRData_print;
+                var tables_object;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

@@ -555,7 +555,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
         // alert('Error! No type selected');
         // warnMsg('TYPE error. Please enter correct type.')
         // return false;
-        warnMsg('Type not CAS,AMQ or Insurance Company');
+        warnMsg("Le type n'est pas CAS, AMQ ou COMPAGNIE D'ASSURANCE");
         return false;
       }
       //Condition 3: If AMQ BEs HOP check RAMQ Card Number & Expiry

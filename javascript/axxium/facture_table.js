@@ -570,18 +570,22 @@ function emptyTable (option){
 function deleteRow(x){
 
   getAllTrData();
+  var lastType=$(x).parent().siblings('td[data-target="Type"]').text();
 
   var lengthTblArray=arrGrilleDeFacturation.length;
   var row_id_Del=$(x).closest('tr').attr('id');
   var prevRow=$(x).closest('tr').prev('tr');
-   $(prevRow).children('td[data-target="codeRole"]').focus();
+   $(prevRow).children('td[data-target="Type"]').focus();
   var row=$(x).closest('tr').remove();
   var deleteThisIdForm=deleteFromArray('delete','row_id',row_id_Del);
   if(deleteThisIdForm){ console.log('Deleted Success'); };
   
   if(lengthTblArray==1)
   {
+    
     newRecordFact();
+    $('#factureTable td[data-target="Type"]').focus();
+    $('#factureTable td[data-target="Type"]').text(lastType);
   }
   updateTotal_Fact();
 

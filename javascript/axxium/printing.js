@@ -294,6 +294,11 @@ function dottedLine(doc, xFrom, yFrom, xTo, yTo, segmentLength)
 
 	//Total Rembourse Montant
 	var amount_insur=0.00;//Amount paid by Insurance
+	if(globCdaRespObj)
+	{	
+		amount_insur=globCdaRespObj.g28;
+		amount_insur=(parseFloat(amount_insur)).toFixed(2);
+	}
 
 	doc.text(68, 163, amount_insur.toString());
 

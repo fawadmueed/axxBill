@@ -294,16 +294,19 @@ function deleteRow_planTrait(x)
 {
 
   getAllTrData_planTrait();
+  // var lastType=$(x).parent().siblings('td[data-target="Type"]').text();
   var lengthTblArray=arrGrilleDeFacturation_planTrait.length;
 
   var row_id_Del=$(x).closest('tr').attr('id');
    var prevRow=$(x).closest('tr').prev('tr');
-   $(prevRow).children('td[data-target="codeRole"]').focus();
+   $(prevRow).children('td[data-target="Dent"]').focus();
   var row=$(x).closest('tr').remove();
   
   if(lengthTblArray==1)
   {
     newRecordFact_planTrait();
+    $('#factureTable_planTrait td[data-target="Dent"]').focus();
+    // $('#factureTable_planTrait td[data-target="Type"]').text(lastType);
   }
 
   

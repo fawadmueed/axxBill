@@ -424,7 +424,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     });
 
-     $(document.body).on('focusout', "#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires', #factTableBody_planTrait td[data-target='Honoraires']", function(){
+     $(document.body).on('focusout', "#factTableBody td[data-target='Honoraires'],#factTableBody_regie td[data-target='Honoraires'], #factTableBody_planTrait td[data-target='Honoraires']", function(){
 
         var valid;
         var valHono=$(this).text();

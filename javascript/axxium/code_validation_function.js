@@ -384,7 +384,18 @@
 
 		function veri_age(a, surffound, date, numjour, ll) {
 			if(numjour != 10000) {
+				var date1 = new Date(date); //MM/DD/YYYY
+				var today = new Date();
+				var diffDays = parseInt((today - date1) / (1000 * 60 * 60 * 24)); 
+				if(diffDays >= 365) 
+					return true;
 
+				if(dent_Type  == 'Denturologiste') {
+					numjour =  numjour*365;
+				}
+				
+				if(diffDays >= numjour)
+					return true;
 			}
 
 			if(dent_Type  == 'Denturologiste') {

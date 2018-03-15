@@ -5796,9 +5796,9 @@
                 //Returns yy-mm-dd format STANDARD 
 
                 var d1=new Date();
-                var curMonth=d1.getMonth()+1;
-                // var curYear=d1.getYear()+1900;
-                var day=d1.getDate();
+
+                var curMonth=("0" + (d1.getMonth() + 1)).slice(-2)
+                var day=("0" + d1.getDate()).slice(-2);
                 var year=d1.getFullYear();
 
                 var fullDate=year+'-'+curMonth+'-'+day;

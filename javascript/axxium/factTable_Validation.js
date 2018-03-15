@@ -229,8 +229,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       //--------------- suf_dent_code ---------------------------------
       var age=get_age();
       var type_surf=get_type_surf(val);
-
-      if(type_surf == 1 || surf_chck == 'TI') 
+    if(type_surf == 1 || surf_chck == 'TI') 
       {
         surf_code_dent_gen_validation();
         if(surf_chck == 'TI') 
@@ -367,7 +366,15 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           var total=$(this).siblings("td[data-target='Total']");
           $(total).text(totalVal);
 
-          tables_object.siblings("td[data-target='Prod']").focus();
+          
+          if((tables_object.siblings("td[data-target='Code']").text())=='')
+          {
+             tables_object.siblings("td[data-target='Code']").focus();
+          }
+          else
+          {
+            tables_object.siblings("td[data-target='Prod']").focus();
+          } 
           // return true;
 
         }
@@ -996,23 +1003,25 @@ function surf_code_dent_gen_validation() {
               {
                 $('.surfNumModal').modal('show');
                 
-                $('.surfNumSel').click( function(){
+                $('.surfNumSel').click( function(e){
                   
+                  e.stopPropagation();
                   row_id_case1=globVarSurfValidation_this_row_id;
                   var surf_chck_new =$(this).text();
                   $('.surfNumModal').modal('hide');
-                  // var this_code_val = $("#factTableBody tr[id="+row_id_case1+"] td[data-target='Code']").text(init_code);
                   var this_code_val= tables_object.siblings("td[data-target='Code']").text(init_code);
                   var this_code_val= tables_object.text(surf_chck_new);
-                  // var this_code_val = $("#factTableBody tr[id=" +row_id_case1+"] td[data-target='Surface']").text(surf_chck_new);
-                  // $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']");
+                  tables_object.siblings("td[data-target='Prod']").focus();
+                  var callCode=tables_object.siblings("td[data-target='Code']").trigger("focusout");
+                  //   if(callCode)
+                  //   {
+                  //     return true;
+                  //   }
                   
-                  // $("#factTableBody tr[id='" + row_id_case1 + "'] td[data-target='Code']").trigger("focusout");
-                  // tables_object.siblings("td[data-target='Prod']").focus();
-
-                  tables_object.siblings("td[data-target='Code']").trigger("focusout");
-
-                  // tables_object.siblings("td[data-target='Prod']").focus();
+                   if((tables_object.siblings("td[data-target='Code']").text())=='')
+                    {
+                       tables_object.siblings("td[data-target='Code']").focus();
+                    }                  
                   
                 });
 
@@ -1022,7 +1031,15 @@ function surf_code_dent_gen_validation() {
                 $(this).focus();
                 warnMsg(msgerr.msg021);
               }
+          
+
+
             }
+
+             tables_object.siblings("td[data-target='Prod']").focus();
+                
+            
+            
               console.log(init_code);
               break;
 

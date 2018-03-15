@@ -495,15 +495,47 @@
 			return true;
 		}
 
-		function traiter_valeur_de_base(code, tooth) {
+		function traiter_valeur_de_base(code, tooth,next_row,type_prev) {
 			console.log('here vleur base' + code + tooth);
 			var obj = {code : code};
 			if(is_valeur_de_base(obj, tooth)) {
 				var row = getCodeData(obj.code);
+				populate_row_data(next_row,row,type_prev);
 				return;
 				//Fill up the next row with informations in row.....
-				warnMsg(row.fr);
+				// warnMsg(row.fr);
 			}
+		}
+
+		function populate_row_data(next_row,row_data,type_prev)
+		{
+			var tr=$(next_row);
+			var type_s=type_prev;
+
+			tr.children('td[data-target="Code"]').text(row_data.regiecode);
+			tr.children('td[data-target="Frais"]').text(parseFloat(row_data.frais_lab).toFixed(2));
+			tr.children('td[data-target="Total"]').text();
+			tr.children('td[data-target="Prod"]').text(row_data.producer);
+			tr.children('td[data-target="codeRole"]').text(row_data.time_unit);
+			if(globLang=='fr')
+			{
+				tr.children('td[data-target="Description"]').text(row_data.descrf);
+			}	
+			else if(globLang=='en')
+			{
+				tr.children('td[data-target="Description"]').text(row_data.descra);
+			}
+			
+			if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
+              tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixa).toFixed(2));
+            }
+            else {
+              if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
+               tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixr).toFixed(2));
+              else
+               tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixs).toFixed(2));      
+            }
+
 		}
 
 		function is_valeur_de_base(obj, tooth) {

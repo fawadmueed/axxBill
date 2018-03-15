@@ -24,11 +24,24 @@ $(document).ready(function(){
   $(document.body).on("keypress","#factTableBody tr td[data-target='codeRole']", function(e) {
 
           if(e.which == 13) {
+
+                var prev_type=$(this).siblings("td[data-target='Type']").text();
+                var code_s=$(this).siblings("td[data-target='Code']").text();
+                var dent_s=$(this).siblings("td[data-target='Dent']").text();
+                var next_row=$(this).closest('tr').next('tr');
+
+                traiter_valeur_de_base(code_s, dent_s,next_row,prev_type);
+
+            //On Enter Key Press
                 updateTotal_Fact(this);
                 newRecordFact();
-
                 $(this).closest('tr').next().find('td[data-target=Type]').focus();
                  e.preventDefault();
+
+                var code_s=$(this).siblings("td[data-target='Code']").text();
+                var dent_s=$(this).siblings("td[data-target='Dent']").text();
+                var next_row=$(this).closest('tr').next('tr');
+                traiter_valeur_de_base(code_s, dent_s,next_row,prev_type);
 // trigger an artificial keydown event with keyCode 64
             }
             else
@@ -206,7 +219,7 @@ function newRecordFact(){
               //    var code_s=$(this).siblings("td[data-target='Code']").text();
               //    var dent_s=$(this).siblings("td[data-target='Dent']").text();
 
-              //     traiter_valeur_de_base(code_s, dent_s);
+                  // traiter_valeur_de_base(code_s, dent_s);
 
               //   };
               //   e.which=9;

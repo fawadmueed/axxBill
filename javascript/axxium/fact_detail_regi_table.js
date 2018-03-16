@@ -309,6 +309,10 @@ function updatedPopulateForm(formname,thisFromData_Up)
    
       $("#"+formname).deserialize(thisFromData_Up);
 
+      // AK Populate drop down lists
+      RamqPopulateRaisonDdl('update');
+      RamqPopulateSiteDdl('update');
+
       if(formname=='form_dentiste_Up'){
 
       	$('#form_dentiste_Up #medi_com_list_Up option').remove();
@@ -328,7 +332,16 @@ function updatedPopulateForm(formname,thisFromData_Up)
 		        $('#form_dentiste_Up #elem_meas_list_Up').append('<option selected="selected">'+val.value+'</option>')
 	        }
 
+            //AK set selected values for Traitement dentaire (reason and site)
+	        if (val.name === 'id_rais_trait_denta_denti') {
+	            $('#id_rais_trait_denta_denti_update').val(val.value);
+	            $('#id_rais_trait_denta_denti_update').trigger("chosen:updated");
+	        }
 
+	        if (val.name === 'id_site_trait_denta_denti') {
+	            $('#id_site_trait_denta_denti_update').val(val.value);
+	            $('#id_site_trait_denta_denti_update').trigger("chosen:updated");
+	        }
      })
   
       }
@@ -349,6 +362,16 @@ function updatedPopulateForm(formname,thisFromData_Up)
         $('#form_chirurgiens_Up #elem_meas_list').append('<option selected="selected">'+val.value+'</option>')
         }
 
+        //AK set selected values for Traitement dentaire (reason and site)
+        if (val.name === 'id_rais_trait_denta_denti') {
+            $('#id_rais_trait_denta_denti_update').val(val.value);
+            $('#id_rais_trait_denta_denti_update').trigger("chosen:updated");
+        }
+
+        if (val.name === 'id_site_trait_denta_denti') {
+            $('#id_site_trait_denta_denti_update').val(val.value);
+            $('#id_site_trait_denta_denti_update').trigger("chosen:updated");
+        }
 
      })
 

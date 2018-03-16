@@ -1613,7 +1613,7 @@ function RamqPopulateVisionRDataObj(pData) {
     //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?
     res.TypSituConsi = pData.TypSituConsi;//'1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = pData.IdPers; //'LAPM05580415';//NAM
+    res.IdPers = 'LAPM05580415';//pData.IdPers; //'LAPM05580415';//NAM
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
@@ -1829,7 +1829,7 @@ function GetObjFormMoreData(pRowId, pArrFormMoreData, ptypProf)
                     else
                         objRes.dh_dem_cnsul = null;
                 }
-                else if (ptypProf == 'Denturologiste' && globRamqOperationType == "New") {//TODO: 
+                else if (ptypProf == 'Denturologiste' && globRamqOperationType == "New") {
                     objRes.dat_serv_elm_fact = RamqGetArrayValueFromArrByName('dat_serv_elm_fact_dentu', pArrFormMoreData[i]);
                     objRes.dat_autor_proth_acryl = RamqGetValueFromArrByName('dat_autor_proth_acryl_dentu', pArrFormMoreData[i]);
 
@@ -2198,13 +2198,30 @@ function RamqCalculateTotalRamq(pArrRamqData) {
     return total;
 }
 
-function RamqPopulateRaisonDdl() {
-    //clear Raison ddl
-    $("#id_rais_trait_denta_denti").empty();
+function RamqPopulateRaisonDdl(pOperation) {
+    var ddlRaisonType;
+    var ddlRaison;
+    var selectedValue;
 
-    var ddlRaisonType = document.getElementById('typ_id_rais_trait_denta_denti');
-    var ddlRaison = document.getElementById('id_rais_trait_denta_denti');
-    var selectedValue = ddlRaisonType.options[ddlRaisonType.selectedIndex].value;
+    if (pOperation === 'insert')
+    {
+        //clear Raison ddl
+        $("#id_rais_trait_denta_denti").empty();
+
+        var ddlRaisonType = document.getElementById('typ_id_rais_trait_denta_denti');
+        var ddlRaison = document.getElementById('id_rais_trait_denta_denti');
+        var selectedValue = ddlRaisonType.options[ddlRaisonType.selectedIndex].value;
+    }
+    else if (pOperation === 'update')
+    {
+        //clear Raison ddl
+        $("#id_rais_trait_denta_denti_update").empty();
+
+        var ddlRaisonType = document.getElementById('typ_id_rais_trait_denta_denti_update');
+        var ddlRaison = document.getElementById('id_rais_trait_denta_denti_update');
+        var selectedValue = ddlRaisonType.options[ddlRaisonType.selectedIndex].value;
+    }
+
     if (selectedValue == '1')
     {
         var opt = document.createElement('option');
@@ -2289,13 +2306,30 @@ function RamqPopulateRaisonDdl() {
 
 }
 
-function RamqPopulateSiteDdl() {
-    //clear Site ddl
-    $("#id_site_trait_denta_denti").empty();
+function RamqPopulateSiteDdl(pOperation) {
+    var ddlSiteType;
+    var ddlSite;
+    var selectedValue;
 
-    var ddlSiteType = document.getElementById('typ_id_site_trait_denta_denti');
-    var ddlSite = document.getElementById('id_site_trait_denta_denti');
-    var selectedValue = ddlSiteType.options[ddlSiteType.selectedIndex].value;
+    if (pOperation === 'insert')
+    {
+        //clear Site ddl
+        $("#id_site_trait_denta_denti").empty();
+
+        ddlSiteType = document.getElementById('typ_id_site_trait_denta_denti');
+        ddlSite = document.getElementById('id_site_trait_denta_denti');
+        selectedValue = ddlSiteType.options[ddlSiteType.selectedIndex].value;
+    }
+    else if (pOperation === 'update')
+    {
+        //clear Site ddl
+        $("#id_site_trait_denta_denti_update").empty();
+
+        ddlSiteType = document.getElementById('typ_id_site_trait_denta_denti_update');
+        ddlSite = document.getElementById('id_site_trait_denta_denti_update');
+        selectedValue = ddlSiteType.options[ddlSiteType.selectedIndex].value;
+    }
+    
                        
     if (selectedValue == '1' || selectedValue == '2')
     {

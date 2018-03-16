@@ -437,28 +437,29 @@ function RamqBillUpdateBillInfo() {
 }
 
 //Check if the bill can be updated.
-// if bill accepted and bill was created less than 24 hours ago, returns true, otherwise false.
+// if bill accepted returns true, otherwise false.
 function RamqBillIfUpdatePossible(pStatus, pDate)
 {
     var res = false;
     if(pStatus ==1)//Accepte
     {
-        try
-        {
-            var difHours = 0;
-            var billDate = new Date(pDate);
-            var billTimeMSec = billDate.getTime();
-            var currentTimeMSec = new Date().getTime();
-            difHours = (currentTimeMSec-billTimeMSec)/(1000*60*60);
-            if (difHours<23)
-            {
-                res = true;
-            }
-        }
-        catch(e)
-        {
-            res = false;
-        }
+        res = true;
+        //try
+        //{
+        //    var difHours = 0;
+        //    var billDate = new Date(pDate);
+        //    var billTimeMSec = billDate.getTime();
+        //    var currentTimeMSec = new Date().getTime();
+        //    difHours = (currentTimeMSec-billTimeMSec)/(1000*60*60);
+        //    if (difHours<23)
+        //    {
+        //        res = true;
+        //    }
+        //}
+        //catch(e)
+        //{
+        //    res = false;
+        //}
         
     }
     return res;

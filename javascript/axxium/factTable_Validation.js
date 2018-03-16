@@ -233,6 +233,8 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       //--------------- suf_dent_code ---------------------------------
       var age=get_age();
       var type_surf=get_type_surf(val);
+    
+     // If Number Typesurf=1  
     if(type_surf == 1 || surf_chck == 'TI') 
       {
         surf_code_dent_gen_validation();
@@ -240,13 +242,18 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           {
             $(this).text('97');
           }
-      } else 
+      } 
+
+      else 
       {
-        if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) {
+        if(robValidation(type_chck,code_chck,dent_chck,age,surf_chck)) 
+        {
           // Generate CODE based on SURFACE DENT,SURFACE & TYPE -
-          if(type_chck!= '' && dent_chck != '' && surf_chck != '') {
+          if(type_chck!= '' && dent_chck != '' && surf_chck != '') 
+          {
             facture_surf_modal();
           }
+          
         }  
       }
 

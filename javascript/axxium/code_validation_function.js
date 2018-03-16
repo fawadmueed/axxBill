@@ -319,7 +319,9 @@
 				}
 			}
 
-			if(insurance == 'BES' || insurance == 'AMQ') {
+
+			if((insurance == 'BES' || insurance == 'AMQ') && (code!='')) 
+			{
 				if($.inArray(code, regiecodes) == -1) {
 					// -1 If Not Found , if its not -1 its FOUND
 					globVarMessageErrorValidation = msgerror.msg0162.replace("@@", code);
@@ -523,6 +525,9 @@
 			var tr=$(next_row);
 			var type_s=type_prev;
 
+			var thisDent=tr.prev().children('td[data-target="Dent"]').text();
+
+			tr.children('td[data-target="Dent"]').text(thisDent);
 			tr.children('td[data-target="Code"]').text(row_data.regiecode);
 			tr.children('td[data-target="Frais"]').text(parseFloat(row_data.frais_lab).toFixed(2));
 			tr.children('td[data-target="Total"]').text();

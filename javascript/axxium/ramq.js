@@ -1613,7 +1613,7 @@ function RamqPopulateVisionRDataObj(pData) {
     //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?
     res.TypSituConsi = pData.TypSituConsi;//'1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = pData.IdPers; //pData.IdPers; //'LAPM05580415';//NAM
+    res.IdPers = pData.IdPers; //'LAPM05580415';//NAM
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
@@ -2198,5 +2198,248 @@ function RamqCalculateTotalRamq(pArrRamqData) {
     return total;
 }
 
+function RamqPopulateRaisonDdl() {
+    //clear Raison ddl
+    $("#id_rais_trait_denta_denti").empty();
 
+    var ddlRaisonType = document.getElementById('typ_id_rais_trait_denta_denti');
+    var ddlRaison = document.getElementById('id_rais_trait_denta_denti');
+    var selectedValue = ddlRaisonType.options[ddlRaisonType.selectedIndex].value;
+    if (selectedValue == '1')
+    {
+        var opt = document.createElement('option');
+        opt.value = '1';
+        opt.innerHTML = 'Anodontie des dents permanentes';
+        ddlRaison.appendChild(opt);
 
+        var opt = document.createElement('option');
+        opt.value = '2';
+        opt.innerHTML = 'Pour fins orthodontiques';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '3';
+        opt.innerHTML = 'Ankylose';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '4';
+        opt.innerHTML = 'Rétention prolongée';
+        ddlRaison.appendChild(opt);
+    }
+
+    if (selectedValue == '2') {
+        var opt = document.createElement('option');
+        opt.value = '10';
+        opt.innerHTML = 'Déménagement';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '11';
+        opt.innerHTML = 'Décès de la personne assurée';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '12';
+        opt.innerHTML = 'Abandon du traitement par la personne assurée';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '13';
+        opt.innerHTML = 'Changement de dentiste';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '14';
+        opt.innerHTML = 'Traumatisme';
+        ddlRaison.appendChild(opt);
+    }
+
+    if (selectedValue == '3') {
+        var opt = document.createElement('option');
+        opt.value = '14';
+        opt.innerHTML = 'Traumatisme';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '20';
+        opt.innerHTML = 'Atrophie généralisée ou localisée des maxillaires';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '21';
+        opt.innerHTML = 'Reconstruction de difformité congénitale';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '22';
+        opt.innerHTML = 'Arthroplastie avec reconstruction condylienne accompagnée d\'une partie de la branche montante';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '23';
+        opt.innerHTML = 'Tumeurs ou kystes de plus de 4 cm';
+        ddlRaison.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '24';
+        opt.innerHTML = 'Corticotomie';
+        ddlRaison.appendChild(opt);
+    }
+
+}
+
+function RamqPopulateSiteDdl() {
+    //clear Site ddl
+    $("#id_site_trait_denta_denti").empty();
+
+    var ddlSiteType = document.getElementById('typ_id_site_trait_denta_denti');
+    var ddlSite = document.getElementById('id_site_trait_denta_denti');
+    var selectedValue = ddlSiteType.options[ddlSiteType.selectedIndex].value;
+                       
+    if (selectedValue == '1' || selectedValue == '2')
+    {
+        var opt = document.createElement('option');
+        opt.value = '1';
+        opt.innerHTML = 'Symphyse mentonnière';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '2';
+        opt.innerHTML = 'Parois sinuso-nasale';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '3';
+        opt.innerHTML = 'Branche montante droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '4';
+        opt.innerHTML = 'Branche montante gauche ';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '5';
+        opt.innerHTML = 'Épine nasale';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '6';
+        opt.innerHTML = 'Tubérosite droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '7';
+        opt.innerHTML = 'Tubérosite gauche ';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '8';
+        opt.innerHTML = 'Ligne oblique externe gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '9';
+        opt.innerHTML = 'Ligne oblique externe droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '10';
+        opt.innerHTML = 'Arcade zygomatique droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '11';
+        opt.innerHTML = 'Arcade zygomatique gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '12';
+        opt.innerHTML = 'Palais';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '13';
+        opt.innerHTML = 'Mandibule postérieure droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '14';
+        opt.innerHTML = 'Mandibule postérieure gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '15';
+        opt.innerHTML = 'Mandibule antérieure droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '16';
+        opt.innerHTML = 'Mandibule antérieure gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '17';
+        opt.innerHTML = 'Maxillaire postérieur droit';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '18';
+        opt.innerHTML = 'Maxillaire postérieur gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '19';
+        opt.innerHTML = 'Maxillaire antérieur droit';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '20';
+        opt.innerHTML = 'Maxillaire antérieur gauche';
+        ddlSite.appendChild(opt);
+    }
+
+    if (selectedValue == '3') {
+        var opt = document.createElement('option');
+        opt.value = '13';
+        opt.innerHTML = 'Mandibule postérieure droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '14';
+        opt.innerHTML = 'Mandibule postérieure gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '15';
+        opt.innerHTML = 'Mandibule antérieure droite';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '16';
+        opt.innerHTML = 'Mandibule antérieure gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '17';
+        opt.innerHTML = 'Maxillaire postérieur droit';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '18';
+        opt.innerHTML = 'Maxillaire postérieur gauche';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '19';
+        opt.innerHTML = 'Maxillaire antérieur droit';
+        ddlSite.appendChild(opt);
+
+        var opt = document.createElement('option');
+        opt.value = '20';
+        opt.innerHTML = 'Maxillaire antérieur gauche';
+        ddlSite.appendChild(opt);
+    }
+
+}

@@ -2736,7 +2736,7 @@
                                 <button class="ui axxium tiny button" id="btn_detail_trnsfr_regi" onclick="RamqBillReSendToRamq()">Transférer à la Régie</button>
                                 <div class="ui axxium tiny button" onclick="$('.modal_regie_fact_modal.modal').modal('hide');">Quitter</div>
                                 <div class="ui axxium tiny button" onclick="printRAMQ()">Imprimmer</div>
-                                <div class="ui axxium tiny button" onclick="RamqSoumissionDemandedAnnulationNode()">NodeCancel</div>
+                                <!--<div class="ui axxium tiny button" onclick="RamqSoumissionDemandedAnnulationNode()">NodeCancel</div>-->
                             </div>
                         </div>
                     </div>
@@ -3160,21 +3160,36 @@
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type </label>
-                                            <input type="text" name="typ_id_rais_trait_denta_denti">
+                                            <!--<input type="text" name="typ_id_rais_trait_denta_denti">-->
+                                            <select id="typ_id_rais_trait_denta_denti" onchange="RamqPopulateRaisonDdl()">
+                                                <option value=""></option>
+                                                <option value="1">Raison de l'écart d'âge pour une dent</option>
+                                                <option value="2">Raison de l'abandon d'un traitement de canal</option>
+                                                <option value="3">Raison de la greffe osseuse</option>
+                                            </select>
                                         </div>
                                         <div class="field">
                                             <label>Raison</label>
-                                            <input type="text" name="id_rais_trait_denta_denti">
+                                            <!--<input type="text" name="id_rais_trait_denta_denti">-->
+                                            <select id="id_rais_trait_denta_denti">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type </label>
-                                            <input type="text" name="typ_id_site_trait_denta_denti">
+                                            <!--<input type="text" name="typ_id_site_trait_denta_denti">-->
+                                            <select id="typ_id_site_trait_denta_denti" onchange="RamqPopulateSiteDdl()">
+                                                <option value=""></option>
+                                                <option value="1">Site de prise du greffon intra-oral</option>
+                                                <option value="2">Site receveur de la greffe osseuse</option>
+                                                <option value="3">Site d’ablation de fixation intermaxillaire</option>
+                                            </select>
                                         </div>
                                         <div class="field">
                                             <label>Site</label>
-                                            <input type="text" name="id_site_trait_denta_denti">
+                                            <!--<input type="text" name="id_site_trait_denta_denti">-->
+                                            <select id="id_site_trait_denta_denti"></select>
                                         </div>
                                     </div>
                                 </div>

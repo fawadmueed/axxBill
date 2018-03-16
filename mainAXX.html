@@ -408,7 +408,7 @@
                                     <div class="three wide column">
                                           <div class="ui right labeled five wide field input">
                                       <label for="amount" class="ui basic  label">Total</label>
-                                      <input type="text" placeholder="0.00" class="fact_tot mont">
+                                      <input type="text" placeholder="0.00" class="fact_tot mont" disabled="disabled">
                                       <div class="ui basic label">$</div>
                                     </div>
                                     </div>
@@ -498,7 +498,7 @@
                                     <div class="three wide column">
                                           <div class="ui right labeled five wide field input">
                                       <label for="amount" class="ui basic  label">Total</label>
-                                      <input type="text" placeholder="0.00" class="fact_tot_planTrait mont">
+                                      <input type="text" placeholder="0.00" class="fact_tot_planTrait mont" disabled="disabled">
                                       <div class="ui basic label">$</div>
                                     </div>
                                     </div>
@@ -5501,6 +5501,7 @@
                 var fact_total=0;
                 var globVisionRData_print;
                 var tables_object;
+                var roleDisableFlag=true;
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {

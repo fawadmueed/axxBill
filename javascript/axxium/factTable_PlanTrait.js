@@ -4,8 +4,20 @@ $(document).ready(function(){
 $(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeRole']", function(e) {
 
           if(e.which == 13) {
-                updateTotal_Fact_planTrait();
+
                 newRecordFact_planTrait();
+                updateTotal_Fact_planTrait();
+                
+                var prev_type=$(this).siblings("td[data-target='Type']").text();
+                var code_s=$(this).siblings("td[data-target='Code']").text();
+                var dent_s=$(this).siblings("td[data-target='Dent']").text();
+                var next_row=$(this).closest('tr').next('tr');
+
+                  
+                
+                traiter_valeur_de_base(code_s, dent_s,next_row,prev_type);
+
+              
                 
 
                 $(this).closest('tr').next().find('td[data-target=Date]').focus();

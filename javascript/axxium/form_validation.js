@@ -23,8 +23,7 @@ $(document).ready(function(){
         
        check_charcount(this,4,e,'numbers');    
       })
-            $(document.body).on('keydown', "#factTableBody td[data-target='Type']", function(e){
-        
+      $(document.body).on('keydown', "#factTableBody td[data-target='Type']", function(e){
        check_charcount(this,2,e,'alphabets');    
       })
 

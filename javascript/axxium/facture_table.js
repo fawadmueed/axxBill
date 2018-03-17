@@ -1,3 +1,4 @@
+//TEST - FACT 
 var arrGrilleDeFacturation=[];
 var arrGrilleDeFacturation_forms = [];
 
@@ -86,8 +87,7 @@ $(document).ready(function(){
 
 function newRecordFact(){
 
-  
-
+    
     var tblBody=$('#factTableBody');
     fact_tbl_row_id=fact_tbl_row_id+1;
     tblRow=$('<tr>').attr('id',fact_tbl_row_id);

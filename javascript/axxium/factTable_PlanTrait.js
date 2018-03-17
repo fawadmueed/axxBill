@@ -7,7 +7,7 @@ $(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeR
 
                 newRecordFact_planTrait();
                 updateTotal_Fact_planTrait();
-                
+
                 var prev_type=$(this).siblings("td[data-target='Type']").text();
                 var code_s=$(this).siblings("td[data-target='Code']").text();
                 var dent_s=$(this).siblings("td[data-target='Dent']").text();
@@ -24,6 +24,10 @@ $(document.body).on("keypress","#factureTable_planTrait tr td[data-target='codeR
                  e.preventDefault();
 // trigger an artificial keydown event with keyCode 64
           
+            }
+            else
+            {
+              check_charcount(this,0,e,'alphaNumeric'); 
             }
 
             return e.which!=13;

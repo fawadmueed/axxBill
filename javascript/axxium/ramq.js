@@ -396,25 +396,113 @@ function RamqGetListFact(_arrData)
     return xml;
 }
 
-function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
-{
-    var isFactAssosDr;
-    if (globRamqOperationType == "New") {
-        isFactAssosDr = $('#optRegiIndFactAssosDrYes').is(':checked');
-    }
-    else if (globRamqOperationType == "Update") {
-        isFactAssosDr = $('#optRegiIndFactAssosDrYes_Upd').is(':checked');
-    }
+//function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
+//{
+//    var isFactAssosDr;
+//    if (globRamqOperationType == "New") {
+//        isFactAssosDr = $('#optRegiIndFactAssosDrYes').is(':checked');
+//    }
+//    else if (globRamqOperationType == "Update") {
+//        isFactAssosDr = $('#optRegiIndFactAssosDrYes_Upd').is(':checked');
+//    }
+
+//    var xml = '';
+//    if (isFactAssosDr)
+//    {
+//        if (pObjDataFromVisionR.IdPers) {
+//            if (pObjDataFromVisionR.IdPers === '1') 
+//            {
+//                var arrNAM = RamqGetSpecialArrNAM();
+//                if (arrNAM.length > 0)
+//                {
+//                    xml +=
+//                        '<liste_pers_objet_fact>';
+
+//                    for (var i = 0; i < arrNAM.length; i++) {
+//                        xml +=
+//                            '<pers_patnt_avec_idt>' +
+//                                '<typ_situ_consi>1</typ_situ_consi>' + //Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
+//                                '<typ_id_pers>1</typ_id_pers>' + //1 : NAM RAMQ
+//                                '<id_pers>' + arrNAM[i] + '</id_pers>' + //NAM
+//                            '</pers_patnt_avec_idt>';
+//                    }
+//                    //xml += '</liste_pers_objet_fact>';
+//                }
+                
+//            }
+//            else {
+//                xml +=
+//                '<liste_pers_objet_fact>' +
+//                    '<pers_patnt_avec_idt>' +
+//                        '<typ_situ_consi>1</typ_situ_consi>' + //Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
+//                        '<typ_id_pers>1</typ_id_pers>' + //1 : NAM RAMQ
+//                        '<id_pers>' + pObjDataFromVisionR.IdPers + '</id_pers>' + //NAM
+//                        RamqGetInfoMdcalPers(pObjAdditionalData) +
+//                       '</pers_patnt_avec_idt>';
+//            }
+            
+//        }
+//        else //patient without id
+//        {
+//            xml +=
+//                '<liste_pers_objet_fact>' +
+//                '<pers_patnt_sans_idt>' +
+//                  '<typ_situ_consi>2</typ_situ_consi>' +
+//                  '<info_pers_patnt>' +
+//                      '<nom_pers>' + pObjDataFromVisionR.NomPers + '</nom_pers>' +
+//                      (pObjDataFromVisionR.PrePers) ? '<pre_pers>' + pObjDataFromVisionR.PrePers + '</pre_pers>' : '' +
+//                      '<dat_naiss_pers>' + pObjDataFromVisionR.DatNaissPers + '</dat_naiss_pers>' +
+//                      '<cod_sexe_pers>' + pObjDataFromVisionR.CodSexPers + '</cod_sexe_pers>' +
+//                      (pObjDataFromVisionR.NoOrdreNaissPers) ? '<no_ordre_naiss_pers>' + pObjDataFromVisionR.NoOrdreNaissPers + '<no_ordre_naiss_pers/>' : '' +
+//                      (pObjDataFromVisionR.NoOrdreNaissPers) ? '<nas>' + pObjDataFromVisionR.Nas + '</nas>' : '' +
+//                  '</info_pers_patnt>' +
+//                (pObjDataFromVisionR.AdrPersPatnt) ? '<adr_pers_patnt>' + pObjDataFromVisionR.AdrPersPatnt + '<adr_pers_patnt/>' : '' +
+//                RamqGetInfoMdcalPers(pObjAdditionalData);
+//            if (pObjDataFromVisionR.RepdnIdPers) {
+//                xml +=
+//                    '<pers_repdn>' +
+//                    '<repdn_avec_idt>' +
+//                      '<typ_id_pers>1</typ_id_pers>' +
+//                      '<id_pers>' + pObjDataFromVisionR.RepdnIdPers + '</id_pers>' +
+//                    '</repdn_avec_idt>' +
+//                  '</pers_repdn>';
+//            }
+//            xml += '</pers_patnt_sans_idt>';
+//        }
+//        xml += '</liste_pers_objet_fact>';
+//    }
+//    else if (!isFactAssosDr && pObjDataFromVisionR.IdPers === '1')//implement more than 1 ramq number
+//    {
+//        var arrNAM = RamqGetSpecialArrNAM();
+//        if (arrNAM.length > 0) {
+//            xml +=
+//                '<liste_pers_objet_fact>';
+
+//            for (var i = 0; i < arrNAM.length; i++) {
+//                xml +=
+//                    '<pers_patnt_avec_idt>' +
+//                        '<typ_situ_consi>1</typ_situ_consi>' + //Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
+//                        '<typ_id_pers>1</typ_id_pers>' + //1 : NAM RAMQ
+//                        '<id_pers>' + arrNAM[i] + '</id_pers>' + //NAM
+//                    '</pers_patnt_avec_idt>';
+//            }
+//            xml += '</liste_pers_objet_fact>';
+//        }
+//    }
+    
+//    return xml;
+//}
+
+// 
+function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData) {
 
     var xml = '';
-    if (isFactAssosDr)
-    {
+
+    if (pObjDataFromVisionR.IdPers !== '1') {
         if (pObjDataFromVisionR.IdPers) {
-            if (pObjDataFromVisionR.IdPers === '1') 
-            {
+            if (pObjDataFromVisionR.IdPers === '1') {
                 var arrNAM = RamqGetSpecialArrNAM();
-                if (arrNAM.length > 0)
-                {
+                if (arrNAM.length > 0) {
                     xml +=
                         '<liste_pers_objet_fact>';
 
@@ -428,7 +516,7 @@ function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
                     }
                     //xml += '</liste_pers_objet_fact>';
                 }
-                
+
             }
             else {
                 xml +=
@@ -440,7 +528,7 @@ function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
                         RamqGetInfoMdcalPers(pObjAdditionalData) +
                        '</pers_patnt_avec_idt>';
             }
-            
+
         }
         else //patient without id
         {
@@ -471,7 +559,7 @@ function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
         }
         xml += '</liste_pers_objet_fact>';
     }
-    else if (!isFactAssosDr && pObjDataFromVisionR.IdPers === '1')
+    else if (pObjDataFromVisionR.IdPers === '1')//implement more than 1 ramq number
     {
         var arrNAM = RamqGetSpecialArrNAM();
         if (arrNAM.length > 0) {
@@ -489,10 +577,9 @@ function RamqGetListePersObjetFact(pObjDataFromVisionR, pObjAdditionalData)
             xml += '</liste_pers_objet_fact>';
         }
     }
-    
+
     return xml;
 }
-
 function RamqGetSpecialArrNAM()
 {
     var arr = [];

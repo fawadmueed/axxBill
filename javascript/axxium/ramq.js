@@ -79,7 +79,7 @@ function SoumissionDemandesPaiementNode() {
         type: "POST",
         //the url where you want to sent the userName and password to
         url: 'http://localhost:3000/SoumissionDemandesPaiement',
-        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "0`sxJ0FCX!3", globBillNumber: '34', globRamqOperationType: "New" }),
+        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "C++c4~csT$G", globBillNumber: '34', globRamqOperationType: "New" }),
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (result) {
@@ -738,9 +738,9 @@ function RamqGetListe_ligne_fact_serv_denta_chirg(pArrpGridData, pArrFormMoreDat
             if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0] != '') {
                 dateServ = pObjFormMoreData.dat_serv_elm_fact[0];
             }
-            //else {
-            //    //dateServ = RamqGetCurrentDate();
-            //}
+            else {
+                dateServ = RamqGetCurrentDate();
+            }
 
             var codeRole;
             if (pObjGridData && pObjGridData.codeRole) {
@@ -855,9 +855,9 @@ function RamqGetListe_ligne_fact_serv_denta_dentu(pArrGridData, pArrFormMoreData
             if (pObjFormMoreData && pObjFormMoreData.dat_serv_elm_fact && pObjFormMoreData.dat_serv_elm_fact[0]!='') {
                 dateServ = pObjFormMoreData.dat_serv_elm_fact[0];
             }
-            //else {
-            //    dateServ = RamqGetCurrentDate();
-            //}
+            else {
+                dateServ = RamqGetCurrentDate();
+            }
 
             var codeRole;
             if (pObjGridData && pObjGridData.codeRole) {
@@ -1098,11 +1098,15 @@ function RamqGetMntPrcuPatntXml(p_mnt_prcu_patnt)
     }
     else if (globRamqOperationType == "Update")
     {
-        var amount = 0;
+        
         if ($("#remb_dem_oui_regie_fact").is(':checked')) {
-            amount = pAmount;
+            var amount = 0;
+            if ($("#remb_dem_oui_regie_fact").is(':checked'))
+            {
+                amount = pAmount;
+            }
+            res = '<mnt_prcu_patnt>' + amount + '</mnt_prcu_patnt>';
         }
-        res = '<mnt_prcu_patnt>' + amount + '</mnt_prcu_patnt>';
     }
 
     return res;
@@ -1465,7 +1469,7 @@ function displayResponseModification(_response)
             }
         }
         globRamqTotal = -2;
-        displayRamqAnswer("RAMQ", msg);
+        displayRamqAnswer("RAMQ", errormsg);
     }
 
 
@@ -1700,7 +1704,7 @@ function RamqPopulateVisionRDataObj(pData) {
     //res.IdLieuPhys = pData.IdLieuPhys;//'99999';//?
     res.TypSituConsi = pData.TypSituConsi;//'1';//Domaine de valeurs 1 : Situation normale 10 : Délai de carence, services nécessaires aux victimes de violence conjugale ou familiale ou d'une agression 11 : Délai de carence, services liés à la grossesse, à l\'accouchement ou à l'interruption de grossesse 12 : Délai de carence, services nécessaires aux personnes aux prises avec problèmes de santé de nature infectieuse ayant une incidence sur la santé publique
     res.TypIdPers = '1';//1 : NAM RAMQ
-    res.IdPers = pData.IdPers;//'LAPM05580415';//pData.IdPers; //'LAPM05580415';//NAM
+    res.IdPers = 'DROJ75512816';//pData.IdPers; //'LAPM05580415';//NAM
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
@@ -1732,7 +1736,7 @@ function RamqGetAdditionalData()//Data from Payment form "Renseignements complem
 {
     var res = {};
 
-    res.RembDemParPatient = $('#remb_dem_oui').is(':checked');
+    res.RembDemParPatient = $('#remb_dem_oui').is(':checked')?'true':'false';
     res.IndFactAssosDr = ($('#optRegiIndFactAssosDrYes').is(':checked')) ? 'true' : 'false';
 
     res.TypModaPaimt = ($('#optRegiePaimentComptePers').is(':checked')) ? '1' : '2';

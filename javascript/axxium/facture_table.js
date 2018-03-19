@@ -445,6 +445,8 @@ function getMoreInfo(){
 
 function modFactTableMore(x)
 {
+    var date = new Date();
+    var currentDate = date.toISOString().slice(0, 10);
 
   var row_id=$(x).closest('tr').attr('id');
 
@@ -456,7 +458,8 @@ function modFactTableMore(x)
               $('#modal_factTbl_more').html(data);
               $('form #rowId_dent').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);  //gets the Complete Array of FORM Data to populate
-              populateForm('form_dentiste',thisFromData);
+              populateForm('form_dentiste', thisFromData);
+              document.getElementById('date_de_service_dentiste').value = currentDate;
               break;
 
       case 'Chirurgiens':
@@ -466,7 +469,7 @@ function modFactTableMore(x)
               $('form #rowId_chir').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);
               populateForm('form_chirurgiens',thisFromData);
-
+              document.getElementById('date_de_service_dentiste').value = currentDate;
               break;
       case 'Denturologiste':
 
@@ -474,9 +477,8 @@ function modFactTableMore(x)
               $('#modal_factTbl_more').html(data);
               $('form #rowId_dentu').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);
-
               populateForm('form_denturologiste',thisFromData);
-
+              document.getElementById('date_de_service_dentiste').value = currentDate;
               break;
       default:
               $('#modal_factTbl_more').html('<h1>Error Aquiring the Dentist Type</h1>');

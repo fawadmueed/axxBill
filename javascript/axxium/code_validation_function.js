@@ -524,13 +524,13 @@
 		{
 			var tr=$(next_row);
 			var type_s=type_prev;
-
+			var hono;
 			var thisDent=tr.prev().children('td[data-target="Dent"]').text();
 
 			tr.children('td[data-target="Dent"]').text(thisDent);
 			tr.children('td[data-target="Code"]').text(row_data.regiecode);
 			tr.children('td[data-target="Frais"]').text(parseFloat(row_data.frais_lab).toFixed(2));
-			tr.children('td[data-target="Total"]').text();
+			
 			tr.children('td[data-target="Prod"]').text(row_data.producer);
 			tr.children('td[data-target="codeRole"]').text(row_data.time_unit);
 			if(globLang=='fr')
@@ -543,14 +543,25 @@
 			}
 			
 			if(type_s=="AMQ" || type_s=="BES" || type_s=="HOP") {
-              tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixa).toFixed(2));
+				hono=parseFloat(row_data.prixa).toFixed(2);
+              // tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixa).toFixed(2));
             }
-            else {
+            else 
+            {
               if(type_rate_glbl === undefined || parseInt(type_rate_glbl) == 1) //regulier or special
-               tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixr).toFixed(2));
+               {
+               	
+               	hono=parseFloat(row_data.prixr).toFixed(2);
+               }
               else
-               tr.children('td[data-target="Honoraires"]').text(parseFloat(row_data.prixs).toFixed(2));      
+               {
+               	
+               	hono=parseFloat(row_data.prixs).toFixed(2);
+       			}      
             }
+
+            tr.children('td[data-target="Honoraires"]').text(hono);
+            tr.children('td[data-target="Total"]').text(((parseFloat(row_data.frais_lab))+(parseFloat(hono))).toFixed(2));
 
 		}
 

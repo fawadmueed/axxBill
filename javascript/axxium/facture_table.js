@@ -1,3 +1,4 @@
+//TEST - FACT 
 var arrGrilleDeFacturation=[];
 var arrGrilleDeFacturation_forms = [];
 
@@ -23,7 +24,11 @@ $(document).ready(function(){
 
   $(document.body).on("keypress","#factTableBody tr td[data-target='codeRole']", function(e) {
 
-          if(e.which == 13) {
+          if(e.which == 13) 
+          {
+
+                updateTotal_Fact(this);
+                newRecordFact();
 
                 var prev_type=$(this).siblings("td[data-target='Type']").text();
                 var code_s=$(this).siblings("td[data-target='Code']").text();
@@ -33,21 +38,25 @@ $(document).ready(function(){
                 traiter_valeur_de_base(code_s, dent_s,next_row,prev_type);
 
             //On Enter Key Press
-                updateTotal_Fact(this);
-                newRecordFact();
+      
                 $(this).closest('tr').next().find('td[data-target=Type]').focus();
                  e.preventDefault();
 
-                var code_s=$(this).siblings("td[data-target='Code']").text();
-                var dent_s=$(this).siblings("td[data-target='Dent']").text();
-                var next_row=$(this).closest('tr').next('tr');
-                traiter_valeur_de_base(code_s, dent_s,next_row,prev_type);
 // trigger an artificial keydown event with keyCode 64
+            }
+
+        else
+          {
+            if(roleDisableFlag)
+            {
+             e.preventDefault();
             }
             else
             {
-              check_charcount(this,0,e,'alphaNumeric');    
+              check_charcount(this,0,e,'alphaNumeric'); 
             }
+            
+          }
 
             return e.which!=13;
               });
@@ -78,8 +87,7 @@ $(document).ready(function(){
 
 function newRecordFact(){
 
-  
-
+    
     var tblBody=$('#factTableBody');
     fact_tbl_row_id=fact_tbl_row_id+1;
     tblRow=$('<tr>').attr('id',fact_tbl_row_id);

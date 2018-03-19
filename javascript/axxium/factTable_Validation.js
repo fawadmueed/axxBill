@@ -130,17 +130,27 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       {
         
         $(this).closest('tr').find('.plus').removeClass('disabled');
+        
+        roleDisableFlag=false;
+        
+        //Always 1 - From Roberto 16/3/2018
+          $(this).siblings('td[data-target="codeRole"]').text('1');
+        
+        
 
         // $(this).siblings("td[data-target='codeRole']").attr('contenteditable','false').text('--');
       }
       else if(val=="CAS")
       {
+        
         $(this).closest('tr').find('.plus').addClass('disabled'); 
-        $(this).siblings("td[data-target='codeRole']").attr('contenteditable','true');
+        roleDisableFlag=true;
+        $(this).siblings('td[data-target="codeRole"]').text('-');
       }
     else{
-       
-        $(this).siblings("td[data-target='codeRole']").text('');
+        $(this).siblings('td[data-target="codeRole"]').text('-');
+        roleDisableFlag=true;
+
         $(this).closest('tr').find('.plus').addClass('disabled'); 
         $(this).siblings("td[data-target='codeRole']").attr('contenteditable','true');
       }
@@ -253,7 +263,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           {
             facture_surf_modal();
           }
-          
+
         }  
       }
 
@@ -491,15 +501,15 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
       if(type=="AMQ" || type=="BES" || type=="HOP")
       {
-       $(this).text(thisTxt);
+       $(this).text('1');
       }
-      else{
-        if(thisTxt == '')
-          return;
+      // else{
+      //   if(thisTxt == '')
+      //     return;
 
-        $(this).text('');
-        warnMsg('Null Role when Type is not AMQ/BES/HOP');
-      }
+      //   $(this).text('');
+      //   warnMsg('Null Role when Type is not AMQ/BES/HOP');
+      // }
 
    });
 

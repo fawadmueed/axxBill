@@ -310,13 +310,13 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
       var type_s=$(this).siblings("td[data-target='Type']").text();
       var dent_s=$(this).siblings("td[data-target='Dent']").text();
       var surf_s=$(this).siblings("td[data-target='Surface']").text();
-      var code_s=$(this).text();
+      var code_s=$(this).text().padZero(5);
       
       if(code_s == '')
       {
        return;
       }
-
+      
       var age=get_age();
       var codeValid=robValidation(type_s,code_s,dent_s,age,surf_s);
 
@@ -335,7 +335,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
           var valid;
           var val=$(this).text();
           var popData=$(this).parent();
-          var code_data=getCodeData(val);
+          var code_data=getCodeData(val.padZero(5));
 
           if(code_data && val!="")
           {  
@@ -1161,3 +1161,10 @@ function surf_code_dent_gen_validation() {
     }
 
 }
+
+String.prototype.padZero= function(len, c){
+  var s= this, c= c || '0';
+  if (s.length == 0) return '';
+  while(s.length< len) s= c+ s;
+  return s.toString();
+};

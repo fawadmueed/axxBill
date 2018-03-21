@@ -198,6 +198,15 @@ function RamqGetVisionRData() {
 
                       $('#pamnt_no_prof').val(globVisionRData.IdProf);
 
+                      //Display clinic postal code
+                      var clinCodePostal = (globVisionRData.ClinicPostalCode)?globVisionRData.ClinicPostalCode:'';
+                      $('#cod_postal_facture').val(clinCodePostal);
+
+                      //Open lieu non codifie div by default
+                      $('#lieu_codifie_non').prop('checked', true);
+                      $('.codif_selection_non').show();
+                      
+
                       //Display Patient name
                       var patName = globVisionRData.PrePers + ' ' + globVisionRData.NomPers;
                       var pat_Age=get_age();

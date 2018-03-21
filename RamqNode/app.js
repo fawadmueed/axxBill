@@ -110,7 +110,7 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
             var resp;
             var ramqAns = CleanXML(body);
             if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
-                resp == ramqAns;
+                resp = ramqAns;
             }
             else if (ramqAns != null && ramqAns.substring(0, 5) != 'Error') {
                 var objResponse = parseRAMQResponseAnnulation(ramqAns);
@@ -127,6 +127,97 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
     });
 
 });
+
+app.post('/GenerIdMachine', function (req, response) {
+    var NoIntervenant = req.body.NoIntervenant;//18011
+    var IdUtilisateur = req.body.IdUtilisateur; //AGR18011
+    var MotDePasse = req.body.MotDePasse; //axxium3800d
+
+    //send the request to WebApi that calls RAMQ server
+    var json = {
+        "CodeErreur": '',
+        "NoIntervenant": NoIntervenant,
+        "IdUtilisateur": IdUtilisateur,
+        "MotDePasse": MotDePasse,
+        "IdMachine": '',
+        "MotDePasseMachine":'',
+        "ServerError": ''
+    };
+
+    var options = {
+        url: uri + '/api/RamqWebApi/PostGenerIdMacine',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json; charset=utf-8'
+        },
+        json: json
+    };
+
+    request(options, function (err, res, body) {
+        if (res && (res.statusCode === 200 || res.statusCode === 201)) {
+            //var resp  =body;
+            var resp = CleanXML(JSON.stringify(body));
+            //var ramqAns = body;
+            //if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
+            //    resp = ramqAns;
+            //}
+            //else if (ramqAns != null && ramqAns.substring(0, 5) != 'Error') {
+            //    var objResponse = parseRAMQResponseAnnulation(ramqAns);
+            //    resp = displayResponseAnnulation(objResponse);
+            //}
+        }
+        else {
+            resp = 'Communication Error'
+        }
+
+        var jsonResp = { response: resp };
+        response.send(jsonResp);
+    });
+});
+
+app.post('/ChangePassword', function (req, response) {
+    var NoIntervenant = req.body.NoIntervenant;//18011
+    var IdMachine = req.body.IdMachine;
+    var AncienMotDePasse = req.body.AncienMotDePasse;
+
+    //send the request to WebApi that calls RAMQ server
+    var json = {
+        'CodeErreur': '', 
+        'NoIntervenant': NoIntervenant, 
+        'IdMachine': IdMachine,
+        'AncienMotDePasse': AncienMotDePasse, 
+        'MotDePasseMachine': '',
+        'ServerError': ''
+    };
+    var options = {
+        url: uri + '/api/RamqWebApi/PostChangePassword',
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json; charset=utf-8'
+        },
+        json: json
+    };
+
+    request(options, function (err, res, body) {
+        if (res && (res.statusCode === 200 || res.statusCode === 201)) {
+            //var resp  =body;
+            var resp = CleanXML(JSON.stringify(body));
+        }
+        else {
+            resp = 'Communication Error'
+        }
+
+        var jsonResp = { response: resp };
+        response.send(jsonResp);
+    });
+});
+
+app.get('/test', function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.write('Welcome!', "utf-8");
+    res.end();
+});
+
 app.listen(3000);
 console.log('Running on port 3000...');
 

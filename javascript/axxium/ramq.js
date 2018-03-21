@@ -79,7 +79,7 @@ function SoumissionDemandesPaiementNode() {
         type: "POST",
         //the url where you want to sent the userName and password to
         url: 'http://localhost:3000/SoumissionDemandesPaiement',
-        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "C++c4~csT$G", globBillNumber: '34', globRamqOperationType: "New" }),
+        data: JSON.stringify({ dataFromUI: jsonData, UserId: "AGR18011W", UserPass: "U.N=r53FnTH", globBillNumber: '34', globRamqOperationType: "New" }),
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (result) {

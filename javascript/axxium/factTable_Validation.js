@@ -1145,26 +1145,27 @@ function surf_code_dent_gen_validation() {
               break;
 
           case 4:
+              var age=get_age();
               if (type_chck == 'AMQ' || type_chck == 'BES' || type_chck == 'HOP') {
-                  if(!code_amq(type,tooth,code,age, surface))
+                  if(!code_amq(type_chck, dent_chck, code_chck, age, surf_chck))
                     $(this).focus();
                   
-                  if(!code_amq_canal(type, tooth, code, age))
+                  if(!code_amq_canal(type_chck, dent_chck, code_chck, age))
                     $(this).focus();
                   
-                  if(!code_amq_endo(type, tooth, code, age)) 
+                  if(!code_amq_endo(type_chck, dent_chck, code_chck, age)) 
                     $(this).focus();
                   
-                  if(!code_amq_abla(type, tooth, code, age)) 
+                  if(!code_amq_abla(type_chck, dent_chck, code_chck, age)) 
                     $(this).focus();
                     
-                  if(!code_amq_cour(type, tooth, code, age))
+                  if(!code_amq_cour(type_chck, dent_chck, code_chck, age))
                     $(this).focus();
             
-                  if(!prothese(type, code))
+                  if(!prothese(type_chck, code_chck))
                     $(this).focus();
                   
-                  if(ablation_same_tooth_two_times(code)) {
+                  if(ablation_same_tooth_two_times(code_chck)) {
                     $(this).focus();
                     warnMsg(msgerr.msg087);
                   }

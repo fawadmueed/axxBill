@@ -1145,7 +1145,43 @@ function surf_code_dent_gen_validation() {
               break;
 
           case 4:
+              if (type_chck == 'AMQ' || type_chck == 'BES' || type_chck == 'HOP') {
+                  if(!code_amq(type,tooth,code,age, surface))
+                    $(this).focus();
+                  
+                  if(!code_amq_canal(type, tooth, code, age))
+                    $(this).focus();
+                  
+                  if(!code_amq_endo(type, tooth, code, age)) 
+                    $(this).focus();
+                  
+                  if(!code_amq_abla(type, tooth, code, age)) 
+                    $(this).focus();
+                    
+                  if(!code_amq_cour(type, tooth, code, age))
+                    $(this).focus();
+            
+                  if(!prothese(type, code))
+                    $(this).focus();
+                  
+                  if(ablation_same_tooth_two_times(code)) {
+                    $(this).focus();
+                    warnMsg(msgerr.msg087);
+                  }
+                    
+              } else if (is_dent_anterieur(dent_chck)) {
+                  if ((code_chck == ' ') || (surf_chck == 'O')) {
+                      // FALSE
+                      warnMsg(msgerr.msg021);
+                  }
 
+              } else {
+                  if ((code_chck == ' ') || (surf_chck == 'I')) {
+                      //FALSE
+                      warnMsg(msgerr.msg021);
+                  }
+
+              }
               break;
       }
     }

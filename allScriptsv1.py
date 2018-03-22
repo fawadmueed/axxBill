@@ -23,8 +23,8 @@ from email import Encoders
 print 'Content-type: text/json; charset=utf-8\n\n'
 
 form = cgi.FieldStorage()
-tx = form["tx"].value
-#tx = "GenerIdMachine"
+#tx = form["tx"].value
+tx = "getEmailParams"
 #global variable to replace for each clinic
 #uri = os.environ["AXXIUM_WEBAPI_URL"]    # 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
 uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
@@ -1129,32 +1129,57 @@ if (tx == "GenerIdMachine"):
         # pIdUtilisateur = 'AGR18011'
         # pMotDePasse = 'axxium3800d'
 
-        #read credentials an email parameters from json
-        # if os.path.isfile('json/ramqCredentials/'+clinicId+'.json'):
-        #     json_data = open('json/ramqCredentials/'+clinicId+'.json', 'r')
-        #     data = json.load(json_data)
-        #     json_data.close()
+        # declare parameters
 
-        #     #credentials params
-        #     pMachineIdPass = data["MachineIdPass"]	
-        #     pMachineId = data["MachineId"]
-        #     pNoIntervenant = data["NoIntervenant"]
+        #credentials params
+        pMachineIdPass = ''
+        pMachineId = ''
+        pNoIntervenant = ''
 
-        #     pClinicId = data["ClinicId"]
-        #     pNofact = data["nofact"]
-        #     #pCreationDate = data["CreationDate"]
+        pClinicId = ''
+        pNofact = 0
+        pCreationDate = ''
 
-        #     #email params
-        #     pEmailUser = data["emailUser"]
-        #     pEmailSsl = data["emailSsl"]
-        #     pEmailCC = data["emailCC"]
-        #     pEmailHost = data["emailHost"]
-        #     pEmailPort = data["emailPort"]
-        #     pEmailFrom = data["emailFrom"]
-        #     pEmailPassword = data["emailPassword"]
-        #     pEmailSubject = data["emailSubject"]
-        #     pEmailFromDisplayName = data["emailFromDisplayName"]
-        #     pEmailBody = data["emailBody"]
+        #email params
+        pEmailUser = ''
+        pEmailSsl = ''
+        pEmailCC = ''
+        pEmailHost = ''
+        pEmailPort = ''
+        pEmailFrom = ''
+        pEmailPassword = ''
+        pEmailSubject = ''
+        pEmailFromDisplayName = ''
+        pEmailBody = ''
+
+
+
+        #read parameters from json file if the file exist
+        if os.path.isfile('json/ramqCredentials/'+clinicId+'.json'):
+            json_data = open('json/ramqCredentials/'+clinicId+'.json', 'r')
+            data = json.load(json_data)
+            json_data.close()
+
+            #credentials params
+            pMachineIdPass = data["MachineIdPass"]	
+            pMachineId = data["MachineId"]
+            pNoIntervenant = data["NoIntervenant"]
+
+            pClinicId = data["ClinicId"]
+            pNofact = data["nofact"]
+            pCreationDate = data["CreationDate"]
+
+            #email params
+            pEmailUser = data["emailUser"]
+            pEmailSsl = data["emailSsl"]
+            pEmailCC = data["emailCC"]
+            pEmailHost = data["emailHost"]
+            pEmailPort = data["emailPort"]
+            pEmailFrom = data["emailFrom"]
+            pEmailPassword = data["emailPassword"]
+            pEmailSubject = data["emailSubject"]
+            pEmailFromDisplayName = data["emailFromDisplayName"]
+            pEmailBody = data["emailBody"]
 
 
 
@@ -1179,7 +1204,25 @@ if (tx == "GenerIdMachine"):
                     message = {'outcome' : 'error', 'message': '%s'%ServerError}
                     print json.dumps(message)
                 else:        
-                    dataJSON = {'ClinicId': clinicId, 'MachineId': IdMachine, 'MachineIdPass': MotDePasseMachine, 'NoIntervenant': pNoIntervenant, 'CreationDate' : datetime.now().strftime('%Y-%m-%d')}
+                    #dataJSON = {'ClinicId': clinicId, 'MachineId': IdMachine, 'MachineIdPass': MotDePasseMachine, 'NoIntervenant': pNoIntervenant, 'CreationDate' : datetime.now().strftime('%Y-%m-%d')}
+                    dataJSON = {
+                        'ClinicId': clinicId, 
+                        'nofact': pNofact,
+                        'MachineId': IdMachine, 
+                        'MachineIdPass': MotDePasseMachine, 
+                        'NoIntervenant': pNoIntervenant, 
+                        'CreationDate' : datetime.now().strftime('%Y-%m-%d'),
+                        'emailUser' : pEmailUser,
+                        'emailSsl' : pEmailSsl,
+                        'emailCC' : pEmailCC,
+                        'emailHost' : pEmailHost,
+                        'emailPort' : pEmailPort,
+                        'emailFrom' : pEmailFrom,
+                        'emailPassword' : pEmailPassword,
+                        'emailSubject' : pEmailSubject,
+                        'emailFromDisplayName' : pEmailFromDisplayName,
+                        'emailBody' : pEmailBody
+                        }
                     logFile = open('json/ramqCredentials/'+ clinicId + '.json', 'w')
                     logFile.write(json.dumps(dataJSON))
                     logFile.close()
@@ -1807,6 +1850,60 @@ if tx == "sendPdf3":
         
 
         
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+if tx == "getEmailParams":
+    try:
+        clinicId = form['clinicId'].value
+        #clinicId = 'AGP18011'
+
+        pEmailUser = ''
+        pEmailSsl = ''
+        pEmailCC = ''
+        pEmailHost = ''
+        pEmailPort = ''
+        pEmailFrom = ''
+        pEmailPassword = ''
+        pEmailSubject = ''
+        pEmailFrom = ''
+        pEmailBody = ''
+
+        
+        # #read parameters from json file if the file exist
+        if os.path.isfile('json/ramqCredentials/'+clinicId+'.json'):
+            json_data = open('json/ramqCredentials/'+clinicId+'.json', 'r')
+            data = json.load(json_data)
+            json_data.close()
+
+            #email params
+            pEmailUser = data["emailUser"].encode('utf-8')
+            pEmailSsl = data["emailSsl"].encode('utf-8')
+            pEmailCC = data["emailCC"].encode('utf-8')
+            pEmailHost = data["emailHost"].encode('utf-8')
+            pEmailPort = data["emailPort"].encode('utf-8')
+            pEmailFrom = data["emailFrom"].encode('utf-8')
+            pEmailPassword = data["emailPassword"].encode('utf-8')
+            pEmailSubject = data["emailSubject"].encode('utf-8')
+            pEmailFrom = data["emailFrom"].encode('utf-8')
+            pEmailBody = data["emailBody"].encode('utf-8')
+
+        #jsonMessage = '{"emailBody" : "%s", "emailPort": "%s", "pEmailHost": "%s", "emailSubject": "%s", "emailFromDisplayName": "%s", "emailUser": "%s", "pEmailPassword": "%s"}'%(pEmailBody, pEmailPort, pEmailHost, pEmailSubject, pEmailFromDisplayName, pEmailUser,pEmailPassword)
+        jsonMessage = {
+            "emailBody" : pEmailBody,
+            "emailPort": pEmailPort,
+            "emailHost": pEmailHost,
+            "emailSubject": pEmailSubject,
+            "emailFrom": pEmailFrom,
+            "emailUser": pEmailUser,
+            "emailPassword": pEmailPassword
+            }
+
+        strMessage = json.dumps(jsonMessage)
+        print '{ "outcome":"success", "message" :'+ strMessage+'}'
+
     except:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

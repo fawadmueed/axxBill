@@ -60,6 +60,7 @@
     <script src="javascript/axxium/factTable_PlanTrait_Validation.js"></script>
     <script src="javascript/axxium/sendEmail.js"></script>
     <script src="javascript/axxium/treatmentHist.js"></script>
+    <script src="javascript/axxium/ramqElemCtx.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -1000,20 +1001,20 @@
                                             <div class="ui compact segment" style="padding:30px">
                                              <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
-                                                        <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
+                                                        <input type="radio" id="optTarifFactRegular" name="tarif_fact" checked="checked" value="1" class="type_rate">
                                                         <label style="font-weight: bold">Tarif régulier</label>    
                                                     </div>
 
                                                 </div> <br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
-                                                        <input type="radio" name="tarif_fact" value="2" class="type_rate">
+                                                        <input type="radio" id="optTarifFactSpecial" name="tarif_fact" value="2" class="type_rate">
                                                         <label style="font-weight: bold">Tarif spécial</label>
                                                     </div>
                                                 </div><br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox" style="padding-left:20px">
-                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate">
+                                                        <input type="radio" id="optTarifFactHospital" name="tarif_fact" value="3" class="type_rate">
                                                         <label style="font-weight: bold">Cas hospitalier</label>
                                                     </div>
                                                 </div>
@@ -3163,7 +3164,7 @@
                                     </div>
                                 </div>
                                 <div class="ui segment">
-                                    <h4 class="ui horizontal divider header">Traitement dentaire</h4>
+                                    <h4 class="ui horizontal divider header">Modification de traitement</h4>
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type </label>
@@ -3298,7 +3299,12 @@
                                     <h4 class="ui horizontal divider header">Lieu de référence</h4>
                                     <div class="eight wide field">
                                         <label>Situation liée au lieu de référence</label>
-                                        <input type="text" name="typ_refre_lieu_denti">
+                                        <!--<input type="text" name="typ_refre_lieu_denti">-->
+                                        <select  name="typ_refre_lieu_denti">
+                                            <option value=""></option>
+                                            <option value="10">Établissement pris en charge lors d'une garde multi-établissements</option>
+                                            <option value="14">Lieu de départ pour un déplacement</option>
+                                        </select>
                                     </div>
                                     <div class="ui form segment">
                                         <h4 class="ui horizontal divider header">Identification du lieu</h4>

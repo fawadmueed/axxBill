@@ -23,8 +23,8 @@ from email import Encoders
 print 'Content-type: text/json; charset=utf-8\n\n'
 
 form = cgi.FieldStorage()
-#tx = form["tx"].value
-tx = "getEmailParams"
+tx = form["tx"].value
+#tx = "getEmailParams"
 #global variable to replace for each clinic
 #uri = os.environ["AXXIUM_WEBAPI_URL"]    # 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
 uri = 'http://ec2-52-38-58-195.us-west-2.compute.amazonaws.com/axxium'
@@ -1908,3 +1908,75 @@ if tx == "getEmailParams":
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+
+
+if tx == "updateEmailParams":
+    try:
+        clinicId = form['clinicId'].value
+
+        #get email params from body
+        pEmailUserBody = form.getvalue('emailUser','')
+        pEmailHostBody = form.getvalue('emailHost','')
+        pEmailPortBody = form.getvalue('emailPort','')
+        pEmailFromBody = form.getvalue('emailFrom','')
+        pEmailPasswordBody = form.getvalue('emailPassword','')
+        pEmailSubjectBody = form.getvalue('emailSubject','')
+        pEmailBodyBody = form.getvalue('emailBody','')
+
+        #read  parameters from json file if the file exist
+        if os.path.isfile('json/ramqCredentials/'+clinicId+'.json'):
+            json_data = open('json/ramqCredentials/'+clinicId+'.json', 'r')
+            data = json.load(json_data)
+            json_data.close()
+
+            # read credentials params
+            pMachineIdPass = data["MachineIdPass"]	
+            pMachineId = data["MachineId"]
+            pNoIntervenant = data["NoIntervenant"]
+
+            pClinicId = data["ClinicId"]
+            pNofact = data["nofact"]
+            pCreationDate = data["CreationDate"]
+
+            #replace email params by params from body
+            pEmailUser = pEmailUserBody
+            pEmailSsl = data["emailSsl"]
+            pEmailCC = data["emailCC"]
+            pEmailHost = pEmailHostBody
+            pEmailPort = pEmailPortBody
+            pEmailFrom = pEmailFromBody
+            pEmailPassword = pEmailPasswordBody
+            pEmailSubject = pEmailSubjectBody
+            pEmailFromDisplayName = data["emailFromDisplayName"]
+            pEmailBody = pEmailBodyBody
+
+            #update json file
+            dataJSON = {
+                        'ClinicId': clinicId, 
+                        'nofact': pNofact,
+                        'MachineId': pMachineId, 
+                        'MachineIdPass': pMachineIdPass, 
+                        'NoIntervenant': pNoIntervenant, 
+                        'CreationDate' : pCreationDate,
+                        'emailUser' : pEmailUser,
+                        'emailSsl' : pEmailSsl,
+                        'emailCC' : pEmailCC,
+                        'emailHost' : pEmailHost,
+                        'emailPort' : pEmailPort,
+                        'emailFrom' : pEmailFrom,
+                        'emailPassword' : pEmailPassword,
+                        'emailSubject' : pEmailSubject,
+                        'emailFromDisplayName' : pEmailFromDisplayName,
+                        'emailBody' : pEmailBody
+                        }
+            logFile = open('json/ramqCredentials/'+ clinicId + '.json', 'w')
+            logFile.write(json.dumps(dataJSON))
+            logFile.close()
+            print '{ "outcome" : "success", "message" : "" }' 
+        else:
+            print '{ "outcome" : "error", "message" : "file not found" }'
+    except:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print '{ "outcome" : "error", "message" : "%s, %s. %s, line %s" }'%(exc_type, exc_obj, fname, exc_tb.tb_lineno)
+        

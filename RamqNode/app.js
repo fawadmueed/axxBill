@@ -51,6 +51,7 @@ app.post('/SoumissionDemandesPaiement', function (req, response) {
             var resp = '';
             var noFactExt = '';
             var jetonComm = '';
+            globRamqTotal = 0.00;
 
             var ramqAns = CleanXML(body);
             //var ramqAns = CleanXML(strXml);

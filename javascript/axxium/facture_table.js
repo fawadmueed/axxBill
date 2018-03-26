@@ -449,6 +449,7 @@ function modFactTableMore(x)
     var currentDate = date.toISOString().slice(0, 10);
 
   var row_id=$(x).closest('tr').attr('id');
+  var this_Row_Code=$(x).closest('tr').children('td[data-target="Code"]').text();
 
    switch(dent_Type){
 
@@ -458,8 +459,11 @@ function modFactTableMore(x)
               $('#modal_factTbl_more').html(data);
               $('form #rowId_dent').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);  //gets the Complete Array of FORM Data to populate
-              populateForm('form_dentiste', thisFromData);
+              var get_elemContxtToPop=ramqElmCtxSelectElmCtxOnUI(this_Row_Code);
+              thisFromData=assign_elem_context_select(thisFromData,get_elemContxtToPop);
+              populateForm('form_dentiste',thisFromData);          
               document.getElementById('date_de_service_dentiste').value = currentDate;
+
               break;
 
       case 'Chirurgiens':
@@ -487,11 +491,23 @@ function modFactTableMore(x)
   $('.modalFactTableMore').modal('show');
 }
 
-function getThisFormData(row_id){
+function assign_elem_context_select(thisFromData,elemContxtVal)
+{
+  $.each(elemContxtVal,function(id,val){
+    var elem_cont_obj={};
+    elem_cont_obj.name="liste_elm_contx_denti";
+    elem_cont_obj.value=val.toString();
+    thisFromData.push(elem_cont_obj);
+  })
+  return thisFromData;
+}
+
+function getThisFormData(row_id)
+{
 
   var arrayToPopulateForm=[];
-  $.each(arrGrilleDeFacturation_forms,function(idx,value){
-
+  $.each(arrGrilleDeFacturation_forms,function(idx,value)
+  {
 
     $.each(value,function(id,val){
 
@@ -664,7 +680,8 @@ function deleteFromArray(toDo,namR,valR){
         }
 }
 
-function updateArray(namR,valR,newArray){
+function updateArray(namR,valR,newArray)
+{
    // Update complete array if Matched in its object nameR and valR send i.e : nameR=row_id valR=2
 
   var nameD=namR;
@@ -691,7 +708,7 @@ function updateArray(namR,valR,newArray){
           }
         }
     return true;
-    }
+  }
 
 
 

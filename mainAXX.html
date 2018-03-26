@@ -60,6 +60,7 @@
     <script src="javascript/axxium/factTable_PlanTrait_Validation.js"></script>
     <script src="javascript/axxium/sendEmail.js"></script>
     <script src="javascript/axxium/treatmentHist.js"></script>
+    <script src="javascript/axxium/ramqElemCtx.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -714,7 +715,7 @@
                                             <input type="text" maxlength="5" id="nombre_factures_regie">
                                         </div>
                                         <label>Montant total</label>
-                                        <div class="one wide field">
+                                        <div class="two wide field">
                                             <input type="text" id="total_factures_regie">
                                             <div class="ui basic label">$</div>
                                         </div>
@@ -1000,20 +1001,20 @@
                                             <div class="ui compact segment" style="padding:30px">
                                              <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
-                                                        <input type="radio" name="tarif_fact" checked="checked" value="1" class="type_rate">
+                                                        <input type="radio" id="optTarifFactRegular" name="tarif_fact" checked="checked" value="1" class="type_rate">
                                                         <label style="font-weight: bold">Tarif régulier</label>    
                                                     </div>
 
                                                 </div> <br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox">
-                                                        <input type="radio" name="tarif_fact" value="2" class="type_rate">
+                                                        <input type="radio" id="optTarifFactSpecial" name="tarif_fact" value="2" class="type_rate">
                                                         <label style="font-weight: bold">Tarif spécial</label>
                                                     </div>
                                                 </div><br>
                                                 <div class=" ui left floated   field"">
                                                     <div class="ui  toggle checkbox" style="padding-left:20px">
-                                                        <input type="radio" name="tarif_fact" value="3" class="type_rate">
+                                                        <input type="radio" id="optTarifFactHospital" name="tarif_fact" value="3" class="type_rate">
                                                         <label style="font-weight: bold">Cas hospitalier</label>
                                                     </div>
                                                 </div>
@@ -1912,12 +1913,12 @@
                                     <label>Remboursement demandé par Patient</label>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                        <input type="radio" id="remb_dem_oui" name="rem_dem" checked="checked">
+                                        <input type="radio" id="remb_dem_oui" name="rem_dem" readonly>
                                         <label>Oui</label></div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                        <input type="radio" id="remb_dem_non" name="rem_dem">
+                                        <input type="radio" id="remb_dem_non" name="rem_dem" checked="checked" readonly>
                                         <label>Non</label></div>
                                     </div>
                                 </div>
@@ -1926,13 +1927,13 @@
                                     <label>La facture est associée à une demande de remboursement d'un bénéficiare.</label>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" checked="checked" >
+                                            <input type="radio" id="optRegiIndFactAssosDrYes" name="rem_ben1" readonly >
                                             <label>Oui</label>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" >
+                                            <input type="radio" id="optRegiIndFactAssosDrNo" name="rem_ben1" checked="checked" readonly>
                                             <label>Non</label>
                                         </div>
 
@@ -1951,7 +1952,7 @@
                                             <div class="ui horizontal divider"> <strong>PROFESSIONEL</strong></div>
                                             <div class="field">
                                                 <label>No du professionel</label>
-                                                <input type="text" name="" id="pamnt_no_prof">
+                                                <input type="text" name="" id="pamnt_no_prof" readonly="readonly">
                                             </div>
                                             <div class="field">
                                                 <label>No du groupe</label>
@@ -1992,6 +1993,22 @@
                                                     <label>Numéro du lieu</label>
                                                     <input type="text" name="" id="num_lieu_genr_fact">
                                                 </div>
+                                                <div class="field">
+                                                    <label>Secteur d'activité</label>
+                                                    <select type="hidden" name="secteur_active" id="secteur_active">
+                                                        <option selected="selected"></option>
+                                                        <option value="01"> Clinique externe </option>
+                                                        <option value="35"> Clinique d’urgence  </option>
+                                                        <option value="53"> Centre de douleur chronique  </option>
+                                                        <option value="02"> Section gériatrique</option>
+                                                        <option value="08"> Section psychiatrique </option>
+                                                        <option value="15"> Unité coronarienne </option>
+                                                        <option value="05"> Unité de soins de longue durée (hébergement) </option>
+                                                        <option value="04"> Unité de soins de longue durée (prolongés) </option>
+                                                        <option value="03"> Unité de soins généraux et spécialisés </option>
+                                                        <option value="16"> Unité de soins intensifs </option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="codif_selection_non" style="display: none;">
                                                 <div class=" field">
@@ -2006,23 +2023,28 @@
                                                     <label>No. bureau</label>
                                                     <input type="text" name="" id="no_bur_facture">
                                                 </div>
+
+                                                <label>Type de lieu</label>
+                                                <div class="inline field">
+                                                    <div class="ui radio checkbox">
+                                                        <input type="radio" name="type_lieu_pamnt" id="type_lieu_cab" checked="checked">
+                                                        <label>Cabinet</label>
+                                                    </div>
+                                                </div>
+                                                <div class="inline field">
+                                                    <div class="ui radio checkbox">
+                                                        <input type="radio" name="type_lieu_pamnt" id="type_lieu_dom">
+                                                        <label>Domicile</label>
+                                                    </div>
+                                                </div>
+                                                <div class="inline field">
+                                                    <div class="ui radio checkbox">
+                                                        <input type="radio" name="type_lieu_pamnt" id="type_lieu_aut">
+                                                        <label>Autre</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="field">
-                                                <label>Secteur d'activité</label>
-                                                <select type="hidden" name="secteur_active" id="secteur_active">
-                                      <option selected="selected"></option>
-                                      <option value="01"> Clinique externe </option>
-                                      <option value="35"> Clinique d’urgence  </option>
-                                      <option value="53"> Centre de douleur chronique  </option>
-                                      <option value="02"> Section gériatrique</option>
-                                      <option value="08"> Section psychiatrique </option>
-                                      <option value="15"> Unité coronarienne </option>
-                                      <option value="05"> Unité de soins de longue durée (hébergement) </option>
-                                      <option value="04"> Unité de soins de longue durée (prolongés) </option>
-                                      <option value="03"> Unité de soins généraux et spécialisés </option>
-                                      <option value="16"> Unité de soins intensifs </option>
-                                  </select>
-                                            </div>
+                                            
                                             <script type="text/javascript">
                                                 $('.ui.dropdown').dropdown();
                                             </script>
@@ -2041,22 +2063,7 @@
                                                     // alert($('#lieu_codifie_non').checked());
                                                 })
                                             </script>
-                                            <label>Type de lieu</label>
-                                            <div class="inline field">
-                                                <div class="ui radio checkbox">
-                                                <input type="radio" name="type_lieu_pamnt" id="type_lieu_cab">
-                                                <label>Cabinet</label>
-                                            </div></div>
-                                            <div class="inline field">
-                                                <div class="ui radio checkbox">
-                                                <input type="radio" name="type_lieu_pamnt" id="type_lieu_dom">
-                                                <label>Domicile</label>
-                                            </div></div>
-                                            <div class="inline field">
-                                                <div class="ui radio checkbox">
-                                                <input type="radio" name="type_lieu_pamnt" id="type_lieu_aut">
-                                                <label>Autre</label>
-                                            </div></div>
+                                            
                                         </div>
                                     </div>
                                     <div class="eight wide column">
@@ -2558,11 +2565,11 @@
                                     <input type="text" name="" id="pamnt_no_grp_regie_fact">
                                 </div>
                                 <div class="inline field">
-                                    <input type="radio" class="optRegiePa_radio_upd" name="fact_paimn_radio" id="optRegiePaimentComptePers_upd" checked="checked">
+                                    <input type="radio" class="optRegiePa_radio_upd" name="fact_paimn_radio_upd" id="optRegiePaimentComptePers_upd" checked="checked">
                                     <label>Compte Personnel</label>
                                 </div>
                                 <div class="inline field">
-                                    <input class="optRegiePa_radio_upd" type="radio" name="fact_paimn_radio" id="optRegiePaimentCompteAdmin_upd">
+                                    <input class="optRegiePa_radio_upd" type="radio" name="fact_paimn_radio_upd" id="optRegiePaimentCompteAdmin_upd">
                                     <label>Compte Administratif</label>
                                 </div>
                                 <div class="txtRegiPa_upd" style="display: none">
@@ -2655,6 +2662,19 @@
                             <option class="item" value="03"> Unité de soins généraux et spécialisés </option>
                             <option class="item" value="16"> Unité de soins intensifs </option>
                           </select>
+                                    <label>Type de lieu</label>
+                                    <div class="inline field">
+                                        <input type="radio" name="type_lieu_pamnt_upd" id="type_lieu_cab_regie_fact" checked="checked">
+                                        <label>Cabinet</label>
+                                    </div>
+                                    <div class="inline field">
+                                        <input type="radio" name="type_lieu_pamnt_upd" id="type_lieu_dom_regie_fact">
+                                        <label>Domicile</label>
+                                    </div>
+                                    <div class="inline field">
+                                        <input type="radio" name="type_lieu_pamnt_upd" id="type_lieu_aut_regie_fact">
+                                        <label>Autre</label>
+                                    </div>
                                 </div>
                                 <script type="text/javascript">
                                     $('.ui.dropdown').dropdown();
@@ -2674,19 +2694,7 @@
                                         // alert($('#lieu_codifie_non').checked());
                                     })
                                 </script>
-                                <label>Type de lieu</label>
-                                <div class="inline field">
-                                    <input type="radio" name="type_lieu_pamnt" id="type_lieu_cab_regie_fact">
-                                    <label>Cabinet</label>
-                                </div>
-                                <div class="inline field">
-                                    <input type="radio" name="type_lieu_pamnt" id="type_lieu_dom_regie_fact">
-                                    <label>Domicile</label>
-                                </div>
-                                <div class="inline field">
-                                    <input type="radio" name="type_lieu_pamnt" id="type_lieu_aut_regie_fact">
-                                    <label>Autre</label>
-                                </div>
+                                
                             </div>
                             <div class="field" id="spec_ramq_numb">
                                 <label class="trn">Numéro de AMQ Spécial</label>
@@ -3156,7 +3164,7 @@
                                     </div>
                                 </div>
                                 <div class="ui segment">
-                                    <h4 class="ui horizontal divider header">Traitement dentaire</h4>
+                                    <h4 class="ui horizontal divider header">Modification de traitement</h4>
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type </label>
@@ -3193,6 +3201,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="" >
+                                    <strong><label>Type d'anesthésie</label></strong>
+                                    <div class="six inline fields">
+                                        <div class="field">
+                                            <input type="radio" name="typ_anesthesia_denti" value="L">
+                                            <label>Locale</label>
+                                        </div>
+                                        <div class="field">
+                                            <input type="radio" name="typ_anesthesia_denti" value="G">
+                                            <label>Generale</label>
+                                        </div>
+                                        <div class="field">
+                                            <input type="radio" name="typ_anesthesia_denti" value="N" checked="checked">
+                                            <label>N/A</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="six fields">
                                     <div class="five wide field">
                                         <label>Médicament consommé</label>
@@ -3291,7 +3318,12 @@
                                     <h4 class="ui horizontal divider header">Lieu de référence</h4>
                                     <div class="eight wide field">
                                         <label>Situation liée au lieu de référence</label>
-                                        <input type="text" name="typ_refre_lieu_denti">
+                                        <!--<input type="text" name="typ_refre_lieu_denti">-->
+                                        <select  name="typ_refre_lieu_denti">
+                                            <option value=""></option>
+                                            <option value="10">Établissement pris en charge lors d'une garde multi-établissements</option>
+                                            <option value="14">Lieu de départ pour un déplacement</option>
+                                        </select>
                                     </div>
                                     <div class="ui form segment">
                                         <h4 class="ui horizontal divider header">Identification du lieu</h4>
@@ -3300,31 +3332,36 @@
                                             <label>Lieu codifié à la Régie</label>
                                         </div>
                                         <div class="inline field">
-                                            <input type="radio" class="lieu" name="lieu_refre_phys_denti" id="lieu_codifie_non_dent" value="Lieu non codifié">
+                                            <input type="radio" class="lieu" name="lieu_refre_phys_denti" id="lieu_codifie_non_dent" value="Lieu non codifié" >
                                             <label>Lieu non codifié</label>
                                         </div>
-                                        <div class="two fields">
-                                            <div class="three wide field" id="codif_selection_lieu" style="display: none">
+
+                                        <div class="two fields" id="codif_selection_lieu" style="display: none">
+                                            <div class="field">
                                                 <label>Numéro du lieu</label>
                                                 <input type="text" name="id_lieu_phys_denti">
                                             </div>
-                                            <div class="field" id="secteur_active_denti_div" style="display: none">
+                                            <div class="field">
                                                 <label>Secteur d'activité</label>
                                                 <select name="no_sect_activ_refr_denti" id="secteur_active_denti">
-                                  <option></option>
-                                  <option class="item" value="01"> Clinique externe</option>
-                                  <option class="item" value="35"> Clinique d’urgence</option>
-                                  <option class="item" value="53"> Centre de douleur chronique</option>
-                                  <option class="item" value="02"> Section gériatriqu</option>
-                                  <option class="item" value="08"> Section psychiatrique</option>
-                                  <option class="item" value="15"> Unité coronarienne</option>
-                                  <option class="item" value="05"> Unité de soins de longue durée (hébergement)</option>
-                                  <option class="item" value="04"> Unité de soins de longue durée (prolongés)</option>
-                                  <option class="item" value="03"> Unité de soins généraux et spécialisés</option>
-                                  <option class="item" value="16"> Unité de soins intensifs</option>
-                                </select>
+                                                    <option></option>
+                                                    <option class="item" value="01"> Clinique externe</option>
+                                                    <option class="item" value="35"> Clinique d’urgence</option>
+                                                    <option class="item" value="53"> Centre de douleur chronique</option>
+                                                    <option class="item" value="02"> Section gériatriqu</option>
+                                                    <option class="item" value="08"> Section psychiatrique</option>
+                                                    <option class="item" value="15"> Unité coronarienne</option>
+                                                    <option class="item" value="05"> Unité de soins de longue durée (hébergement)</option>
+                                                    <option class="item" value="04"> Unité de soins de longue durée (prolongés)</option>
+                                                    <option class="item" value="03"> Unité de soins généraux et spécialisés</option>
+                                                    <option class="item" value="16"> Unité de soins intensifs</option>
+                                                </select>
                                             </div>
+                                            <!--<div class="inline field" id="secteur_active_denti_div" style="display: none">
+                                                    
+                                            </div>-->
                                         </div>
+
                                         <div class="three fields" id="codif_selection_non" style="display: none">
                                             <div class="field">
                                                 <label>Code postal</label>

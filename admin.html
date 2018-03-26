@@ -28,6 +28,7 @@
   	<script src="javascript/axxium/facture.js"></script>
 	<!--<script src="javascript/axxium/ramq.js"></script>-->
 	<script src="javascript/axxium/ramqCredentialsAdmin.js"></script>
+    <script src="javascript/axxium/emailParamsAdmin.js"></script>
 
 	   <script src="https://cdn.datatables.net/1.10.11/js/dataTables.semanticui.min.js"></script>
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/dataTables.semanticui.min.css">
@@ -73,6 +74,7 @@
 		      <a class=" item" data-tab="Dashboard">Dashboard</a>
 		      <a class="active item" data-tab="Insurances">Insurances</a>
 		      <a class=" item" data-tab="MachindID">RamQ Credentials</a>
+              <a class=" item" data-tab="EmailParams" onclick="emailParamsAdminGet();">Email Parameters</a>
 		      <a class="item" data-tab="About">About</a>
 		    </div>
   		</div>
@@ -166,6 +168,7 @@
 									<div class="five wide column"></div>
 											<div class="eight wide column">
 												<div class="ui axxium tiny button" onclick="RamqUpdateMachineId()">UPDATE</div>
+                                                <!--<div class="ui axxium tiny button" onclick="RamqUpdateMachineIdNode()">UPDATE Node</div>-->
 												<div class="ui blue tiny button" onclick="" style="display: none">NEW</div>
 											</div>
 								</div>
@@ -192,6 +195,7 @@
 									<div class="five wide column"></div>
 											<div class="eight wide column">
 												<div class="ui axxium tiny button" onclick="RamqCreateCredentials()">SUBMIT</div>
+                                                <!--<div class="ui axxium tiny button" onclick="RamqCreateCredentialsNode()">SUBMIT NODE</div>-->
 											</div>
 								</div>
 					  		</div>
@@ -200,8 +204,52 @@
 		  		</div>
 		      	
 		    </div>
-
-		  </div>
+            <div class="ui tab teal segment" data-tab="EmailParams">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="seven wide column">
+                            <div class="ui form segment">
+                                <h4 class="ui horizontal divider header">
+                                    <i class="tag icon"></i>Email Parameters
+                                </h4>
+                                <div class="field">
+                                    <label>Email Body</label>
+                                    <input type="text" name="" id="txtEmailBody">
+                                </div>
+                                <div class="field">
+                                    <label>Email Port</label>
+                                    <input type="text" name="" id="txtEmailPort">
+                                </div>
+                                <div class="field">
+                                    <label>Email Host</label>
+                                    <input type="text" name="" id="txtEmailHost">
+                                </div>
+                                <div class="field">
+                                    <label>Email Subject</label>
+                                    <input type="text" name="" id="txtEmailSubject">
+                                </div>
+                                <div class="field">
+                                    <label>Email From</label>
+                                    <input type="text" name="" id="txtEmailFrom">
+                                </div>
+                                <div class="field">
+                                    <label>Email User</label>
+                                    <input type="text" name="" id="txtEmailUser">
+                                </div>
+                                <div class="field">
+                                    <label>Email Password</label>
+                                    <input type="text" name="" id="txtEmailPassword">
+                                </div>
+                                <div class="ui grid">
+                                    <div class="eight wide column">
+                                        <div class="ui axxium tiny right floated button" onclick="emailParamsAdminUpdate();">UPDATE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+		    </div>
 		 <!--  	<div class="ui tab segment" data-tab="Insurances">
 		  		hello
 		  	</div>

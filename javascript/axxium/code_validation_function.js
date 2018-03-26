@@ -384,7 +384,9 @@
 			return false;
 		}
 
-		function veri_age(a, surffound, date, numjour, ll) {
+		function veri_age(a, surffound, date, numjour, ll, code, dent, surface, strat) {
+
+			var line1, line2, line3;
 			if(numjour != 10000) {
 				var date1 = new Date(date); //MM/DD/YYYY
 				var today = new Date();
@@ -400,31 +402,54 @@
 					return true;
 			}
 
+			line1 = 'Attention !!!  Le traitement a été effectué le ' + date.toString();
+
 			if(dent_Type  == 'Denturologiste') {
 				if(a=="1") {
-
+					line2 = 'avec le code: ' + code;
+					line3 = 'Ce traitement n\'est rémunéré qu\'une fois par ' + (numjour/365).toString() + ' ans';
 				}
 				else {
-
+					line2 = 'Pour être rénuméré, le regarnissage doit être ';
+					line3 = 'effectué un an ou plus après ce traitement.';
 				}
 
 			}
 			else {
 				switch (a)  {
 					case "2":
+						line2 = ', la dent: ' + dent;
 						break;
 					case "3":
+						line2 =  ', la dent: ' + dent;
+						line2 = line2 + ', et la surface: ' + surffound;
 						break;
 					case "4":
+						line2 = ', la dent: ' + dent;
 						break;
 					case "5":
+						line2 =  ', la dent: ' + dent;
+						line2 = line2 + ', et la surface: ' + surface;
 						break;
 				}
-				if(ll) {
 
+				line2 = 'avec le code: ' + code + line2;
+				line3 = 'Ce code a été facturé, il y a moins de ' + numjour.toString();
+				if(ll) {
+					line3 = ' Rémunéré qu\'une fois par ' + numjour.toString() + ' jours';
+				}
+
+				if(numjour == 10000) {
+					if (strat == 2) {
+						line3 = 'Cette dent a déjà été extraite ';
+					}
+					else {
+						line3 = 'Ce traitement n\'est rémunéré qu\'une seule fois';
+					}
 				}
 			}
 			
+			globVarMessageErrorValidation = line1 + '\n' + line2 + '\n' + line3;
 			return false;
 		}
 
@@ -447,7 +472,7 @@
 					if (tmpdate < date01130)
 						tmpdate = date01130;
 					
-					return veri_age('1', ' ', tmpdate, numjour, ll);
+					return veri_age('1', ' ', tmpdate, numjour, ll, code, dent, surface, strat);
 				}
 			}
 			else {
@@ -457,7 +482,7 @@
 					{
 						if(dent_Type == 'Denturologiste') {
 							if(globTreatHist[i].typ == code) {
-								return veri_age(strat, ' ', globTreatHist[i].date, numjour, ll);
+								return veri_age(strat, ' ', globTreatHist[i].date, numjour, ll, code, dent, surface, strat);
 							}
 						}
 						else
@@ -465,13 +490,13 @@
 							switch (strat) {
 								case 1:
 									if(globTreatHist[i].code == code)
-										return veri_age('1', ' ', globTreatHist[i].date, numjour, ll);
+										return veri_age('1', ' ', globTreatHist[i].date, numjour, ll, code, dent, surface, strat);
 
 									break;
 								case 2:
 									if(globTreatHist[i].code == code && globTreatHist[i].dent == dent) {
 										if(globTreatHist[i].surface == surface) {
-											return veri_age('5', ' ', globTreatHist[i].date, numjour, ll);
+											return veri_age('5', ' ', globTreatHist[i].date, numjour, ll, code, dent, surface, strat);
 										} else {
 
 										}
@@ -486,13 +511,13 @@
 									break;
 								case 4:
 									if(globTreatHist[i].code == code)
-										return veri_age('4', ' ', globTreatHist[i].date, numjour, ll);
+										return veri_age('4', ' ', globTreatHist[i].date, numjour, ll, code, dent, surface, strat);
 
 									break;
 								case 5:
 									if(globTreatHist[i].code == code && globTreatHist[i].dent == dent){
 										if(globTreatHist[i].surface == surface) {
-											return veri_age('4', ' ', globTreatHist[i].date, numjour, ll);
+											return veri_age('4', ' ', globTreatHist[i].date, numjour, ll, code, dent, surface, strat);
 										} 
 										else {
 

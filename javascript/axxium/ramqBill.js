@@ -258,12 +258,12 @@ function RamqBillPopulateBillDetails(pArrBilldata)
         $('#carte_as_malad_non_regie_fact').prop('checked', true);
     }
 
-    if (objAdditionalData && objAdditionalData.RembDemParPatient)
+    if (objAdditionalData && objAdditionalData.RembDemParPatient == 'true')
         $('#remb_dem_oui_regie_fact').prop('checked', true);
     else
         $('#remb_dem_non_regie_fact').prop('checked', true);
 
-    if (objAdditionalData && objAdditionalData.IndFactAssosDr)
+    if (objAdditionalData && objAdditionalData.IndFactAssosDr =='true')
         $('#optRegiIndFactAssosDrYes_Upd').prop('checked', true);
     else
         $('#optRegiIndFactAssosDrNo_Upd').prop('checked', true);
@@ -389,7 +389,7 @@ function RamqBillUpdateBillInfo() {
 
     //renseignements complementaires regie
 
-    objAdditionalData.RembDemParPatient = $('#remb_dem_oui_regie_fact').is(':checked');
+    objAdditionalData.RembDemParPatient = $('#remb_dem_oui_regie_fact').is(':checked') ? 'true' : 'false';
     objAdditionalData.IndFactAssosDr = ($('#optRegiIndFactAssosDrYes_Upd').is(':checked')) ? 'true' : 'false';
 
     //professionel

@@ -141,6 +141,36 @@ function RamqUpdateMachineId() {
             });
 }
 
+function RamqUpdateMachineIdNode() {
+    var pNoIntervenant = '18011';
+    var pIdMachine = 'AGR18011W1';
+    var pAncienMotDePasse = '';
+
+    $.ajax
+    ({
+        type: "POST",
+        //the url where you want to sent the userName and password to
+        url: 'http://localhost:3000/ChangePassword',
+        data: JSON.stringify({ NoIntervenant: pNoIntervenant, IdMachine: pIdMachine, AncienMotDePasse: pAncienMotDePasse }),
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (result) {
+            var jsonAnsw = result;
+            var strAnswer = result.response;
+            var objAnswer = JSON.parse(strAnswer);
+
+            var CodeErreur = objAnswer.CodeErreur;
+            var IdMachine = objAnswer.IdMachine;
+            var MotDePasseMachine = objAnswer.MotDePasseMachine;
+            var ServerError = objAnswer.ServerError;
+
+            console.log("RamqUpdateMachineIdNode Answer: " + ' CodeErreur: ' + CodeErreur + ' IdMachine: ' + IdMachine + ' MotDePasseMachine:' + MotDePasseMachine);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
+}
 function RamqCreateCredentials()
 {
     var clinicId = globClinicId;
@@ -155,6 +185,34 @@ function RamqCreateCredentials()
                 else
                     alert("Credentials were created successfully.");
             });
+}
+
+function RamqCreateCredentialsNode() {
+    var pNoIntervenant = "18011"; //$('#no_trnsm_ramq_new').val();//18011
+    var pIdUtilisateur = "AGR18011"; //$('#no_identif_ramq_new').val(); //AGR18011
+    var pMotDePasse = "axxium3800d"; // $('#acien_mot_ramq_new').val(); //axxium3800d
+    $.ajax
+    ({
+        type: "POST",
+        //the url where you want to sent the userName and password to
+        url: 'http://localhost:3000/GenerIdMachine',
+        data: JSON.stringify({NoIntervenant: pNoIntervenant, IdUtilisateur: pIdUtilisateur, MotDePasse: pMotDePasse }),
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (result) {
+            var jsonAnsw = result;
+            var strAnswer = result.response;
+            var objAnswer = JSON.parse(strAnswer);
+            var CodeErreur = objAnswer.CodeErreur;
+            var IdMachine = objAnswer.IdMachine;
+            var MotDePasseMachine = objAnswer.MotDePasseMachine;
+
+            console.log("RamqCreateCredentialsNode Answer: " + ' CodeErreur: ' + CodeErreur + ' IdMachine: ' + IdMachine + ' MotDePasseMachine:' + MotDePasseMachine);
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    })
 }
 
 //Returns number of days between two dates (date2 - date1)

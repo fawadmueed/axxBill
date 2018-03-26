@@ -206,7 +206,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 });
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_planTrait td[data-target='Surface']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Surface'],#factTableBody_planTrait td[data-target='Surface'],#factTableBody_regie td[data-target='Surface']", function(){
 
     init_code = '';
     globVarMessageErrorValidation = '';
@@ -304,7 +304,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
   })
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_planTrait td[data-target='Code']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Code'],#factTableBody_planTrait td[data-target='Code'],#factTableBody_regie td[data-target='Code']", function(){
 
       globVarMessageErrorValidation = '';
       var type_s=$(this).siblings("td[data-target='Type']").text();
@@ -413,7 +413,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
      });
 
 
-    $(document.body).on('focusout', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais', #factTableBody_planTrait td[data-target='Frais']", function(){
+    $(document.body).on('focusout', "#factTableBody td[data-target='Frais'],#factTableBody_regie td[data-target='Frais'], #factTableBody_planTrait td[data-target='Frais']", function(){
 
         var valid;
         var valFrais=$(this).text();
@@ -494,7 +494,7 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
 
     });
 
-     $(document.body).on('focusout', "#factTableBody td[data-target='codeRole'],#factTableBody_regie td[data-target='codeRole', #factTableBody_planTrait td[data-target='codeRole']", function(){
+     $(document.body).on('focusout', "#factTableBody td[data-target='codeRole'],#factTableBody_regie td[data-target='codeRole'], #factTableBody_planTrait td[data-target='codeRole']", function(){
 
       var thisTxt=$(this).text();
       var type=$(this).siblings("td[data-target='Type']").text();

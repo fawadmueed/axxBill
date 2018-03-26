@@ -487,7 +487,12 @@ function Regie_fact_modal()
    	$('#factTableBody_regie tr').remove();
     populate_table(arrGrilleDeFacturation_update);
     
-    $('.modal_regie_fact_modal.modal').modal('show');
+    $('.modal_regie_fact_modal.modal').modal(
+     {
+       allowMultiple: true 
+     });
+    
+     $('.modal_regie_fact_modal.modal').modal('show').modal({  allowMultiple: true });
 
    }
 

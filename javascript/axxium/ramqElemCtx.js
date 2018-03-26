@@ -96,7 +96,7 @@ function ramqElmCtxIsTreatModificator41(pCode, pAnesthesiaType, pIsTarifHospital
     return treatmentMod41;
 }
 
-function ramqElmCtxSelectElmCtxonUI(pCode)
+function ramqElmCtxSelectElmCtxOnUI(pCode)
 {
     return ['1752','1727'];
 }

@@ -459,12 +459,9 @@ function modFactTableMore(x)
               $('#modal_factTbl_more').html(data);
               $('form #rowId_dent').val(row_id); //Assign id of Row Working - to the Form
               var thisFromData=getThisFormData(row_id);  //gets the Complete Array of FORM Data to populate
-
               var get_elemContxtToPop=ramqElmCtxSelectElmCtxOnUI(this_Row_Code);
               thisFromData=assign_elem_context_select(thisFromData,get_elemContxtToPop);
-              populateForm('form_dentiste',thisFromData);
-
-              
+              populateForm('form_dentiste',thisFromData);          
               document.getElementById('date_de_service_dentiste').value = currentDate;
 
               break;

@@ -1709,7 +1709,8 @@ function RamqPopulateVisionRDataObj(pData) {
     res.NamExpDate = pData.NamExpDate;//'2019-01-01';
     //res.IndFactAssosDr = 'true';//? Indique si la facture est associée à une demande de remboursement d'un bénéficiare.
     res.InsTypeList = pData.InsTypeList;//['SUN', 'AGA']; //DES - v2, SUN v4
-    res.TypProf = pData.TypProf;//'Dentiste'; 
+    // res.TypProf = pData.TypProf;//'Dentiste'; 
+    res.TypProf="Chirurgiens";
 
     //populate global variable to avoid appearing modal select prof type.
     dent_Type = res.TypProf;

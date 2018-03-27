@@ -2440,7 +2440,7 @@
             </div>
         </div>
     </div>
-    <div class="ui modal_regie_fact_modal large modal">
+    <div class="ui modal_regie_fact_modal fullscreen modal">
         <div class="header">
             <i class="money icon"></i>Facture Régie
         </div>
@@ -3458,13 +3458,15 @@
                             <div class="eight wide column">
                                 <div class="ui segment">
                                     <h4 class="ui horizontal divider header"><label>Prothèse en acrylique</label></h4>
-                                    <div class="field">
-                                        <label>No d'autorisation</label>
-                                        <input type="text" name="no_autor_proth_acryl_bucc">
-                                    </div>
-                                    <div class="field">
-                                        <label>Date d'autorisation</label>
-                                        <input type="date" name="dat_autor_proth_acryl_bucc">
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <label>No d'autorisation</label>
+                                            <input type="text" name="no_autor_proth_acryl_bucc">
+                                        </div>
+                                        <div class="field">
+                                            <label>Date d'autorisation</label>
+                                            <input type="date" name="dat_autor_proth_acryl_bucc">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="ui segment">
@@ -3472,21 +3474,30 @@
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type </label>
-                                            <input type="text" name="typ_id_rais_trait_denta_bucc">
+                                            
+                                            <select name="typ_id_rais_trait_denta_bucc" id="typ_id_rais_trait_denta_bucc">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="field">
                                             <label>Raison</label>
-                                            <input type="text" name="id_rais_trait_denta_bucc">
+                                            <select id="id_rais_trait_denta_bucc" name="id_rais_trait_denta_bucc">
+                                                <option></option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="two fields">
                                         <div class="field">
                                             <label>Type</label>
-                                            <input type="text" name="typ_id_site_trait_denta_bucc">
+                                            <select  name="typ_id_site_trait_denta_bucc" id="typ_id_site_trait_denta_bucc">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="field">
                                             <label>Site</label>
-                                            <input type="text" name="id_site_trait_denta_bucc">
+                                            <select id="id_site_trait_denta_bucc" name="id_site_trait_denta_bucc">
+                                                <option></option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -3590,34 +3601,13 @@
                                     <h4 class="ui horizontal divider header"><label>Lieu de référence</label></h4>
                                     <div class="eight wide field">
                                         <label>Situation liée au lieu de référence</label>
-                                        <input type="text" name="typ_refre_lieu_bucc">
-                                    </div>
-                                    <div class="ui form segment">
-                                        
-                                    </div>
-                                </div>
-                                <div class="ui form segment">
-                                    <h4 class="ui horizontal divider header">Référant</h4>
-                                    <div class="field">
-                                        <label>No de référant</label>
-                                        <input type="text" name="id_prof_refre_bucc" id="no_ref_chir">
-                                    </div>
-                                    <div class="field">
-                                        <label>Type de référant</label>
-                                        <select id="typ_ref_chir" name="typ_refre_autre_prof_bucc">
-                                            <option value="1">Professionnel référant</option>
-                                            <option value="6">Professionnel remplacé</option>
+                                        <select id="typ_refre_lieu_bucc" name="typ_refre_lieu_bucc">
+                                            <option></option>
+
                                         </select>
                                     </div>
-                                    <div class="field">
-                                        <label> Date heure de l'appel</label>
-                                        <div class="two fields">
-                                            <div class="nine wide field"><input type="date" name="date_lappel_lev" id="date_lappel_lev_chir"></div>
-                                            <div class="field"><input type="time" name="time_lappel" id="time_lappel_chir"></div>
-                                        </div>
-                                    </div>
-
-                                    <h4 class="ui horizontal divider header"><label>Identification du lieu</label></h4>
+                                    <div class="ui form segment">
+                                        <h4 class="ui horizontal divider header"><label>Identification du lieu</label></h4>
                                     <div class="inline field">
                                         <input type="radio" class="lieu" name="lieu_refre_phys_bucc" id="lieu_codifie_chir" value="Lieu codifié á la Régie">
                                         <label>Lieu codifié à la Régie</label>
@@ -3680,6 +3670,30 @@
                                         </div>
                                     </div>
 
+                                    </div>
+                                </div>
+                                <div class="ui form segment">
+                                    <h4 class="ui horizontal divider header">Référant</h4>
+                                    <div class="field">
+                                        <label>No de référant</label>
+                                        <input type="text" name="id_prof_refre_bucc" id="no_ref_chir">
+                                    </div>
+                                    <div class="field">
+                                        <label>Type de référant</label>
+                                        <select id="typ_ref_chir" name="typ_refre_autre_prof_bucc">
+                                            <option value="1">Professionnel référant</option>
+                                            <option value="6">Professionnel remplacé</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label> Date heure de l'appel</label>
+                                        <div class="two fields">
+                                            <div class="nine wide field"><input type="date" name="date_lappel_lev" id="date_lappel_lev_chir"></div>
+                                            <div class="field"><input type="time" name="time_lappel" id="time_lappel_chir"></div>
+                                        </div>
+                                    </div>
+
+                                    
 
                                 </div>
                                 <button class="ui axxium tiny button" type="submit">Enregistrer</button>
@@ -3704,6 +3718,7 @@
                         $('#form_chirurgiens #codif_selection_non').show();
                         $('#form_chirurgiens #type_lieu_cont').show();
                         $('#form_chirurgiens #codif_selection_lieu').hide();
+                        $('#form_chirurgiens #secteur_active_bucc_div').hide();
                     };
                     // alert($('#lieu_codifie_non').checked());
                 })
@@ -5231,7 +5246,8 @@
                             close: '.close, .actions .deny',
                             approve: '.surfbtn',
                             deny: '.actions .negative, .actions .deny, .actions .cancel'
-                        }
+                        },
+                        allowMultiple: true 
                     }).modal('show');
                 }
 

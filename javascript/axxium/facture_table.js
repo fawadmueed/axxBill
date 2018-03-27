@@ -448,8 +448,11 @@ function modFactTableMore(x)
     var date = new Date();
     var currentDate = date.toISOString().slice(0, 10);
 
-  var row_id=$(x).closest('tr').attr('id');
-  var this_Row_Code=$(x).closest('tr').children('td[data-target="Code"]').text();
+    var row_id=$(x).closest('tr').attr('id');
+    var this_Row_Code = $(x).closest('tr').children('td[data-target="Code"]').text();
+
+    //AK
+    globSelectedLineCode = this_Row_Code;
 
    switch(dent_Type){
 

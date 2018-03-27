@@ -2110,7 +2110,7 @@
                                             <input type="text" name="" id="txtRamqSpecialNams">
                                         </div>
                                         <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiement();">Transférer à la Règie</button>
-                                        <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiementNode();">Send to Regie via Node</button>
+                                        <!--<button class="ui right floated axxium button" onclick="SoumissionDemandesPaiementNode();">Send to Regie via Node</button>-->
                                     </div>
                                 </div>
                             </div>
@@ -3206,15 +3206,15 @@
                                     <strong><label>Type d'anesthésie</label></strong>
                                     <div class="six inline fields">
                                         <div class="field">
-                                            <input type="radio" name="typ_anesthesia_denti" value="L">
+                                            <input type="radio" name="typ_anesthesia_denti" value="L" onclick="ramqElmCtxHandleClickAnesthType(this);">
                                             <label>Locale</label>
                                         </div>
                                         <div class="field">
-                                            <input type="radio" name="typ_anesthesia_denti" value="G">
+                                            <input type="radio" name="typ_anesthesia_denti" value="G" onclick="ramqElmCtxHandleClickAnesthType(this);">
                                             <label>Generale</label>
                                         </div>
                                         <div class="field">
-                                            <input type="radio" name="typ_anesthesia_denti" value="N" checked="checked">
+                                            <input type="radio" name="typ_anesthesia_denti" value="N" onclick="ramqElmCtxHandleClickAnesthType(this);" checked="checked">
                                             <label>N/A</label>
                                         </div>
                                     </div>
@@ -3246,26 +3246,26 @@
                                 <div class="field">
                                     <label>Éléments de contexte</label>
                                     <select id="dropD_dentiste" name="liste_elm_contx_denti" multiple="multiple">
-                          <option value="1727">Acte posé plus souvent que convenu à l entente</option>
-                          <option value="38">Chirurgie secondaire pratiquée au cours d une même séance qu une chirurgie principale</option>
-                          <option value="1728">Examen ou soin post-opératoire qui n est pas en lien avec la chirurgie</option>
-                          <option value="37">Mise en place de la première plaque de reconstruction</option>
-                          <option value="1752">Nouvelle intervention qui est reliée à la première ou en résulte lors d une même hospitalisation</option>
-                          <option value="39">Nouvelle intervention qui n est pas reliée à la première ou n en résulte pas lors d une même hospitalisation</option>
-                          <option value="1724">Patient sous anesthésie générale</option>
-                          <option value="41">Remplacement d une prothèse pour perte ou bris</option>
-                          <option value="1723">Remplacement de deux prothèses pour perte ou bris </option>
-                          <option value="1746">Séance différente</option>
-                          <option value="34">Service dont la complexité est inhabituelle</option>
-                          <option value="1742">Service fourni en centre hospitalier avec le concours d'un ou de dentistes résidents dans un programme visé</option>
-                          <option value="1749">Site différent</option>
-                          <option value="1726">Soin pré-opératoire qui n est pas en lien avec la chirurgie</option>
-                          <option value="1725">Soins d urgence</option>
-                          <option value="35">Soins post-opératoire confiés à un autre dentiste</option>
-                          <option value="36">Soins post-opératoire confiés par un autre dentiste</option>
-                          <option value="1744">Suite à un traumatisme</option>
-                          <option value="1729">Suite à une malformation osseuse</option>
-                      </select>
+                                      <option value="1727">Acte posé plus souvent que convenu à l entente</option>
+                                      <option value="38">Chirurgie secondaire pratiquée au cours d une même séance qu une chirurgie principale</option>
+                                      <option value="1728">Examen ou soin post-opératoire qui n est pas en lien avec la chirurgie</option>
+                                      <option value="37">Mise en place de la première plaque de reconstruction</option>
+                                      <option value="1752">Nouvelle intervention qui est reliée à la première ou en résulte lors d une même hospitalisation</option>
+                                      <option value="39">Nouvelle intervention qui n est pas reliée à la première ou n en résulte pas lors d une même hospitalisation</option>
+                                      <option value="1724">Patient sous anesthésie générale</option>
+                                      <option value="41">Remplacement d une prothèse pour perte ou bris</option>
+                                      <option value="1723">Remplacement de deux prothèses pour perte ou bris </option>
+                                      <option value="1746">Séance différente</option>
+                                      <option value="34">Service dont la complexité est inhabituelle</option>
+                                      <option value="1742">Service fourni en centre hospitalier avec le concours d'un ou de dentistes résidents dans un programme visé</option>
+                                      <option value="1749">Site différent</option>
+                                      <option value="1726">Soin pré-opératoire qui n est pas en lien avec la chirurgie</option>
+                                      <option value="1725">Soins d urgence</option>
+                                      <option value="35">Soins post-opératoire confiés à un autre dentiste</option>
+                                      <option value="36">Soins post-opératoire confiés par un autre dentiste</option>
+                                      <option value="1744">Suite à un traumatisme</option>
+                                      <option value="1729">Suite à une malformation osseuse</option>
+                                  </select>
                                 </div>
                                 <div class="four fields">
                                     <div class="four wide field">
@@ -3857,6 +3857,25 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="" >
+                                        <strong><label>Type d'anesthésie</label></strong>
+                                        <div class="six inline fields">
+                                            <div class="field">
+                                                <input type="radio" name="typ_anesthesia_denti" value="L" onclick="ramqElmCtxHandleClickAnesthTypeUp(this);">
+                                                <label>Locale</label>
+                                            </div>
+                                            <div class="field">
+                                                <input type="radio" name="typ_anesthesia_denti" value="G" onclick="ramqElmCtxHandleClickAnesthTypeUp(this);">
+                                                <label>Generale</label>
+                                            </div>
+                                            <div class="field">
+                                                <input type="radio" name="typ_anesthesia_denti" value="N" onclick="ramqElmCtxHandleClickAnesthTypeUp(this);" checked="checked">
+                                                <label>N/A</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="six fields">
                                         <div class="five wide field">
                                             <label>Médicament consommé</label>
@@ -5576,7 +5595,11 @@
                 var fact_total=0;
                 var globVisionRData_print;
                 var tables_object;
-                var roleDisableFlag=true;
+                var roleDisableFlag = true;
+                var globTarifType = 'R'; //Values: R- regular, S-special, H-hospital
+                var globSelectedLineCode = ''; // Uses in ramqElemCtx script.
+                var globSelectedLineCodeUpdate = '';
+                var globSelectedLineTypeUpdate = '';
 
                 $(document).on('change', '.type_rate', function() {
                     if ($('.type_rate').is(':checked')) {
@@ -5902,6 +5925,21 @@
                 
                 $('#initialize').click(function()
                 {
+                    //Save tarif type in global variable
+                    globTarifType = '';
+                    if ($('#optTarifFactRegular').is(':checked'))
+                    {
+                        globTarifType = 'R';//Regular
+                    }
+                    else if ($('#optTarifFactSpecial').is(':checked'))
+                    {
+                        globTarifType = 'S';//Special
+                    }
+                    else if ($('#optTarifFactHospital'))
+                    {
+                        globTarifType = 'H';//Hospital
+                    }
+
                     $('#factureTable tr td:first').focus();
                 })
 

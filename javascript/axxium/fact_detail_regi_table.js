@@ -266,7 +266,13 @@ function modFactTableMore_update(x,arrGrilleDeFacturation_forms_update)
 { 
 	console.log(arrGrilleDeFacturation_forms_update);
 
-  var row_id=$(x).closest('tr').attr('id');
+	var row_id = $(x).closest('tr').attr('id');
+
+    //AK Save code and type in global variable
+	var this_Row_Code = $(x).closest('tr').children('td[data-target="Code"]').text();
+	var this_Row_Type = $(x).closest('tr').children('td[data-target="Type"]').text();
+	globSelectedLineCodeUpdate = this_Row_Code;
+	globSelectedLineTypeUpdate = this_Row_Type;
 
    switch(dent_Type){
       
@@ -275,7 +281,12 @@ function modFactTableMore_update(x,arrGrilleDeFacturation_forms_update)
               var data=$('#div_dentiste_Up').html();
               $('#modal_factTbl_more_Up').html(data); 
               $('form #rowId_dent_Up').val(row_id); //Assign id of Row Working - to the Form 
-              var thisFromData_Up=getThisFormData_Up(row_id,arrGrilleDeFacturation_forms_update);  //gets the Complete Array of FORM Data to populate 
+              var thisFromData_Up = getThisFormData_Up(row_id, arrGrilleDeFacturation_forms_update);  //gets the Complete Array of FORM Data to populate 
+
+          //AK Select Element context
+              var get_elemContxtToPop = ramqElmCtxSelectElmCtxOnUI(this_Row_Code);
+              thisFromData_Up = assign_elem_context_select(thisFromData_Up, get_elemContxtToPop);
+
               updatedPopulateForm('form_dentiste_Up',thisFromData_Up);
               break;
 

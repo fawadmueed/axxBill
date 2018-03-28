@@ -1,5 +1,11 @@
 function factureResponseClose() {
-    $('#amq_total').val(globRamqTotal.toFixed(2));
+    if (globRamqTotal > 0) {
+        $('#amq_total').val(globRamqTotal.toFixed(2));
+    }
+    else {
+        $('#amq_total').val('0.00');
+    }
+
     modPayment();
     //if (globRamqTotal > -2) { //-2 means error occurs, -1: bill was canceled
     //    //Sending data to Visionr.

@@ -61,6 +61,7 @@
     <script src="javascript/axxium/sendEmail.js"></script>
     <script src="javascript/axxium/treatmentHist.js"></script>
     <script src="javascript/axxium/ramqElemCtx.js"></script>
+    <script src="javascript/axxium/ramqValidation.js"></script>
 
     <script src="javascript/axxium/printing.js"></script>
 
@@ -1954,10 +1955,10 @@
                                                 <label>No du professionel</label>
                                                 <input type="text" name="" id="pamnt_no_prof" readonly="readonly">
                                             </div>
-                                            <div class="field">
+                                            <!--<div class="field">
                                                 <label>No du groupe</label>
                                                 <input type="text" name="" id="pamnt_no_grp">
-                                            </div>
+                                            </div>-->
                                             <div class=" field">
                                                 <div class="ui radio checkbox">
                                                 <input type="radio" class="optRegiePa_radio" name="fact_paimn_radio" id="optRegiePaimentComptePers" checked="checked">
@@ -2108,6 +2109,9 @@
                                         <div class="field" id="spec_ramq_numb">
                                             <label>Numéro de AMQ Spécial</label>
                                             <input type="text" name="" id="txtRamqSpecialNams">
+                                        </div>
+                                        <div class="field">
+                                            <p id="txtPaimentRamqErrorMsg" style="color:red"></p>
                                         </div>
                                         <button class="ui right floated axxium button" onclick="SoumissionDemandesPaiement();">Transférer à la Règie</button>
                                         <!--<button class="ui right floated axxium button" onclick="SoumissionDemandesPaiementNode();">Send to Regie via Node</button>-->
@@ -2560,10 +2564,10 @@
                                     <label>No du professionel</label>
                                     <input type="text" name="" id="pamnt_no_prof_regie_fact">
                                 </div>
-                                <div class="seven wide field">
+                                <!--<div class="seven wide field">
                                     <label>No du groupe</label>
                                     <input type="text" name="" id="pamnt_no_grp_regie_fact">
-                                </div>
+                                </div>-->
                                 <div class="inline field">
                                     <input type="radio" class="optRegiePa_radio_upd" name="fact_paimn_radio_upd" id="optRegiePaimentComptePers_upd" checked="checked">
                                     <label>Compte Personnel</label>

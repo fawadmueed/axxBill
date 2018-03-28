@@ -111,6 +111,7 @@ app.post('/SoumissionDemandesAnnulation', function (req, response) {
     request(options, function (err, res, body) {
         if (res && (res.statusCode === 200 || res.statusCode === 201)) {
             var resp = '';
+            globRamqTotal = 0.00;
             var ramqAns = CleanXML(body);
             if (ramqAns != null && ramqAns.substring(0, 5) == 'Error') {
                 resp = ramqAns;

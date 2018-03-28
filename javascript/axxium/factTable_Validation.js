@@ -1022,7 +1022,7 @@ function surf_code_dent_gen_validation() {
               
               if(init_code!='')
               {
-                $('.surfNumModal').modal('show');
+                $('.surfNumModal').modal('show').modal({  allowMultiple: true });
                 
                 $('.surfNumSel').click( function(e){
                   

@@ -5,10 +5,10 @@ $(document).ready(function(){
   $(document.body).on("keypress","#factTableBody_regie tr td[data-target='codeRole']", function(e) {
 
   				if(e.which == 13) {
-                add_empty_row();
+                add_empty_row(this);
             }
             return e.which!=13;
-              });
+            });
   
   $(document.body).on("submit","#form_dentiste_Up", function(event) {
 
@@ -24,7 +24,8 @@ $(document).ready(function(){
               });
  
 
-$(document.body).on('focusout',"form :text",function(){
+$(document.body).on('focusout',"form :text",function()
+{
                 $(this).val($(this).val().toUpperCase());
               })            
  
@@ -135,7 +136,7 @@ function populate_table(arrToPopTabl){
 
 }
 
-function add_empty_row(){
+function add_empty_row(x){
 
 	var tblBody=$('#factTableBody_regie');
 
@@ -156,8 +157,18 @@ function add_empty_row(){
                        switch (fields[i]) {
 
                        case 'Type': //Type
-                       tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
-                        tblData.appendTo(tblRow);
+                       if(fact_tbl_row_id_Up!=0)
+                       {
+                          // var prevType=getPrevRowType_Regie(fact_tbl_row_id_Up-1);
+                          var prevType=$(x).siblings('td[data-target="Type"]').text();
+                          tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]).text(prevType);
+                          tblData.appendTo(tblRow);
+                       }
+                       else
+                       {
+                         tblData=$('<td>').attr('contenteditable','true').attr('data-target',fields[i]);
+                          tblData.appendTo(tblRow);
+                        }
                        break;
 
                        case 'Dent':
@@ -218,6 +229,12 @@ function add_empty_row(){
          			tblRow.appendTo(tblBody);
         
 
+}
+
+function getPrevRowType_Regie(prev_row_id)
+{
+  var prev_Type=$('#factTableBody_regie tr').attr('id',prev_row_id).children('td[data-target="Type"]').text();
+  return prev_Type;
 }
 
 function tableDataAmq(updateArray){

@@ -2444,12 +2444,19 @@
             </div>
         </div>
     </div>
-    <div class="ui modal_regie_fact_modal fullscreen modal">
+    <div class="ui modal_regie_fact_modal fullscreen modal" id="modal_regie_fact_modal">
         <div class="header">
             <i class="money icon"></i>Facture Régie
         </div>
         <div class="content">
              <div class="ui form segment sixteen wide column">
+                
+                    <div class="ui negative message hidden" id="wrn_msg_fact_tbl_regie">
+                                <i class="close icon"></i>
+                                <div style="display:inline;"> <i class="warning icon"></i></div>
+                                <div class="header" id="warn_msg_fact_content" style="display:inline;">
+                                </div>
+                            </div>
                     <div class="ui teal form raised segment">
                  
                         <h4 class="ui horizontal divider header">Detail facture</h4>

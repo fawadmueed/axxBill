@@ -561,6 +561,10 @@ $(document.body).on('focusout', "#factTableBody td[data-target='Type'] ,#factTab
   {
     var selector='wrn_msg_fact_tbl_planTrait';
   }
+  else if($('#modal_regie_fact_modal').hasClass('active'))
+  {
+    var selector='wrn_msg_fact_tbl_regie'; 
+  }
     // $('#wrn_msg_fact_tbl').removeClass('hidden');
     $('#' + selector).finish();
     $('#'+selector+' > '+'#warn_msg_fact_content').text(msg);
